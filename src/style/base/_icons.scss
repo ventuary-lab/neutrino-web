@@ -1,0 +1,14 @@
+@import '../../style/helpers/mixins';
+$icons-dir: '../static/icons';
+
+.Icon {
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 16px;
+  min-height: 16px;
+
+  &__pencil {
+    //background-image: url('#{$icons-dir}/pencil.svg');
+  }
+}

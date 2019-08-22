@@ -1,0 +1,14 @@
+{
+  "name": "neutrino",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "yii-steroids": "^1.12.7"
+  }
+}
