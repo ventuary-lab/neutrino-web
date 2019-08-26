@@ -87,3 +87,7 @@
     }
   }
 }
+
+@mixin gradient-bg($deg) {
+  background: linear-gradient($deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+}

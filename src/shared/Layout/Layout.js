@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
 import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
+import {getCurrentItemParam} from 'yii-steroids/reducers/navigation';
 
+import Header from 'shared/Header';
+import LeftSidebar from '../LeftSidebar';
+import RightSidebar from '../RightSidebar';
 import {html} from 'components';
 
 import './Layout.scss';
@@ -18,11 +22,11 @@ const bem = html.bem('Layout');
 //         //     .catch(() => ({user: null}))
 //     }
 // )
-// @connect(
-//     state => ({
-//
-//     })
-// )
+@connect(
+    state => ({
+        isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
+    })
+)
 
 @screenWatcherHoc()
 export default class Layout extends React.PureComponent {
@@ -38,12 +42,22 @@ export default class Layout extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
-                <div>header</div>
-                <main className={bem.element('content')}>
-                    <div>content</div>
-                    {this.props.status !== STATUS_LOADING && this.props.children}
-                </main>
-                <div>footer</div>
+                {this.props.isShowLeftSidebar && (
+                    <aside className={bem.element('left')}>
+                        <LeftSidebar/>
+                    </aside>
+                )}
+                <div className={bem.element('center')}>
+                    <header className={bem.element('header')}>
+                        <Header/>
+                    </header>
+                    <main className={bem.element('content')}>
+                        {this.props.status !== STATUS_LOADING && this.props.children}
+                    </main>
+                </div>
+                <aside className={bem.element('right')}>
+                    <RightSidebar/>
+                </aside>
                 <ModalWrapper/>
             </div>
         );
