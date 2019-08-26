@@ -1,0 +1,39 @@
+@import '../../style/helpers/vars';
+@import '../../style/helpers/mixins';
+
+.IndexSlider {
+  width: 100%;
+
+  &__title {
+    margin: 0 0 70px;
+    text-align: center;
+    > span {
+      &:first-child {
+        font-weight: 200;
+        font-size: 30px;
+        line-height: 32px;
+      }
+      &:last-child {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 40px;
+      }
+    }
+  }
+
+  &__slide {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__slide-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

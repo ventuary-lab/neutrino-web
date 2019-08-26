@@ -4,6 +4,9 @@
 .Layout {
   $gap: 8px;
   $border-radius: 4px;
+  $left-width: 64px;
+  $right-width: 316px;
+  $header-height: 65px;
 
   background-color: $color-layout-bg;
   display: flex;
@@ -20,10 +23,12 @@
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
     @include gradient-bg(182.99deg);
+    min-height: 65px;
   }
 
   &__content {
     flex-grow: 1;
+    max-width: calc(100vw - #{$right-width});
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     @include gradient-bg(264.83deg);

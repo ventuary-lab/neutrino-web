@@ -1,0 +1,30 @@
+.IndexSliderArrow {
+  position: absolute;
+  z-index: 10;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid #494991;
+  cursor: pointer;
+
+  top: 50%;
+  margin-top: -27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: linear-gradient(43.21deg, #6121A1 18.12%, #00AEFF 101.23%);
+    border: none;
+  }
+
+  &_direction_left {
+    left: 100px;
+    transform: scaleX(-1);
+  }
+
+  &_direction_right {
+    right: 100px;
+  }
+}
