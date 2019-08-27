@@ -28,21 +28,23 @@
 
   &__content {
     flex-grow: 1;
-    max-width: calc(100vw - #{$right-width});
+    height: 100%;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     @include gradient-bg(264.83deg);
   }
 
   &__left {
-    width: 64px;
+    width: $left-width;
+    max-width: $left-width;
     min-height: 100vh;
     margin-right: $gap;
     @include gradient-bg(264.83deg);
   }
 
   &__right {
-    width: 316px;
+    width: $right-width;
+    max-width: $right-width;
     min-height: 100vh;
     margin-left: $gap;
     @include gradient-bg(242.05deg);

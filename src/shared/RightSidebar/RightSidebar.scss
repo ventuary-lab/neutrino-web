@@ -2,5 +2,106 @@
 @import '../../style/helpers/mixins';
 
 .RightSidebar {
-  padding: 10px;
+
+  &__user-info {
+    position: relative;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__user-info-icon {
+    margin-bottom: 13px;
+    min-width: 123px;
+    min-height: 17px;
+  }
+
+  &__logout {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(5.62deg, #B1A872 -339.25%, #3E3E79 36.53%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: linear-gradient(43.21deg, #6121A1 18.12%, #00AEFF 101.23%);
+    }
+  }
+
+  &__user-network {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: linear-gradient(0.8deg, #00ADFF -339.25%, #3E3E79 36.53%);
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    width: 100%;
+    max-width: 260px;
+    min-height: 37px;
+  }
+
+  &__user-network-icon {
+    margin-right: 5px;
+  }
+
+  &__address-container {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  &__address-value {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__address-link {
+    margin-left: 10px;
+  }
+
+  &__auth {
+    padding: 56px 28px 28px;
+    text-align: center;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  &__auth-icon {
+    margin-bottom: 15px;
+  }
+
+  &__auth-title {
+    margin: 0 0 26px;
+  }
+
+  &__auth-button {
+    margin-bottom: 26px;
+  }
+
+  &__auth-info {
+    border-top: 1px solid #343869;
+    margin: 0;
+    padding: 20px 0;
+    line-height: 24px;
+    & > a {
+      color: #8081b0;
+    }
+  }
 }

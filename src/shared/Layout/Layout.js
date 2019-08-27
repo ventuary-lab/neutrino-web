@@ -15,13 +15,7 @@ import './Layout.scss';
 
 const bem = html.bem('Layout');
 
-// @layoutHoc(
-//     () => {
-//         // return dal.auth()
-//         //     .then(user =>  ({user}))
-//         //     .catch(() => ({user: null}))
-//     }
-// )
+// @layoutHoc()
 @connect(
     state => ({
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),

@@ -2,7 +2,8 @@
 @import '../../style/helpers/mixins';
 
 .IndexSlider {
-  width: 100%;
+  width: 1000px;
+  margin: 0 auto;
 
   &__title {
     margin: 0 0 70px;
@@ -34,6 +35,33 @@
 
     &:focus {
       outline: none;
+    }
+  }
+
+  .slick-dots {
+    bottom: -115px;
+
+    button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid $color-brand-purple-light;
+
+      &:hover {
+        background-color: $color-brand-azure;
+        border: none;
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .slick-active {
+      button {
+        border: none;
+        background: linear-gradient(43.21deg, #6121A1 18.12%, #00AEFF 101.23%);
+      }
     }
   }
 }

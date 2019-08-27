@@ -38,20 +38,19 @@ export default class Header extends React.PureComponent {
 
         return (
             <header className={bem.block()}>
-                <Link
+                <a
                     className={bem.element('logo')}
                     onClick={() => {
                         this.props.dispatch(goToPage(this.props.indexItem));
                         this.props.dispatch(change(FORM_ID, 'section', null))
                     }}
-                    noStyles
                 >
                     <img
                         className={bem.element('logo-image')}
                         src={logo}
                         alt='Neutrino'
                     />
-                </Link>
+                </a>
                 <Form
                     formId={FORM_ID}
                     initialValues={{

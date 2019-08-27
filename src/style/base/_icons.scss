@@ -19,4 +19,32 @@ $icons-dir: '../static/icons';
     min-height: 12px;
     background-image: url('#{$icons-dir}/arrow-right.svg');
   }
+
+  &__arrow-right-2 {
+    min-width: 11px;
+    min-height: 10px;
+    background-image: url('#{$icons-dir}/arrow-right-2.svg');
+  }
+
+
+  &__waves-keeper {
+    min-width: 174px;
+    min-height: 24px;
+    background-image: url('#{$icons-dir}/waves-keeper.svg');
+  }
+
+  &__logout {
+    min-width: 15px;
+    min-height: 15px;
+    background-image: url('#{$icons-dir}/logout.svg');
+  }
+
+  &__point-in-circle {
+    min-width: 13px;
+    min-height: 13px;
+
+    &_green {
+      background-image: url('#{$icons-dir}/point-in-circle_green.svg');
+    }
+  }
 }
