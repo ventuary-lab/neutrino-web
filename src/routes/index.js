@@ -1,6 +1,9 @@
 // import {Redirect, Route} from 'react-router';
 import React from 'react';
 import IndexPage from './IndexPage';
+import NeutrinoDashboard from './NeutrinoDashboard';
+import BoundsDashboard from './BoundsDashboard';
+import LeadingDashboard from './LeadingDashboard';
 import UserRole from 'enums/UserRole';
 
 export const ROUTE_ROOT = 'root';
@@ -20,7 +23,7 @@ export default {
         [ROUTE_NUETRINO]: {
             exact: true,
             path: '/neutrino',
-            component: IndexPage,
+            component: NeutrinoDashboard,
             label: __('Neutrino dashboard'),
             roles: UserRole.getKeys(),
             isShowLeftSidebar: true,
@@ -28,7 +31,7 @@ export default {
         [ROUTE_BOUNDS]: {
             exact: true,
             path: '/bounds',
-            component: IndexPage,
+            component: BoundsDashboard,
             label: __('Bounds dashboard'),
             roles: UserRole.getKeys(),
             isShowLeftSidebar: true,
@@ -36,7 +39,7 @@ export default {
         [ROUTE_LEASING]: {
             exact: true,
             path: '/leasing',
-            component: IndexPage,
+            component: LeadingDashboard,
             label: __('Leasing dashboard'),
             roles: UserRole.getKeys(),
             isShowLeftSidebar: true,

@@ -2,7 +2,7 @@
 @import '../../style/helpers/mixins';
 
 .IndexSlider {
-  width: 1000px;
+  width: 100%;
   margin: 0 auto;
 
   &__title {
@@ -22,20 +22,58 @@
     }
   }
 
+  &__slider {
+    padding-bottom: 140px;
+  }
+
   &__slide {
+    display: flex !important;
+    justify-content: center;
+
     &:focus {
       outline: none;
     }
   }
 
   &__slide-inner {
+
+    &_center {
+      align-items: center;
+    }
+
+    width: 55%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
 
     &:focus {
       outline: none;
     }
+  }
+
+  &__slide-sub-title {
+    width: 100%;
+    margin-bottom: 65px;
+    font-weight: 200;
+    font-size: 15px;
+    line-height: 18px;
+    padding: 10px 0;
+    border-top: 1px solid #2B2E5A;
+    border-bottom: 1px solid #2B2E5A;
+  }
+
+  &__slide-title {
+    font-size: 20px;
+    line-height: 22px;
+    margin: 0 0 30px;
+  }
+
+  &__slide-text {
+    margin: 0;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 28px;
   }
 
   .slick-dots {

@@ -35,23 +35,27 @@ export default class Layout extends React.PureComponent {
         }
 
         return (
-            <div className={bem.block()}>
-                {this.props.isShowLeftSidebar && (
-                    <aside className={bem.element('left')}>
-                        <LeftSidebar/>
+            <div className={bem.block({
+                'is-show-left-sidebar': this.props.isShowLeftSidebar
+            })}>
+                <div className={bem.element('inner')}>
+                    {this.props.isShowLeftSidebar && (
+                        <aside className={bem.element('left')}>
+                            <LeftSidebar/>
+                        </aside>
+                    )}
+                    <div className={bem.element('center')}>
+                        <header className={bem.element('header')}>
+                            <Header/>
+                        </header>
+                        <main className={bem.element('content')}>
+                            {this.props.status !== STATUS_LOADING && this.props.children}
+                        </main>
+                    </div>
+                    <aside className={bem.element('right')}>
+                        <RightSidebar/>
                     </aside>
-                )}
-                <div className={bem.element('center')}>
-                    <header className={bem.element('header')}>
-                        <Header/>
-                    </header>
-                    <main className={bem.element('content')}>
-                        {this.props.status !== STATUS_LOADING && this.props.children}
-                    </main>
                 </div>
-                <aside className={bem.element('right')}>
-                    <RightSidebar/>
-                </aside>
                 <ModalWrapper/>
             </div>
         );

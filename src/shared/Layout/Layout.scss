@@ -2,6 +2,7 @@
 @import '../../style/helpers/vars';
 
 .Layout {
+  $root: &;
   $gap: 8px;
   $border-radius: 4px;
   $left-width: 64px;
@@ -10,12 +11,24 @@
 
   background-color: $color-layout-bg;
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-  &__center {
+  &_is-show-left-sidebar {
+    #{$root}__center {
+      width: calc(100% - #{$left-width} - #{$right-width} - #{$gap * 2});
+    }
+  }
+
+  &__inner {
     flex-grow: 1;
     display: flex;
+  }
+
+  &__center {
+    width: calc(100% - #{$right-width} - #{$gap});
+    display: flex;
     flex-direction: column;
-    min-height: 100vh;
   }
 
   &__header {
@@ -28,7 +41,7 @@
 
   &__content {
     flex-grow: 1;
-    height: 100%;
+    width: 100%;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     @include gradient-bg(264.83deg);
@@ -36,16 +49,14 @@
 
   &__left {
     width: $left-width;
-    max-width: $left-width;
-    min-height: 100vh;
+    min-width: $left-width;
     margin-right: $gap;
     @include gradient-bg(264.83deg);
   }
 
   &__right {
     width: $right-width;
-    max-width: $right-width;
-    min-height: 100vh;
+    min-width: $right-width;
     margin-left: $gap;
     @include gradient-bg(242.05deg);
   }
