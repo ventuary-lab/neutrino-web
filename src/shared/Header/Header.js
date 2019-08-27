@@ -7,6 +7,7 @@ import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
 import {getCurrentItem, getNavItem, getNavItems, getNavUrl} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 import {html} from 'components';
 import logo from 'static/images/logo.svg';
@@ -22,48 +23,53 @@ const FORM_ID = 'SectionToggle';
     state => ({
         formValues: getFormValues(FORM_ID)(state),
         navItems: getNavItems(state, ROUTE_ROOT),
-        indexItem: getNavItem(state, ROUTE_ROOT),
         currentItem: getCurrentItem(state),
+        activeCurrency: state.layout.currency,
     })
 )
 export default class Header extends React.PureComponent {
 
     static propTypes = {
         navItems: PropTypes.arrayOf(NavItemSchema),
-        indexItem: NavItemSchema,
         currentItem: NavItemSchema,
+        activeCurrency: PropTypes.oneOf(CurrencyEnum.getKeys())
     };
 
-    render() {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.currentItem.id !== ROUTE_ROOT  && nextProps.currentItem.id === ROUTE_ROOT) {
+            this.props.dispatch(change(FORM_ID, 'section', null))
+        }
+    }
 
+    render() {
         return (
             <header className={bem.block()}>
-                <a
+                <Link
                     className={bem.element('logo')}
-                    onClick={() => {
-                        this.props.dispatch(goToPage(this.props.indexItem));
-                        this.props.dispatch(change(FORM_ID, 'section', null))
-                    }}
+                    noStyles
+                    toRoute={ROUTE_ROOT}
                 >
                     <img
                         className={bem.element('logo-image')}
                         src={logo}
                         alt='Neutrino'
                     />
-                </a>
+                </Link>
                 <Form
                     formId={FORM_ID}
                     initialValues={{
                         section: this.props.navItems.map(item => item.id).includes(this.props.currentItem.id)
                             ? this.props.currentItem.id
-                            : 'dfs'
+                            : null
                     }}
                 >
                     <DropDownField
                         attribute={'section'}
                         className={bem.element('section-toggle')}
                         items={this.props.navItems}
-                        onItemChange={(item) => this.props.dispatch(goToPage(item.id))}
+                        onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
+                            currency: this.props.activeCurrency
+                        }))}
                         defaultItemLabel={'Products'}
                     />
                 </Form>

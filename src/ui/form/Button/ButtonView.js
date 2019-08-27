@@ -89,6 +89,11 @@ export default class ButtonView extends React.PureComponent {
     }
 
     _getClassName(modifiers) {
+        if (this.props.noStyles) {
+            return bem(
+                this.props.className,
+            );
+        }
         return bem(
             bem.block({
                 color: this.props.color,

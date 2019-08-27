@@ -47,4 +47,67 @@ $icons-dir: '../static/icons';
       background-image: url('#{$icons-dir}/point-in-circle_green.svg');
     }
   }
+
+  &__usd-n-1 {
+    &_big {
+      width: 32px;
+      height: 32px;
+      background-image: url('#{$icons-dir}/usd-n-1_big.svg');
+
+      @include icon-hover {
+        background-image: url('#{$icons-dir}/usd-n-1_big_green.svg');
+      }
+    }
+
+    &_big_green {
+      width: 32px;
+      height: 32px;
+
+      background-image: url('#{$icons-dir}/usd-n-1_big_green.svg');
+    }
+  }
+
+  &__eur-n {
+    &_big {
+      width: 32px;
+      height: 32px;
+      background-image: url('#{$icons-dir}/eur-n_big.svg');
+
+      @include icon-hover {
+        background-image: url('#{$icons-dir}/eur-n_big_green.svg');
+      }
+    }
+
+    &_big_green {
+      width: 32px;
+      height: 32px;
+
+      background-image: url('#{$icons-dir}/eur-n_big_green.svg');
+    }
+  }
+
+  &__btc-n {
+    &_big {
+      width: 32px;
+      height: 32px;
+      background-image: url('#{$icons-dir}/btc-n_big.svg');
+
+      @include icon-hover {
+        background-image: url('#{$icons-dir}/btc-n_big_green.svg');
+      }
+    }
+
+    &_big_green {
+      width: 32px;
+      height: 32px;
+
+      background-image: url('#{$icons-dir}/btc-n_big_green.svg');
+    }
+  }
+
+  &__home {
+    min-width: 16px;
+    min-height: 16px;
+    background-image: url('#{$icons-dir}/home.svg');
+  }
 }
