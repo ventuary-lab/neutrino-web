@@ -1,0 +1,63 @@
+@import '../../../style/helpers/vars';
+
+.InputFieldView {
+
+  display: inline-block;
+  $root: &;
+  $border-radius: 20px;
+
+  min-height: 37px;
+  height: 1px;
+  position: relative;
+
+  &_with-inners {
+    #{$root}__input {
+      padding-right: 100px;
+    }
+  }
+
+
+  &__inners {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: $color-brand-purple-light;
+    height: 100%;
+    width: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    padding: 3px 5px;
+  }
+
+  &__inner-icon {
+    &_with-label {
+      margin-right: 4px;
+    }
+  }
+
+  &__inner-label {
+    font-weight: 800;
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  &__input {
+    background-color: transparent;
+    border-radius: $border-radius;
+    border: 1px solid $color-brand-purple-light;
+    padding: 5px 20px;
+    height: 100%;
+
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 17px;
+    color: #fff;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

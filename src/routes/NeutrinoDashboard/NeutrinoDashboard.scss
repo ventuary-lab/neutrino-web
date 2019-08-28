@@ -2,5 +2,89 @@
 @import '../../style/helpers/mixins';
 
 .NeutrinoDashboard {
+  $root: &;
 
+  height: 100%;
+  padding: 38px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  @include gradient-bg(264.83deg);
+
+
+  &__steps {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $color-brand-purple-light;
+  }
+
+  &__step {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    margin-right: 42px;
+
+    &:not(:last-child) {
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: -30px;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 1px;
+        background-color: $color-brand-purple-light;
+      }
+    }
+
+    &_active {
+      #{$root}__step-count {
+        border: none;
+        background-color: $color-brand-purple-light;
+      }
+    }
+  }
+
+  &__step-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $color-brand-purple-light;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    margin-right: 12px;
+  }
+
+  &__step-label {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  &__form-inputs {
+    display: flex;
+    align-items: center;
+  }
+
+  &__form {
+    padding: 40px 0;
+  }
+
+  &__form-exchange-button {
+    cursor: pointer;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(35.9deg, #6121A1 17.62%, #00AEFF 84.9%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 48px;
+
+    &:hover {
+      background: $color-brand-blue;
+    }
+  }
 }

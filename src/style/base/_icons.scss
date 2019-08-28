@@ -156,4 +156,10 @@ $icons-dir: '../static/icons';
     min-height: 13px;
     background-image: url('#{$icons-dir}/trade.svg');
   }
+
+  &__exchange {
+    min-width: 13px;
+    min-height: 15px;
+    background-image: url('#{$icons-dir}/exchange.svg');
+  }
 }

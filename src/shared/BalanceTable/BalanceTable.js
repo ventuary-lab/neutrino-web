@@ -16,12 +16,12 @@ const bem = html.bem('BalanceTable');
     })
 )
 @http.hoc(
-    props => props.user &&  (
+    props => props.user && (
         {
             data: [
                 {
                     id: 'waves',
-                    value: props.user.balance,
+                    value: 60.2300,
                     usdRate: 1.3,
                 },
                 {
@@ -42,7 +42,7 @@ export default class BalanceTable extends React.PureComponent {
 
     static propTypes = {
         user: PropTypes.object,
-        data: PropTypes.object,
+        data: PropTypes.arrayOf(PropTypes.object),
     };
 
     render() {
