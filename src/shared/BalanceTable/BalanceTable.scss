@@ -1,0 +1,86 @@
+@import '../../style/helpers/vars';
+@import '../../style/helpers/mixins';
+
+.BalanceTable {
+
+  border-collapse: collapse;
+
+  width: 100%;
+
+  thead {
+    font-size: 10px;
+    line-height: 12px;
+
+    background-color: #26274F;
+
+    tr > th {
+      padding: 12px 7px;
+      text-align: left;
+
+      &:first-child {
+        padding-left: 35px;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: #26274F;
+      }
+    }
+
+    tr > td {
+      padding: 18px 7px;
+    }
+  }
+
+  &__labels-column {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__labels {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__icon {
+    margin-right: 10px;
+  }
+
+  &__label {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 6px;
+
+    &_tiny {
+      font-weight: 300;
+      color: $fc-gray;
+      margin: 0;
+    }
+  }
+
+  &__values-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__controls-column {
+    display: flex;
+  }
+
+  &__control {
+    display: flex;
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+
+}

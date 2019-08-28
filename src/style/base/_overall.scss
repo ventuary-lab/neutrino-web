@@ -69,8 +69,13 @@ a {
   text-decoration: none;
   cursor: pointer;
 
+  &:visited {
+    color: inherit;
+  }
+
   &:hover {
     text-decoration: none;
+    color: $color-brand-azure;
   }
 }
 

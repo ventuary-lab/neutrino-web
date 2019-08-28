@@ -6,8 +6,8 @@ import {getUser} from 'yii-steroids/reducers/auth';
 import {setUser} from 'yii-steroids/actions/auth';
 import _upperFirst from 'lodash-es/upperFirst';
 
-
 import {html, dal} from 'components';
+import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';
 
@@ -25,7 +25,6 @@ export default class RightSidebar extends React.PureComponent {
     };
 
     render() {
-
         const addressUrl = this.props.user
             ? `https://wavesexplorer.com/${this.props.user.network}/address/${this.props.user.address}`
             : '';
@@ -55,7 +54,11 @@ export default class RightSidebar extends React.PureComponent {
                             >
                                 <span className={'Icon Icon__logout'}/>
                             </button>
-
+                        </div>
+                        <div className={bem.element('balance-table')}>
+                            <BalanceTable/>
+                        </div>
+                        <div className={bem.element('user-network-container')}>
                             <div className={bem.element('user-network')}>
                                 <div className={bem.element('user-network-icon')}>
                                     <span className={'Icon Icon__point-in-circle_green'}/>

@@ -5,11 +5,12 @@ import {getFormValues, change} from 'redux-form';
 import Link from 'yii-steroids/ui/nav/Link';
 import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
-import {getCurrentItem, getNavItem, getNavItems, getNavUrl} from 'yii-steroids/reducers/navigation';
+import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
-import CurrencyEnum from 'enums/CurrencyEnum';
 
 import {html} from 'components';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
 import {ROUTE_ROOT} from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
@@ -55,24 +56,41 @@ export default class Header extends React.PureComponent {
                         alt='Neutrino'
                     />
                 </Link>
-                <Form
-                    formId={FORM_ID}
-                    initialValues={{
-                        section: this.props.navItems.map(item => item.id).includes(this.props.currentItem.id)
-                            ? this.props.currentItem.id
-                            : null
-                    }}
-                >
-                    <DropDownField
-                        attribute={'section'}
-                        className={bem.element('section-toggle')}
-                        items={this.props.navItems}
-                        onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
-                            currency: this.props.activeCurrency
-                        }))}
-                        defaultItemLabel={'Products'}
+                <div className={bem.element('section-toggle')}>
+                    <Form
+                        formId={FORM_ID}
+                        initialValues={{
+                            section: this.props.navItems.map(item => item.id).includes(this.props.currentItem.id)
+                                ? this.props.currentItem.id
+                                : null
+                        }}
+                    >
+                        <DropDownField
+                            attribute={'section'}
+                            items={this.props.navItems}
+                            onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
+                                currency: this.props.activeCurrency
+                            }))}
+                            defaultItemLabel={'Products'}
+                        />
+                    </Form>
+                </div>
+                <div className={'info-dropdown'}>
+                    <InfoDropDown
+                        icon={'Icon__learn'}
+                        label={__('Learn')}
+                        items={[
+                            {
+                                label: __('White paper'),
+                                linkUrl: 'https://drive.google.com/file/d/1rJz2LIwPsK7VUxT9af8DKGFIMA5ksioW/view'
+                            },
+                            {
+                                label: __('Blog'),
+                                //action: todo
+                            }
+                        ]}
                     />
-                </Form>
+                </div>
             </header>
         );
     }

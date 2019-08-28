@@ -2,9 +2,9 @@ import Enum from './Enum';
 
 export default class UserRole extends Enum {
 
-    static USD_N = 'usd_n';
-    static EUR_N = 'eur_n';
-    static BTC_N = 'btc_n';
+    static USD_N = 'usd-n';
+    static EUR_N = 'eur-n';
+    static BTC_N = 'btc-n';
 
     static getKeys() {
         return [

@@ -1,6 +1,8 @@
 import _get from 'lodash/get';
 import {setUser} from 'yii-steroids/actions/auth';
 import {getUser} from 'yii-steroids/reducers/auth';
+import _toInteger from 'lodash-es/toInteger';
+
 import WavesTransport from './dal/WavesTransport';
 
 export default class DalComponent {
@@ -42,18 +44,12 @@ export default class DalComponent {
      */
     async auth() {
         const account = await this.getAccount();
-        // let user = await this.getUser(account.address);
-        // user = {
-        //     ...user,
-        //     profile: {
-        //         name: account.name,
-        //         ...user.profile,
-        //     },
-        // };
+        // console.log('---account', account);
 
         const user = account ?
             {
                 address: account.address,
+                balance: (_toInteger(account.balance.available) / Math.pow(10, 8)).toFixed(4),
                 network: account.network,
             } : null;
 

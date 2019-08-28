@@ -1,0 +1,56 @@
+@import '../../style/helpers/vars';
+@import '../../style/helpers/mixins';
+
+.InfoDropDown {
+  position: relative;
+
+  &__label-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__label {
+    font-size: 14px;
+    line-height: 17px;
+    margin-right: 5px;
+  }
+
+  &__icon {
+    margin-right: 6px;
+  }
+
+  &__arrow {
+    position: relative;
+    top: 1px;
+    transition: all ease 0.2s;
+
+    &_down {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__items {
+    list-style: none;
+    min-width: 200px;
+    position: absolute;
+    top: calc(100% + 20px);
+    left: 0;
+    padding: 10px 0;
+    width: 100%;
+    z-index: $zi-popup;
+    background-color: $color-brand-purple;
+    border: 1px solid $color-brand-purple-light;
+    border-radius: 18px;
+  }
+
+  &__item {
+    padding: 7px 24px;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-brand-azure;
+    }
+  }
+
+}

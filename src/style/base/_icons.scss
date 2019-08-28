@@ -110,4 +110,50 @@ $icons-dir: '../static/icons';
     min-height: 16px;
     background-image: url('#{$icons-dir}/home.svg');
   }
+
+  &__learn {
+    min-width: 16px;
+    min-height: 13px;
+    background-image: url('#{$icons-dir}/learn.svg');
+  }
+
+  &__wave {
+    min-width: 18px;
+    min-height: 18px;
+    background-image: url('#{$icons-dir}/wave.svg');
+  }
+
+  &__usd-n-2 {
+    &_green {
+      min-width: 18px;
+      min-height: 18px;
+      background-image: url('#{$icons-dir}/usd-n-2_green.svg');
+    }
+  }
+
+  &__usd-nb {
+    &_green {
+      min-width: 18px;
+      min-height: 18px;
+      background-image: url('#{$icons-dir}/usd-nb_green.svg');
+    }
+  }
+
+  &__double-arrow-up {
+    min-width: 14px;
+    min-height: 14px;
+    background-image: url('#{$icons-dir}/double-arrow-up.svg');
+  }
+
+  &__double-arrow-down {
+    min-width: 14px;
+    min-height: 14px;
+    background-image: url('#{$icons-dir}/double-arrow-down.svg');
+  }
+
+  &__trade {
+    min-width: 19px;
+    min-height: 13px;
+    background-image: url('#{$icons-dir}/trade.svg');
+  }
 }
