@@ -1,0 +1,43 @@
+@import '../../../style/helpers/vars';
+
+.NavTabsView {
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+
+    &::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background-color: #4a4a7f;
+    }
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 10px 32px;
+    border-bottom: 1px solid #4a4a7f;
+
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 15px;
+
+    &_active {
+      border: 1px solid #4a4a7f;
+      border-bottom: none;
+      border-top: 3px solid $color-brand-azure;
+      font-weight: 700;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+
+  &__content {
+    padding: 10px;
+  }
+}

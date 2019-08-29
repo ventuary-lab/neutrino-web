@@ -3,4 +3,32 @@
 
 .BoundsDashboard {
 
+  $root: &;
+
+  display: flex;
+  height: 100%;
+
+  &__column {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+
+    &_left {
+      @include gradient-bg(242.47deg);
+      margin-right: 8px;
+      width: 337px;
+    }
+
+    &_right {
+      width: 100%;
+      @include gradient-bg(222.77deg)
+    }
+  }
+
+  &__graph {
+    height: 385px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 }
