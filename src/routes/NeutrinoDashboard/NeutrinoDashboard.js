@@ -8,6 +8,8 @@ import Button from 'yii-steroids/ui/form/Button';
 
 import {html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import {getActiveCurrency} from 'reducers/layout';
 import Hint from 'shared/Hint';
 
 import './NeutrinoDashboard.scss';
@@ -18,6 +20,7 @@ const FORM_ID = 'generationForm';
 
 @connect(
     state => ({
+        activeCurrency: getActiveCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
     })
 )
@@ -50,7 +53,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const steps = [
             {
                 id: 'generation',
-                label: __('Collateralize & generation USDN'),
+                label: __('Collateralize & generation {currency}', {
+                    currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                }),
             },
             {
                 id: 'details',
@@ -109,18 +114,22 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
                         <div className={bem.element('input-container')}>
                             <div className={bem.element('input-label')}>
-                                {__('How much USD-N would you like to receive?')}
+                                {__('How much {currency} would you like to receive?', {
+                                    currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                                })}
                             </div>
                             <InputField
                                 className={bem.element('input')}
                                 attribute={'targetCurrency'}
                                 inners={{
-                                    label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N),
+                                    label: CurrencyEnum.getLabel(this.props.activeCurrency),
                                     icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
                                 }}
                             />
                             <div className={bem.element('input-hint')}>
-                                {__('Max USD-N available to generate: 10k USD-N')}
+                                {__('Max {currency} available to generate: 10k {currency}', {
+                                    currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                                })}
                             </div>
                         </div>
                     </div>
@@ -158,7 +167,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                             text={__('Some text')}
                                         />
                                     </div>
-                                    <span>{__('Total issued USD-N')}</span>
+                                    <span>
+                                        {__('Total issued {currency}', {
+                                            currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                                        })}
+                                    </span>
                                 </div>
                                 <span>{__('580k')}</span>
                             </div>
@@ -173,7 +186,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <Button
                         type={'submit'}
                         className={bem.element('submit-button')}
-                        label={'Generate USD-N Neutrino'}
+                        label={__('Generate {currency} Neutrino', {
+                            currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                        })}
                     />
                 </Form>
             </>
