@@ -1,0 +1,41 @@
+@import '../../style/helpers/vars';
+@import '../../style/helpers/mixins';
+
+.Hint {
+  $root: &;
+
+  position: relative;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: $color-brand-purple-light;
+    transition: all ease-in-out 0.3s;
+
+    &:hover {
+      background-color: $color-brand-azure;
+
+      #{$root}__tooltip {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  &__tooltip {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity ease-in-out 0.3s;
+    z-index : $zi-popup;
+    position: absolute;
+    padding-left: 15px;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 10px;
+    right: auto;
+  }
+}

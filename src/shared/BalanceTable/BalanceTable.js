@@ -78,12 +78,12 @@ export default class BalanceTable extends React.PureComponent {
                                         )}
                                     />
                                     <div className={bem.element('labels')}>
-                                    <span className={bem.element('label')}>
-                                        {BalanceCurrencyEnum.getLabel(item.id)}
-                                    </span>
+                                        <span className={bem.element('label')}>
+                                            {BalanceCurrencyEnum.getLabel(item.id)}
+                                        </span>
                                         <span className={bem.element('label', 'tiny')}>
-                                        {__('USD')}
-                                    </span>
+                                            {__('USD')}
+                                        </span>
                                     </div>
                                 </div>
                             </td>

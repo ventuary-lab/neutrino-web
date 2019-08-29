@@ -162,4 +162,10 @@ $icons-dir: '../static/icons';
     min-height: 15px;
     background-image: url('#{$icons-dir}/exchange.svg');
   }
+
+  &__question {
+    min-width: 6px;
+    min-height: 10px;
+    background-image: url('#{$icons-dir}/question.svg');
+  }
 }
