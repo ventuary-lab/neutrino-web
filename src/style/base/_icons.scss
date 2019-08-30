@@ -168,4 +168,16 @@ $icons-dir: '../static/icons';
     min-height: 10px;
     background-image: url('#{$icons-dir}/question.svg');
   }
+
+  &__cancel {
+    min-width: 11px;
+    min-height: 10px;
+    background-image: url('#{$icons-dir}/cancel.svg');
+  }
+
+  &__search {
+    min-width: 11px;
+    min-height: 11px;
+    background-image: url('#{$icons-dir}/search.svg');
+  }
 }

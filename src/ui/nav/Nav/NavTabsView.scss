@@ -1,6 +1,26 @@
 @import '../../../style/helpers/vars';
 
 .NavTabsView {
+  $root: &;
+
+  &_full-width-tabs {
+    #{$root}__list {
+      &::after {
+        display: none;
+      }
+    }
+
+    #{$root}__item {
+      flex-grow: 1;
+
+      &_active {
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+
   &__list {
     list-style: none;
     padding: 0;
@@ -17,8 +37,10 @@
   }
 
   &__item {
+    text-align: center;
     cursor: pointer;
-    padding: 10px 32px;
+    padding: 10px;
+    min-width: 164px;
     border-bottom: 1px solid #4a4a7f;
 
     font-weight: 800;
@@ -38,6 +60,6 @@
   }
 
   &__content {
-    padding: 10px;
+    padding-top: 16px;
   }
 }

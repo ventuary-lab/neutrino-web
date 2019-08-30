@@ -14,11 +14,15 @@ export default class NavTabsView extends React.Component {
         items: PropTypes.arrayOf(PropTypes.object),
         className: PropTypes.string,
         onClick: PropTypes.func,
+        isFullWidthTabs: PropTypes.bool,
     };
 
     render() {
         return (
-            <div className={bem(bem.block(), this.props.className)}>
+            <div className={bem(
+                bem.block({'full-width-tabs': this.props.isFullWidthTabs}),
+                this.props.className
+            )}>
                 <ul className={bem.element('list')}>
                     {this.props.items.map((item, index) => (
                         <li

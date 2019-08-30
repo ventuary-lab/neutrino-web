@@ -1,0 +1,137 @@
+@import '../../style/helpers/vars';
+
+.OrdersTable {
+
+  $root: &;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background-color: #26274f;
+  }
+
+  th {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  td {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  th, td {
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  &__type-column {
+    &_buy {
+      color: $color-brand-green;
+    }
+
+    &_liquidate {
+      color: $color-brand-red;
+    }
+  }
+
+  &__cancel-column {
+    width: 125px;
+    text-align: left !important;
+  }
+
+  &__search-column {
+    width: 125px;
+    padding: 0 25px !important;
+  }
+
+  &__sort-buttons {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+
+  &__sort-button {
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 4px 6px 4px;
+    border-color: transparent transparent #6d6f91 transparent;
+    margin-bottom: 3px;
+
+    &_desc {
+      transform: rotate(180deg);
+      margin: 0;
+    }
+
+    &_active {
+      border-color: transparent transparent $color-brand-azure transparent;
+    }
+  }
+
+  &__header {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: center;
+  }
+
+  &__cancel {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  &__cancel-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  &__search-container {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+  }
+
+  &__search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  &__search {
+    width: 100%;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 5px 5px 5px 20px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+
+    &::placeholder {
+      color: #fff;
+      font-size: 13px;
+      line-height: 16px;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__empty {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

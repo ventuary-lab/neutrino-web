@@ -2,6 +2,7 @@ import React from 'react';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import {html} from 'components';
+import OrdersTable from 'shared/OrdersTable';
 
 import './BoundsDashboard.scss';
 
@@ -18,6 +19,7 @@ export default class BoundsDashboard extends React.PureComponent {
                     </div>
                     <div className={bem.element('orders')}>
                         <Nav
+                            isFullWidthTabs
                             layout={'tabs'}
                             items={[
                                 {
@@ -45,12 +47,15 @@ export default class BoundsDashboard extends React.PureComponent {
                                 {
                                     id: 'my-open-orders',
                                     label: __('My open Orders'),
-                                    content: () => this.renderOrdersGrid('Orders'),
+                                    content: OrdersTable,
                                 },
                                 {
                                     id: 'my-orders-history',
                                     label: __('My Orders History'),
-                                    content: () => this.renderOrdersGrid('History'),
+                                    content: OrdersTable,
+                                    contentProps: {
+                                        isHistory: true,
+                                    }
                                 },
                             ]}
                         />
