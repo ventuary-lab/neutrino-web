@@ -1,22 +1,33 @@
 import _get from 'lodash/get';
 import {setUser} from 'yii-steroids/actions/auth';
 import {getUser} from 'yii-steroids/reducers/auth';
-import _toInteger from 'lodash-es/toInteger';
+import fetchHoc from './dal/fetchHoc';
 
 import WavesTransport from './dal/WavesTransport';
 
 export default class DalComponent {
 
     constructor() {
+        this.neutrinoAddress = '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL'; // testnet
+        this.auctionAddress = '3NC8pQxcnDTtDkhzv5Eje8qqW4qoFawLnAb'; // testnet //todo give this address from data of contract (auction_contract)
         this.isTestMode = process.env.APP_DAPP_NETWORK === 'test';
         this.transport = new WavesTransport(this);
 
+        this.hoc = fetchHoc;
         this._authInterval = null;
         this._authChecker = this._authChecker.bind(this);
 
         if (this.isTestMode || process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
+    }
+
+    async getWavesToUsdPrice() {
+        return  await this.transport.nodeFetchKey('price');
+    }
+
+    async getBalance(address) {
+        return await this.transport.getBalance(address)
     }
 
     async isKeeperInstalled() {
@@ -44,12 +55,11 @@ export default class DalComponent {
      */
     async auth() {
         const account = await this.getAccount();
-        // console.log('---account', account);
 
         const user = account ?
             {
                 address: account.address,
-                balance: (_toInteger(account.balance.available) / Math.pow(10, 8)).toFixed(4),
+                balance: await this.getBalance(account.address),
                 network: account.network,
             } : null;
 
@@ -75,6 +85,22 @@ export default class DalComponent {
             const user = await this.auth();
             store.dispatch(setUser(user));
         }
+    }
+
+    async swapWavesToNeutrino(amount) {
+        await this.transport.nodePublish(
+            'swapWavesToNeutrino',
+            [],
+            amount,
+        );
+    }
+
+    async swapNeutrinoToWaves(amount) {
+        await this.transport.nodePublish(
+            'swapNeutrinoToWaves',
+            [],
+            amount,
+        );
     }
 
 }

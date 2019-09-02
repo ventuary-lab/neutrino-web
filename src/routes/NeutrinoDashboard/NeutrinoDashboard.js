@@ -5,8 +5,9 @@ import _get from 'lodash-es/get';
 import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
+import _isFunction from 'lodash-es/isFunction';
 
-import {html} from 'components';
+import {html, dal} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import {getActiveCurrency} from 'reducers/layout';
@@ -35,6 +36,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             isWavesLeft: true,
         };
 
+        // this._onSubmit = this._onSubmit.bind(this);
         this._isProgramChange = false;
     }
 
@@ -78,6 +80,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <Form
                     className={bem.element('form')}
                     formId={FORM_ID}
+                    // onSubmit={this._onSubmit}
                 >
                     <div className={bem.element('inputs')}>
                         <div className={bem.element('input-container')}>
@@ -203,9 +206,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <Button
                         type={'submit'}
                         className={bem.element('submit-button')}
-                        label={__('Generate {currency} Neutrino', {
+                        label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
                             currency: CurrencyEnum.getLabel(this.props.activeCurrency)
-                        })}
+                        }) : __('Generate Waves')}
                     />
                 </Form>
             </>
@@ -279,4 +282,15 @@ export default class NeutrinoDashboard extends React.PureComponent {
             return p + new Array(b - p.length + 2).join(0);
         }) + '.' + new Array(n + 1).join(0);
     };
+
+    // _onSubmit(values) {
+    //     return this.state.isWavesLeft
+    //         ? dal.swapWavesToNeutrino(values.waves)
+    //         : dal.swapNeutrinoToWaves(values.neutrino)
+    //             .then(() => {
+    //                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
+    //                     this.props.onComplete();
+    //                 }
+    //             });
+    // }
 }

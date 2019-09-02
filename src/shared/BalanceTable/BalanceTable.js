@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getUser} from 'yii-steroids/reducers/auth';
 
-import {html, http} from 'components';
+import {html, dal} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BalanceTable.scss';
@@ -15,41 +15,26 @@ const bem = html.bem('BalanceTable');
         user: getUser(state)
     })
 )
-@http.hoc(
-    props => props.user && (
-        {
-            data: [
-                {
-                    id: 'waves',
-                    value: 60.2300,
-                    usdRate: 1.3,
-                },
-                {
-                    id: 'usd-n',
-                    value: 4800,
-                    usdRate: 1,
-                },
-                {
-                    id: 'usd-nb',
-                    value: 5250,
-                    usdRate: 1,
-                }
-            ]
-        }
-    )
+@dal.hoc(
+    () => dal.getWavesToUsdPrice()
+        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
 )
 export default class BalanceTable extends React.PureComponent {
 
     static propTypes = {
         user: PropTypes.object,
-        data: PropTypes.arrayOf(PropTypes.object),
+        wavesToUsdPrice: PropTypes.number,
     };
 
     render() {
 
-        if (!this.props.data) {
+        if (!this.props.user && !this.props.wavesToUsdPrice) {
             return null;
         }
+
+        console.log('---1', this.props);
+
+        const balance = this.props.user.balance;
 
         return (
             <table className={bem.block()}>
@@ -65,56 +50,65 @@ export default class BalanceTable extends React.PureComponent {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.data.map(item => (
-                        <tr
-                            key={item.id}
-                        >
-                            <td>
-                                <div className={bem.element('labels-column')}>
+                    {Object.entries(balance).map(item => {
+
+                        const id = item[0];
+                        const value = item[1].toFixed(4);
+
+                        return (
+                            <tr
+                                key={item.id}
+                            >
+                                <td>
+                                    <div className={bem.element('labels-column')}>
                                     <span
                                         className={bem(
                                             bem.element('icon'),
-                                            `Icon ${BalanceCurrencyEnum.getIconClass(item.id)}`
+                                            `Icon ${BalanceCurrencyEnum.getIconClass(id)}`
                                         )}
                                     />
-                                    <div className={bem.element('labels')}>
+                                        <div className={bem.element('labels')}>
                                         <span className={bem.element('label')}>
-                                            {BalanceCurrencyEnum.getLabel(item.id)}
+                                            {BalanceCurrencyEnum.getLabel(id)}
                                         </span>
-                                        <span className={bem.element('label', 'tiny')}>
+                                            <span className={bem.element('label', 'tiny')}>
                                             {__('USD')}
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className={bem.element('values-column')}>
+                                </td>
+                                <td>
+                                    <div className={bem.element('values-column')}>
                                     <span className={bem.element('label')}>
-                                        {item.value}
+                                        {value}
                                     </span>
-                                    <span className={bem.element('label', 'tiny')}>
-                                        ${Math.floor(item.value * item.usdRate)}
+                                        <span className={bem.element('label', 'tiny')}>
+                                            $ {id === BalanceCurrencyEnum.WAVES
+                                                ? value / this.props.wavesToUsdPrice
+                                                : value
+                                            }
                                     </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div className={bem.element('controls-column')}>
-                                    {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
-                                        .map((item, index) => (
-                                            <a
-                                                key={index}
-                                                href='https://dex.wavesplatform.com/'
-                                                target={'_blank'}
-                                                className={bem.element('control')}
-                                            >
-                                                <span className={item}/>
-                                            </a>
-                                        ))
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className={bem.element('controls-column')}>
+                                        {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
+                                            .map((item, index) => (
+                                                <a
+                                                    key={index}
+                                                    href='https://dex.wavesplatform.com/'
+                                                    target={'_blank'}
+                                                    className={bem.element('control')}
+                                                >
+                                                    <span className={item}/>
+                                                </a>
+                                            ))
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         );
