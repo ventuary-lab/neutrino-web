@@ -1,0 +1,24 @@
+@import '../../../style/helpers/vars';
+
+.BuyBoundsForm {
+
+  $root: &;
+
+  padding: 0 18px;
+
+  &__input {
+    margin-bottom: 15px;
+
+    &_with-hint {
+      margin-bottom: 0;
+    }
+
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__submit-button {
+    margin-top: 24px;
+  }
+}

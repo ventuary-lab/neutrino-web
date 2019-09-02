@@ -2,7 +2,8 @@ import React from 'react';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import {html} from 'components';
-import OrdersTable from 'shared/OrdersTable';
+import OrdersTable from './views/OrdersTable';
+import BuyBoundsForm from './views/BuyBoundsForm';
 
 import './BoundsDashboard.scss';
 
@@ -25,7 +26,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                 {
                                     id: 'buy',
                                     label: __('Buy'),
-                                    content: () => this.renderOrdersGrid('Buy'),
+                                    content: BuyBoundsForm,
                                 },
                                 {
                                     id: 'liquidate',

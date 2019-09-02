@@ -139,53 +139,53 @@ export default class OrdersTable extends React.PureComponent {
                         </tr>
                     </thead>
                     <tbody>
-                    {items.length > 0 && (
-                        <>
-                            {items.map((item, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        {item.currency || '--'}
-                                    </td>
-                                    <td className={bem.element('type-column', item.type)}>
-                                        {_upperFirst(item.type) || '--'}
-                                    </td>
-                                    <td>
-                                        {item.time || '--'}
-                                    </td>
-                                    <td>
-                                        {item.amount || '--'}
-                                    </td>
-                                    <td>
-                                        {item.discount || '--'}
-                                    </td>
-                                    <td>
-                                        {item.wavesAmount || '--'}
-                                    </td>
-                                    {!this.props.isHistory && (
-                                        <td className={bem.element('cancel-column')}>
-                                            <div
-                                                className={bem.element('cancel')}
-                                            >
-                                            <span className={bem(
-                                                bem.element('cancel-icon'),
-                                                'Icon Icon__cancel'
-                                            )}/>
-                                                {__('Cancel')}
-                                            </div>
+                        {items.length > 0 && (
+                            <>
+                                {items.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            {item.currency || '--'}
                                         </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </>
-                    ) || (
-                        <tr>
-                            <td colSpan={this.props.isHistory ? 6 : 7}>
-                                <div className={bem.element('empty')}>
-                                    {this.props.isHistory ? __('No history') : __('No orders')}
-                                </div>
-                            </td>
-                        </tr>
-                    )}
+                                        <td className={bem.element('type-column', item.type)}>
+                                            {_upperFirst(item.type) || '--'}
+                                        </td>
+                                        <td>
+                                            {item.time || '--'}
+                                        </td>
+                                        <td>
+                                            {item.amount || '--'}
+                                        </td>
+                                        <td>
+                                            {item.discount || '--'}
+                                        </td>
+                                        <td>
+                                            {item.wavesAmount || '--'}
+                                        </td>
+                                        {!this.props.isHistory && (
+                                            <td className={bem.element('cancel-column')}>
+                                                <div
+                                                    className={bem.element('cancel')}
+                                                >
+                                                    <span className={bem(
+                                                        bem.element('cancel-icon'),
+                                                        'Icon Icon__cancel'
+                                                    )}/>
+                                                    {__('Cancel')}
+                                                </div>
+                                            </td>
+                                        )}
+                                    </tr>
+                                ))}
+                            </>
+                        ) || (
+                            <tr>
+                                <td colSpan={this.props.isHistory ? 6 : 7}>
+                                    <div className={bem.element('empty')}>
+                                        {this.props.isHistory ? __('No history') : __('No orders')}
+                                    </div>
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

@@ -15,7 +15,7 @@ import Hint from 'shared/Hint';
 import './NeutrinoDashboard.scss';
 
 const bem = html.bem('NeutrinoDashboard');
-const FORM_ID = 'generationForm';
+const FORM_ID = 'GenerationForm';
 
 
 @connect(
