@@ -80,7 +80,7 @@ export default class BalanceTable extends React.PureComponent {
                                         </span>
                                         <span className={bem.element('label', 'tiny')}>
                                             $ {id === BalanceCurrencyEnum.WAVES
-                                                ? value / this.props.wavesToUsdPrice
+                                                ? value * this.props.wavesToUsdPrice
                                                 : value
                                             }
                                         </span>

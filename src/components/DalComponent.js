@@ -23,7 +23,7 @@ export default class DalComponent {
     }
 
     async getWavesToUsdPrice() {
-        return  await this.transport.nodeFetchKey('price');
+        return  await this.transport.nodeFetchKey('price') / 100;
     }
 
     async getBalance(address) {

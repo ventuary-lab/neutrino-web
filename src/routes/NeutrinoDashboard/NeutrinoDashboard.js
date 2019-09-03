@@ -209,7 +209,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 <div className={bem.element('info-string', 'without-hint')}>
                                     <span>{__('Current WAVES / USD price')}</span>
                                 </div>
-                                <span>{1 / this.props.wavesToUsdPrice} $</span>
+                                <span>{this.props.wavesToUsdPrice} $</span>
                             </div>
                         </div>
                     </div>

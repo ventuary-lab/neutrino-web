@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
@@ -7,7 +7,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
-import {html} from 'components';
+import {dal, html} from 'components';
 // import {getActiveCurrency} from 'reducers/layout';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
@@ -22,10 +22,14 @@ const FORM_ID = 'BuyBoundsForm';
         formValues: getFormValues(FORM_ID)(state),
     })
 )
+@dal.hoc(
+    () => dal.getWavesToUsdPrice()
+        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
+)
 export default class BuyBoundsForm extends React.PureComponent {
 
     static propTypes = {
-
+        wavesToUsdPrice: PropTypes.number,
     };
 
     constructor() {
@@ -39,7 +43,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
         const isChangeDiscountAmount = _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
         const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
-        const isChangeWavesAmount = _get(this.props.formValues, 'waves') !== _get(nextProps.formValues, 'waves');
+        const isChangeNeutrinoAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
 
 
         //discount validate
@@ -59,7 +63,7 @@ export default class BuyBoundsForm extends React.PureComponent {
             }
         }
 
-        if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeWavesAmount) {
+        if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeNeutrinoAmount) {
             this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount);
         }
         else {
@@ -91,6 +95,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         }}
                     />
                     <NumberField
+                        min={0}
                         inputProps={{
                             autocomplete: 'off'
                         }}
@@ -101,18 +106,20 @@ export default class BuyBoundsForm extends React.PureComponent {
                             label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
-                        hint={__('65.3840 WAVES')}
+                        // hint={__('65.3840 WAVES')}
+                        hint={`${_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice} WAVES`}
                     />
                     <NumberField
+                        min={0}
                         inputProps={{
                             autocomplete: 'off'
                         }}
                         label={__('Total')}
                         layoutClassName={bem.element('input')}
-                        attribute={'waves'}
+                        attribute={'neutrino'}
                         inners={{
-                            label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES),
-                            icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)
+                            label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N),
+                            icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
                         }}
                     />
                     <Button
@@ -128,7 +135,7 @@ export default class BuyBoundsForm extends React.PureComponent {
         );
     }
 
-    _refreshAmount(props, isRefreshDiscount = false, isRefreshWaves = false) {
+    _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {
         props = props || this.props;
 
         if (this._isProgramChange) {
@@ -140,12 +147,12 @@ export default class BuyBoundsForm extends React.PureComponent {
 
         const discount = _get(props, 'formValues.discount');
         const bounds = _get(props.formValues, 'bounds');
-        const waves = _get(props.formValues, 'waves');
+        const neutrino = _get(props.formValues, 'neutrino');
 
         let amount;
 
         if (isRefreshDiscount) {
-            amount = this._parseAmount(((bounds - waves) * 100) / bounds);
+            amount = this._parseAmount(((bounds - neutrino) * 100) / bounds);
 
             this.props.dispatch(change(
                 FORM_ID,
@@ -154,14 +161,14 @@ export default class BuyBoundsForm extends React.PureComponent {
             ));
 
         } else {
-            amount = this._parseAmount(isRefreshWaves
+            amount = this._parseAmount(isRefreshNeutrino
                 ? (bounds / 100) * (100 - discount)
-                : (waves / (100 - discount)) * 100);
+                : (neutrino / (100 - discount)) * 100);
 
 
             this.props.dispatch(change(
                 FORM_ID,
-                isRefreshWaves ? 'waves' : 'bounds',
+                isRefreshNeutrino ? 'neutrino' : 'bounds',
                 this._toFixedSpecial(amount, 2)
             ));
         }
