@@ -105,4 +105,16 @@ export default class DalComponent {
         );
     }
 
+    async setOrder(price, amount, position) {
+        await this.transport.nodePublish(
+            'setOrder',
+            [
+                price,
+                position
+            ],
+            await this.transport.nodeFetchKey('neutrino_asset_id', true),
+            amount,
+        );
+    }
+
 }

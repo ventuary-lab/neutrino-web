@@ -31,6 +31,11 @@
     background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
   }
 
+  &_color_danger {
+    border: none;
+    background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
+  }
+
   &_block {
     width: 100%;
   }

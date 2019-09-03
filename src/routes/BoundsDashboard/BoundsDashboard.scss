@@ -24,11 +24,18 @@
     }
   }
 
+  &__order-book {
+    height: 385px;
+  }
   &__graph {
     height: 385px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &__danger-tab {
+    color: $color-brand-red;
   }
 
 }

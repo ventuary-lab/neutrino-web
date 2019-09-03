@@ -1,0 +1,49 @@
+@import '../../../style/helpers/vars';
+
+.OrderBook {
+
+  $root: &;
+
+  &__title {
+    font-size: 14px;
+    line-height: 17px;
+    padding: 24px 40px 20px;
+  }
+
+  &__header-row {
+    padding: 0 20px;
+    border-top: 1px solid #343869;
+    border-bottom: 1px solid #343869;
+    display: flex;
+    align-items: center;
+  }
+
+  &__header-column {
+    padding: 12px 5px;
+    width: 33%;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+
+    &_upper-case {
+      text-transform: uppercase;
+    }
+  }
+
+  &__sum-row {
+    padding: 14px 5px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: $color-brand-green;
+    text-align: center;
+
+  }
+
+  &__columns {
+    border-top: 1px solid #343869;
+    border-bottom: 1px solid #343869;
+  }
+
+}

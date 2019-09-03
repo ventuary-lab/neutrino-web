@@ -1,15 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
 import Form from 'yii-steroids/ui/form/Form';
-import InputField from 'yii-steroids/ui/form/InputField';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {html} from 'components';
-import {getActiveCurrency} from 'reducers/layout';
+// import {getActiveCurrency} from 'reducers/layout';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
@@ -79,13 +78,12 @@ export default class BuyBoundsForm extends React.PureComponent {
                     }}
                 >
                     <NumberField
-                        step={1}
                         min={0}
                         max={99}
                         inputProps={{
                             autocomplete: 'off',
                         }}
-                        label={'Bonds discount'}
+                        label={__('Bonds discount')}
                         layoutClassName={bem.element('input')}
                         attribute={'discount'}
                         inners={{
@@ -96,7 +94,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inputProps={{
                             autocomplete: 'off'
                         }}
-                        label={'Amount'}
+                        label={__('Amount')}
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
                         inners={{
@@ -109,7 +107,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inputProps={{
                             autocomplete: 'off'
                         }}
-                        label={'Total'}
+                        label={__('Total')}
                         layoutClassName={bem.element('input')}
                         attribute={'waves'}
                         inners={{

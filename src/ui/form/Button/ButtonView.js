@@ -18,6 +18,7 @@ export default class ButtonView extends React.PureComponent {
         type: PropTypes.oneOf(['button', 'submit']),
         color: PropTypes.oneOf([
             'primary',
+            'danger',
             'info',
         ]),
         block: PropTypes.bool,

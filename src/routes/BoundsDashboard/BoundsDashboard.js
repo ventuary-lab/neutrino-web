@@ -4,6 +4,8 @@ import Nav from 'yii-steroids/ui/nav/Nav';
 import {html} from 'components';
 import OrdersTable from './views/OrdersTable';
 import BuyBoundsForm from './views/BuyBoundsForm';
+import LiquidateBoundsForm from './views/LiquidateBoundsForm';
+import OrderBook from './views/OrderBook';
 
 import './BoundsDashboard.scss';
 
@@ -15,10 +17,10 @@ export default class BoundsDashboard extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    <div className={bem.element('graph')}>
-                        Glass
+                    <div className={bem.element('order-book')}>
+                        <OrderBook/>
                     </div>
-                    <div className={bem.element('orders')}>
+                    <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
                             layout={'tabs'}
@@ -31,7 +33,8 @@ export default class BoundsDashboard extends React.PureComponent {
                                 {
                                     id: 'liquidate',
                                     label: __('Liquidate'),
-                                    content: () => this.renderOrdersGrid('liquidate'),
+                                    className: bem.element('danger-tab'),
+                                    content: LiquidateBoundsForm,
                                 },
                             ]}
                         />
@@ -62,14 +65,6 @@ export default class BoundsDashboard extends React.PureComponent {
                         />
                     </div>
                 </div>
-            </div>
-        );
-    }
-
-    renderOrdersGrid(test) {
-        return (
-            <div>
-                {test}
             </div>
         );
     }
