@@ -3,10 +3,11 @@ const _isArray = require('lodash/isArray');
 const _isString = require('lodash/isString');
 const _isInteger = require('lodash/isInteger');
 const _isObject = require('lodash/isObject');
-const _trim = require('lodash/trim');
-const _escapeRegExp = require('lodash/escapeRegExp');
-const axios = require('axios');
+// const _trim = require('lodash/trim');
+// const _escapeRegExp = require('lodash/escapeRegExp');
+// const axios = require('axios');
 import _toInteger from 'lodash-es/toInteger';
+import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 const process400 = resp => resp.status === 400
     ? Promise.reject(Object.assign(new Error(), resp.data))
@@ -47,9 +48,9 @@ export default class WavesTransport {
         const neutrinoAssetId = await this.nodeFetchKey('neutrino_asset_id');
 
         return {
-            'waves': _toInteger(await nodeInteraction.balance(address, this.nodeUrl) / this.wvs),
-            'usd-n': _toInteger(await nodeInteraction.assetBalance(neutrinoAssetId, address, this.nodeUrl) / this.wvs),
-            'usd-nb': _toInteger(await nodeInteraction.assetBalance(bondAssetId, address, this.nodeUrl)),
+            [BalanceCurrencyEnum.WAVES]: _toInteger(await nodeInteraction.balance(address, this.nodeUrl) / this.wvs),
+            [BalanceCurrencyEnum.USD_N]: _toInteger(await nodeInteraction.assetBalance(neutrinoAssetId, address, this.nodeUrl) / this.wvs),
+            [BalanceCurrencyEnum.USD_NB]: _toInteger(await nodeInteraction.assetBalance(bondAssetId, address, this.nodeUrl)),
         };
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
@@ -25,8 +26,17 @@ const FORM_ID = 'GenerationForm';
         formValues: getFormValues(FORM_ID)(state),
     })
 )
+@dal.hoc(
+    () => dal.getWavesToUsdPrice()
+        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
+)
 export default class NeutrinoDashboard extends React.PureComponent {
 
+
+    static propTypes = {
+        activeCurrency: PropTypes.string,
+        wavesToUsdPrice: PropTypes.number,
+    };
 
     constructor() {
         super(...arguments);
@@ -45,7 +55,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const isChangeCurrencyAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
 
         if (isChangeWavesAmount || isChangeCurrencyAmount) {
-            this._refreshAmount(nextProps, isChangeWavesAmount)
+            this._refreshAmount(nextProps, isChangeWavesAmount);
         }
         else {
             this._isProgramChange = false;
@@ -199,7 +209,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 <div className={bem.element('info-string', 'without-hint')}>
                                     <span>{__('Current WAVES / USD price')}</span>
                                 </div>
-                                <span>{__('1.3 $')}</span>
+                                <span>{1 / this.props.wavesToUsdPrice} $</span>
                             </div>
                         </div>
                     </div>

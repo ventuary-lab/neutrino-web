@@ -14,10 +14,10 @@ export default class InputFieldView extends React.PureComponent {
             PropTypes.string,
             PropTypes.bool,
         ]),
-        inners: {
+        inners: PropTypes.shape({
             label: PropTypes.string,
             icon: PropTypes.string,
-        },
+        }),
         hint: PropTypes.string,
         required: PropTypes.bool,
         type: PropTypes.oneOf(['text', 'email', 'hidden', 'phone', 'password']),

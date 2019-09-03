@@ -27,7 +27,7 @@ export default class DalComponent {
     }
 
     async getBalance(address) {
-        return await this.transport.getBalance(address)
+        return await this.transport.getBalance(address);
     }
 
     async isKeeperInstalled() {

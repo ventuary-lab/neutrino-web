@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Slick from 'react-slick';
 
 import {html} from 'components';
 import slide1 from 'static/images/slide1.svg';
-import slide2 from 'static/images/slide2.svg';
 import IndexSliderArrow from './views/IndexSliderArrow';
 
 import './IndexSlider.scss';

@@ -49,9 +49,9 @@ export default class BuyBoundsForm extends React.PureComponent {
             if (_get(this.props.formValues, 'discount') && !_get(nextProps.formValues, 'discount')) {
                 this.props.dispatch(change(FORM_ID, 'discount', '0'));
             } else if (!_get(this.props.formValues, 'discount') && !_get(nextProps.formValues, 'discount')) {
-                setTimeout(() => this._refreshAmount(nextProps, true, false), 500)
+                setTimeout(() => this._refreshAmount(nextProps, true, false), 500);
             } else if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeWavesAmount) {
-                this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount)
+                this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount);
             }
             else {
                 this._isProgramChange = false;
@@ -119,7 +119,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
         const discount = _get(props, 'formValues.discount');
         const bounds = _get(props.formValues, 'bounds');
-        const waves = _get(props.formValues, 'waves')
+        const waves = _get(props.formValues, 'waves');
 
         let amount;
 

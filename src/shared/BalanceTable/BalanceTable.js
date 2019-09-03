@@ -54,9 +54,7 @@ export default class BalanceTable extends React.PureComponent {
                         const value = item[1].toFixed(4);
 
                         return (
-                            <tr
-                                key={item.id}
-                            >
+                            <tr key={id}>
                                 <td>
                                     <div className={bem.element('labels-column')}>
                                         <span

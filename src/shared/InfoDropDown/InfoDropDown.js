@@ -82,7 +82,7 @@ export default class InfoDropDown extends React.PureComponent {
     }
 
     onToggle() {
-        this.setState({isOpen: !this.state.isOpen})
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     handleClickOutside() {

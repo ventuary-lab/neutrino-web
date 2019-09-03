@@ -39,7 +39,7 @@ export default class Header extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.currentItem.id !== ROUTE_ROOT  && nextProps.currentItem.id === ROUTE_ROOT) {
-            this.props.dispatch(change(FORM_ID, 'section', null))
+            this.props.dispatch(change(FORM_ID, 'section', null));
         }
     }
 

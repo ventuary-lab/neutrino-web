@@ -48,7 +48,7 @@ export default class LeftSidebar extends React.PureComponent {
                                 this.props.dispatch(changeCurrency(item));
                                 this.props.dispatch(goToPage(this.props.currentItem.id, {
                                     currency: item,
-                                }))
+                                }));
                             }}
                         >
                             <span className={bem(
