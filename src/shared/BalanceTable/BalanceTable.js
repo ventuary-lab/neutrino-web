@@ -32,8 +32,6 @@ export default class BalanceTable extends React.PureComponent {
             return null;
         }
 
-        console.log('---1', this.props);
-
         const balance = this.props.user.balance;
 
         return (
@@ -61,33 +59,33 @@ export default class BalanceTable extends React.PureComponent {
                             >
                                 <td>
                                     <div className={bem.element('labels-column')}>
-                                    <span
-                                        className={bem(
-                                            bem.element('icon'),
-                                            `Icon ${BalanceCurrencyEnum.getIconClass(id)}`
-                                        )}
-                                    />
+                                        <span
+                                            className={bem(
+                                                bem.element('icon'),
+                                                `Icon ${BalanceCurrencyEnum.getIconClass(id)}`
+                                            )}
+                                        />
                                         <div className={bem.element('labels')}>
-                                        <span className={bem.element('label')}>
-                                            {BalanceCurrencyEnum.getLabel(id)}
-                                        </span>
+                                            <span className={bem.element('label')}>
+                                                {BalanceCurrencyEnum.getLabel(id)}
+                                            </span>
                                             <span className={bem.element('label', 'tiny')}>
-                                            {__('USD')}
-                                        </span>
+                                                {__('USD')}
+                                            </span>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div className={bem.element('values-column')}>
-                                    <span className={bem.element('label')}>
-                                        {value}
-                                    </span>
+                                        <span className={bem.element('label')}>
+                                            {value}
+                                        </span>
                                         <span className={bem.element('label', 'tiny')}>
                                             $ {id === BalanceCurrencyEnum.WAVES
                                                 ? value / this.props.wavesToUsdPrice
                                                 : value
                                             }
-                                    </span>
+                                        </span>
                                     </div>
                                 </td>
                                 <td>

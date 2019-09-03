@@ -36,7 +36,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             isWavesLeft: true,
         };
 
-        // this._onSubmit = this._onSubmit.bind(this);
+        this._onSubmit = this._onSubmit.bind(this);
         this._isProgramChange = false;
     }
 
@@ -80,7 +80,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <Form
                     className={bem.element('form')}
                     formId={FORM_ID}
-                    // onSubmit={this._onSubmit}
+                    onSubmit={this._onSubmit}
                 >
                     <div className={bem.element('inputs')}>
                         <div className={bem.element('input-container')}>
@@ -283,14 +283,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }) + '.' + new Array(n + 1).join(0);
     };
 
-    // _onSubmit(values) {
-    //     return this.state.isWavesLeft
-    //         ? dal.swapWavesToNeutrino(values.waves)
-    //         : dal.swapNeutrinoToWaves(values.neutrino)
-    //             .then(() => {
-    //                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
-    //                     this.props.onComplete();
-    //                 }
-    //             });
-    // }
+    _onSubmit(values) {
+        return this.state.isWavesLeft
+            ? dal.swapWavesToNeutrino(values.waves)
+            : dal.swapNeutrinoToWaves(values.neutrino)
+                .then(() => {
+                    if (this.props.onComplete && _isFunction(this.props.onComplete)) {
+                        this.props.onComplete();
+                    }
+                });
+    }
 }

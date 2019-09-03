@@ -91,6 +91,7 @@ export default class DalComponent {
         await this.transport.nodePublish(
             'swapWavesToNeutrino',
             [],
+            'WAVES',
             amount,
         );
     }
@@ -99,6 +100,7 @@ export default class DalComponent {
         await this.transport.nodePublish(
             'swapNeutrinoToWaves',
             [],
+            await this.transport.nodeFetchKey('neutrino_asset_id'),
             amount,
         );
     }

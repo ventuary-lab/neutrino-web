@@ -48,8 +48,8 @@ export default class WavesTransport {
 
         return {
             'waves': _toInteger(await nodeInteraction.balance(address, this.nodeUrl) / this.wvs),
-            'usd-nb': _toInteger(await nodeInteraction.assetBalance(bondAssetId, address, this.nodeUrl)),
             'usd-n': _toInteger(await nodeInteraction.assetBalance(neutrinoAssetId, address, this.nodeUrl) / this.wvs),
+            'usd-nb': _toInteger(await nodeInteraction.assetBalance(bondAssetId, address, this.nodeUrl)),
         };
     }
 
@@ -63,7 +63,7 @@ export default class WavesTransport {
                 this.isKeeperAvailable = true;
                 resolve(window.WavesKeeper);
 
-            } else if (this.isKeeperAvailable === false || Date.now() - this.start > 1500) {
+            } else if (this.isKeeperAvailable === false || Date.now() - this.start > 3000) {
                 this.isKeeperAvailable = false;
                 resolve(null);
             }
@@ -203,7 +203,7 @@ export default class WavesTransport {
     //         .then(x => x.data);
     // }
 
-    _buildTransaction(method, args, payment) {
+    _buildTransaction(method, args, paymentCurrency, paymentAmount) {
         const transaction = {
             type: 16,
             data: {
@@ -219,10 +219,10 @@ export default class WavesTransport {
                     })),
                     function: method
                 },
-                payment: !payment ? [] : [
+                payment: !paymentAmount ? [] : [
                     {
-                        assetId: 'WAVES',
-                        tokens: String(payment),
+                        assetId: paymentCurrency || 'WAVES',
+                        tokens: String(paymentAmount),
                     }
                 ],
             },
@@ -239,13 +239,14 @@ export default class WavesTransport {
      *
      * @param {string} method
      * @param {array} args
-     * @param {number} payment
+     * @param {string} paymentCurrency
+     * @param {number} paymentAmount
      * @param {boolean} waitTx
      * @returns {Promise}
      */
-    async nodePublish(method, args, payment, waitTx = true) {
+    async nodePublish(method, args, paymentCurrency, paymentAmount, waitTx = true) {
         const keeper = await this.getKeeper();
-        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, payment));
+        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, paymentCurrency, paymentAmount));
         if (result) {
             if (!waitTx) {
                 return result;

@@ -36,7 +36,7 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(1, this.props, nextProps);
+        // console.log(1, this.props, nextProps);
 
         const isChangeDiscountAmount = _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
         const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');

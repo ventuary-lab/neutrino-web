@@ -6,11 +6,12 @@ import {getUser} from 'yii-steroids/reducers/auth';
 import {setUser} from 'yii-steroids/actions/auth';
 import _upperFirst from 'lodash-es/upperFirst';
 
-import {html, dal} from 'components';
+import {html, dal, clientStorage} from 'components';
 import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';
 
+export const STORAGE_AUTH_KEY = 'isAuth';
 const bem = html.bem('RightSidebar');
 
 @connect(
@@ -23,6 +24,13 @@ export default class RightSidebar extends React.PureComponent {
     static propTypes = {
         user: PropTypes.object,
     };
+
+    constructor() {
+        super(...arguments);
+
+        this.logIn = this.logIn.bind(this);
+        this.logOut = this.logOut.bind(this);
+    }
 
     render() {
         const addressUrl = this.props.user
@@ -50,7 +58,7 @@ export default class RightSidebar extends React.PureComponent {
                             <button
                                 className={bem.element('logout')}
                                 type={'button'}
-                                onClick={() => this.props.dispatch(setUser(null))}
+                                onClick={this.logOut}
                             >
                                 <span className={'Icon Icon__logout'}/>
                             </button>
@@ -89,7 +97,7 @@ export default class RightSidebar extends React.PureComponent {
                     className={bem.element('auth-button')}
                     block
                     label={'Login with Keeper'}
-                    onClick={() => dal.auth().then(user => this.props.dispatch(setUser(user)))}
+                    onClick={this.logIn}
                 />
                 <p className={bem.element('auth-info')}>
                     <a
@@ -108,5 +116,18 @@ export default class RightSidebar extends React.PureComponent {
                 </p>
             </div>
         );
+    }
+
+    logIn() {
+       return dal.auth()
+            .then(user => {
+                this.props.dispatch(setUser(user));
+                clientStorage.set(STORAGE_AUTH_KEY, true);
+            });
+    }
+
+    logOut() {
+        this.props.dispatch(setUser(null));
+        clientStorage.set(STORAGE_AUTH_KEY, false);
     }
 }

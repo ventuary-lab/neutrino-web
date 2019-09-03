@@ -7,17 +7,33 @@ import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} fr
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
 import {getCurrentItemParam} from 'yii-steroids/reducers/navigation';
 
+import {html, dal, clientStorage} from 'components';
+import {STORAGE_AUTH_KEY} from 'shared/RightSidebar/RightSidebar';
 import {changeCurrency} from 'actions/layout';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
-import {html} from 'components';
 
 import './Layout.scss';
+import {setUser} from 'yii-steroids/actions/auth';
 
 const bem = html.bem('Layout');
 
-// @layoutHoc()
+/*@layoutHoc(
+    () => {
+        if (clientStorage.get(STORAGE_AUTH_KEY) === 'true') {
+            return dal.auth()
+                .then(user => ({
+                    user,
+                }))
+                .catch(() => ({
+                    user: null,
+                }))
+        }
+
+        return Promise.resolve({user: null})
+    }
+)*/
 @connect(
     state => ({
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
@@ -31,6 +47,16 @@ export default class Layout extends React.PureComponent {
     static propTypes = {
         status: PropTypes.string,
     };
+
+    componentWillMount() {
+        if (JSON.parse(clientStorage.get(STORAGE_AUTH_KEY))) {
+
+            dal.auth()
+                .then(user => {
+                    this.props.dispatch(setUser(user));
+                });
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
