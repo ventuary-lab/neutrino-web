@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import _isFunction from 'lodash-es/isFunction';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
@@ -35,12 +36,11 @@ export default class BuyBoundsForm extends React.PureComponent {
     constructor() {
         super(...arguments);
 
+        this._onSubmit = this._onSubmit.bind(this);
         this._isProgramChange = false;
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log(1, this.props, nextProps);
-
         const isChangeDiscountAmount = _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
         const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
         const isChangeNeutrinoAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
@@ -49,10 +49,6 @@ export default class BuyBoundsForm extends React.PureComponent {
         //discount validate
         if (_get(this.props.formValues, 'discount')) {
             const nextDiscount = _get(nextProps.formValues, 'discount');
-
-            // if (!nextDiscount) {
-            //     this.props.dispatch(change(FORM_ID, 'discount', '0'));
-            // }
 
             if (nextDiscount && nextDiscount < 0) {
                 this.props.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
@@ -80,10 +76,12 @@ export default class BuyBoundsForm extends React.PureComponent {
                     initialValues={{
                         discount: 15,
                     }}
+                    onSubmit={this._onSubmit}
                 >
                     <NumberField
                         min={0}
                         max={99}
+                        step='any'
                         inputProps={{
                             autocomplete: 'off',
                         }}
@@ -96,6 +94,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     />
                     <NumberField
                         min={0}
+                        step='any'
                         inputProps={{
                             autocomplete: 'off'
                         }}
@@ -106,11 +105,14 @@ export default class BuyBoundsForm extends React.PureComponent {
                             label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
-                        // hint={__('65.3840 WAVES')}
-                        hint={`${_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice} WAVES`}
+                        hint={_get(this.props, 'formValues.bounds')
+                            ? `${_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice} WAVES`
+                            : ' '
+                        }
                     />
                     <NumberField
                         min={0}
+                        step='any'
                         inputProps={{
                             autocomplete: 'off'
                         }}
@@ -133,6 +135,15 @@ export default class BuyBoundsForm extends React.PureComponent {
                 </Form>
             </div>
         );
+    }
+
+    _onSubmit(values) {
+        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, 0)
+            .then(() => {
+                if (this.props.onComplete && _isFunction(this.props.onComplete)) {
+                    this.props.onComplete();
+                }
+            });
     }
 
     _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {

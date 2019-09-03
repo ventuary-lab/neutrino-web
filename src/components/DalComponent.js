@@ -109,11 +109,12 @@ export default class DalComponent {
         await this.transport.nodePublish(
             'setOrder',
             [
-                price,
+                price * 100,
                 position
             ],
             await this.transport.nodeFetchKey('neutrino_asset_id', true),
             amount,
+            true,
         );
     }
 

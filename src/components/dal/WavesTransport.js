@@ -81,7 +81,7 @@ export default class WavesTransport {
      * @param {boolean} isAuction
      * @returns {Promise<null|string | number | boolean>}
      */
-    async nodeFetchKey(key, isAuction) {
+    async nodeFetchKey(key, isAuction = false) {
         let result = null;
         if (this._cacheData) {
             result = {
@@ -204,7 +204,7 @@ export default class WavesTransport {
     //         .then(x => x.data);
     // }
 
-    _buildTransaction(method, args, paymentCurrency, paymentAmount) {
+    _buildTransaction(method, args, paymentCurrency, paymentAmount, isAuction = false) {
         const transaction = {
             type: 16,
             data: {
@@ -212,7 +212,7 @@ export default class WavesTransport {
                     assetId: 'WAVES',
                     tokens: String(this.fee),
                 },
-                dApp: this.dal.neutrinoAddress,
+                dApp: isAuction ? this.dal.auctionAddress : this.dal.neutrinoAddress,
                 call: {
                     args: args.map(item => ({
                         type: _isInteger(item) ? 'integer' : 'string',
@@ -243,11 +243,12 @@ export default class WavesTransport {
      * @param {string} paymentCurrency
      * @param {number} paymentAmount
      * @param {boolean} waitTx
+     * @param {boolean} isAuction
      * @returns {Promise}
      */
-    async nodePublish(method, args, paymentCurrency, paymentAmount, waitTx = true) {
+    async nodePublish(method, args, paymentCurrency, paymentAmount, isAuction = false, waitTx = true) {
         const keeper = await this.getKeeper();
-        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, paymentCurrency, paymentAmount));
+        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, paymentCurrency, paymentAmount, isAuction));
         if (result) {
             if (!waitTx) {
                 return result;

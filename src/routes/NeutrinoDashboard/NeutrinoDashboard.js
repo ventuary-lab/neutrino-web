@@ -259,7 +259,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = 2; //TODO
+        const rate = this.props.wavesToUsdPrice;
 
         let amount = this._parseAmount(isRefreshToAmount
             ? _get(props.formValues, 'waves') * rate
