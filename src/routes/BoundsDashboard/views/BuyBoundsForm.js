@@ -5,11 +5,11 @@ import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
 import Form from 'yii-steroids/ui/form/Form';
 import InputField from 'yii-steroids/ui/form/InputField';
+import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {html} from 'components';
 import {getActiveCurrency} from 'reducers/layout';
-import CurrencyEnum from 'enums/CurrencyEnum';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
@@ -42,20 +42,29 @@ export default class BuyBoundsForm extends React.PureComponent {
         const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
         const isChangeWavesAmount = _get(this.props.formValues, 'waves') !== _get(nextProps.formValues, 'waves');
 
-        if (Object.keys(nextProps.formValues || []).length >= 2) {
-            // if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeWavesAmount) {
-            //     this._refreshAmount(nextProps, isChangeBoundsAmount || isChangeDiscountAmount)
+
+        //discount validate
+        if (_get(this.props.formValues, 'discount')) {
+            const nextDiscount = _get(nextProps.formValues, 'discount');
+
+            // if (!nextDiscount) {
+            //     this.props.dispatch(change(FORM_ID, 'discount', '0'));
             // }
-            if (_get(this.props.formValues, 'discount') && !_get(nextProps.formValues, 'discount')) {
-                this.props.dispatch(change(FORM_ID, 'discount', '0'));
-            } else if (!_get(this.props.formValues, 'discount') && !_get(nextProps.formValues, 'discount')) {
-                setTimeout(() => this._refreshAmount(nextProps, true, false), 500);
-            } else if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeWavesAmount) {
-                this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount);
+
+            if (nextDiscount && nextDiscount < 0) {
+                this.props.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
             }
-            else {
-                this._isProgramChange = false;
+
+            if (nextDiscount && nextDiscount.length > 2) {
+                this.props.dispatch(change(FORM_ID, 'discount', nextDiscount.slice(0, -1)));
             }
+        }
+
+        if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeWavesAmount) {
+            this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount);
+        }
+        else {
+            this._isProgramChange = false;
         }
     }
 
@@ -65,8 +74,17 @@ export default class BuyBoundsForm extends React.PureComponent {
                 <Form
                     className={bem.element('form')}
                     formId={FORM_ID}
+                    initialValues={{
+                        discount: 15,
+                    }}
                 >
-                    <InputField
+                    <NumberField
+                        step={1}
+                        min={0}
+                        max={99}
+                        inputProps={{
+                            autocomplete: 'off',
+                        }}
                         label={'Bonds discount'}
                         layoutClassName={bem.element('input')}
                         attribute={'discount'}
@@ -74,7 +92,10 @@ export default class BuyBoundsForm extends React.PureComponent {
                             label: '%',
                         }}
                     />
-                    <InputField
+                    <NumberField
+                        inputProps={{
+                            autocomplete: 'off'
+                        }}
                         label={'Amount'}
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
@@ -83,9 +104,11 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
                         hint={__('65.3840 WAVES')}
-
                     />
-                    <InputField
+                    <NumberField
+                        inputProps={{
+                            autocomplete: 'off'
+                        }}
                         label={'Total'}
                         layoutClassName={bem.element('input')}
                         attribute={'waves'}

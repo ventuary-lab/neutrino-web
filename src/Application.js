@@ -6,15 +6,11 @@ import Layout from 'shared/Layout';
 import routes from './routes';
 
 // Automatically import all views from yii-steroids
-ui.addViews(require.context('yii-steroids/ui', true, /View.js$/));
+ui.addViews({
+    'form.FormView': require('yii-steroids/ui/form/Form/FormView').default,
+    'form.NumberFieldView': require('./ui/form/InputField/InputFieldView').default,
+});
 ui.addViews(require.context('./ui', true, /View.js$/));
-
-// Automatically import all fields and formatters from yii-steroids
-ui.addFields(require.context('yii-steroids/ui', true, /Field.js$/));
-ui.addFields(require.context('./ui', true, /Field.js$/));
-
-ui.addFormatters(require.context('yii-steroids/ui', true, /Formatter.js$/));
-ui.addFormatters(require.context('./ui', true, /Formatter.js$/));
 
 export default class Application extends React.PureComponent {
 

@@ -60,11 +60,11 @@ export default class InputFieldView extends React.PureComponent {
                 )}
                 <input
                     className={bem.element('input')}
-                    {...this.props.inputProps}
                     type={this.props.type}
                     placeholder={this.props.placeholder}
                     disabled={this.props.disabled}
                     required={this.props.required}
+                    {...this.props.inputProps}
                 />
             </div>
         );
