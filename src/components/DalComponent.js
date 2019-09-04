@@ -118,4 +118,18 @@ export default class DalComponent {
         );
     }
 
+    async getOrderBook() {
+        const orders = await this.transport.nodeFetchKey('orderbook', true);
+
+        const result = await Promise.all(
+            orders.substr(1).split('_').map(async address => {
+                return {
+                    amount: await this.transport.nodeFetchKey(`order_amount_${address}`) / this.transport.wvs,
+                    price: await this.transport.nodeFetchKey(`order_price_${address}`) / 100,
+                };
+            })
+        );
+
+        return result;
+    }
 }

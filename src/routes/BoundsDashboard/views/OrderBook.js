@@ -1,21 +1,32 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
-import {html} from 'components';
+import {dal, html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './OrderBook.scss';
 
 const bem = html.bem('OrderBook');
 
+@dal.hoc(
+    () => dal.getOrderBook()
+        .then(orders => ({orders}))
+)
 export default class OrderBook extends React.PureComponent {
 
     static propTypes = {
-
+        orders: PropTypes.arrayOf(PropTypes.shape({
+            amount: PropTypes.number,
+            price: PropTypes.number,
+        }))
     };
 
 
     render() {
+
+        if (!this.props.orders) {
+            return null;
+        }
 
         return (
             <div className={bem.block()}>
@@ -30,7 +41,7 @@ export default class OrderBook extends React.PureComponent {
                         % {__('discount')}
                     </div>
                     <div className={bem.element('header-column', 'upper-case')}>
-                        {BalanceCurrencyEnum.WAVES}
+                        {BalanceCurrencyEnum.USD_N}
                     </div>
                 </div>
                 <div className={bem.element('sum-row')}>

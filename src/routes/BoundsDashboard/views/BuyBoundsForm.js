@@ -138,7 +138,7 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     _onSubmit(values) {
-        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, 0)
+        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, 0) // TODO position now is hardcode
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();
