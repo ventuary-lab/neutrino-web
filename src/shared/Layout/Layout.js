@@ -3,9 +3,10 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
-import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
+import layoutHoc, {STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
 import {getCurrentItemParam} from 'yii-steroids/reducers/navigation';
+import axios from 'axios';
 
 import {html, dal, clientStorage} from 'components';
 import {STORAGE_AUTH_KEY} from 'shared/RightSidebar/RightSidebar';
@@ -19,21 +20,14 @@ import {setUser} from 'yii-steroids/actions/auth';
 
 const bem = html.bem('Layout');
 
-/*@layoutHoc(
-    () => {
-        if (clientStorage.get(STORAGE_AUTH_KEY) === 'true') {
-            return dal.auth()
-                .then(user => ({
-                    user,
-                }))
-                .catch(() => ({
-                    user: null,
-                }))
-        }
-
-        return Promise.resolve({user: null})
+@layoutHoc(
+    async () => {
+        const response = await axios.get('/api/v1/init');
+        return {
+            ...response.data,
+        };
     }
-)*/
+)
 @connect(
     state => ({
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),

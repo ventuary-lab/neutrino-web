@@ -8,16 +8,17 @@ import WavesTransport from './dal/WavesTransport';
 export default class DalComponent {
 
     constructor() {
-        this.neutrinoAddress = '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL'; // testnet
-        this.auctionAddress = '3NC8pQxcnDTtDkhzv5Eje8qqW4qoFawLnAb'; // testnet //todo give this address from data of contract (auction_contract)
-        this.isTestMode = process.env.APP_DAPP_NETWORK === 'test';
+        this.neutrinoAddress = null;
+        this.auctionAddress = null;
+        this.network = null;
+
         this.transport = new WavesTransport(this);
 
         this.hoc = fetchHoc;
         this._authInterval = null;
         this._authChecker = this._authChecker.bind(this);
 
-        if (this.isTestMode || process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
     }
