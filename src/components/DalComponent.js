@@ -119,6 +119,18 @@ export default class DalComponent {
         );
     }
 
+    async cancelOrder(hash) {
+        await this.transport.nodePublish(
+            'cancelOrder',
+            [
+                hash
+            ],
+            'WAVES',
+            0,
+            true,
+        );
+    }
+
     async getOrderBook() {
         const orders = await this.transport.nodeFetchKey('orderbook', true);
 

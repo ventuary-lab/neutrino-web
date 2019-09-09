@@ -129,7 +129,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Buy {bounds}', {
-                            bounds: BalanceCurrencyEnum.USD_NB,
+                            bounds: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
                         })}
                     />
                 </Form>
@@ -138,12 +138,17 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     _onSubmit(values) {
-        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, 0) // TODO position now is hardcode
+        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, this._getPosition())
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();
                 }
             });
+    }
+
+    // TODO Get data from back
+    _getPosition() {
+        return 0;
     }
 
     _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {

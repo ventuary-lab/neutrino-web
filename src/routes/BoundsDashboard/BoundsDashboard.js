@@ -6,6 +6,7 @@ import OrdersTable from './views/OrdersTable';
 import BuyBoundsForm from './views/BuyBoundsForm';
 import LiquidateBoundsForm from './views/LiquidateBoundsForm';
 import OrderBook from './views/OrderBook';
+import MainChart from './views/MainChart';
 
 import './BoundsDashboard.scss';
 
@@ -42,7 +43,7 @@ export default class BoundsDashboard extends React.PureComponent {
                 </div>
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('graph')}>
-                        Graph
+                        <MainChart/>
                     </div>
                     <div className={bem.element('orders')}>
                         <Nav

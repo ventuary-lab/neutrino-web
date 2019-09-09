@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import _orderBy from 'lodash-es/orderBy';
 import _upperFirst from 'lodash-es/upperFirst';
 
-import {html} from 'components';
+import {dal, html} from 'components';
 import BoundsDirectionType from 'enums/BoundsDirectionType';
 
 import './OrdersTable.scss';
@@ -13,6 +13,7 @@ const bem = html.bem('OrdersTable');
 
 @connect(
     () => ({
+        // Change hashes to reaal order hash for cancel
         items: [
             {
                 currency: 'USD-NB',
@@ -21,6 +22,7 @@ const bem = html.bem('OrdersTable');
                 amount: 21,
                 discount: 19.85,
                 wavesAmount: 12.9473,
+                hash: '4tx89LVMK1yifVJLM2q2TJCxEZuLurwzg7utXHkX5DEM',
             },
             {
                 currency: 'USD-NB',
@@ -29,6 +31,7 @@ const bem = html.bem('OrdersTable');
                 amount: 150,
                 discount: null,
                 wavesAmount: 115.3846,
+                hash: 'NPxn3FTWHN2apWxqAP2HtabJYmVHauAQ7vm3QYaQfiA',
             },
         ]
     })
@@ -43,6 +46,7 @@ export default class OrdersTable extends React.PureComponent {
             amount: PropTypes.number,
             discount: PropTypes.number,
             wavesAmount: PropTypes.number,
+            hash: PropTypes.string,
         })),
         isHistory: PropTypes.bool,
     };
@@ -165,6 +169,7 @@ export default class OrdersTable extends React.PureComponent {
                                             <td className={bem.element('cancel-column')}>
                                                 <div
                                                     className={bem.element('cancel')}
+                                                    onClick={() => dal.cancelOrder(item.hash)}
                                                 >
                                                     <span className={bem(
                                                         bem.element('cancel-icon'),
