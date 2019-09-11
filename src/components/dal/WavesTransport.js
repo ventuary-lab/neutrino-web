@@ -1,3 +1,5 @@
+import ContractEnum from '../../enums/ContractEnum';
+
 const {broadcast, nodeInteraction, invokeScript, waitForTx, seedUtils} = require('@waves/waves-transactions');
 const _isArray = require('lodash/isArray');
 const _isString = require('lodash/isString');
@@ -16,8 +18,9 @@ const validateStatus = status => status === 400 || status >= 200 && status < 300
 
 export default class WavesTransport {
 
-    constructor(dal) {
+    constructor(dal, contract) {
         this.dal = dal;
+        this.contract = contract;
         this.isKeeperAvailable = null;
         this.start = Date.now();
 
@@ -36,6 +39,9 @@ export default class WavesTransport {
         this._heightCallbacks = null;
     }
 
+    get address() {
+        return ContractEnum.getAddress(this.contract);
+    }
 
     static convertValueToJs(value) {
         return _isString(value) && ['{', '['].includes(value.substr(0, 1))
@@ -78,10 +84,9 @@ export default class WavesTransport {
     /**
      * Get node data by key
      * @param {string} key
-     * @param {boolean} isAuction
      * @returns {Promise<null|string | number | boolean>}
      */
-    async nodeFetchKey(key, isAuction = false) {
+    async nodeFetchKey(key) {
         let result = null;
         if (this._cacheData) {
             result = {
@@ -90,13 +95,12 @@ export default class WavesTransport {
             };
         } else {
             try {
-                result = await nodeInteraction.accountDataByKey(key, isAuction ? this.dal.auctionAddress : this.dal.neutrinoAddress, this.nodeUrl);
+                result = await nodeInteraction.accountDataByKey(key, this.address, this.nodeUrl);
             } catch (e) {
                 console.warn(e); // eslint-disable-line no-console
                 return null;
             }
         }
-
         return result ? WavesTransport.convertValueToJs(result.value) : null;
     }
 
@@ -162,7 +166,7 @@ export default class WavesTransport {
         return this._height;
     }
 
-    async nodeAllData(isAuction = false) {
+    async nodeAllData() {
         if (this._cacheData) {
             return this._cacheData;
         }
@@ -177,7 +181,7 @@ export default class WavesTransport {
 
         // Fetch data
         this._cacheData = {};
-        const data = await nodeInteraction.accountData(isAuction ? this.dal.auctionAddress : this.dal.neutrinoAddress, this.nodeUrl);
+        const data = await nodeInteraction.accountData(this.address, this.nodeUrl);
         Object.keys(data).forEach(key => {
             this._cacheData[key] = WavesTransport.convertValueToJs(data[key].value);
         });
@@ -204,7 +208,7 @@ export default class WavesTransport {
     //         .then(x => x.data);
     // }
 
-    _buildTransaction(method, args, paymentCurrency, paymentAmount, isAuction = false) {
+    _buildTransaction(method, args, paymentCurrency, paymentAmount) {
         const transaction = {
             type: 16,
             data: {
@@ -212,7 +216,7 @@ export default class WavesTransport {
                     assetId: 'WAVES',
                     tokens: String(this.fee),
                 },
-                dApp: isAuction ? this.dal.auctionAddress : this.dal.neutrinoAddress,
+                dApp: this.address,
                 call: {
                     args: args.map(item => ({
                         type: _isInteger(item) ? 'integer' : 'string',
@@ -243,12 +247,11 @@ export default class WavesTransport {
      * @param {string} paymentCurrency
      * @param {number} paymentAmount
      * @param {boolean} waitTx
-     * @param {boolean} isAuction
      * @returns {Promise}
      */
-    async nodePublish(method, args, paymentCurrency, paymentAmount, isAuction = false, waitTx = true) {
+    async nodePublish(method, args, paymentCurrency, paymentAmount, waitTx = true) {
         const keeper = await this.getKeeper();
-        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, paymentCurrency, paymentAmount, isAuction));
+        const result = await keeper.signAndPublishTransaction(this._buildTransaction(method, args, paymentCurrency, paymentAmount));
         if (result) {
             if (!waitTx) {
                 return result;

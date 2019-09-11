@@ -9,7 +9,7 @@ const REDIS_NAMESPACE = process.env.REDIS_NAMESPACE || 'nt_';
 module.exports = class ContractApp {
 
     constructor(params = {}) {
-        this.neutrinoAddress = process.env.APP_NEUTRINO_ADDRESS || '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL'; // testnet
+        // this.neutrinoAddress = process.env.APP_NEUTRINO_ADDRESS || '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL'; // testnet
         this.auctionAddress = process.env.APP_AUCTION_ADDRESS || '3NC8pQxcnDTtDkhzv5Eje8qqW4qoFawLnAb'; // testnet //todo give this address from data of contract (auction_contract)
         this.network = process.env.APP_DAPP_NETWORK || 'test';
         this.nodeUrl = this.network === 'main' ? 'https://nodes.wavesplatform.com' : 'https://testnodes.wavesnodes.com';
@@ -19,17 +19,17 @@ module.exports = class ContractApp {
 
         // Create transport
         this.neutrinoTransport = new WavesTransport({
-            dApp: this.neutrinoAddress,
+            dApp: this.auctionAddress,
             nodeUrl: this.nodeUrl,
         });
 
         // Create contract cache instance
-        this.neutrinoContract = new WavesContractCache({
-            dApp: this.neutrinoAddress,
+        this.auctionContract = new WavesContractCache({
+            dApp: this.auctionAddress,
             nodeUrl: this.nodeUrl,
             updateHandler: this._onContractUpdate,
             storage: {
-                namespace: REDIS_NAMESPACE + 'neutrino_' + this.neutrinoAddress,
+                namespace: REDIS_NAMESPACE + 'neutrino_' + this.auctionAddress,
                 redis: process.env.REDIS_URL ? process.env.REDIS_URL : {
                     host: process.env.REDIS_HOST || '127.0.0.1',
                     port: process.env.REDIS_PORT || 6379,
@@ -39,8 +39,8 @@ module.exports = class ContractApp {
                 level: 'debug',
             },
         });
-        this.storage = this.neutrinoContract.storage;
-        this.logger = this.neutrinoContract.logger;
+        this.storage = this.auctionContract.storage;
+        this.logger = this.auctionContract.logger;
 
         // Create collections
         this.collections = {

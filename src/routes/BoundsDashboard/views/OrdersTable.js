@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import _orderBy from 'lodash-es/orderBy';
 import _upperFirst from 'lodash-es/upperFirst';
 
@@ -8,34 +7,36 @@ import {dal, html} from 'components';
 import BoundsDirectionType from 'enums/BoundsDirectionType';
 
 import './OrdersTable.scss';
+import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
+import CurrencyEnum from '../../../enums/CurrencyEnum';
 
 const bem = html.bem('OrdersTable');
 
-@connect(
-    () => ({
-        // Change hashes to reaal order hash for cancel
-        items: [
-            {
-                currency: 'USD-NB',
-                type: BoundsDirectionType.BUY,
-                time: '12 Jan 2019 12:38:44',
-                amount: 21,
-                discount: 19.85,
-                wavesAmount: 12.9473,
-                hash: '4tx89LVMK1yifVJLM2q2TJCxEZuLurwzg7utXHkX5DEM',
-            },
-            {
-                currency: 'USD-NB',
-                type: BoundsDirectionType.LIQUIDATE,
-                time: '12 Jan 2019 12:39:01',
-                amount: 150,
-                discount: null,
-                wavesAmount: 115.3846,
-                hash: 'NPxn3FTWHN2apWxqAP2HtabJYmVHauAQ7vm3QYaQfiA',
-            },
-        ]
-    })
+@dal.hoc(
+    () => dal.getUserOrders()
+        .then(items => ({items}))
 )
+            // Change hashes to reaal order hash for cancel
+            // items: [
+            //     {
+            //         currency: 'USD-NB',
+            //         type: BoundsDirectionType.BUY,
+            //         time: '12 Jan 2019 12:38:44',
+            //         amount: 21,
+            //         discount: 19.85,
+            //         wavesAmount: 12.9473,
+            //         hash: '4tx89LVMK1yifVJLM2q2TJCxEZuLurwzg7utXHkX5DEM',
+            //     },
+            //     {
+            //         currency: 'USD-NB',
+            //         type: BoundsDirectionType.LIQUIDATE,
+            //         time: '12 Jan 2019 12:39:01',
+            //         amount: 150,
+            //         discount: null,
+            //         wavesAmount: 115.3846,
+            //         hash: 'NPxn3FTWHN2apWxqAP2HtabJYmVHauAQ7vm3QYaQfiA',
+            //     },
+            // ]
 export default class OrdersTable extends React.PureComponent {
 
     static propTypes = {
@@ -65,6 +66,7 @@ export default class OrdersTable extends React.PureComponent {
     }
 
     render() {
+        console.log(this.props.items);
 
         if (!this.props.items) {
             return null;
@@ -148,7 +150,7 @@ export default class OrdersTable extends React.PureComponent {
                                 {items.map((item, index) => (
                                     <tr key={index}>
                                         <td>
-                                            {item.currency || '--'}
+                                            {BalanceCurrencyEnum.getLabel(item.currency) || '--'}
                                         </td>
                                         <td className={bem.element('type-column', item.type)}>
                                             {_upperFirst(item.type) || '--'}
