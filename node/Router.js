@@ -10,25 +10,35 @@ module.exports = class Router {
                 return {
                     config: {
                         dal: {
-                            neutrinoAddress: this.app.neutrinoAddress,
-                            auctionAddress: this.app.auctionAddress,
+                            // neutrinoAddress: this.app.neutrinoAddress,
+                            // auctionAddress: this.app.auctionAddress,
                             network: this.app.network,
                         }
                     },
                 };
             },
-            '/api/v1/orders': async () => {
-                return this.app.collections.orders.getOrders();
+            '/api/v1/orders': async (request) => {
+                return request.query.address
+                    ? await this.app.collections.orders.getUserOrders(request.query.address)
+                    : await this.app.collections.orders.getOrders()
             },
-            '/api/v1/orders/opened': async () => {
-                return this.app.collections.orders.getOpenedOrders();
+            '/api/v1/orders/opened': async (request) => {
+                let openedOrders = this.app.collections.orders.getOpenedOrders();
+                if (request.query.address) {
+                    openedOrders = openedOrders.filter((order) => order.owner === request.query.address);
+                }
+
+                return openedOrders;
             },
             '/api/v1/orders/position': async (request) => {
-                const price = request.params.price;
+                const price = request.query.price;
                 const orders = await this.app.collections.orders.getOpenedOrders();
-                // TODO
+                let position = 0;
+                orders.forEach((order) => {
+                    order.price >= price && position++;
+                });
 
-                return 1;
+                return {position: position};
             },
             '/api/*': async () => {
                 return {

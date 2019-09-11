@@ -2,8 +2,12 @@ import _get from 'lodash/get';
 import {setUser} from 'yii-steroids/actions/auth';
 import {getUser} from 'yii-steroids/reducers/auth';
 import fetchHoc from './dal/fetchHoc';
+import {http} from 'components';
 
 import WavesTransport from './dal/WavesTransport';
+import axios from 'axios';
+import ContractEnum from '../enums/ContractEnum';
+import BalanceCurrencyEnum from '../enums/BalanceCurrencyEnum';
 
 export default class DalComponent {
 
@@ -12,8 +16,6 @@ export default class DalComponent {
         this.auctionAddress = null;
         this.network = null;
 
-        this.transport = new WavesTransport(this);
-
         this.hoc = fetchHoc;
         this._authInterval = null;
         this._authChecker = this._authChecker.bind(this);
@@ -21,23 +23,33 @@ export default class DalComponent {
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
+
+        this._transports = {};
+    }
+
+
+    getTransport(contract = ContractEnum.NEUTRINO) {
+        if (!this._transports[contract]) {
+            this._transports[contract] = new WavesTransport(this, contract);
+        }
+        return this._transports[contract];
     }
 
     async getWavesToUsdPrice() {
-        return  await this.transport.nodeFetchKey('price') / 100;
+        return  await this.getTransport().nodeFetchKey('price') / 100;
     }
 
     async getBalance(address) {
-        return await this.transport.getBalance(address);
+        return await this.getTransport().getBalance(address);
     }
 
     async isKeeperInstalled() {
-        const keeper = await this.transport.getKeeper();
+        const keeper = await this.getTransport().getKeeper();
         return !!keeper;
     }
 
     async getAccount() {
-        const keeper = await this.transport.getKeeper();
+        const keeper = await this.getTransport().getKeeper();
         if (!keeper) {
             return null;
         }
@@ -89,7 +101,7 @@ export default class DalComponent {
     }
 
     async swapWavesToNeutrino(amount) {
-        await this.transport.nodePublish(
+        await this.getTransport().nodePublish(
             'swapWavesToNeutrino',
             [],
             'WAVES',
@@ -98,39 +110,65 @@ export default class DalComponent {
     }
 
     async swapNeutrinoToWaves(amount) {
-        await this.transport.nodePublish(
+        await this.getTransport().nodePublish(
             'swapNeutrinoToWaves',
             [],
-            await this.transport.nodeFetchKey('neutrino_asset_id'),
+            await this.getTransport().nodeFetchKey('neutrino_asset_id'),
             amount,
         );
     }
 
-    async setOrder(price, amount, position) {
-        await this.transport.nodePublish(
-            'setOrder',
+    async setOrder(price, bondsAmount) {
+        price = Math.round(price * 100) / 100;
+        const contractPrice = price * 100;
+        let position =  _get(await axios.get('/api/v1/orders/position', {params: {price: contractPrice}}), 'data.position');
+        if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
+            await this.getTransport(ContractEnum.AUCTION).nodePublish(
+                'setOrder',
+                [
+                    contractPrice,
+                    position
+                ],
+                await this.getTransport(ContractEnum.AUCTION).nodeFetchKey('neutrino_asset_id'),
+                bondsAmount * price,
+                true,
+            );
+        }
+    }
+
+    async cancelOrder(hash) {
+        await this.getTransport(ContractEnum.AUCTION).nodePublish(
+            'cancelOrder',
             [
-                price * 100,
-                position
+                hash
             ],
-            await this.transport.nodeFetchKey('neutrino_asset_id', true),
-            amount,
+            'WAVES',
+            0,
             true,
         );
     }
 
     async getOrderBook() {
-        const orders = await this.transport.nodeFetchKey('orderbook', true);
-
-        const result = await Promise.all(
+        const orders = await this.getTransport(ContractEnum.AUCTION).nodeFetchKey('orderbook');
+        return await Promise.all(
             orders.substr(1).split('_').map(async address => {
                 return {
-                    amount: await this.transport.nodeFetchKey(`order_amount_${address}`) / this.transport.wvs,
-                    price: await this.transport.nodeFetchKey(`order_price_${address}`) / 100,
+                    amount: await this.getTransport(ContractEnum.AUCTION).nodeFetchKey(`order_amount_${address}`) / this.getTransport().wvs,
+                    price: await this.getTransport(ContractEnum.AUCTION).nodeFetchKey(`order_price_${address}`) / 100,
                 };
             })
         );
+    }
 
-        return result;
+    async getUserOrders() {
+        const account = await this.getAccount();
+        let orders = await http.get('/api/v1/orders', {address: account.address});
+        return orders.map((order) => {
+            return {
+                currency: BalanceCurrencyEnum.USD_NB,
+                ...order,
+            }
+        })
+
     }
 }

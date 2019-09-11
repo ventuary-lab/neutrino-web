@@ -9,6 +9,9 @@ module.exports = class Orders extends BaseCollection {
             `order_height_${id}`,
             `order_owner_${id}`,
             `order_amount_${id}`,
+            `order_price_${id}`,
+            `order_total_${id}`,
+            `order_status_${id}`,
             'orderbook',
         ];
     }
@@ -27,7 +30,12 @@ module.exports = class Orders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getOrders();
-        return orders.filter(order => order.position !== null);
+        return orders.filter(order => order.index !== null);
+    }
+
+    async getUserOrders(address) {
+        let orders = await this.getOrders();
+        return orders.filter(order => order.owner === address);
     }
 
     async _prepareItem(id, item) {
@@ -36,6 +44,9 @@ module.exports = class Orders extends BaseCollection {
             height: item['order_height_' + id],
             owner: item['order_owner_' + id],
             amount: item['order_amount_' + id],
+            price: item['order_price_' + id],
+            total: item['order_total_' + id],
+            status: item['order_status_' + id],
             index: index !== -1 ? index : null,
         };
     }

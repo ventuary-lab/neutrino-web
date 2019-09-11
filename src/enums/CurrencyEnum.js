@@ -1,6 +1,6 @@
 import Enum from './Enum';
 
-export default class UserRole extends Enum {
+export default class CurrencyEnum extends Enum {
 
     static USD_N = 'usd-n';
     static EUR_N = 'eur-n';

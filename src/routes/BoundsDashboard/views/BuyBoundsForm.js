@@ -8,7 +8,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
-import {dal, html} from 'components';
+import {dal, html, http} from 'components';
 // import {getActiveCurrency} from 'reducers/layout';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
@@ -81,6 +81,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     <NumberField
                         min={0}
                         max={99}
+                        required
                         step='any'
                         inputProps={{
                             autocomplete: 'off',
@@ -94,6 +95,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     />
                     <NumberField
                         min={0}
+                        required
                         step='any'
                         inputProps={{
                             autocomplete: 'off'
@@ -129,7 +131,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Buy {bounds}', {
-                            bounds: BalanceCurrencyEnum.USD_NB,
+                            bounds: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
                         })}
                     />
                 </Form>
@@ -138,7 +140,8 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     _onSubmit(values) {
-        return dal.setOrder(this.props.wavesToUsdPrice, values.bounds, 0) // TODO position now is hardcode
+        const price = 1 - values.discount / 100;
+        return dal.setOrder(price, values.bounds)
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();
@@ -154,7 +157,6 @@ export default class BuyBoundsForm extends React.PureComponent {
             return;
         }
         this._isProgramChange = true;
-
 
         const discount = _get(props, 'formValues.discount');
         const bounds = _get(props.formValues, 'bounds');
