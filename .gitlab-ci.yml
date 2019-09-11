@@ -23,6 +23,7 @@ build:
   script:
     - yarn
     - node webpack production
+    - cp -f .env.dev .env
     - echo "$CI_COMMIT_REF_NAME-$CI_JOB_ID" > $CI_PROJECT_DIR/dist/version.txt
 
 deploy_dev:

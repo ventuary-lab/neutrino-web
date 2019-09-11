@@ -5,7 +5,7 @@ const {Orders} = require('./collections');
 const WavesTransport = require('./components/WavesTransport');
 const Router = require('./Router');
 
-const REDIS_NAMESPACE = process.env.REDIS_NAMESPACE || 'nt_';
+const REDIS_NAMESPACE = process.env.REDIS_NAMESPACE || 'nt';
 module.exports = class ContractApp {
 
     constructor(params = {}) {
@@ -29,7 +29,7 @@ module.exports = class ContractApp {
             nodeUrl: this.nodeUrl,
             updateHandler: this._onContractUpdate,
             storage: {
-                namespace: REDIS_NAMESPACE + 'neutrino_' + this.auctionAddress,
+                namespace: REDIS_NAMESPACE + '_neutrino_' + this.auctionAddress,
                 redis: process.env.REDIS_URL ? process.env.REDIS_URL : {
                     host: process.env.REDIS_HOST || '127.0.0.1',
                     port: process.env.REDIS_PORT || 6379,
