@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 
 import {html, http} from 'components';
+import './MainChart.scss';
 
 const bem = html.bem('MainChart');
 
@@ -136,10 +137,10 @@ export default class MainChart extends React.PureComponent {
                     valueDecimals: 2
                 },
                 fillColor: {
-                    linearGradient: { x1: 0, x2: 1, y1: 0, y2: 1 },
+                    linearGradient: { x1: 0, x2: 0.4, y1: 1, y2: 0 },
                     stops: [
-                        [0, 'rgba(0,106,255,0.0001)'], // start
-                        [1, 'rgba(255,100,100,0.53)'], // end
+                        [0, 'rgba(110,54,77)'], // start
+                        [1, 'rgba(41,77,167)'], // end
                     ]
                 },
             }],
