@@ -1,22 +1,15 @@
-const axios = require('axios');
-const _trim = require('lodash/trim');
-const _isString = require('lodash/isString');
-
-const convertValueToJs = value => {
-    return _isString(value) && ['{', '['].includes(value.substr(0, 1))
-        ? JSON.parse(value)
-        : value;
-};
-
 module.exports = class BaseCollection {
 
     constructor(params = {}) {
-        this.app = params.app;
+        this.pairName = params.pairName;
+        this.collectionName = params.collectionName;
+        this.storage = params.storage;
         this.transport = params.transport;
-        this.name = params.name;
+        this.logger = params.logger;
+        this.heightListener = params.heightListener;
         this.updateHandler = params.updateHandler;
 
-        this.STORAGE_KEY_PREFIX = 'collections:';
+        this.STORAGE_KEY_PREFIX = '';
     }
 
     getKeys() {
@@ -32,7 +25,7 @@ module.exports = class BaseCollection {
     }
 
     async getItem(id) {
-        let item = await this.app.storage.hget(this.STORAGE_KEY_PREFIX + this.name, id);
+        let item = await this.storage.hget(this.STORAGE_KEY_PREFIX + this.collectionName, id);
         if (!item) {
             return null;
         }
@@ -44,7 +37,7 @@ module.exports = class BaseCollection {
     }
 
     async getItemsAll() {
-        const result = await this.app.storage.hgetall(this.STORAGE_KEY_PREFIX + this.name);
+        const result = await this.storage.hgetall(this.STORAGE_KEY_PREFIX + this.collectionName);
         if (!result) {
             return [];
         }
@@ -60,7 +53,7 @@ module.exports = class BaseCollection {
     }
 
     async updateAll(nodeData) {
-        this.app.logger.debug('Update all items of ' + this.name + ' collection... ');
+        this.logger.debug('Update all items of ' + this.collectionName + ' collection... ');
 
         // Get ids
         const ids = [];
@@ -122,7 +115,7 @@ module.exports = class BaseCollection {
      * @private
      */
     async _updateItem(id, data = null) {
-        this.app.logger.debug('Update item of ' + this.name + ' collection... ' + id);
+        this.logger.debug('Update item of ' + this.collectionName + ' collection... ' + id);
 
         // Fetch data, if not set
         data = data || await this._fetch(this.getKeys(id));
@@ -131,12 +124,12 @@ module.exports = class BaseCollection {
         if (item) {
             const nextJson = JSON.stringify(item);
             if (this.updateHandler) {
-                const prevJson = await this.app.storage.hget(this.STORAGE_KEY_PREFIX + this.name, id);
+                const prevJson = await this.storage.hget(this.STORAGE_KEY_PREFIX + this.collectionName, id);
                 if (!prevJson || prevJson !== nextJson) {
                     this.updateHandler(id, item, this);
                 }
             }
-            await this.app.storage.hset(this.STORAGE_KEY_PREFIX + this.name, id, nextJson);
+            await this.storage.hset(this.STORAGE_KEY_PREFIX + this.collectionName, id, nextJson);
         }
     }
 
@@ -146,7 +139,7 @@ module.exports = class BaseCollection {
 
         // Append height, if need
         if (keys.includes('height')) {
-            data.height = this.app.contractCache.heightListener.getHeight();
+            data.height = this.heightListener.getLast();
         }
 
         return data;

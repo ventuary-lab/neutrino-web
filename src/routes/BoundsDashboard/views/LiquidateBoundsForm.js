@@ -16,7 +16,7 @@ const FORM_ID = 'LiquidateBoundsFrom';
 
 @connect(
     state => ({
-        // activeCurrency: getActiveCurrency(state),
+        // activeCurrency: getQuoteCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
     })
 )

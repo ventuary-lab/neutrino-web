@@ -10,13 +10,14 @@ import axios from 'axios';
 
 import {html, dal, clientStorage} from 'components';
 import {STORAGE_AUTH_KEY} from 'shared/RightSidebar/RightSidebar';
-import {changeCurrency} from 'actions/layout';
+import {setCurrency} from 'actions/layout';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
 
 import './Layout.scss';
 import {setUser} from 'yii-steroids/actions/auth';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('Layout');
 
@@ -54,7 +55,7 @@ export default class Layout extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
-            this.props.dispatch(changeCurrency(_get(nextProps, 'matchParams.currency')));
+            this.props.dispatch(setCurrency(nextProps.matchParams.currency));
         }
     }
 

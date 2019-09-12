@@ -2,6 +2,7 @@ import _get from 'lodash/get';
 import {setUser} from 'yii-steroids/actions/auth';
 import {getUser} from 'yii-steroids/reducers/auth';
 import fetchHoc from './dal/fetchHoc';
+import apiHoc from './dal/apiHoc';
 import {http} from 'components';
 
 import WavesTransport from './dal/WavesTransport';
@@ -17,6 +18,7 @@ export default class DalComponent {
         this.network = null;
 
         this.hoc = fetchHoc;
+        this.hoc2 = apiHoc;
         this._authInterval = null;
         this._authChecker = this._authChecker.bind(this);
 
@@ -148,7 +150,7 @@ export default class DalComponent {
         );
     }
 
-    async getOrderBook() {
+    /*async getOrderBook() {
         const orders = await this.getTransport(ContractEnum.AUCTION).nodeFetchKey('orderbook');
         return await Promise.all(
             orders.substr(1).split('_').map(async address => {
@@ -158,7 +160,7 @@ export default class DalComponent {
                 };
             })
         );
-    }
+    }*/
 
     async getUserOrders() {
         const account = await this.getAccount();

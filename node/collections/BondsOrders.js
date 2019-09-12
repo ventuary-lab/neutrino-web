@@ -2,15 +2,15 @@ const _orderBy = require('lodash/orderBy');
 
 const BaseCollection = require('../base/BaseCollection');
 
-module.exports = class Orders extends BaseCollection {
+module.exports = class BondsOrders extends BaseCollection {
 
     getKeys(id = '([A-Za-z0-9]{44})') {
         return [
             `order_height_${id}`,
             `order_owner_${id}`,
-            `order_amount_${id}`,
             `order_price_${id}`,
             `order_total_${id}`,
+            `order_filled_total_${id}`,
             `order_status_${id}`,
             'orderbook',
         ];
@@ -43,11 +43,12 @@ module.exports = class Orders extends BaseCollection {
         return {
             height: item['order_height_' + id],
             owner: item['order_owner_' + id],
-            amount: item['order_amount_' + id],
             price: item['order_price_' + id],
             total: item['order_total_' + id],
+            filledTotal: item['order_filled_total_' + id],
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
+            discountPercent: 100 - item['order_price_' + id],
         };
     }
 

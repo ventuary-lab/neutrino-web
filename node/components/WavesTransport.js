@@ -24,6 +24,16 @@ class WavesTransport {
         return nodeData;
     }
 
+    /**
+     * Get node data by key
+     * @param {string} key
+     * @returns {Promise<null|string | number | boolean>}
+     */
+    async nodeFetchKey(key) {
+        const response = await this._request(`${this.nodeUrl}/addresses/data/${this.dApp}/${key}`);
+        return convertValueToJs(response.data.value);
+    }
+
     async fetchKeys(keys) {
         const regexp = new RegExp('^(' + keys.join('|') + ')$');
         const matches = encodeURIComponent(_trim(String(regexp), '/'));

@@ -6,8 +6,8 @@ import {goToPage} from 'yii-steroids/actions/navigation';
 
 import {html} from 'components';
 import {ROUTE_ROOT} from 'routes';
-import {changeCurrency} from 'actions/layout';
-import {getActiveCurrency} from 'reducers/layout';
+import {setCurrency} from 'actions/layout';
+import {getQuoteCurrency} from 'reducers/layout';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import NavItemSchema from 'types/NavItemSchema';
 
@@ -17,7 +17,7 @@ const bem = html.bem('LeftSidebar');
 
 @connect(
     state => ({
-        activeCurrency: getActiveCurrency(state),
+        activeCurrency: getQuoteCurrency(state),
         currentItem: getCurrentItem(state),
     })
 )
@@ -38,25 +38,27 @@ export default class LeftSidebar extends React.PureComponent {
                     <span className={'Icon Icon__home'}/>
                 </Link>
                 <div className={bem.element('currencies')}>
-                    {CurrencyEnum.getKeys().map(item => (
+                    {CurrencyEnum.getKeys().map(currency => (
                         <div
-                            key={item}
+                            key={currency}
                             className={bem.element('currency', {
-                                active: this.props.activeCurrency === item,
+                                active: this.props.activeCurrency === currency,
                             })}
                             onClick={() => {
-                                this.props.dispatch(changeCurrency(item));
-                                this.props.dispatch(goToPage(this.props.currentItem.id, {
-                                    currency: item,
-                                }));
+                                this.props.dispatch([
+                                    setCurrency(currency),
+                                    goToPage(this.props.currentItem.id, {
+                                        currency: currency,
+                                    }),
+                                ]);
                             }}
                         >
                             <span className={bem(
                                 bem.element('currency-icon'),
-                                CurrencyEnum.getIconActiveClass(item)
+                                CurrencyEnum.getIconActiveClass(currency)
                             )}/>
                             <span className={bem.element('currency-label')}>
-                                {CurrencyEnum.getLabel(item)}
+                                {CurrencyEnum.getLabel(currency)}
                             </span>
                         </div>
                     ))}

@@ -1,3 +1,3 @@
 module.exports = {
-    Orders: require('./Orders'),
+    BondsOrders: require('./BondsOrders'),
 };

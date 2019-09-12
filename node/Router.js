@@ -1,3 +1,4 @@
+const CollectionEnum = require('./enums/CollectionEnum');
 
 module.exports = class Router {
 
@@ -17,18 +18,17 @@ module.exports = class Router {
                     },
                 };
             },
-            '/api/v1/orders': async (request) => {
+            /*'/api/v1/orders/:pairName': async (request) => {
                 return request.query.address
                     ? await this.app.collections.orders.getUserOrders(request.query.address)
                     : await this.app.collections.orders.getOrders()
-            },
-            '/api/v1/orders/opened': async (request) => {
-                let openedOrders = this.app.collections.orders.getOpenedOrders();
-                if (request.query.address) {
-                    openedOrders = openedOrders.filter((order) => order.owner === request.query.address);
+            },*/
+            '/api/v1/orders/:pairName/opened': async (request) => {
+                let orders = this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+                if (request.query.owner) {
+                    orders = orders.filter((order) => order.owner === request.query.owner);
                 }
-
-                return openedOrders;
+                return orders;
             },
             '/api/v1/orders/position': async (request) => {
                 const price = request.query.price;

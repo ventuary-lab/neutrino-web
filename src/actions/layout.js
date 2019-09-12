@@ -1,10 +1,12 @@
-export const CHANGE_CURRENCY = 'CHANGE_CURRENCY';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
-export const changeCurrency = currency => {
+export const LAYOUT_SET_CURRENCY = 'LAYOUT_SET_CURRENCY';
 
-    return ({
-        type: CHANGE_CURRENCY,
-        currency,
-    });
+export const setCurrency = (quoteCurrency, baseCurrency = null) => {
+    baseCurrency = baseCurrency || CurrencyEnum.getBaseCurrency(quoteCurrency);
+    return {
+        type: LAYOUT_SET_CURRENCY,
+        baseCurrency,
+        quoteCurrency,
+    };
 };
-
