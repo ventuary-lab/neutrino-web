@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 
 import {html, http} from 'components';
+import './MainChart.scss';
 
 const bem = html.bem('MainChart');
 
@@ -14,17 +15,119 @@ export default class MainChart extends React.PureComponent {
         this._chart = React.createRef();
 
         this._config = {
+            scrollbar: {
+                enabled: false
+            },
+            colors: [''],
+            chart: {
+                backgroundColor: null,
+            },
             navigator: {
                 enabled: false,
             },
             rangeSelector: {
-                selected: 1
+                buttons: [
+                    {
+                        type: '100',
+                        count: 1,
+                        text: '100'
+                    }, {
+                        type: '500',
+                        count: 2,
+                        text: '500'
+                    }, {
+                        type: '1000',
+                        count: 3,
+                        text: '1K'
+                    }, {
+                        type: '5000',
+                        count: 4,
+                        text: '5K'
+                    }, {
+                        type: '10000',
+                        count: 5,
+                        text: '10K'
+                    },
+                ],
+                buttonPosition: {
+                    align: 'right',
+                    x: -15,
+                },
+                buttonTheme: {
+                    width: 32,
+                    height: 28,
+                    r: 4,
+                    fill: {
+                        linearGradient: { x1: 0, x2: 1, y1: 1, y2: 0 },
+                        stops: [
+                            [0, '#00ADFF'], // start
+                            [0.4, '#3e3e79'], // middle
+                            [1, '#3e3e79'] // end
+                        ]
+                    },
+                    style: {
+                        color: '#fff',
+                        fontSize: '12px',
+                        lineHeight: '16px',
+                        fontWeight: 500,
+                        fontFamily: 'Montserrat',
+                        textAlign: 'center',
+                    },
+                    states: {
+                        hover: {
+                        },
+                        select: {
+                            fill: '#039',
+                        }
+                    }
+                },
+                labelStyle: {
+                    visibility: 'hidden',
+                },
+                inputEnabled: false,
             },
             title: {
-                text: 'Discount %'
+                align: 'left',
+                text: 'Discount %',
+                y: 40,
+                style: {
+                    color: '#fff',
+                    fontSize: '14px',
+                },
             },
             legend: {
-                backgroundColor: '#262c38',
+                enabled: false,
+            },
+            xAxis: {
+                lineWidth: 0.5,
+                lineColor: '#CBCBDA',
+                tickWidth: 0.5,
+                tickColor: '#CBCBDA',
+                showFirstLabel: false,
+                showLastLabel: false,
+                labels: {
+                    format: '{value}',
+                    style: {
+                        fontFamily: 'Roboto',
+                        color: '#CBCBDA',
+                        fontSize: '10px',
+
+                    },
+                },
+            },
+            yAxis:
+            {
+                opposite: false,
+                gridLineWidth: 0,
+                minorGridLineWidth: 0,
+                labels: {
+                    format: '{value}%',
+                    style: {
+                        fontFamily: 'Roboto',
+                        color: '#CBCBDA',
+                        fontSize: '10px',
+                    },
+                },
             },
             series: [{
                 name: 'Percent',
@@ -34,10 +137,10 @@ export default class MainChart extends React.PureComponent {
                     valueDecimals: 2
                 },
                 fillColor: {
-                    linearGradient: { x1: 0, x2: 1, y1: 0, y2: 1 },
+                    linearGradient: { x1: 0, x2: 0.4, y1: 1, y2: 0 },
                     stops: [
-                        [0, 'rgba(0,106,255,0.0001)'], // start
-                        [1, 'rgba(255,100,100,0.53)'], // end
+                        [0, 'rgba(110,54,77)'], // start
+                        [1, 'rgba(41,77,167)'], // end
                     ]
                 },
             }],
@@ -82,289 +185,50 @@ export default class MainChart extends React.PureComponent {
     _refreshChartData() {
         return [
             [
-                1505136600000,
-                161.5
+                671128,
+                26
             ],
             [
-                1505223000000,
-                160.86
+                671129,
+                29
             ],
             [
-                1505309400000,
-                159.65
+                671130,
+                37
             ],
             [
-                1505395800000,
-                158.28
+                671131,
+                32
             ],
             [
-                1509978600000,
-                174.25
+                671132,
+                35
             ],
             [
-                1510065000000,
-                174.81
+                671133,
+                22
             ],
             [
-                1510151400000,
-                176.24
+                671134,
+                15
             ],
             [
-                1510237800000,
-                175.88
+                671135,
+                30
             ],
             [
-                1510324200000,
-                174.67
+                671136,
+                7
             ],
             [
-                1510583400000,
-                173.97
+                671137,
+                10
             ],
             [
-                1510669800000,
-                171.34
+                671138,
+                12
             ],
-            [
-                1510756200000,
-                169.08
-            ],
-            [
-                1510842600000,
-                171.1
-            ],
-            [
-                1510929000000,
-                170.15
-            ],
-            [
-                1511188200000,
-                169.98
-            ],
-            [
-                1524231000000,
-                165.72
-            ],
-            [
-                1524490200000,
-                165.24
-            ],
-            [
-                1524576600000,
-                162.94
-            ],
-            [
-                1524663000000,
-                163.65
-            ],
-            [
-                1524749400000,
-                164.22
-            ],
-            [
-                1524835800000,
-                162.32
-            ],
-            [
-                1525095000000,
-                165.26
-            ],
-            [
-                1525181400000,
-                169.1
-            ],
-            [
-                1525267800000,
-                176.57
-            ],
-            [
-                1525354200000,
-                176.89
-            ],
-            [
-                1525440600000,
-                183.83
-            ],
-            [
-                1525699800000,
-                185.16
-            ],
-            [
-                1525786200000,
-                186.05
-            ],
-            [
-                1525872600000,
-                187.36
-            ],
-            [
-                1525959000000,
-                190.04
-            ],
-            [
-                1526045400000,
-                188.59
-            ],
-            [
-                1526304600000,
-                188.15
-            ],
-            [
-                1526391000000,
-                186.44
-            ],
-            [
-                1526477400000,
-                188.18
-            ],
-            [
-                1526563800000,
-                186.99
-            ],
-            [
-                1526650200000,
-                186.31
-            ],
-            [
-                1526909400000,
-                187.63
-            ],
-            [
-                1526995800000,
-                187.16
-            ],
-            [
-                1527082200000,
-                188.36
-            ],
-            [
-                1527168600000,
-                188.15
-            ],
-            [
-                1527255000000,
-                188.58
-            ],
-            [
-                1527600600000,
-                187.9
-            ],
-            [
-                1528896600000,
-                190.7
-            ],
-            [
-                1528983000000,
-                190.8
-            ],
-            [
-                1529069400000,
-                188.84
-            ],
-            [
-                1529328600000,
-                188.74
-            ],
-            [
-                1529415000000,
-                185.69
-            ],
-            [
-                1529501400000,
-                186.5
-            ],
-            [
-                1529587800000,
-                185.46
-            ],
-            [
-                1529674200000,
-                184.92
-            ],
-            [
-                1529933400000,
-                182.17
-            ],
-            [
-                1530019800000,
-                184.43
-            ],
-            [
-                1530106200000,
-                184.16
-            ],
-            [
-                1530192600000,
-                185.5
-            ],
-            [
-                1530279000000,
-                185.11
-            ],
-            [
-                1530538200000,
-                187.18
-            ],
-            [
-                1530624600000,
-                183.92
-            ],
-            [
-                1530797400000,
-                185.4
-            ],
-            [
-                1530883800000,
-                187.97
-            ],
-            [
-                1531143000000,
-                190.58
-            ],
-            [
-                1531229400000,
-                190.35
-            ],
-            [
-                1531315800000,
-                187.88
-            ],
-            [
-                1531402200000,
-                191.03
-            ],
-            [
-                1531488600000,
-                191.33
-            ],
-            [
-                1531747800000,
-                190.91
-            ],
-            [
-                1531834200000,
-                191.45
-            ],
-            [
-                1531920600000,
-                190.4
-            ],
-            [
-                1532007000000,
-                191.88
-            ],
-            [
-                1532093400000,
-                191.44
-            ],
-            [
-                1532352600000,
-                191.61
-            ],
-            [
-                1532439000000,
-                193
-            ],
+
         ]
     }
 }
