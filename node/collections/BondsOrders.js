@@ -2,7 +2,7 @@ const _orderBy = require('lodash/orderBy');
 
 const BaseCollection = require('../base/BaseCollection');
 
-module.exports = class Orders extends BaseCollection {
+module.exports = class BondsOrders extends BaseCollection {
 
     getKeys(id = '([A-Za-z0-9]{44})') {
         return [
