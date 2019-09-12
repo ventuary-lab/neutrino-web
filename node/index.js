@@ -23,7 +23,7 @@ expressApp.use(function(req, res, next) {
 
 contract.start();
 
-expressApp.use(express.static(__dirname + '/dist'));
+expressApp.use(express.static(__dirname + '/../dist'));
 expressApp.get('/*', (req, res) => {
-    res.sendFile('index.html', { root : __dirname + '/dist'});
+    res.sendFile('index.html', { root : __dirname + '/../dist'});
 });
