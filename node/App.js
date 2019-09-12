@@ -75,6 +75,8 @@ module.exports = class App {
     async start() {
         this._isSkipUpdates = true;
 
+        this._router.start();
+        this._websocket.start();
         await this.heightListener.start();
 
         // Try get timestamp
@@ -91,9 +93,6 @@ module.exports = class App {
                 this.createCollection(pairName, collectionName);
             }
         }
-
-        this._router.start();
-        this._websocket.start();
 
         await this._updateAll();
         this._isSkipUpdates = false;

@@ -9,7 +9,7 @@ import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
 
 import {html} from 'components';
-import {getActiveCurrency} from 'reducers/layout';
+import {getQuoteCurrency} from 'reducers/layout';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
@@ -26,7 +26,7 @@ const FORM_ID = 'SectionToggle';
         formValues: getFormValues(FORM_ID)(state),
         navItems: getNavItems(state, ROUTE_ROOT),
         currentItem: getCurrentItem(state),
-        activeCurrency: getActiveCurrency(state),
+        activeCurrency: getQuoteCurrency(state),
     })
 )
 export default class Header extends React.PureComponent {

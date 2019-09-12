@@ -3,22 +3,35 @@ import Enum from './Enum';
 export default class CurrencyEnum extends Enum {
 
     static USD_N = 'usd-n';
+    static USD_NB = 'usd-nb';
     static EUR_N = 'eur-n';
+    static EUR_NB = 'eur-nb';
     static BTC_N = 'btc-n';
+    static BTC_NB = 'btc-nb';
 
     static getKeys() {
         return [
             this.USD_N,
-            this.EUR_N,
-            this.BTC_N,
+            //this.EUR_N,
+            //this.BTC_N,
         ];
+    }
+
+    static getBaseCurrency(id) {
+        const map = {
+            [this.USD_N]: this.USD_NB, // TODO
+        };
+        return map[id] || null;
     }
 
     static getLabels() {
         return {
             [this.USD_N]: __('USD-N'),
+            [this.USD_NB]: __('USD-NB'),
             [this.EUR_N]: __('EUR-N'),
+            [this.EUR_NB]: __('EUR-NB'),
             [this.BTC_N]: __('BTC-N'),
+            [this.BTC_NB]: __('BTC-NB'),
         };
     }
 

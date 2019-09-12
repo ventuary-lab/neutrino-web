@@ -9,7 +9,7 @@ import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {dal, html, http} from 'components';
-// import {getActiveCurrency} from 'reducers/layout';
+// import {getQuoteCurrency} from 'reducers/layout';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
@@ -19,7 +19,7 @@ const FORM_ID = 'BuyBoundsForm';
 
 @connect(
     state => ({
-        // activeCurrency: getActiveCurrency(state),
+        // activeCurrency: getQuoteCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
     })
 )

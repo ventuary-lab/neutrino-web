@@ -11,7 +11,7 @@ import _isFunction from 'lodash-es/isFunction';
 import {html, dal} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getActiveCurrency} from 'reducers/layout';
+import {getQuoteCurrency} from 'reducers/layout';
 import Hint from 'shared/Hint';
 
 import './NeutrinoDashboard.scss';
@@ -22,7 +22,7 @@ const FORM_ID = 'GenerationForm';
 
 @connect(
     state => ({
-        activeCurrency: getActiveCurrency(state),
+        activeCurrency: getQuoteCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
     })
 )

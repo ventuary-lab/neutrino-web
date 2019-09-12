@@ -8,9 +8,9 @@ module.exports = class BondsOrders extends BaseCollection {
         return [
             `order_height_${id}`,
             `order_owner_${id}`,
-            `order_amount_${id}`,
             `order_price_${id}`,
             `order_total_${id}`,
+            `order_filled_total_${id}`,
             `order_status_${id}`,
             'orderbook',
         ];
@@ -43,11 +43,12 @@ module.exports = class BondsOrders extends BaseCollection {
         return {
             height: item['order_height_' + id],
             owner: item['order_owner_' + id],
-            amount: item['order_amount_' + id],
             price: item['order_price_' + id],
             total: item['order_total_' + id],
+            filledTotal: item['order_filled_total_' + id],
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
+            discountPercent: 100 - item['order_price_' + id],
         };
     }
 
