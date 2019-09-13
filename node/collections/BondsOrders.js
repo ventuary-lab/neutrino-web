@@ -1,6 +1,7 @@
-const PairsEnum = require('../enums/PairsEnum');
-
 const _orderBy = require('lodash/orderBy');
+const _round = require('lodash/round');
+
+const PairsEnum = require('../enums/PairsEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 
@@ -33,7 +34,9 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getOrders();
-        return orders.filter(order => order.status === OrderStatusEnum.NEW || order.index !== null);
+        orders = orders.filter(order => order.status === OrderStatusEnum.NEW || order.index !== null);
+        orders = _orderBy(orders, 'index', 'asc');
+        return orders;
     }
 
     async getUserOpenedOrders(address) {
@@ -48,15 +51,21 @@ module.exports = class BondsOrders extends BaseCollection {
 
     async _prepareItem(id, item) {
         const index = item.orderbook.split('_').filter(Boolean).indexOf(id);
+        const height = item['order_height_' + id];
+        const price = item['order_price_' + id] || 0;
+        const total = item['order_total_' + id] || 0;
+        const filledTotal = item['order_filled_total_' + id] || 0;
         return {
-            height: item['order_height_' + id],
+            height,
+            timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
-            price: item['order_price_' + id],
-            total: item['order_total_' + id],
-            filledTotal: item['order_filled_total_' + id],
+            price,
+            total,
+            filledTotal,
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            discountPercent: 100 - item['order_price_' + id],
+            amount: _round((total - filledTotal) / (price * 100000000 / 100)),
+            discountPercent: 100 - price,
             pairName: PairsEnum.USDNB_USDN,
         };
     }

@@ -7,6 +7,9 @@ export const API_REMOVE_CONFIGS = 'API_REMOVE_CONFIGS';
 export const API_SET_DATA = 'API_SET_DATA';
 
 const normalizeConfigs = configs => {
+    if (!configs) {
+        configs = [];
+    }
     if (!_isArray(configs)) {
         configs = [configs];
     }
