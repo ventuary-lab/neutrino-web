@@ -16,6 +16,9 @@
       @include gradient-bg(242.47deg);
       margin-right: 8px;
       width: 337px;
+
+      display: flex;
+      flex-direction: column;
     }
 
     &_right {
@@ -25,10 +28,15 @@
   }
 
   &__order-book {
-    height: 385px;
+    flex-grow: 1;
+    height: calc(100% - 340px);
+  }
+  &__forms {
+    height: 340px;
+    padding-bottom: 18px;
   }
   &__graph {
-    height: 385px;
+    max-height: 385px;
     display: flex;
     align-items: center;
     justify-content: center;

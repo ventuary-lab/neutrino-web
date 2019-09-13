@@ -37,7 +37,7 @@ module.exports = class HeightListener {
     async getTimestamps(heights) {
         const result = {};
         for (const height of heights) {
-            result[height] = await this._getTimestamp(height);
+            result[height] = parseInt(await this._getTimestamp(height));
         }
         return result;
     }
@@ -64,7 +64,7 @@ module.exports = class HeightListener {
      * @private
      */
     async _getTimestamp(height) {
-        let timestamp = this.storage.hget(this.STORAGE_BLOCK_TIMESTAMPS_KEY, height);
+        let timestamp = await this.storage.hget(this.STORAGE_BLOCK_TIMESTAMPS_KEY, height);
         if (!timestamp) {
             const response = await this._request(`blocks/headers/at/${height}`);
             timestamp = response.timestamp;

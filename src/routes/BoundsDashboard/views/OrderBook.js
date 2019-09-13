@@ -1,50 +1,25 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {dal, html} from 'components';
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
+import {html} from 'components';
 
 import './OrderBook.scss';
-import CollectionEnum from 'enums/CollectionEnum';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/layout';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {login} from 'yii-steroids/actions/auth';
+import OrderSchema from 'types/OrderSchema';
+import UserSchema from 'types/UserSchema';
 
 const bem = html.bem('OrderBook');
 
-@connect(
-    state => ({
-        pairName: getPairName(state),
-        baseCurrency: getBaseCurrency(state),
-        quoteCurrency: getQuoteCurrency(state),
-    })
-)
-@dal.hoc2(
-    props => {
-        return {
-        url: `/api/v1/orders/${props.pairName}/opened`,
-        key: 'orders',
-        collection: CollectionEnum.BONDS_ORDERS,
-    }}
-)
 export default class OrderBook extends React.PureComponent {
 
     static propTypes = {
-        pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-        orders: PropTypes.arrayOf(PropTypes.shape({
-            amount: PropTypes.number,
-            price: PropTypes.number,
-        })),
+        user: UserSchema,
+        orders: PropTypes.arrayOf(OrderSchema),
     };
 
     render() {
-        if (!this.props.orders) {
-            return null;
-        }
-
         return (
             <div className={bem.block()}>
                 <div className={bem.element('title')}>
@@ -62,7 +37,22 @@ export default class OrderBook extends React.PureComponent {
                     </div>
                 </div>
                 <div className={bem.element('columns')}>
-
+                    {this.props.orders.map(order => (
+                        <div
+                            key={order.id}
+                            className={bem.element('body-row')}
+                        >
+                            <div className={bem.element('body-column', 'bg')}>
+                                {order.amount}
+                            </div>
+                            <div className={bem.element('body-column')}>
+                                {order.discountPercent}%
+                            </div>
+                            <div className={bem.element('body-column', 'bg')}>
+                                {order.total - order.filledTotal}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         );

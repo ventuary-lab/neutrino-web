@@ -1,5 +1,6 @@
 const CollectionEnum = require('./enums/CollectionEnum');
 const PairsEnum = require('./enums/PairsEnum');
+const _orderBy = require('lodash/orderBy');
 
 module.exports = class Router {
 
@@ -19,7 +20,7 @@ module.exports = class Router {
                     },
                 };
             },
-            '/api/v1/orders/position': async (request) => {
+            '/api/v1/orders/position': async request => {
                 const price = request.query.price;
                 const orders = await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
                 let position = 0;
@@ -29,31 +30,23 @@ module.exports = class Router {
 
                 return {position: position};
             },
-            '/api/v1/orders/:address': async (request) => {
-                const pairName = PairsEnum.USDNB_USDN;
-                let collectionNames = CollectionEnum.getByPairName(pairName);
-                let data = {
+            '/api/v1/bonds/:pairName/orders': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+            },
+            '/api/v1/bonds/user/:address': async request => {
+                const result = {
                     opened: [],
                     history: [],
                 };
-                for (let collectionName of collectionNames) {
-                    let collection = this.app.getCollection(pairName, collectionName);
-                    if (typeof collection.getUserOpenedOrders === 'function') {
-                        data.opened.push(await collection.getUserOpenedOrders(request.params.address));
-                    }
-                    if (typeof collection.getUserHistoryOrders === 'function') {
-                        data.history.push(await collection.getUserHistoryOrders(request.params.address));
-                    }
+                for (let pairName of PairsEnum.getKeys()) {
+                    const collection = this.app.getCollection(pairName, CollectionEnum.BONDS_ORDERS);
+                    result.opened = result.opened.concat(await collection.getUserOpenedOrders(request.params.address));
+                    result.history = result.history.concat(await collection.getUserHistoryOrders(request.params.address));
                 }
 
-                return data;
-            },
-            '/api/v1/orders/:pairName/opened': async (request) => {
-                let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
-                if (request.query.owner) {
-                    orders = orders.filter((order) => order.owner === request.query.owner);
-                }
-                return orders;
+                result.opened = _orderBy(result.opened, 'height', 'desc');
+                result.history = _orderBy(result.history, 'height', 'desc');
+                return result;
             },
             '/api/*': async () => {
                 return {

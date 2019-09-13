@@ -1,4 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import _get from 'lodash/get';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import {html} from 'components';
@@ -11,53 +14,61 @@ import MainChart from './views/MainChart';
 import './BoundsDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
 import {dal} from 'components';
-import PropTypes from 'prop-types';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/layout';
+import {getUser} from 'yii-steroids/reducers/auth';
+import OrderSchema from 'types/OrderSchema';
+import UserSchema from 'types/UserSchema';
 
 const bem = html.bem('BoundsDashboard');
 
+@connect(
+    state => ({
+        pairName: getPairName(state),
+        baseCurrency: getBaseCurrency(state),
+        quoteCurrency: getQuoteCurrency(state),
+        user: getUser(state),
+    })
+)
 @dal.hoc2(
-    () => {
-        return {
-            url: `/api/v1/orders/3N6sMeyG1rZ4CBW5viaiMoyjP27tH5rTdY6`,
+    props => [
+        {
+            url: `/api/v1/bonds/${props.pairName}/orders`,
             key: 'orders',
             collection: CollectionEnum.BONDS_ORDERS,
-        }}
+        },
+        props.user && {
+            url: `/api/v1/bonds/user/${props.user.address}`,
+            key: 'userOrders',
+            collection: CollectionEnum.BONDS_ORDERS,
+        }
+    ].filter(Boolean)
 )
 export default class BoundsDashboard extends React.PureComponent {
 
     static propTypes = {
-        orders: PropTypes.shape({
-            opened: PropTypes.arrayOf(PropTypes.shape({
-                height: PropTypes.number,
-                owner: PropTypes.string,
-                price: PropTypes.number,
-                total: PropTypes.number,
-                discountPercent: PropTypes.number,
-                index: PropTypes.number,
-                pairName: PropTypes.string,
-                id: PropTypes.string,
-            })),
-            history: PropTypes.arrayOf(PropTypes.shape({
-                height: PropTypes.number,
-                owner: PropTypes.string,
-                price: PropTypes.number,
-                total: PropTypes.number,
-                discountPercent: PropTypes.number,
-                index: PropTypes.number,
-                pairName: PropTypes.string,
-                id: PropTypes.string,
-            }))
+        orders: PropTypes.arrayOf(OrderSchema),
+        user: UserSchema,
+        userOrders: PropTypes.shape({
+            opened: PropTypes.arrayOf(OrderSchema),
+            history: PropTypes.arrayOf(OrderSchema),
         }),
-        isHistory: PropTypes.bool,
     };
 
     render() {
+        if (!this.props.orders) {
+            return null;
+        }
 
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
                     <div className={bem.element('order-book')}>
-                        <OrderBook/>
+                        <OrderBook
+                            orders={this.props.orders}
+                            user={this.props.user}
+                            baseCurrency={this.props.baseCurrency}
+                            quoteCurrency={this.props.quoteCurrency}
+                        />
                     </div>
                     <div className={bem.element('forms')}>
                         <Nav
@@ -84,28 +95,30 @@ export default class BoundsDashboard extends React.PureComponent {
                         <MainChart/>
                     </div>
                     <div className={bem.element('orders')}>
-                        <Nav
-                            layout={'tabs'}
-                            items={[
-                                {
-                                    id: 'my-open-orders',
-                                    label: __('My open Orders'),
-                                    content: OrdersTable,
-                                    contentProps: {
-                                        items: this.props.orders.opened,
-                                    }
-                                },
-                                {
-                                    id: 'my-orders-history',
-                                    label: __('My Orders History'),
-                                    content: OrdersTable,
-                                    contentProps: {
-                                        items: this.props.orders.history,
-                                        isHistory: true,
-                                    }
-                                },
-                            ]}
-                        />
+                        {this.props.userOrders && (
+                            <Nav
+                                layout={'tabs'}
+                                items={[
+                                    {
+                                        id: 'my-open-orders',
+                                        label: __('My open Orders'),
+                                        content: OrdersTable,
+                                        contentProps: {
+                                            items: this.props.userOrders.opened,
+                                        }
+                                    },
+                                    {
+                                        id: 'my-orders-history',
+                                        label: __('My Orders History'),
+                                        content: OrdersTable,
+                                        contentProps: {
+                                            items: this.props.userOrders.history,
+                                            isHistory: true,
+                                        }
+                                    },
+                                ]}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,8 +1,10 @@
 @import '../../../style/helpers/vars';
 
 .OrderBook {
-
   $root: &;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &__title {
     font-size: 14px;
@@ -31,6 +33,32 @@
     }
   }
 
+  &__body-row {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__body-column {
+    position: relative;
+    padding: 12px 5px;
+    width: 33%;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+
+    &_my::after {
+      position: absolute;
+
+
+    }
+
+    &_bg {
+      background-color: #26274F;
+    }
+  }
+
   &__sum-row {
     padding: 14px 5px;
     font-weight: 600;
@@ -44,6 +72,17 @@
   &__columns {
     border-top: 1px solid #343869;
     border-bottom: 1px solid #343869;
+    overflow: auto;
+    margin-bottom: 20px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #11122F;
+      border: 1px solid #00F5FF;
+    }
   }
 
 }

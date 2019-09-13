@@ -7,22 +7,14 @@ import {dal, html} from 'components';
 
 import './OrdersTable.scss';
 import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
+import OrderSchema from 'types/OrderSchema';
 
 const bem = html.bem('OrdersTable');
 
 export default class OrdersTable extends React.PureComponent {
 
     static propTypes = {
-        items: PropTypes.arrayOf(PropTypes.shape({
-            height: PropTypes.number,
-            owner: PropTypes.string,
-            price: PropTypes.number,
-            total: PropTypes.number,
-            discountPercent: PropTypes.number,
-            index: PropTypes.number,
-            pairName: PropTypes.string,
-            id: PropTypes.string,
-        })),
+        items: PropTypes.arrayOf(OrderSchema),
         isHistory: PropTypes.bool,
     };
 
@@ -45,29 +37,15 @@ export default class OrdersTable extends React.PureComponent {
             return null;
         }
 
-        let items = [];
-
-        // let items = this.props.items.filter(item => {
-        //     const search = (this.state.search || '').toLowerCase();
-        //     return item.currency.toLowerCase().indexOf(search) !== -1;
-        // });
-
-        items = _orderBy(items, [this.state.sort[0]], [this.state.sort[1]]);
-
+        const items = _orderBy(this.props.items, [this.state.sort[0]], [this.state.sort[1]]);
         return (
             <div className={bem.block()}>
                 <table>
                     <thead>
                         <tr>
                             <th className={bem.element('search-column')}>
-                                <div className={bem.element('search-container')}>
-                                    <span className={bem(bem.element('search-icon'), 'Icon Icon__search')}/>
-                                    <input
-                                        placeholder={__('Search')}
-                                        className={bem.element('search')}
-                                        value={this.state.search}
-                                        onChange={e => this.setState({search: e.target.value})}
-                                    />
+                                <div className={bem.element('header')}>
+                                    {__('Name')}
                                 </div>
                             </th>
                             <th>
@@ -96,7 +74,6 @@ export default class OrdersTable extends React.PureComponent {
                                     {__('Amount')}
                                     {this.renderSortButtons('amount')}
                                 </div>
-
                             </th>
                             <th>
                                 % {__('discount')}
