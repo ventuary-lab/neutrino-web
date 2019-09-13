@@ -1,4 +1,5 @@
 const CollectionEnum = require('./enums/CollectionEnum');
+const PairsEnum = require('./enums/PairsEnum');
 
 module.exports = class Router {
 
@@ -18,27 +19,41 @@ module.exports = class Router {
                     },
                 };
             },
-            /*'/api/v1/orders/:pairName': async (request) => {
-                return request.query.address
-                    ? await this.app.collections.orders.getUserOrders(request.query.address)
-                    : await this.app.collections.orders.getOrders()
-            },*/
-            '/api/v1/orders/:pairName/opened': async (request) => {
-                let orders = this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
-                if (request.query.owner) {
-                    orders = orders.filter((order) => order.owner === request.query.owner);
-                }
-                return orders;
-            },
             '/api/v1/orders/position': async (request) => {
                 const price = request.query.price;
-                const orders = await this.app.collections.orders.getOpenedOrders();
+                const orders = await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
                 let position = 0;
                 orders.forEach((order) => {
                     order.price >= price && position++;
                 });
 
                 return {position: position};
+            },
+            '/api/v1/orders/:address': async (request) => {
+                const pairName = PairsEnum.USDNB_USDN;
+                let collectionNames = CollectionEnum.getByPairName(pairName);
+                let data = {
+                    opened: [],
+                    history: [],
+                };
+                for (let collectionName of collectionNames) {
+                    let collection = this.app.getCollection(pairName, collectionName);
+                    if (typeof collection.getUserOpenedOrders === 'function') {
+                        data.opened.push(await collection.getUserOpenedOrders(request.params.address));
+                    }
+                    if (typeof collection.getUserHistoryOrders === 'function') {
+                        data.history.push(await collection.getUserHistoryOrders(request.params.address));
+                    }
+                }
+
+                return data;
+            },
+            '/api/v1/orders/:pairName/opened': async (request) => {
+                let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+                if (request.query.owner) {
+                    orders = orders.filter((order) => order.owner === request.query.owner);
+                }
+                return orders;
             },
             '/api/*': async () => {
                 return {

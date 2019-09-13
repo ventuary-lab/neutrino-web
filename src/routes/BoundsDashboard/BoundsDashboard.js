@@ -9,12 +9,50 @@ import OrderBook from './views/OrderBook';
 import MainChart from './views/MainChart';
 
 import './BoundsDashboard.scss';
+import CollectionEnum from '../../enums/CollectionEnum';
+import {dal} from 'components';
+import PropTypes from 'prop-types';
 
 const bem = html.bem('BoundsDashboard');
 
+@dal.hoc2(
+    () => {
+        return {
+            url: `/api/v1/orders/3N6sMeyG1rZ4CBW5viaiMoyjP27tH5rTdY6`,
+            key: 'orders',
+            collection: CollectionEnum.BONDS_ORDERS,
+        }}
+)
 export default class BoundsDashboard extends React.PureComponent {
 
+    static propTypes = {
+        orders: PropTypes.shape({
+            opened: PropTypes.arrayOf(PropTypes.shape({
+                height: PropTypes.number,
+                owner: PropTypes.string,
+                price: PropTypes.number,
+                total: PropTypes.number,
+                discountPercent: PropTypes.number,
+                index: PropTypes.number,
+                pairName: PropTypes.string,
+                id: PropTypes.string,
+            })),
+            history: PropTypes.arrayOf(PropTypes.shape({
+                height: PropTypes.number,
+                owner: PropTypes.string,
+                price: PropTypes.number,
+                total: PropTypes.number,
+                discountPercent: PropTypes.number,
+                index: PropTypes.number,
+                pairName: PropTypes.string,
+                id: PropTypes.string,
+            }))
+        }),
+        isHistory: PropTypes.bool,
+    };
+
     render() {
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
@@ -53,12 +91,16 @@ export default class BoundsDashboard extends React.PureComponent {
                                     id: 'my-open-orders',
                                     label: __('My open Orders'),
                                     content: OrdersTable,
+                                    contentProps: {
+                                        items: this.props.orders.opened,
+                                    }
                                 },
                                 {
                                     id: 'my-orders-history',
                                     label: __('My Orders History'),
                                     content: OrdersTable,
                                     contentProps: {
+                                        items: this.props.orders.history,
                                         isHistory: true,
                                     }
                                 },

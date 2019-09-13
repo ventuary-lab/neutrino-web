@@ -4,50 +4,24 @@ import _orderBy from 'lodash-es/orderBy';
 import _upperFirst from 'lodash-es/upperFirst';
 
 import {dal, html} from 'components';
-import BoundsDirectionType from 'enums/BoundsDirectionType';
 
 import './OrdersTable.scss';
 import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
-import CurrencyEnum from '../../../enums/CurrencyEnum';
 
 const bem = html.bem('OrdersTable');
 
-@dal.hoc(
-    () => dal.getUserOrders()
-        .then(items => ({items}))
-)
-            // Change hashes to reaal order hash for cancel
-            // items: [
-            //     {
-            //         currency: 'USD-NB',
-            //         type: BoundsDirectionType.BUY,
-            //         time: '12 Jan 2019 12:38:44',
-            //         amount: 21,
-            //         discount: 19.85,
-            //         wavesAmount: 12.9473,
-            //         hash: '4tx89LVMK1yifVJLM2q2TJCxEZuLurwzg7utXHkX5DEM',
-            //     },
-            //     {
-            //         currency: 'USD-NB',
-            //         type: BoundsDirectionType.LIQUIDATE,
-            //         time: '12 Jan 2019 12:39:01',
-            //         amount: 150,
-            //         discount: null,
-            //         wavesAmount: 115.3846,
-            //         hash: 'NPxn3FTWHN2apWxqAP2HtabJYmVHauAQ7vm3QYaQfiA',
-            //     },
-            // ]
 export default class OrdersTable extends React.PureComponent {
 
     static propTypes = {
         items: PropTypes.arrayOf(PropTypes.shape({
-            currency: PropTypes.string,
-            type: PropTypes.oneOf(BoundsDirectionType.getKeys()),
-            time: PropTypes.string,
-            amount: PropTypes.number,
-            discount: PropTypes.number,
-            wavesAmount: PropTypes.number,
-            hash: PropTypes.string,
+            height: PropTypes.number,
+            owner: PropTypes.string,
+            price: PropTypes.number,
+            total: PropTypes.number,
+            discountPercent: PropTypes.number,
+            index: PropTypes.number,
+            pairName: PropTypes.string,
+            id: PropTypes.string,
         })),
         isHistory: PropTypes.bool,
     };
@@ -66,16 +40,17 @@ export default class OrdersTable extends React.PureComponent {
     }
 
     render() {
-        console.log(this.props.items);
 
         if (!this.props.items) {
             return null;
         }
 
-        let items = this.props.items.filter(item => {
-            const search = (this.state.search || '').toLowerCase();
-            return item.currency.toLowerCase().indexOf(search) !== -1;
-        });
+        let items = [];
+
+        // let items = this.props.items.filter(item => {
+        //     const search = (this.state.search || '').toLowerCase();
+        //     return item.currency.toLowerCase().indexOf(search) !== -1;
+        // });
 
         items = _orderBy(items, [this.state.sort[0]], [this.state.sort[1]]);
 

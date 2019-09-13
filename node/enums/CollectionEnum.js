@@ -1,4 +1,5 @@
 const collections = require('../collections');
+const PairsEnum = require('./PairsEnum');
 const ContractEnum = require('./ContractEnum');
 
 module.exports = class CollectionEnum {
@@ -23,6 +24,18 @@ module.exports = class CollectionEnum {
             [this.BONDS_ORDERS]: ContractEnum.AUCTION,
         };
         return map[name] || null;
+    }
+
+    static getByPairNameData() {
+        return {
+            [PairsEnum.USDNB_USDN]: [
+                this.BONDS_ORDERS,
+            ],
+        }
+    }
+
+    static getByPairName(pairName) {
+        return this.getByPairNameData()[pairName];
     }
 
 };

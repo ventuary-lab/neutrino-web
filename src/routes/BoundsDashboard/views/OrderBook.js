@@ -9,6 +9,7 @@ import './OrderBook.scss';
 import CollectionEnum from 'enums/CollectionEnum';
 import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/layout';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import {login} from 'yii-steroids/actions/auth';
 
 const bem = html.bem('OrderBook');
 
@@ -20,11 +21,12 @@ const bem = html.bem('OrderBook');
     })
 )
 @dal.hoc2(
-    props => ({
+    props => {
+        return {
         url: `/api/v1/orders/${props.pairName}/opened`,
         key: 'orders',
         collection: CollectionEnum.BONDS_ORDERS,
-    })
+    }}
 )
 export default class OrderBook extends React.PureComponent {
 

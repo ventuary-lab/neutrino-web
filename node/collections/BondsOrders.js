@@ -1,5 +1,7 @@
-const _orderBy = require('lodash/orderBy');
+const PairsEnum = require('../enums/PairsEnum');
 
+const _orderBy = require('lodash/orderBy');
+const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 
 module.exports = class BondsOrders extends BaseCollection {
@@ -22,6 +24,7 @@ module.exports = class BondsOrders extends BaseCollection {
     async getOrders() {
         let orders = await this.getItemsAll();
         orders = _orderBy(orders, 'position', 'asc');
+
         return orders;
     }
 
@@ -30,12 +33,17 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getOrders();
-        return orders.filter(order => order.index !== null);
+        return orders.filter(order => order.status === OrderStatusEnum.NEW || order.index !== null);
     }
 
-    async getUserOrders(address) {
-        let orders = await this.getOrders();
+    async getUserOpenedOrders(address) {
+        let orders = await this.getOpenedOrders();
         return orders.filter(order => order.owner === address);
+    }
+
+    async getUserHistoryOrders(address) {
+        let orders = await this.getOrders();
+        return orders.filter(order => order.owner === address && (order.status in [OrderStatusEnum.CANCELED, OrderStatusEnum.FILLED] || order.index === null));
     }
 
     async _prepareItem(id, item) {
@@ -49,6 +57,7 @@ module.exports = class BondsOrders extends BaseCollection {
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
             discountPercent: 100 - item['order_price_' + id],
+            pairName: PairsEnum.USDNB_USDN,
         };
     }
 
