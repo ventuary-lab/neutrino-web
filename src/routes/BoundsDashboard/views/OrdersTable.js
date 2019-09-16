@@ -123,13 +123,13 @@ export default class OrdersTable extends React.PureComponent {
                                             {moment(item.timestamp).format('DD MMM YYYY hh:mm:ss') || '--'}
                                         </td>
                                         <td>
-                                            {item.amount || '--'}
+                                            {item.restAmount || '--'}
                                         </td>
                                         <td>
                                             {item.discountPercent + '%' || '--'}
                                         </td>
                                         <td>
-                                            {item.restAmount || '--'}
+                                            {item.restTotal || '--'}
                                         </td>
                                         {!this.props.isHistory && (
                                             <td className={bem.element('cancel-column')}>

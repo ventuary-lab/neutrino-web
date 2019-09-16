@@ -54,6 +54,14 @@ export default class BoundsDashboard extends React.PureComponent {
         }),
     };
 
+    constructor() {
+        super(...arguments);
+
+        this.state = {
+            formTab: 'buy',
+        };
+    }
+
     render() {
         if (!this.props.orders) {
             return null;
@@ -68,12 +76,14 @@ export default class BoundsDashboard extends React.PureComponent {
                             user={this.props.user}
                             baseCurrency={this.props.baseCurrency}
                             quoteCurrency={this.props.quoteCurrency}
+                            formTab={this.state.formTab}
                         />
                     </div>
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
                             layout={'tabs'}
+                            onChange={formTab => this.setState({formTab})}
                             items={[
                                 {
                                     id: 'buy',

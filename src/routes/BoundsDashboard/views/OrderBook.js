@@ -20,6 +20,7 @@ export default class OrderBook extends React.PureComponent {
         quoteCurrency: PropTypes.string,
         user: UserSchema,
         orders: PropTypes.arrayOf(OrderSchema),
+        formTab: PropTypes.oneOf(['buy', 'liquidate']),
     };
 
     render() {
@@ -48,7 +49,7 @@ export default class OrderBook extends React.PureComponent {
                         —
                     </div>
                     <div className={bem.element('header-column', 'upper-case')}>
-                        {_sum(this.props.orders.map(order => order.restTotal))}
+                        {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
                     </div>
                 </div>
                 <div className={bem.element('columns')}>
