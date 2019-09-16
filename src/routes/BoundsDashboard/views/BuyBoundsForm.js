@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import _round from 'lodash-es/round';
 import _isFunction from 'lodash-es/isFunction';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
-import {dal, html, http} from 'components';
-// import {getQuoteCurrency} from 'reducers/layout';
+import {dal, html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
@@ -80,12 +80,16 @@ export default class BuyBoundsForm extends React.PureComponent {
                         discount: 15,
                     }}
                     onSubmit={this._onSubmit}
+                    validators={[
+                        [['discount', 'bounds'], 'required'],
+                        [['discount', 'bounds'], 'integer'],
+                    ]}
                 >
                     <NumberField
                         min={0}
                         max={99}
-                        required
                         step='any'
+                        required
                         inputProps={{
                             autoComplete: 'off',
                         }}
@@ -98,8 +102,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                     />
                     <NumberField
                         min={0}
-                        required
                         step='any'
+                        required
                         inputProps={{
                             autoComplete: 'off'
                         }}
@@ -111,7 +115,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
-                            ? `${_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice} WAVES`
+                            ? `${_round(_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice, 2)} WAVES`
                             : ' '
                         }
                     />

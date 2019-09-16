@@ -8,7 +8,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
 
-import {html} from 'components';
+import {dal, html} from 'components';
 import {getQuoteCurrency} from 'reducers/layout';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import InfoDropDown from 'shared/InfoDropDown';
@@ -19,6 +19,7 @@ import NavItemSchema from 'types/NavItemSchema';
 import './Header.scss';
 import {getUserRole} from 'yii-steroids/reducers/auth';
 import UserSchema from 'types/UserSchema';
+import Button from 'yii-steroids/ui/form/Button';
 
 const bem = html.bem('Header');
 const FORM_ID = 'SectionToggle';
@@ -82,6 +83,13 @@ export default class Header extends React.PureComponent {
                             />
                         </Form>
                     </div>
+                ) || (
+                    <Button
+                        className={bem.element('auth-button')}
+                        label={__('Login with Keeper')}
+                        color='secondary'
+                        onClick={() => dal.auth()}
+                    />
                 )}
                 <div className={'info-dropdown'}>
                     <InfoDropDown

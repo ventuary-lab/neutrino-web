@@ -25,13 +25,6 @@ export default class RightSidebar extends React.PureComponent {
         user: PropTypes.object,
     };
 
-    constructor() {
-        super(...arguments);
-
-        this.logIn = this.logIn.bind(this);
-        this.logOut = this.logOut.bind(this);
-    }
-
     render() {
         const addressUrl = this.props.user
             ? `https://wavesexplorer.com/${this.props.user.network}/address/${this.props.user.address}`
@@ -58,7 +51,7 @@ export default class RightSidebar extends React.PureComponent {
                             <button
                                 className={bem.element('logout')}
                                 type={'button'}
-                                onClick={this.logOut}
+                                onClick={() => dal.logout()}
                             >
                                 <span className={'Icon Icon__logout'}/>
                             </button>
@@ -97,7 +90,7 @@ export default class RightSidebar extends React.PureComponent {
                     className={bem.element('auth-button')}
                     block
                     label={'Login with Keeper'}
-                    onClick={this.logIn}
+                    onClick={() => dal.auth()}
                 />
                 <p className={bem.element('auth-info')}>
                     <a
@@ -116,18 +109,5 @@ export default class RightSidebar extends React.PureComponent {
                 </p>
             </div>
         );
-    }
-
-    logIn() {
-       return dal.auth()
-            .then(user => {
-                this.props.dispatch(setUser(user));
-                clientStorage.set(STORAGE_AUTH_KEY, true);
-            });
-    }
-
-    logOut() {
-        this.props.dispatch(setUser(null));
-        clientStorage.set(STORAGE_AUTH_KEY, false);
     }
 }

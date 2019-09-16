@@ -3,7 +3,7 @@ import {setUser} from 'yii-steroids/actions/auth';
 import {getUser} from 'yii-steroids/reducers/auth';
 import fetchHoc from './dal/fetchHoc';
 import apiHoc from './dal/apiHoc';
-import {http} from 'components';
+import {clientStorage, http} from 'components';
 
 import WavesTransport from './dal/WavesTransport';
 import axios from 'axios';
@@ -85,7 +85,21 @@ export default class DalComponent {
         }
         this._authInterval = setInterval(this._authChecker, 1000);
 
+        const STORAGE_AUTH_KEY = require('shared/RightSidebar/RightSidebar').STORAGE_AUTH_KEY;
+        if (!clientStorage.get(STORAGE_AUTH_KEY) && clientStorage.get(STORAGE_AUTH_KEY) !== 'false') {
+            const store = require('components').store;
+            store.dispatch(setUser(user));
+            clientStorage.set(STORAGE_AUTH_KEY, '1');
+        }
+
         return user;
+    }
+
+    async logout() {
+        const store = require('components').store;
+        store.dispatch(setUser(null));
+        const STORAGE_AUTH_KEY = require('shared/RightSidebar/RightSidebar').STORAGE_AUTH_KEY;
+        clientStorage.remove(STORAGE_AUTH_KEY);
     }
 
     async _authChecker() {

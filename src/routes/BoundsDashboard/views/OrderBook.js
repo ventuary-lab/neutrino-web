@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _sum from 'lodash/sum';
 
 import {html} from 'components';
 
@@ -36,6 +37,17 @@ export default class OrderBook extends React.PureComponent {
                         {CurrencyEnum.getLabel(this.props.quoteCurrency)}
                     </div>
                 </div>
+                <div className={bem.element('header-row', 'summary')}>
+                    <div className={bem.element('header-column', 'upper-case')}>
+                        {_sum(this.props.orders.map(order => order.amount))}
+                    </div>
+                    <div className={bem.element('header-column')}>
+                        —
+                    </div>
+                    <div className={bem.element('header-column', 'upper-case')}>
+                        {_sum(this.props.orders.map(order => order.restAmount))}
+                    </div>
+                </div>
                 <div className={bem.element('columns')}>
                     {this.props.orders.map(order => (
                         <div
@@ -49,7 +61,7 @@ export default class OrderBook extends React.PureComponent {
                                 {order.discountPercent}%
                             </div>
                             <div className={bem.element('body-column', 'bg')}>
-                                {order.total - order.filledTotal}
+                                {order.restAmount}
                             </div>
                         </div>
                     ))}
