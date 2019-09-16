@@ -24,12 +24,10 @@ module.exports = class Router {
                 const price = request.query.price;
                 const orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
                 let position = 0;
-                orders.find((order) => {
-                    if (price >= order.price) {
-                        return true;
+                orders.forEach((order) => {
+                    if (order.price >= price) {
+                        position++;
                     }
-                    position++;
-                    return false;
                 });
                 return {position};
             },

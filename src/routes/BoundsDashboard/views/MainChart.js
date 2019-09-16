@@ -44,7 +44,7 @@ export default class MainChart extends React.PureComponent {
             },
             rangeSelector: {
                 buttons: [
-                    {
+                    /*{
                         type: '100',
                         count: 1,
                         text: '100'
@@ -64,7 +64,7 @@ export default class MainChart extends React.PureComponent {
                         type: '10000',
                         count: 5,
                         text: '10K'
-                    },
+                    },*/
                 ],
                 buttonPosition: {
                     align: 'right',
@@ -134,6 +134,11 @@ export default class MainChart extends React.PureComponent {
                 tickColor: '#CBCBDA',
                 showFirstLabel: false,
                 showLastLabel: false,
+                events: {
+                    afterSetExtremes: e => {
+                        //return this.props.chartData;
+                    }
+                },
                 labels: {
                     format: '{value}',
                     style: {
