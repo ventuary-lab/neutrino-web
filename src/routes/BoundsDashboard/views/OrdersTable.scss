@@ -29,6 +29,14 @@
     text-align: center;
   }
 
+  &__id-column {
+    font-size: 50%;
+    max-width: 50px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   &__type-column {
     &_buy {
       color: $color-brand-green;

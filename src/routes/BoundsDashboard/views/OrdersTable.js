@@ -46,6 +46,9 @@ export default class OrdersTable extends React.PureComponent {
                 <table>
                     <thead>
                         <tr>
+                            <td className={bem.element('id-column')}>
+                                {__('ID')}
+                            </td>
                             <th className={bem.element('search-column')}>
                                 <div className={bem.element('header')}>
                                     {__('Name')}
@@ -104,6 +107,9 @@ export default class OrdersTable extends React.PureComponent {
                             <>
                                 {items.map((item, index) => (
                                     <tr key={index}>
+                                        <td className={bem.element('id-column')}>
+                                            {item.id}
+                                        </td>
                                         <td>
                                             {PairsEnum.getLabel(item.pairName) || '--'}
                                         </td>

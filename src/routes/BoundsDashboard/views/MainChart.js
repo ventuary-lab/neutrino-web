@@ -2,12 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 
-import {html, http} from 'components';
+import {dal, html} from 'components';
 import './MainChart.scss';
+import CollectionEnum from 'enums/CollectionEnum';
 
 const bem = html.bem('MainChart');
 
+@dal.hoc2(
+    props => ({
+        url: `/api/v1/bonds/${props.pairName}/chart`,
+        key: 'chartData',
+        collection: CollectionEnum.BONDS_ORDERS,
+    })
+)
 export default class MainChart extends React.PureComponent {
+
+    static propTypes = {
+        pairName: PropTypes.string,
+        chartData: PropTypes.array,
+    };
 
     constructor() {
         super(...arguments);
@@ -18,9 +31,13 @@ export default class MainChart extends React.PureComponent {
             scrollbar: {
                 enabled: false
             },
+            credits: {
+                enabled: false
+            },
             colors: [''],
             chart: {
                 backgroundColor: null,
+                height: 350,
             },
             navigator: {
                 enabled: false,
@@ -98,7 +115,19 @@ export default class MainChart extends React.PureComponent {
             legend: {
                 enabled: false,
             },
+            tooltip: {
+                backgroundColor: '#17183A',
+                borderWidth: 1,
+                borderColor: '#494991',
+                borderRadius: 7,
+                shadow: false,
+                crosshairs: false,
+                style: {
+                    color: '#fff'
+                }
+            },
             xAxis: {
+                type: 'datetime',
                 lineWidth: 0.5,
                 lineColor: '#CBCBDA',
                 tickWidth: 0.5,
@@ -111,7 +140,6 @@ export default class MainChart extends React.PureComponent {
                         fontFamily: 'Roboto',
                         color: '#CBCBDA',
                         fontSize: '10px',
-
                     },
                 },
             },
@@ -131,7 +159,7 @@ export default class MainChart extends React.PureComponent {
             },
             series: [{
                 name: 'Percent',
-                type: 'area',
+                type: 'areaspline',
                 data: [],
                 tooltip: {
                     valueDecimals: 2
@@ -147,32 +175,26 @@ export default class MainChart extends React.PureComponent {
         };
     }
 
-
-    componentDidMount() {
-        this._refresh();
-        this._timer = setInterval(() => this._refresh(), 60000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this._timer);
+    componentWillReceiveProps(nextProps) {
+        if (this.props.chartData !== nextProps.chartData) {
+            this._refresh(nextProps.chartData);
+        }
     }
 
     render() {
-
         return (
             <div className={bem.block()}>
                 <ReactHighstock
                     isPureConfig
                     ref={this._chart}
                     config={this._config}
-                    backgroundColor={'#1d1d45'}
+                    backgroundColor='#1d1d45'
             />
             </div>
         );
     }
 
-    _refresh() {
-        let data = this._refreshChartData();
+    _refresh(data) {
         let chart = this._chart.current
             ? this._chart.current.getChart()
             : null;
@@ -182,53 +204,4 @@ export default class MainChart extends React.PureComponent {
         }
     }
 
-    _refreshChartData() {
-        return [
-            [
-                671128,
-                26
-            ],
-            [
-                671129,
-                29
-            ],
-            [
-                671130,
-                37
-            ],
-            [
-                671131,
-                32
-            ],
-            [
-                671132,
-                35
-            ],
-            [
-                671133,
-                22
-            ],
-            [
-                671134,
-                15
-            ],
-            [
-                671135,
-                30
-            ],
-            [
-                671136,
-                7
-            ],
-            [
-                671137,
-                10
-            ],
-            [
-                671138,
-                12
-            ],
-
-        ]
-    }
 }

@@ -40,7 +40,7 @@ export default class OrderBook extends React.PureComponent {
                     {this.props.orders.map(order => (
                         <div
                             key={order.id}
-                            className={bem.element('body-row')}
+                            className={bem.element('body-row', {my: this.props.user && this.props.user.address === order.owner})}
                         >
                             <div className={bem.element('body-column', 'bg')}>
                                 {order.amount}

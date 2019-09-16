@@ -94,7 +94,7 @@ module.exports = class App {
             }
         }
 
-        await this._updateAll();
+        await this._updateAll(true);
         this._isSkipUpdates = false;
     }
 
@@ -154,7 +154,7 @@ module.exports = class App {
         return collection;
     }
 
-    async _updateAll() {
+    async _updateAll(flush) {
         if (this._isNowUpdated) {
             this._isNeedUpdateAgain = true;
             return;
@@ -171,6 +171,9 @@ module.exports = class App {
                 }
 
                 this.logger.info('Update all data in collection... ' + collectionName);
+                if (flush) {
+                    await collection.removeAll();
+                }
                 await collection.updateAll(data[contractName]);
             }
         }

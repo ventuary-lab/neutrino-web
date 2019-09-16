@@ -258,8 +258,6 @@ export default class WavesTransport {
             }
 
             const tx = JSON.parse(result);
-            this.dal.log(`Transaction ${tx.id} is published via keeper`);
-
             return waitForTx(tx.id, {
                 apiBase: this.nodeUrl,
                 timeout: 10000,

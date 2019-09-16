@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 const OrderSchema = PropTypes.shape({
+    id: PropTypes.string,
     height: PropTypes.number,
     timestamp: PropTypes.number,
     owner: PropTypes.string,
@@ -14,7 +15,6 @@ const OrderSchema = PropTypes.shape({
     restAmount: PropTypes.number,
     pairName: PropTypes.string,
     status: PropTypes.string,
-    id: PropTypes.string,
 });
 
 export default OrderSchema;

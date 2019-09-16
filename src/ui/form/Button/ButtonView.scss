@@ -58,4 +58,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  &_disabled {
+    background: linear-gradient(0.65deg, #B1A872 -339.25%, #3E3E79 36.53%);
+    pointer-events: none;
+  }
 }

@@ -25,7 +25,8 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOrders() {
         let orders = await this.getItemsAll();
-        orders = _orderBy(orders, 'position', 'asc');
+        orders = orders.filter(order => order.discountPercent > 0 && order.discountPercent < 100); // Fix data
+        orders = _orderBy(orders, 'height', 'desc');
 
         return orders;
     }
@@ -35,19 +36,19 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getOrders();
-        orders = orders.filter(order => order.status === OrderStatusEnum.NEW || order.index !== null);
+        orders = orders.filter(order => order.index !== null);
         orders = _orderBy(orders, 'index', 'asc');
         return orders;
     }
 
     async getUserOpenedOrders(address) {
         let orders = await this.getOpenedOrders();
-        return orders.filter(order => order.owner === address);
+        return orders.filter(order => order.owner === address && order.status === OrderStatusEnum.NEW);
     }
 
     async getUserHistoryOrders(address) {
         let orders = await this.getOrders();
-        return orders.filter(order => order.owner === address && (order.status in [OrderStatusEnum.CANCELED, OrderStatusEnum.FILLED] || order.index === null));
+        return orders.filter(order => order.owner === address && order.index === null);
     }
 
     async _prepareItem(id, item) {
@@ -65,12 +66,19 @@ module.exports = class BondsOrders extends BaseCollection {
             filledTotal,
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            amount: _round(total / (price * 100000000 / 100)),
-            filledAmount: _round(filledTotal / (price * 100000000 / 100)),
-            restAmount: _round((total - filledTotal) / (price * 100000000 / 100)),
+            amount: _round(total / (price * 100000000 / 100), 2),
+            filledAmount: _round(filledTotal / (price * 100000000 / 100), 2),
+            restAmount: _round((total - filledTotal) / (price * 100000000 / 100), 2),
             discountPercent: 100 - price,
             pairName: PairsEnum.USDNB_USDN,
             type: OrderTypeEnum.BUY,
+        };
+    }
+
+    async _postProcessItem(id, item) {
+        return {
+            ...item,
+            id,
         };
     }
 

@@ -64,7 +64,7 @@ export const apiWsHandler = event => (dispatch, getState) => {
     if (event.stream === 'collections') {
         const configs = getState().api.configs;
         configs.forEach(config => {
-            if (config.collection === event.data.collection) {
+            if (config.collection === event.data.collectionName) {
                 fetch(config)
                     .then(data => dispatch({
                         type: API_SET_DATA,

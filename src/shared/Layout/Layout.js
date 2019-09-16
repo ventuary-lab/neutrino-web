@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
-import layoutHoc, {STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
+import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
 import {getCurrentItemParam} from 'yii-steroids/reducers/navigation';
 import axios from 'axios';
 
-import {html, dal, clientStorage} from 'components';
+import {html, dal, ws, store, clientStorage} from 'components';
 import {STORAGE_AUTH_KEY} from 'shared/RightSidebar/RightSidebar';
 import {setCurrency} from 'actions/layout';
 import Header from 'shared/Header';
@@ -18,14 +18,28 @@ import RightSidebar from 'shared/RightSidebar';
 import './Layout.scss';
 import {setUser} from 'yii-steroids/actions/auth';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import {apiWsHandler} from 'actions/api';
+import {goToPage} from 'yii-steroids/actions/navigation';
+import {ROUTE_ROOT} from 'routes';
 
 const bem = html.bem('Layout');
 
 @layoutHoc(
     async () => {
+        // TODO ws.wsUrl = process.env.APP_WS_URL || 'ws://localhost:5000';
+        ws.wsUrl = location.port ? 'ws://localhost:5000' : location.origin.replace('http', 'ws');
+        ws.onMessage = event => store.dispatch(apiWsHandler(event));
+        ws.open();
+
+        let user = null;
+        if (JSON.parse(clientStorage.get(STORAGE_AUTH_KEY))) {
+            user = await dal.auth();
+        }
+
         const response = await axios.get('/api/v1/init');
         return {
             ...response.data,
+            user,
         };
     }
 )
@@ -43,19 +57,12 @@ export default class Layout extends React.PureComponent {
         status: PropTypes.string,
     };
 
-    componentWillMount() {
-        if (JSON.parse(clientStorage.get(STORAGE_AUTH_KEY))) {
-
-            dal.auth()
-                .then(user => {
-                    this.props.dispatch(setUser(user));
-                });
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
             this.props.dispatch(setCurrency(nextProps.matchParams.currency));
+        }
+        if (nextProps.status === STATUS_ACCESS_DENIED) {
+            this.props.dispatch(goToPage(ROUTE_ROOT));
         }
     }
 

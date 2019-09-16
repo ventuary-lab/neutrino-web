@@ -51,7 +51,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                 >
                     <NumberField
                         inputProps={{
-                            autocomplete: 'off',
+                            autoComplete: 'off',
                         }}
                         label={__('Total')}
                         layoutClassName={bem.element('input')}

@@ -9,6 +9,7 @@ import WavesTransport from './dal/WavesTransport';
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
 import BalanceCurrencyEnum from '../enums/BalanceCurrencyEnum';
+import UserRole from 'enums/UserRole';
 
 export default class DalComponent {
 
@@ -73,6 +74,7 @@ export default class DalComponent {
 
         const user = account ?
             {
+                role: UserRole.REGISTERED,
                 address: account.address,
                 balance: await this.getBalance(account.address),
                 network: account.network,
@@ -120,10 +122,10 @@ export default class DalComponent {
         );
     }
 
-    async setOrder(price, bondsAmount) {
+    async setOrder(pairName, price, bondsAmount) {
         price = Math.round(price * 100) / 100;
         const contractPrice = price * 100;
-        let position =  _get(await axios.get('/api/v1/orders/position', {params: {price: contractPrice}}), 'data.position');
+        let position =  _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.getTransport(ContractEnum.AUCTION).nodePublish(
                 'setOrder',

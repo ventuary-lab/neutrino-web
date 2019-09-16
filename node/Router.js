@@ -20,15 +20,24 @@ module.exports = class Router {
                     },
                 };
             },
-            '/api/v1/orders/position': async request => {
+            '/api/v1/bonds/:pairName/position': async request => {
                 const price = request.query.price;
-                const orders = await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+                const orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
                 let position = 0;
-                orders.forEach((order) => {
-                    order.price >= price && position++;
+                orders.find((order) => {
+                    if (price >= order.price) {
+                        return true;
+                    }
+                    position++;
+                    return false;
                 });
-
-                return {position: position};
+                return {position};
+            },
+            '/api/v1/bonds/:pairName/chart': async request => {
+                let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOrders();
+                const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
+                orders = _orderBy(orders, 'height', 'desc');
+                return orders.map(order => [timestamps[order.height], order.discountPercent])
             },
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();

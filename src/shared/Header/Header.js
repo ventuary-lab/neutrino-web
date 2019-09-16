@@ -17,6 +17,8 @@ import {ROUTE_ROOT} from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
 
 import './Header.scss';
+import {getUserRole} from 'yii-steroids/reducers/auth';
+import UserSchema from 'types/UserSchema';
 
 const bem = html.bem('Header');
 const FORM_ID = 'SectionToggle';
@@ -27,6 +29,7 @@ const FORM_ID = 'SectionToggle';
         navItems: getNavItems(state, ROUTE_ROOT),
         currentItem: getCurrentItem(state),
         activeCurrency: getQuoteCurrency(state),
+        userRole: getUserRole(state),
     })
 )
 export default class Header extends React.PureComponent {
@@ -34,7 +37,8 @@ export default class Header extends React.PureComponent {
     static propTypes = {
         navItems: PropTypes.arrayOf(NavItemSchema),
         currentItem: NavItemSchema,
-        activeCurrency: PropTypes.oneOf(CurrencyEnum.getKeys())
+        activeCurrency: PropTypes.oneOf(CurrencyEnum.getKeys()),
+        userRole: PropTypes.string,
     };
 
     componentWillReceiveProps(nextProps) {
@@ -44,6 +48,7 @@ export default class Header extends React.PureComponent {
     }
 
     render() {
+        const showNav = !!this.props.navItems.find(item => item.roles.includes(this.props.userRole));
         return (
             <header className={bem.block()}>
                 <Link
@@ -57,25 +62,27 @@ export default class Header extends React.PureComponent {
                         alt='Neutrino'
                     />
                 </Link>
-                <div className={bem.element('section-toggle')}>
-                    <Form
-                        formId={FORM_ID}
-                        initialValues={{
-                            section: this.props.navItems.map(item => item.id).includes(this.props.currentItem.id)
-                                ? this.props.currentItem.id
-                                : null
-                        }}
-                    >
-                        <DropDownField
-                            attribute={'section'}
-                            items={this.props.navItems}
-                            onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
-                                currency: this.props.activeCurrency
-                            }))}
-                            defaultItemLabel={'Products'}
-                        />
-                    </Form>
-                </div>
+                {showNav && (
+                    <div className={bem.element('section-toggle')}>
+                        <Form
+                            formId={FORM_ID}
+                            initialValues={{
+                                section: this.props.navItems.map(item => item.id).includes(this.props.currentItem.id)
+                                    ? this.props.currentItem.id
+                                    : null
+                            }}
+                        >
+                            <DropDownField
+                                attribute={'section'}
+                                items={this.props.navItems}
+                                onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
+                                    currency: this.props.activeCurrency
+                                }))}
+                                defaultItemLabel={'Products'}
+                            />
+                        </Form>
+                    </div>
+                )}
                 <div className={'info-dropdown'}>
                     <InfoDropDown
                         icon={'Icon__learn'}

@@ -13,6 +13,7 @@ import {dal, html, http} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
+import {getPairName} from 'reducers/layout';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
@@ -20,6 +21,7 @@ const FORM_ID = 'BuyBoundsForm';
 @connect(
     state => ({
         // activeCurrency: getQuoteCurrency(state),
+        pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
     })
 )
@@ -30,6 +32,7 @@ const FORM_ID = 'BuyBoundsForm';
 export default class BuyBoundsForm extends React.PureComponent {
 
     static propTypes = {
+        pairName: PropTypes.string,
         wavesToUsdPrice: PropTypes.number,
     };
 
@@ -84,7 +87,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         required
                         step='any'
                         inputProps={{
-                            autocomplete: 'off',
+                            autoComplete: 'off',
                         }}
                         label={__('Bonds discount')}
                         layoutClassName={bem.element('input')}
@@ -98,7 +101,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         required
                         step='any'
                         inputProps={{
-                            autocomplete: 'off'
+                            autoComplete: 'off'
                         }}
                         label={__('Amount')}
                         layoutClassName={bem.element('input', 'with-hint')}
@@ -116,7 +119,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         min={0}
                         step='any'
                         inputProps={{
-                            autocomplete: 'off'
+                            autoComplete: 'off'
                         }}
                         label={__('Total')}
                         layoutClassName={bem.element('input')}
@@ -141,7 +144,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        return dal.setOrder(price, values.bounds)
+        return dal.setOrder(this.props.pairName, price, values.bounds)
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();

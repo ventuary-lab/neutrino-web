@@ -34,9 +34,22 @@
   }
 
   &__body-row {
+    position: relative;
     padding: 0 10px;
     display: flex;
     align-items: center;
+
+    &_my::after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 25px;
+      width: 8px;
+      height: 8px;
+      margin-top: -4px;
+      background: url(../../../static/icons/order-my-arrow.svg);
+    }
   }
 
   &__body-column {
@@ -47,12 +60,6 @@
     font-size: 13px;
     line-height: 16px;
     text-align: center;
-
-    &_my::after {
-      position: absolute;
-
-
-    }
 
     &_bg {
       background-color: #26274F;
