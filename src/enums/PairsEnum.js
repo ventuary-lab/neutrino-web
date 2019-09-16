@@ -9,4 +9,10 @@ export default class PairsEnum extends Enum {
             this.USDNB_USDN,
         ];
     }
+
+    static getLabels() {
+        return {
+            [this.USDNB_USDN]: 'USD-NB/USD-N'
+        }
+    }
 };

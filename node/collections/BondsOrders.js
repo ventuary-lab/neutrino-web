@@ -2,6 +2,7 @@ const _orderBy = require('lodash/orderBy');
 const _round = require('lodash/round');
 
 const PairsEnum = require('../enums/PairsEnum');
+const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 
@@ -64,9 +65,12 @@ module.exports = class BondsOrders extends BaseCollection {
             filledTotal,
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            amount: _round((total - filledTotal) / (price * 100000000 / 100)),
+            amount: _round(total / (price * 100000000 / 100)),
+            filledAmount: _round(filledTotal / (price * 100000000 / 100)),
+            restAmount: _round((total - filledTotal) / (price * 100000000 / 100)),
             discountPercent: 100 - price,
             pairName: PairsEnum.USDNB_USDN,
+            type: OrderTypeEnum.BUY,
         };
     }
 

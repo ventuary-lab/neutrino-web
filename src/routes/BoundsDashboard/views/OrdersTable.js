@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _orderBy from 'lodash-es/orderBy';
 import _upperFirst from 'lodash-es/upperFirst';
+import moment from 'moment';
 
 import {dal, html} from 'components';
 
 import './OrdersTable.scss';
 import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
+import PairsEnum from '../../../enums/PairsEnum';
+import OrderTypeEnum from '../../../enums/OrderTypeEnum';
 
 const bem = html.bem('OrdersTable');
 
@@ -79,7 +82,7 @@ export default class OrdersTable extends React.PureComponent {
                                 % {__('discount')}
                             </th>
                             <th>
-                                {__('WAVES')}
+                                {__('Total')}
                             </th>
                             {!this.props.isHistory && (
                                 <th className={bem.element('cancel-column')}>
@@ -102,28 +105,28 @@ export default class OrdersTable extends React.PureComponent {
                                 {items.map((item, index) => (
                                     <tr key={index}>
                                         <td>
-                                            {BalanceCurrencyEnum.getLabel(item.currency) || '--'}
+                                            {PairsEnum.getLabel(item.pairName) || '--'}
                                         </td>
                                         <td className={bem.element('type-column', item.type)}>
-                                            {_upperFirst(item.type) || '--'}
+                                            {(OrderTypeEnum.getLabel(item.type)) || '--'}
                                         </td>
                                         <td>
-                                            {item.time || '--'}
+                                            {moment(item.timestamp).format('DD MMM YYYY hh:mm:ss') || '--'}
                                         </td>
                                         <td>
                                             {item.amount || '--'}
                                         </td>
                                         <td>
-                                            {item.discount || '--'}
+                                            {item.discountPercent + '%' || '--'}
                                         </td>
                                         <td>
-                                            {item.wavesAmount || '--'}
+                                            {item.restAmount || '--'}
                                         </td>
                                         {!this.props.isHistory && (
                                             <td className={bem.element('cancel-column')}>
                                                 <div
                                                     className={bem.element('cancel')}
-                                                    onClick={() => dal.cancelOrder(item.hash)}
+                                                    onClick={() => dal.cancelOrder(item.id)}
                                                 >
                                                     <span className={bem(
                                                         bem.element('cancel-icon'),

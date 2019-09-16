@@ -7,4 +7,10 @@ module.exports = class PairsEnum {
             this.USDNB_USDN,
         ];
     }
+
+    static getLabels() {
+        return {
+            [this.USDNB_USDN]: 'USD-NB/USD-N'
+        }
+    }
 };
