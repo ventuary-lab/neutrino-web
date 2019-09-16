@@ -1,0 +1,19 @@
+.LeasingFavorites {
+
+  &__star {
+    & {
+      width: 12px;
+      height: 12px;
+      fill: transparent;
+      cursor: pointer;
+    }
+
+    &:hover {
+      fill: #00F59E;
+    }
+
+    path {
+      stroke: #00F59E;
+    }
+  }
+}

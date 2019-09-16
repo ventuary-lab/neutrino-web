@@ -1,0 +1,68 @@
+.LeasingSlider {
+  & {
+    display: flex;
+    align-items: center;
+  }
+
+  &__rc-slider {
+    & {
+      position: relative;
+      margin-right: 10px;
+      height: 14px;
+      padding: 5px 0;
+      width: 136px;
+      border-radius: 6px;
+      -ms-touch-action: none;
+      touch-action: none;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .rc-slider-rail {
+      position: absolute;
+      width: 100%;
+      background-color: #4A4A7F;
+      height: 1px;
+    }
+
+    .rc-slider-track {
+      position: absolute;
+      left: 0;
+      height: 4px;
+    }
+
+    .rc-slider-handle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      cursor: -webkit-grab;
+      margin-top: -5px;
+      cursor: grab;
+      border-radius: 50%;
+      background-color: #00F5FF;
+      -ms-touch-action: pan-x;
+      touch-action: pan-x;
+    }
+  }
+
+  &__counter {
+    & {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 27px;
+      border: 1px solid #4A4A7F;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    span {
+      text-align: center;
+      width: calc(100% / 3);
+    }
+
+  }
+}
+
