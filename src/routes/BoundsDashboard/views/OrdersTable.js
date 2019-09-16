@@ -91,6 +91,9 @@ export default class OrdersTable extends React.PureComponent {
                                 <th className={bem.element('cancel-column')}>
                                     <div
                                         className={bem.element('cancel')}
+                                        onClick={() => {
+                                            items.forEach(item => dal.cancelOrder(item.id));
+                                        }}
                                     >
                                         <span className={bem(
                                             bem.element('cancel-icon'),
