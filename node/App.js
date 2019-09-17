@@ -7,6 +7,7 @@ const HeightListener = require('./components/HeightListener');
 const WavesTransport = require('./components/WavesTransport');
 const PairsEnum = require('./enums/PairsEnum');
 const ContractEnum = require('./enums/ContractEnum');
+const CurrencyEnum = require('./enums/CurrencyEnum');
 const CollectionEnum = require('./enums/CollectionEnum');
 
 const Router = require('./Router');
@@ -58,6 +59,9 @@ module.exports = class App {
         // Collections by pair and name
         this._collections = {};
 
+        // Assets ids
+        this.assets = null;
+
         // Create websocket server
         this._websocket = new WebSocketServer({
             httpServer: params.httpServer,
@@ -94,12 +98,19 @@ module.exports = class App {
             }
         }
 
+        // Load asset ids
+        this.assets = await this._loadAssetIds();
+
         await this._updateAll(true);
         this._isSkipUpdates = false;
     }
 
     getContract(pairName, contractName) {
         return this._contracts[pairName][contractName];
+    }
+
+    getContracts() {
+        return this._contracts;
     }
 
     async createContract(pairName, contractName) {
@@ -152,6 +163,23 @@ module.exports = class App {
         this._collections[pairName][collectionName] = collection;
 
         return collection;
+    }
+
+    async _loadAssetIds() {
+        const assets = {};
+        const keysMap = CurrencyEnum.getAssetContractKeysMap();
+
+        for (let pairName of PairsEnum.getKeys()) {
+            for (let currency in keysMap) {
+                if (keysMap.hasOwnProperty(currency) && !assets[currency]) {
+                    const key = keysMap[currency];
+                    const transport = this.getContract(pairName, ContractEnum.NEUTRINO).transport;
+
+                    assets[currency] = await transport.nodeFetchKey(key);
+                }
+            }
+        }
+        return assets;
     }
 
     async _updateAll(flush) {

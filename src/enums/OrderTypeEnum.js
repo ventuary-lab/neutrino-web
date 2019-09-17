@@ -1,6 +1,6 @@
 import Enum from './Enum';
 
-export default class CurrencyEnum extends Enum {
+export default class OrderTypeEnum extends Enum {
 
     static BUY = 'buy';
     static LIQUIDATE = 'liquidate';

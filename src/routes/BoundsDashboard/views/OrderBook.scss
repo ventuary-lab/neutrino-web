@@ -96,4 +96,17 @@
     }
   }
 
+  &__body-column_address {
+    width: 66%;
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 190px;
+    padding-left: 15px;
+  }
+
 }

@@ -11,7 +11,7 @@ import _isFunction from 'lodash-es/isFunction';
 import {html, dal} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getQuoteCurrency} from 'reducers/layout';
+import {getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
 
 import './NeutrinoDashboard.scss';
@@ -23,19 +23,18 @@ const FORM_ID = 'GenerationForm';
 @connect(
     state => ({
         activeCurrency: getQuoteCurrency(state),
+        pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
+        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
-)
-@dal.hoc(
-    () => dal.getWavesToUsdPrice()
-        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
 )
 export default class NeutrinoDashboard extends React.PureComponent {
 
 
     static propTypes = {
         activeCurrency: PropTypes.string,
-        wavesToUsdPrice: PropTypes.number,
+        pairName: PropTypes.string,
+        usdToWavesExchange: PropTypes.number,
     };
 
     constructor() {
@@ -209,7 +208,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 <div className={bem.element('info-string', 'without-hint')}>
                                     <span>{__('Current WAVES / USD price')}</span>
                                 </div>
-                                <span>{this.props.wavesToUsdPrice} $</span>
+                                <span>{this.props.usdToWavesExchange} $</span>
                             </div>
                         </div>
                     </div>
@@ -260,7 +259,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = this.props.wavesToUsdPrice;
+        const rate = this.props.usdToWavesExchange;
 
         let amount = this._parseAmount(isRefreshToAmount
             ? _get(props.formValues, 'waves') * rate
@@ -296,8 +295,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     _onSubmit(values) {
         return this.state.isWavesLeft
-            ? dal.swapWavesToNeutrino(values.waves)
-            : dal.swapNeutrinoToWaves(values.neutrino)
+            ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
+            : dal.swapNeutrinoToWaves(this.props.pairName, values.neutrino)
                 .then(() => {
                     if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                         this.props.onComplete();

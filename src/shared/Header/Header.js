@@ -9,7 +9,7 @@ import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
 
 import {dal, html} from 'components';
-import {getQuoteCurrency} from 'reducers/layout';
+import {getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
@@ -88,7 +88,7 @@ export default class Header extends React.PureComponent {
                         className={bem.element('auth-button')}
                         label={__('Login with Keeper')}
                         color='secondary'
-                        onClick={() => dal.auth()}
+                        onClick={() => dal.login()}
                     />
                 )}
                 <div className={'info-dropdown'}>

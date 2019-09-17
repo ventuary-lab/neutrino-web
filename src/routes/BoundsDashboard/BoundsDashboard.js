@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import _get from 'lodash/get';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import {html} from 'components';
@@ -14,7 +13,7 @@ import MainChart from './views/MainChart';
 import './BoundsDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
 import {dal} from 'components';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/layout';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 import {getUser} from 'yii-steroids/reducers/auth';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
@@ -29,7 +28,7 @@ const bem = html.bem('BoundsDashboard');
         user: getUser(state),
     })
 )
-@dal.hoc2(
+@dal.hoc(
     props => [
         {
             url: `/api/v1/bonds/${props.pairName}/orders`,
@@ -39,7 +38,10 @@ const bem = html.bem('BoundsDashboard');
         props.user && {
             url: `/api/v1/bonds/user/${props.user.address}`,
             key: 'userOrders',
-            collection: CollectionEnum.BONDS_ORDERS,
+            collection: [
+                CollectionEnum.BONDS_ORDERS,
+                CollectionEnum.NEUTRINO_ORDERS,
+            ],
         }
     ].filter(Boolean)
 )
@@ -117,6 +119,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                         content: OrdersTable,
                                         contentProps: {
                                             items: this.props.userOrders.opened,
+                                            pairName: this.props.pairName,
                                         }
                                     },
                                     {
@@ -125,6 +128,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                         content: OrdersTable,
                                         contentProps: {
                                             items: this.props.userOrders.history,
+                                            pairName: this.props.pairName,
                                             isHistory: true,
                                         }
                                     },

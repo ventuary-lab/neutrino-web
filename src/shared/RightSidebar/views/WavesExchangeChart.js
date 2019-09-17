@@ -1,25 +1,31 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
+import _orderBy from 'lodash/orderBy';
 
 import {dal, html} from 'components';
-import './MainChart.scss';
+import './WavesExchangeChart.scss';
 import CollectionEnum from 'enums/CollectionEnum';
+import {getPairName, getPrices, getWavesExchanges} from 'reducers/currency';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import PairsEnum from 'enums/PairsEnum';
 
-const bem = html.bem('MainChart');
+const bem = html.bem('WavesExchangeChart');
 
-@dal.hoc(
-    props => ({
-        url: `/api/v1/bonds/${props.pairName}/chart`,
-        key: 'chartData',
-        collection: CollectionEnum.BONDS_ORDERS,
-    })
+@connect(
+    state => {
+        const pairName = getPairName(state);
+        return {
+            prices: pairName ? getWavesExchanges(state, PairsEnum.getSource(pairName)) : null,
+        };
+    }
 )
-export default class MainChart extends React.PureComponent {
+export default class WavesExchangeChart extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
-        chartData: PropTypes.array,
+        prices: PropTypes.array,
     };
 
     constructor() {
@@ -37,7 +43,7 @@ export default class MainChart extends React.PureComponent {
             colors: [''],
             chart: {
                 backgroundColor: null,
-                height: 350,
+                height: 120,
             },
             navigator: {
                 enabled: false,
@@ -103,15 +109,6 @@ export default class MainChart extends React.PureComponent {
                 },
                 inputEnabled: false,
             },
-            title: {
-                align: 'left',
-                text: 'Discount %',
-                y: 40,
-                style: {
-                    color: '#fff',
-                    fontSize: '14px',
-                },
-            },
             legend: {
                 enabled: false,
             },
@@ -136,11 +133,10 @@ export default class MainChart extends React.PureComponent {
                 showLastLabel: false,
                 events: {
                     afterSetExtremes: e => {
-                        //return this.props.chartData;
+                        //return this.props.prices;
                     }
                 },
                 labels: {
-                    format: '{value}',
                     style: {
                         fontFamily: 'Roboto',
                         color: '#CBCBDA',
@@ -163,7 +159,7 @@ export default class MainChart extends React.PureComponent {
                 },
             },
             series: [{
-                name: 'Percent',
+                name: 'USD',
                 type: 'areaspline',
                 data: [],
                 tooltip: {
@@ -180,13 +176,21 @@ export default class MainChart extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        this._refresh(this.props.prices);
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (this.props.chartData !== nextProps.chartData) {
-            this._refresh(nextProps.chartData);
+        if (this.props.prices !== nextProps.prices) {
+            this._refresh(nextProps.prices);
         }
     }
 
     render() {
+        if (!this.props.prices) {
+            return null;
+        }
+
         return (
             <div className={bem.block()}>
                 <ReactHighstock
@@ -194,18 +198,18 @@ export default class MainChart extends React.PureComponent {
                     ref={this._chart}
                     config={this._config}
                     backgroundColor='#1d1d45'
-            />
+                />
             </div>
         );
     }
 
-    _refresh(data) {
-        let chart = this._chart.current
-            ? this._chart.current.getChart()
-            : null;
-
-        if (chart) {
-            chart.series[0].setData(data);
+    _refresh(prices) {
+        if (this._chart.current) {
+            let data = _orderBy(prices, 'timestamp', 'asc').map(item => ([
+                item['timestamp'],
+                item['price'],
+            ]));
+            this._chart.current.getChart().series[0].setData(data);
         }
     }
 

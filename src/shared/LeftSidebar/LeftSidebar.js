@@ -6,8 +6,8 @@ import {goToPage} from 'yii-steroids/actions/navigation';
 
 import {html} from 'components';
 import {ROUTE_ROOT} from 'routes';
-import {setCurrency} from 'actions/layout';
-import {getQuoteCurrency} from 'reducers/layout';
+import {currencySetCurrent} from 'actions/currency';
+import {getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import NavItemSchema from 'types/NavItemSchema';
 
@@ -46,7 +46,7 @@ export default class LeftSidebar extends React.PureComponent {
                             })}
                             onClick={() => {
                                 this.props.dispatch([
-                                    setCurrency(currency),
+                                    currencySetCurrent(currency),
                                     goToPage(this.props.currentItem.id, {
                                         currency: currency,
                                     }),

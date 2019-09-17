@@ -16,6 +16,6 @@
     "react-slick": "^0.25.2",
     "waves-contract-cache": "^0.2.1",
     "websocket": "^1.0.29",
-    "yii-steroids": "^1.12.7"
+    "yii-steroids": "^1.12.16"
   }
 }

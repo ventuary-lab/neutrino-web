@@ -15,7 +15,7 @@ export const ROUTE_LEASING = 'leasing';
 export const ROUTE_LEASING_REDIRECT = 'leasing_redirect';
 
 const store = require('components').store;
-const activeCurrency = store.getState().layout.currency;
+const activeCurrency = store.getState().currency.quote;
 
 export default {
     id: ROUTE_ROOT,

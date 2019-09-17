@@ -10,8 +10,8 @@ import {html, dal, clientStorage} from 'components';
 import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';
+import WavesExchangeChart from 'shared/RightSidebar/views/WavesExchangeChart';
 
-export const STORAGE_AUTH_KEY = 'isAuth';
 const bem = html.bem('RightSidebar');
 
 @connect(
@@ -73,6 +73,7 @@ export default class RightSidebar extends React.PureComponent {
                         {this.renderAuthBlock()}
                     </>
                 )}
+                <WavesExchangeChart/>
             </div>
         );
     }
@@ -90,18 +91,18 @@ export default class RightSidebar extends React.PureComponent {
                     className={bem.element('auth-button')}
                     block
                     label={'Login with Keeper'}
-                    onClick={() => dal.auth()}
+                    onClick={() => dal.login()}
                 />
                 <p className={bem.element('auth-info')}>
                     <a
-                        href={'javascript:void(0)'}
+                        href='#'
                         target={'_blank'}
                     >
                         Terms of Service
                     </a>
                     <br/>
                     <a
-                        href={'javascript:void(0)'}
+                        href='#'
                         target={'_blank'}
                     >
                         Privacy Policy

@@ -10,15 +10,31 @@ module.exports = class Router {
 
         this._routes = {
             '/api/v1/init': async () => {
+                const contracts = {};
+                const contractInstances = this.app.getContracts();
+                Object.keys(contractInstances).map(pairName => {
+                    contracts[pairName] = {};
+                    Object.keys(contractInstances[pairName]).map(contractName => {
+                        contracts[pairName][contractName] = contractInstances[pairName][contractName].transport.dApp;
+                    });
+                });
+
                 return {
                     config: {
                         dal: {
                             // neutrinoAddress: this.app.neutrinoAddress,
                             // auctionAddress: this.app.auctionAddress,
                             network: this.app.network,
+                            nodeUrl: this.app.nodeUrl,
+                            assets: this.app.assets,
+                            contracts,
                         }
                     },
+                    prices: await this._getPrices(),
                 };
+            },
+            '/api/v1/prices': async request => {
+                return await this._getPrices();
             },
             '/api/v1/bonds/:pairName/position': async request => {
                 const price = request.query.price;
@@ -46,9 +62,11 @@ module.exports = class Router {
                     history: [],
                 };
                 for (let pairName of PairsEnum.getKeys()) {
-                    const collection = this.app.getCollection(pairName, CollectionEnum.BONDS_ORDERS);
-                    result.opened = result.opened.concat(await collection.getUserOpenedOrders(request.params.address));
-                    result.history = result.history.concat(await collection.getUserHistoryOrders(request.params.address));
+                    for (let collectionName of [CollectionEnum.BONDS_ORDERS, CollectionEnum.NEUTRINO_ORDERS]) {
+                        const collection = this.app.getCollection(pairName, collectionName);
+                        result.opened = result.opened.concat(await collection.getUserOpenedOrders(request.params.address));
+                        result.history = result.history.concat(await collection.getUserHistoryOrders(request.params.address));
+                    }
                 }
 
                 result.opened = _orderBy(result.opened, 'height', 'desc');
@@ -81,6 +99,18 @@ module.exports = class Router {
                 response.end(JSON.stringify(content));
             });
         });
+    }
+
+    async _getPrices() {
+        const result = {};
+        for (let pairName of PairsEnum.getKeys()) {
+            const currency = PairsEnum.getSource(pairName);
+            if (!result[currency]) {
+                const collection = this.app.getCollection(pairName, CollectionEnum.NEUTRINO_PRICES);
+                result[currency] = await collection.getPrices();
+            }
+        }
+        return result;
     }
 
 };

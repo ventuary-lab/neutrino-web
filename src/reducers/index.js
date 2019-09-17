@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 import * as reducers from 'yii-steroids/reducers';
 import api from './api';
-import layout from './layout';
+import currency from './currency';
 
 export default asyncReducers => combineReducers({
     api,
-    layout,
+    currency,
     ...reducers,
     ...asyncReducers,
 });

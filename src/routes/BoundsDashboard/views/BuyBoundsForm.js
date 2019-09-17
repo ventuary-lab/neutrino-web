@@ -13,7 +13,8 @@ import {dal, html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
-import {getPairName} from 'reducers/layout';
+import {getLastWavesExchange, getPairName} from 'reducers/currency';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
@@ -23,17 +24,14 @@ const FORM_ID = 'BuyBoundsForm';
         // activeCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
+        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
-)
-@dal.hoc(
-    () => dal.getWavesToUsdPrice()
-        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
 )
 export default class BuyBoundsForm extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
-        wavesToUsdPrice: PropTypes.number,
+        usdToWavesExchange: PropTypes.number,
     };
 
     constructor() {
@@ -115,7 +113,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
-                            ? `${_round(_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice, 2)} WAVES`
+                            ? `${_round(_get(this.props, 'formValues.bounds') / this.props.usdToWavesExchange, 2)} WAVES`
                             : ' '
                         }
                     />
@@ -148,7 +146,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        return dal.setOrder(this.props.pairName, price, values.bounds)
+        return dal.setBondOrder(this.props.pairName, price, values.bounds)
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();
