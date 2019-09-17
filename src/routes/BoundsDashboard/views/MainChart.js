@@ -165,8 +165,13 @@ export default class MainChart extends React.PureComponent {
                     isPureConfig
                     ref={this._chart}
                     config={this._config}
+<<<<<<< Updated upstream
                     backgroundColor={'#1d1d45'}
             />
+=======
+                    backgroundColor='#1d1d45'
+                />
+>>>>>>> Stashed changes
             </div>
         );
     }

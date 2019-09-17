@@ -9862,10 +9862,10 @@ watchpack@^1.6.0:
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
 
-waves-contract-cache@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/waves-contract-cache/-/waves-contract-cache-0.2.0.tgz#8b1dbb809124b7b8a5796fb2e2c1042f6c89062d"
-  integrity sha512-0h3GSYEh1tEx6XY5h+et+ZZH/nHKDoeUCqPsSsp5ebcHGlLJWcJvn+d4k1OgGWE3Wo9tuEWdLHhe5B8IydjTZA==
+waves-contract-cache@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/waves-contract-cache/-/waves-contract-cache-0.2.1.tgz#f5580e8a5c2043980ef060c0fd80cc265f15be97"
+  integrity sha512-r6EDMmOvNPF+bMm+G2NiSewmEClGwd4ixD/OZJNzK9vMHvTOE2pMxWkQ29Vf44sSQnf41cyLIGFR6F434bNGJQ==
   dependencies:
     axios "^0.19.0"
     lodash "^4.17.15"

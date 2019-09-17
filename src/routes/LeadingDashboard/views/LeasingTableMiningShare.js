@@ -14,13 +14,13 @@ export default class MiningShare extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
+                <span>
+                    {absolute}
+                </span>
                 <div className={bem.element('bar')}>
                     <div style={{width: `${percent}%`}} className={bem.element('progress')}></div>
                     <span className={bem.element('percent')}>{`${percent}%`}</span>
                 </div>
-                <span>
-                    {absolute}
-                </span>
             </div>
         )
     }

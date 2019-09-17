@@ -1,3 +1,5 @@
+@import '../../../style/helpers/vars';
+
 .LeasingTable {
 
   $root: &;
@@ -10,7 +12,8 @@
   &__tbody {
     max-height: 348px;
     overflow: auto;
-    padding: 15px 0px;
+    padding-top: 15px;
+    margin-bottom: 15px;
   }
 
   &__tbody::-webkit-scrollbar {
@@ -28,76 +31,83 @@
   }
 
   &__th {
+    /*border: 1px white solid;*/
     padding: 25px 20px;
     font-size: 16px;
   }
 
   &__td {
+    /*border: 1px white solid;*/
     padding: 5px 20px;
     font-size: 13px;
   }
 
-  %num {
-    width: 3%;
-  }
-
-  %favorites {
-    width: 3%;
-  }
-
-  %address {
-    width: 25%;
-  }
-
-  %site {
-    width: 15%;
-  }
-
-  %mining {
-    width: 15%;
-  }
-
-  %payouts {
-    width: 15%;
-    text-align: center;
-  }
-
-  %leasing {
-    width: 24%;
-  }
-
   &__th_num, &__td_num {
-    @extend %num;
+    text-align: center;
+    min-width: 60px;
   }
 
   &__th_favorites, &__td_favorites {
-    @extend %favorites;
+    text-align: center;
+    min-width: 60px;
   }
 
   &__th_address, &__td_address {
-    @extend %address;
+    width: calc(100% - 970px);
+    min-width: 400px;
   }
 
   &__th_site, &__td_site {
-    @extend %site;
-  }
-
-  &__td_site {
-    display: flex;
-    justify-content: space-between;
+    width: 200px;
   }
 
   &__th_mining, &__td_mining {
-    @extend %mining;
+    width: 200px;
+  }
+
+  &__th_mining, &__th_payouts  {
+    text-align: center;
   }
 
   &__th_payouts, &__td_payouts {
-    @extend %payouts;
+    width: 200px;
   }
 
   &__th_leasing, &__td_leasing {
-    @extend %leasing;
+    width: 300px;
   }
+
+  &__th_leasing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__sort-buttons {
+    margin-right: 5px;
+  }
+
+  &__sort-button {
+    & {
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 4px 6px 4px;
+      border-color: transparent transparent #6d6f91 transparent;
+      margin-bottom: 3px;
+    }
+
+    &_desc {
+      transform: rotate(180deg);
+      margin: 0;
+    }
+
+    &_active {
+      border-color: transparent transparent $color-brand-azure transparent;
+    }
+  }
+
 
   &__tfoot {
     display: flex;
@@ -112,23 +122,34 @@
     margin-right: 20px;
   }
 
-  &__btn {
-    width: 121px;
-    height: 37px;
-    font-weight: 800;
-    font-size: 12px;
-    color: #ffffff;
-    border-radius: 50px;
-  }
 
-  &__btn_apply {
+  &__submit-button {
     background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
     border: none;
   }
 
-  &__btn_edit {
+  &__edit-button {
     border: 1px solid #4A4A7F;
     background: transparent;
     margin-right: 10px;
   }
+
+  &__sort-buttons {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+
+  &__favorites-counter {
+    display: inline-flex;
+    height: 27px;
+    border-radius: 0px 30px 30px 0px;
+    background: #3D3D79;
+    width: 37px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    font-size: 12px;
+  }
+
 }
