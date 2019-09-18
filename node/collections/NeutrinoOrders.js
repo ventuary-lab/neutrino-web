@@ -10,6 +10,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             `order_height_${id}`,
             `order_owner_${id}`,
             `order_total_${id}`,
+            `order_status_${id}`,
             'orderbook',
         ];
     }
@@ -52,6 +53,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             currency: this.pairName.split('_')[0],
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
+            status: item['order_status_' + id],
             total,
             index: index !== -1 ? index : null,
             type: OrderTypeEnum.LIQUIDATE,

@@ -103,6 +103,9 @@ module.exports = class App {
 
         await this._updateAll(true);
         this._isSkipUpdates = false;
+
+        // TODO
+        setInterval(() => this._updateAll(), 5000);
     }
 
     getContract(pairName, contractName) {
