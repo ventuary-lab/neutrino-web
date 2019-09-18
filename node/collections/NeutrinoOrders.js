@@ -5,7 +5,7 @@ const BaseCollection = require('../base/BaseCollection');
 
 module.exports = class NeutrinoOrders extends BaseCollection {
 
-    getKeys(id = '([A-Za-z0-9]{44})') {
+    getKeys(id = '([A-Za-z0-9]{40,50})$') {
         return [
             `order_height_${id}`,
             `order_owner_${id}`,
@@ -20,6 +20,16 @@ module.exports = class NeutrinoOrders extends BaseCollection {
     async getOrders() {
         let orders = await this.getItemsAll();
         orders = _orderBy(orders, 'height', 'desc');
+        return orders;
+    }
+
+    /**
+     * @returns {Promise}
+     */
+    async getOpenedOrders() {
+        let orders = await this.getOrders();
+        orders = orders.filter(order => order.index !== null);
+        orders = _orderBy(orders, 'index', 'asc');
         return orders;
     }
 

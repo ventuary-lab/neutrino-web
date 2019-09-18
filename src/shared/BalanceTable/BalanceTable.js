@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getUser} from 'yii-steroids/reducers/auth';
+import _round from 'lodash/round';
 
-import {html, dal} from 'components';
+import {html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BalanceTable.scss';
@@ -71,7 +72,7 @@ export default class BalanceTable extends React.PureComponent {
                                     </span>
                                     <span className={bem.element('label', 'tiny')}>
                                         $ {currency === BalanceCurrencyEnum.WAVES
-                                            ? this.props.user.balances[currency] * this.props.usdToWavesExchange
+                                            ? _round(this.props.user.balances[currency] * this.props.usdToWavesExchange, 2)
                                             : this.props.user.balances[currency]
                                         }
                                     </span>

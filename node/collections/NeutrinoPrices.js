@@ -1,4 +1,5 @@
 const _orderBy = require('lodash/orderBy');
+const _round = require('lodash/round');
 
 const BaseCollection = require('../base/BaseCollection');
 
@@ -22,7 +23,7 @@ module.exports = class NeutrinoPrices extends BaseCollection {
     async _prepareItem(height, item) {
         return {
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
-            price: item['price_' + height],
+            price: _round(item['price_' + height] / 100, 2),
         };
     }
 

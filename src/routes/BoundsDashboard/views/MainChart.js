@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
+import _orderBy from 'lodash/orderBy';
 
 import {dal, html} from 'components';
 import './MainChart.scss';
@@ -183,6 +184,8 @@ export default class MainChart extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (this.props.chartData !== nextProps.chartData) {
             this._refresh(nextProps.chartData);
+
+            setTimeout(() => this._refresh(nextProps.chartData), 500);
         }
     }
 
@@ -200,12 +203,9 @@ export default class MainChart extends React.PureComponent {
     }
 
     _refresh(data) {
-        let chart = this._chart.current
-            ? this._chart.current.getChart()
-            : null;
-
-        if (chart) {
-            chart.series[0].setData(data);
+        if (this._chart.current) {
+            data = _orderBy(data, 0, 'asc');
+            this._chart.current.getChart().series[0].setData(data);
         }
     }
 

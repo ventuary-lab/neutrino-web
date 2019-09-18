@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _orderBy from 'lodash-es/orderBy';
-import _upperFirst from 'lodash-es/upperFirst';
+import _isInteger from 'lodash-es/isInteger';
 import moment from 'moment';
 
 import {dal, html} from 'components';
 
 import './OrdersTable.scss';
-import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
@@ -133,7 +132,13 @@ export default class OrdersTable extends React.PureComponent {
                                             {item.discountPercent ? item.discountPercent + '%' : '--'}
                                         </td>
                                         <td>
-                                            {item.restTotal || item.total || '--'}
+                                            {_isInteger(item.restTotal)
+                                                ? item.restTotal
+                                                : (_isInteger(item.total)
+                                                    ? item.total
+                                                    : '--'
+                                                )
+                                            }
                                         </td>
                                         {!this.props.isHistory && (
                                             <td className={bem.element('cancel-column')}>

@@ -56,6 +56,9 @@ module.exports = class Router {
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
             },
+            '/api/v1/liquidate/:pairName/orders': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_ORDERS).getOpenedOrders();
+            },
             '/api/v1/bonds/user/:address': async request => {
                 const result = {
                     opened: [],

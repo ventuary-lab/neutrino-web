@@ -1,4 +1,5 @@
-import _toInteger from 'lodash/toInteger';
+import _round from 'lodash/round';
+import _isEqual from 'lodash/isEqual';
 import axios from 'axios';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -47,7 +48,7 @@ export default class BalanceListener {
     }
 
     async _next() {
-        let transactionId = null;
+        /*let transactionId = null;
         if (this._address) {
             try {
                 const result = await this._request(`transactions/address/${this._address}/limit/1`);
@@ -58,9 +59,9 @@ export default class BalanceListener {
         }
 
         if (transactionId !== this._lastTransactionId) {
-            this._lastTransactionId = transactionId;
+            this._lastTransactionId = transactionId;*/
             await this._refreshBalance();
-        }
+        //}
 
         this._timer = setTimeout(this._next, 2000);
     }
@@ -85,10 +86,10 @@ export default class BalanceListener {
 
         // Normalize
         Object.keys(balances).forEach(currency => {
-            balances[currency] = _toInteger(balances[currency] / CurrencyEnum.getContractPow(currency));
+            balances[currency] = _round(balances[currency] / CurrencyEnum.getContractPow(currency), 2);
         });
 
-        if (address === this._address) {
+        if (address === this._address && !_isEqual(this._balances, balances)) {
             this._balances = balances;
 
             if (this.onUpdate) {

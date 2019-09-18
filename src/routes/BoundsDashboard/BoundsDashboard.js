@@ -32,7 +32,12 @@ const bem = html.bem('BoundsDashboard');
     props => [
         {
             url: `/api/v1/bonds/${props.pairName}/orders`,
-            key: 'orders',
+            key: 'bondOrders',
+            collection: CollectionEnum.BONDS_ORDERS,
+        },
+        {
+            url: `/api/v1/liquidate/${props.pairName}/orders`,
+            key: 'liquidateOrders',
             collection: CollectionEnum.BONDS_ORDERS,
         },
         props.user && {
@@ -48,7 +53,8 @@ const bem = html.bem('BoundsDashboard');
 export default class BoundsDashboard extends React.PureComponent {
 
     static propTypes = {
-        orders: PropTypes.arrayOf(OrderSchema),
+        bondOrders: PropTypes.arrayOf(OrderSchema),
+        liquidateOrders: PropTypes.arrayOf(OrderSchema),
         user: UserSchema,
         userOrders: PropTypes.shape({
             opened: PropTypes.arrayOf(OrderSchema),
@@ -65,7 +71,7 @@ export default class BoundsDashboard extends React.PureComponent {
     }
 
     render() {
-        if (!this.props.orders) {
+        if (!this.props.bondOrders && !this.props.liquidateOrders) {
             return null;
         }
 
@@ -74,7 +80,7 @@ export default class BoundsDashboard extends React.PureComponent {
                 <div className={bem.element('column', 'left')}>
                     <div className={bem.element('order-book')}>
                         <OrderBook
-                            orders={this.props.orders}
+                            orders={this.state.formTab === 'buy' ? this.props.bondOrders : this.props.liquidateOrders}
                             user={this.props.user}
                             baseCurrency={this.props.baseCurrency}
                             quoteCurrency={this.props.quoteCurrency}

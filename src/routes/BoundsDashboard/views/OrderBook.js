@@ -24,6 +24,7 @@ export default class OrderBook extends React.PureComponent {
     };
 
     render() {
+
         const groupedOrders = _groupBy(this.props.orders, 'discountPercent');
         return (
             <div className={bem.block()}>
@@ -46,16 +47,23 @@ export default class OrderBook extends React.PureComponent {
                     )}
                 </div>
                 <div className={bem.element('header-row', 'summary')}>
-                    <div className={bem.element('header-column', 'upper-case')}>
-                        {_sum(this.props.orders.map(order => order.restAmount))}
-                    </div>
                     {this.props.formTab === 'buy' && (
                         <>
+                            <div className={bem.element('header-column', 'upper-case')}>
+                                {_round(_sum(this.props.orders.map(order => order.restAmount)))}
+                            </div>
                             <div className={bem.element('header-column')}>
                                 —
                             </div>
                             <div className={bem.element('header-column', 'upper-case')}>
                                 {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
+                            </div>
+                        </>
+                    )}
+                    {this.props.formTab === 'liquidate' && (
+                        <>
+                            <div className={bem.element('header-column', 'upper-case')}>
+                                {_round(_sum(this.props.orders.map(order => order.total)))}
                             </div>
                         </>
                     )}
@@ -92,7 +100,7 @@ export default class OrderBook extends React.PureComponent {
                                 })}
                             >
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(order.restAmount)}
+                                    {_round(order.total)}
                                 </div>
                                 <div className={bem.element('body-column', 'address')}>
                                     {order.owner}
