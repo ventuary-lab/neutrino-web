@@ -6,12 +6,13 @@ import _orderBy from 'lodash/orderBy';
 import {dal, html} from 'components';
 import './MainChart.scss';
 import CollectionEnum from 'enums/CollectionEnum';
+import ChartBlockAmountEnum from '../../../enums/ChartBlockAmountEnum';
 
 const bem = html.bem('MainChart');
 
 @dal.hoc(
     props => ({
-        url: `/api/v1/bonds/${props.pairName}/chart`,
+        url: `/api/v1/bonds/${props.pairName}/chart/${props.blockAmount || 100}`,
         key: 'chartData',
         collection: CollectionEnum.BONDS_ORDERS,
     })
@@ -21,6 +22,7 @@ export default class MainChart extends React.PureComponent {
     static propTypes = {
         pairName: PropTypes.string,
         chartData: PropTypes.array,
+        updateApiConfig: PropTypes.func,
     };
 
     constructor() {
@@ -44,65 +46,7 @@ export default class MainChart extends React.PureComponent {
                 enabled: false,
             },
             rangeSelector: {
-                buttons: [
-                    /*{
-                        type: '100',
-                        count: 1,
-                        text: '100'
-                    }, {
-                        type: '500',
-                        count: 2,
-                        text: '500'
-                    }, {
-                        type: '1000',
-                        count: 3,
-                        text: '1K'
-                    }, {
-                        type: '5000',
-                        count: 4,
-                        text: '5K'
-                    }, {
-                        type: '10000',
-                        count: 5,
-                        text: '10K'
-                    },*/
-                ],
-                buttonPosition: {
-                    align: 'right',
-                    x: -15,
-                },
-                buttonTheme: {
-                    width: 32,
-                    height: 28,
-                    r: 4,
-                    fill: {
-                        linearGradient: { x1: 0, x2: 1, y1: 1, y2: 0 },
-                        stops: [
-                            [0, '#00ADFF'], // start
-                            [0.4, '#3e3e79'], // middle
-                            [1, '#3e3e79'] // end
-                        ]
-                    },
-                    style: {
-                        color: '#fff',
-                        fontSize: '12px',
-                        lineHeight: '16px',
-                        fontWeight: 500,
-                        fontFamily: 'Montserrat',
-                        textAlign: 'center',
-                    },
-                    states: {
-                        hover: {
-                        },
-                        select: {
-                            fill: '#039',
-                        }
-                    }
-                },
-                labelStyle: {
-                    visibility: 'hidden',
-                },
-                inputEnabled: false,
+                enabled: false,
             },
             title: {
                 align: 'left',
@@ -128,20 +72,11 @@ export default class MainChart extends React.PureComponent {
                 }
             },
             xAxis: {
-                type: 'datetime',
                 lineWidth: 0.5,
                 lineColor: '#CBCBDA',
                 tickWidth: 0.5,
                 tickColor: '#CBCBDA',
-                showFirstLabel: false,
-                showLastLabel: false,
-                events: {
-                    afterSetExtremes: e => {
-                        //return this.props.chartData;
-                    }
-                },
                 labels: {
-                    format: '{value}',
                     style: {
                         fontFamily: 'Roboto',
                         color: '#CBCBDA',
@@ -184,14 +119,34 @@ export default class MainChart extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (this.props.chartData !== nextProps.chartData) {
             this._refresh(nextProps.chartData);
-
-            setTimeout(() => this._refresh(nextProps.chartData), 500);
         }
     }
 
     render() {
         return (
             <div className={bem.block()}>
+                <div className={bem.element('chart-controls-line')}>
+                    <div className={bem.element('chart-interval-picker')}>
+                        {ChartBlockAmountEnum.getKeys().map((id) => {
+                            return (
+                                <a
+                                    href='javascript:void(0)'
+                                    key={id}
+                                    className={bem.element('chart-block-amount-picker', {
+                                        selected: this.props.blockAmount === id,
+                                    })}
+                                    onClick={() => {
+                                        this.props.updateApiConfig({
+                                            blockAmount: id,
+                                        });
+                                    }}
+                                >
+                                    {ChartBlockAmountEnum.getLabels()[id]}
+                                </a>
+                            );
+                        })}
+                    </div>
+                </div>
                 <ReactHighstock
                     isPureConfig
                     ref={this._chart}

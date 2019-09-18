@@ -79,25 +79,31 @@ export default class BalanceTable extends React.PureComponent {
                                 </div>
                             </td>
                             <td>
-                                <div className={bem.element('controls-column')}>
-                                    {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
-                                        .map((item, index) => (
-                                            <a
-                                                key={index}
-                                                href='https://dex.wavesplatform.com/'
-                                                target={'_blank'}
-                                                className={bem.element('control')}
-                                            >
-                                                <span className={item}/>
-                                            </a>
-                                        ))
-                                    }
-                                </div>
+                                {this.renderDexButtons(currency)}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         );
+    }
+
+    renderDexButtons(currency) {
+        return (
+            <div className={bem.element('controls-column')}>
+                {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
+                    .map((item, index) => (
+                        <a
+                            key={index}
+                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${CurrencyEnum.getDexAssetId(currency)}&assetId1=${CurrencyEnum.getDexAssetId(CurrencyEnum.USD)}`}
+                            target={'_blank'}
+                            className={bem.element('control')}
+                        >
+                            <span className={item}/>
+                        </a>
+                    ))
+                }
+            </div>
+        )
     }
 }

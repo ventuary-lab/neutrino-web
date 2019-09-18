@@ -1,4 +1,45 @@
 .MainChart {
+  width: 100%;
+  padding-left: 32px;
+  padding-right: 32px;
+  position: relative;
+
+  &__chart-controls-line {
+    position: absolute;
+    z-index: 10;
+    right: 32px;
+    top: 48px;
+  }
+
+  &__chart-interval-picker {
+    display: flex;
+  }
+
+  &__chart-block-amount-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    margin-right: 10px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    font-family: Montserrat;
+    background: linear-gradient(32.9deg, #00ADFF -44.26%, #3E3E79 50%);
+    border-radius: 4px;
+
+    &_selected {
+      border: solid #3e3e79 1px;
+      background: #17193b;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
   .highcharts-button {
     text {
       transform: translateY(6px);

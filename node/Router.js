@@ -47,10 +47,11 @@ module.exports = class Router {
                 });
                 return {position};
             },
-            '/api/v1/bonds/:pairName/chart': async request => {
+            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
                 let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOrders();
                 const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
                 orders = _orderBy(orders, 'height', 'desc');
+                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
                 return orders.map(order => [timestamps[order.height], order.discountPercent])
             },
             '/api/v1/bonds/:pairName/orders': async request => {
