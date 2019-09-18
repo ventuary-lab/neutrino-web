@@ -4,19 +4,6 @@
 
   $root: &;
 
-  $width-scroll: 5px;
-
-  $width-num: 60px;
-  $width-favorites: 60px;
-  $width-site: 150px;
-  $width-mining: 180px;
-  $width-payouts: 180px;
-  $width-leasing: 260px;
-
-  @function sum-fix-width() {
-    @return $width-num + $width-favorites + $width-site + $width-mining + $width-payouts + $width-leasing;
-  }
-
   &__thead {
     border-radius: 4px 4px 0px 0px;
     background: linear-gradient(180deg, #22224F -9.18%, #2D2F67 144.84%);
@@ -44,7 +31,7 @@
   }
 
   &__th {
-    /*border: 1px solid white;*/
+    border: 1px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,61 +39,47 @@
     font-size: 13px;
   }
 
-  &__td {
-    /*border: 1px solid white;*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 0px;
-    font-size: 11px;
-  }
-
-  &__th_num, &__td_num {
+  &__th_num {
     min-width: $width-num;
   }
 
-  &__th_favorites, &__td_favorites {
+  &__th_favorites {
     min-width: $width-favorites;
   }
 
-  &__th_address, &__td_address {
-    justify-content: flex-start;
-    min-width: 200px;
-    padding: 0px 10px;
+  @function sum-fix-width() {
+    @return $width-num + $width-favorites + $width-site + $width-mining + $width-payouts + $width-leasing + $width-scroll;
   }
 
   &__th_address {
-    width: calc((100% - #{sum-fix-width() + $width-scroll}));
-  }
-
-  &__td_address {
+    justify-content: flex-start;
     width: calc((100% - #{sum-fix-width()}));
+    min-width: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  &__th_site, &__td_site {
+  &__th_site {
     justify-content: flex-start;
     min-width: $width-site;
   }
 
-  &__th_mining, &__td_mining {
+  &__th_mining {
     min-width: $width-mining;
   }
 
-  &__th_payouts, &__td_payouts {
+  &__th_payouts {
     min-width: $width-payouts;
   }
 
-  &__th_leasing, &__td_leasing {
+  &__th_leasing {
     min-width: $width-leasing;
   }
 
   &__th_leasing {
     justify-content: space-between;
-  }
-
-  &__td_leasing {
-    justify-content: flex-start;
-    padding: 0px 0px 0px 5px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   &__my-leasing, &__my-favorites {
@@ -139,7 +112,6 @@
     }
   }
 
-
   &__tfoot {
     display: flex;
     justify-content: center;
@@ -152,7 +124,6 @@
     font-size: 12px;
     margin-right: 20px;
   }
-
 
   &__submit-button {
     background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
@@ -182,5 +153,4 @@
     margin-left: 10px;
     font-size: 12px;
   }
-
 }
