@@ -9,10 +9,10 @@
   }
 
   &__td {
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 5px 0px;
     font-size: 11px;
   }
@@ -44,10 +44,14 @@
 
   &__td_mining {
     min-width: $width-mining;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   &__td_payouts {
     min-width: $width-payouts;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   &__td_leasing {

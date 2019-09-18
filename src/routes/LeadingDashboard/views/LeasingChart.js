@@ -13,7 +13,7 @@ export default class LeasingChart extends React.PureComponent {
                 backgroundColor: null,
             },
             title: {
-                text: 'Cashout and Income',
+                text: __('Cashout and Income'),
                 style: {
                     color: '#ffffff',
                     fontSize: '14px',
@@ -78,12 +78,12 @@ export default class LeasingChart extends React.PureComponent {
                 }
             },
             series: [{
-                name: 'Cashout',
+                name: __('Cashout'),
                 borderColor: null,
                 color: '#134EC8',
                 data: [2500, 2700, 1600, 2400, 1200, 2000]
             }, {
-                name: 'Income',
+                name: __('Income'),
                 borderColor: null,
                 color: '#00F59E',
                 data: [2500, 2800, 1400, 2500, 1300, 2100]

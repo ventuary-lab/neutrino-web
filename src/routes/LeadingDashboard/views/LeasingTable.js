@@ -16,7 +16,7 @@ export default class LeasingTable extends React.PureComponent {
         return (
             <div className={bem.element('sort-buttons')}>
                 <a className={bem.element('sort-button', {
-                    asc: true, //разобраться
+                    asc: true,
                     active: false,
                 })}/>
                 <a className={bem.element('sort-button', {
@@ -77,18 +77,18 @@ export default class LeasingTable extends React.PureComponent {
                     </div>
                     <div className={bem.element('tfoot')}>
                         <span className={bem.element('text')} >
-                            USD-Neutrino and USD-Bonds holders are able to change the leassing configuration for collateralized balance in WAVES
+                            {__('USD-Neutrino and USD-Bonds holders are able to change the leassing configuration for collateralized balance in WAVES')}
                         </span>
                         <Button
                             type={'submit'}
                             className={bem.element('edit-button')}
-                            label={'Edit'}
+                            label={__('Edit')}
                             color={'secondary'}
                         />
                         <Button
                             type={'submit'}
                             className={bem.element('submit-button')}
-                            label={'Apply'}
+                            label={__('Apply')}
                         />
                     </div>
                 </div>

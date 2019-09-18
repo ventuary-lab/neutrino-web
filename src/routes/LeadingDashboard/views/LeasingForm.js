@@ -17,8 +17,10 @@ export default class LeasingForm extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('header')}>
-                    <span className={bem.element('head')}>Available</span>
-                    <span className={bem.element('available-amount')}>59,976.38 USD-N</span>
+                    <span className={bem.element('head')}>__('Available')</span>
+                    <span className={bem.element('available-amount')}>
+                        59,976.38 {BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N)}
+                    </span>
                 </div>
                 <div className={bem.element('form-wrap')}>
                     <Form
