@@ -71,7 +71,7 @@ export default class BoundsDashboard extends React.PureComponent {
     }
 
     render() {
-        if (!this.props.bondOrders && !this.props.liquidateOrders) {
+        if (!this.props.bondOrders || !this.props.liquidateOrders) {
             return null;
         }
 
