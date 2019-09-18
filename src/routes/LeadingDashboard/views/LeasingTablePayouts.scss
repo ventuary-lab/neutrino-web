@@ -2,7 +2,7 @@
   & {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   &__bar {
@@ -12,6 +12,7 @@
     height: 27px;
     border-radius: 30px;
     overflow: hidden;
+    margin-left: 20px;
   }
 
   &__progress {

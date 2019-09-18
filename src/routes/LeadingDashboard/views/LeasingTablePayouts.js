@@ -10,10 +10,13 @@ export default class LeasersPayouts extends React.PureComponent {
     }
 
     render() {
-        const { percent } = this.props;
+        const { absolute, percent } = this.props;
 
         return (
             <div className={bem.block()}>
+                <span>
+                    {absolute}
+                </span>
                 <div className={bem.element('bar')}>
                     <div style={{width: `${percent}%`}} className={bem.element('progress')}></div>
                     <span className={bem.element('percent')}>{`${percent}%`}</span>
