@@ -4,6 +4,19 @@
 
   $root: &;
 
+  $width-scroll: 5px;
+
+  $width-num: 60px;
+  $width-favorites: 60px;
+  $width-site: 150px;
+  $width-mining: 180px;
+  $width-payouts: 180px;
+  $width-leasing: 260px;
+
+  @function sum-fix-width() {
+    @return $width-num + $width-favorites + $width-site + $width-mining + $width-payouts + $width-leasing;
+  }
+
   &__thead {
     border-radius: 4px 4px 0px 0px;
     background: linear-gradient(180deg, #22224F -9.18%, #2D2F67 144.84%);
@@ -17,7 +30,7 @@
   }
 
   &__tbody::-webkit-scrollbar {
-    width: 5px;
+    width: $width-scroll;
   }
 
   &__tbody::-webkit-scrollbar-thumb {
@@ -31,55 +44,73 @@
   }
 
   &__th {
-    /*border: 1px white solid;*/
-    padding: 25px 20px;
-    font-size: 16px;
-  }
-
-  &__td {
-    /*border: 1px white solid;*/
-    padding: 5px 20px;
+    /*border: 1px solid white;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0px;
     font-size: 13px;
   }
 
+  &__td {
+    /*border: 1px solid white;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0px;
+    font-size: 11px;
+  }
+
   &__th_num, &__td_num {
-    text-align: center;
-    min-width: 60px;
+    min-width: $width-num;
   }
 
   &__th_favorites, &__td_favorites {
-    text-align: center;
-    min-width: 60px;
+    min-width: $width-favorites;
   }
 
   &__th_address, &__td_address {
-    width: calc(100% - 970px);
-    min-width: 400px;
+    justify-content: flex-start;
+    min-width: 200px;
+    padding: 0px 10px;
+  }
+
+  &__th_address {
+    width: calc((100% - #{sum-fix-width() + $width-scroll}));
+  }
+
+  &__td_address {
+    width: calc((100% - #{sum-fix-width()}));
   }
 
   &__th_site, &__td_site {
-    width: 200px;
+    justify-content: flex-start;
+    min-width: $width-site;
   }
 
   &__th_mining, &__td_mining {
-    width: 200px;
-  }
-
-  &__th_mining, &__th_payouts  {
-    text-align: center;
+    min-width: $width-mining;
   }
 
   &__th_payouts, &__td_payouts {
-    width: 200px;
+    min-width: $width-payouts;
   }
 
   &__th_leasing, &__td_leasing {
-    width: 300px;
+    min-width: $width-leasing;
   }
 
   &__th_leasing {
-    display: flex;
     justify-content: space-between;
+  }
+
+  &__td_leasing {
+    justify-content: flex-start;
+    padding: 0px 0px 0px 5px;
+  }
+
+  &__my-leasing, &__my-favorites {
+    display: flex;
     align-items: center;
   }
 

@@ -14,7 +14,7 @@ export default class LeasersPayouts extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
-                <span>
+                <span className={bem.element('abs')}>
                     {absolute}
                 </span>
                 <div className={bem.element('bar')}>

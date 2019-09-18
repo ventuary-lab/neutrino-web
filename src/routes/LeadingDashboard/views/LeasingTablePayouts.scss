@@ -2,7 +2,10 @@
   & {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+  }
+
+  &__abs {
+    font-size: 12px;
   }
 
   &__bar {
