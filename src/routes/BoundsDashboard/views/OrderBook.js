@@ -24,6 +24,9 @@ export default class OrderBook extends React.PureComponent {
     };
 
     render() {
+        if (!this.props.orders) {
+            return null;
+        }
 
         const groupedOrders = _groupBy(this.props.orders, 'discountPercent');
         return (

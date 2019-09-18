@@ -1,6 +1,12 @@
 @import '../../style/helpers/mixins';
 @import '../../style/helpers/vars';
 
+body {
+  background-color: $color-layout-bg;
+  height: auto;
+  min-height: 100%;
+}
+
 .Layout {
   $root: &;
   $gap: 8px;
@@ -8,7 +14,6 @@
   $right-width: 316px;
   $header-height: 65px;
 
-  background-color: $color-layout-bg;
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -74,9 +74,5 @@ export const apiWsHandler = event => (dispatch, getState) => {
                     }));
             }
         });
-
-        if (event.data.collectionName === CollectionEnum.NEUTRINO_PRICES) {
-
-        }
     }
 };

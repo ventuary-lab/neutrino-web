@@ -32,12 +32,7 @@ class LeasingTableRow extends React.PureComponent {
                     {address}
                 </div>
                 <div className={bem.element('td', 'site')}>
-                    <span>
-                        {website.address}
-                    </span>
-                    <span>
-                        {website.traffic}
-                    </span>
+                    {website}
                 </div>
                 <div className={bem.element('td', 'mining')}>
                     <MiningShare {...miningShare}/>
@@ -59,6 +54,22 @@ export default class LeasingTable extends React.PureComponent {
         super(props);
     }
 
+    renderSortButtons(column) {
+        return (
+            <div className={bem.element('sort-buttons')}>
+                <a className={bem.element('sort-button', {
+                    asc: true, //разобраться
+                    active: false,
+                })}/>
+                <a className={bem.element('sort-button', {
+                    desc: true,
+                    active: true,
+                })}/>
+            </div>
+        );
+    }
+
+
     render() {
 
         const { leasers } = this.props;
@@ -72,11 +83,30 @@ export default class LeasingTable extends React.PureComponent {
                         <div className={bem.element('tr')}>
                             <div className={bem.element('th', 'num')}></div>
                             <div className={bem.element('th', 'favorites')}></div>
-                            <div className={bem.element('th', 'address')}>Address</div>
-                            <div className={bem.element('th', 'site')}>Website</div>
-                            <div className={bem.element('th', 'mining')}>Mining Share</div>
-                            <div className={bem.element('th', 'payouts')}>Leasers payouts</div>
-                            <div className={bem.element('th', 'leasing')}>My leasing</div>
+                            <div className={bem.element('th', 'address')}>{__('Address')}</div>
+                            <div className={bem.element('th', 'site')}>{__('Website')}</div>
+                            <div className={bem.element('th', 'mining')}>
+                                {this.renderSortButtons('mining share')}
+                                {__('Mining Share')}
+                            </div>
+                            <div className={bem.element('th', 'payouts')}>
+                                {this.renderSortButtons('mining share')}
+                                {__('Leasers payouts')}
+                            </div>
+                            <div className={bem.element('th', 'leasing')}>
+                                <div>
+                                    {this.renderSortButtons('mining share')}
+                                    {__('My leasing')}
+                                </div>
+                                <div>
+                                    <span>
+                                        {__('My favorites')}
+                                    </span>
+                                    <div className={bem.element('favorites-counter')}>
+                                        <span>5</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className={bem.element('tbody')}>
@@ -88,11 +118,15 @@ export default class LeasingTable extends React.PureComponent {
                         </span>
                         <Button
                             type={'submit'}
+                            className={bem.element('edit-button')}
+                            label={'Edit'}
+                            color={'secondary'}
+                        />
+                        <Button
+                            type={'submit'}
                             className={bem.element('submit-button')}
                             label={'Apply'}
                         />
-                        <input className={bem.element('btn', 'edit')} type='button' value='Edit'/>
-                        <input className={bem.element('btn', 'apply')} type='button' value='Apply'/>
                     </div>
                 </div>
             </div>

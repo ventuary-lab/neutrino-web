@@ -11,6 +11,7 @@ import OrderSchema from 'types/OrderSchema';
 import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import OrderStatusEnum from 'enums/OrderStatusEnum';
 
 const bem = html.bem('OrdersTable');
 
@@ -88,6 +89,9 @@ export default class OrdersTable extends React.PureComponent {
                             <th>
                                 {__('Total')}
                             </th>
+                            <th>
+                                {__('Status')}
+                            </th>
                             {!this.props.isHistory && (
                                 <th className={bem.element('cancel-column')}>
                                     <div
@@ -139,6 +143,9 @@ export default class OrdersTable extends React.PureComponent {
                                                     : '--'
                                                 )
                                             }
+                                        </td>
+                                        <td>
+                                            {OrderStatusEnum.getLabel(item.status)}
                                         </td>
                                         {!this.props.isHistory && (
                                             <td className={bem.element('cancel-column')}>

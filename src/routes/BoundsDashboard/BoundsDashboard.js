@@ -38,7 +38,7 @@ const bem = html.bem('BoundsDashboard');
         {
             url: `/api/v1/liquidate/${props.pairName}/orders`,
             key: 'liquidateOrders',
-            collection: CollectionEnum.BONDS_ORDERS,
+            collection: CollectionEnum.NEUTRINO_ORDERS,
         },
         props.user && {
             url: `/api/v1/bonds/user/${props.user.address}`,
@@ -71,7 +71,7 @@ export default class BoundsDashboard extends React.PureComponent {
     }
 
     render() {
-        if (!this.props.bondOrders && !this.props.liquidateOrders) {
+        if (!this.props.bondOrders || !this.props.liquidateOrders) {
             return null;
         }
 

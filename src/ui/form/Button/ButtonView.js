@@ -21,6 +21,7 @@ export default class ButtonView extends React.PureComponent {
             'secondary',
             'danger',
             'info',
+            'secondary'
         ]),
         block: PropTypes.bool,
         link: PropTypes.bool,

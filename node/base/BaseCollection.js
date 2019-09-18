@@ -108,7 +108,7 @@ module.exports = class BaseCollection {
     async _updateNext(ids, data = {}, index = 0) {
         if (ids[index]) {
             await this._updateItem(ids[index], data[ids[index]]);
-            this._updateNext(ids, data, index + 1);
+            await this._updateNext(ids, data, index + 1);
         }
     }
 

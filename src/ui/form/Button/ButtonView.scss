@@ -41,6 +41,11 @@
     background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
   }
 
+  &_color_secondary {
+    border: 1px solid #4A4A7F;
+    background: transparent;
+  }
+
   &_block {
     width: 100%;
   }
