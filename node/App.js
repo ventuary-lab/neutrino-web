@@ -106,6 +106,10 @@ module.exports = class App {
 
         // TODO
         setInterval(() => this._updateAll(), 5000);
+
+        setInterval(() => {
+            this._websocket.push(JSON.stringify({"stream":"collections","data":{"id":"3vXxzbxxZPabheYWZKz1o2ZBxeoc5YYFYmyFVdZi1sMn","pairName":"usd-nb_usd-n","collectionName":"neutrino_orders","item":{"height":681588,"currency":"usd-nb","timestamp":1568803034593,"owner":"3MryHjS36TVwjJk5SYsQ6iFPjBSDwTsGWUh","total":1,"index":0,"type":"liquidate"}}}))
+        }, 5000);
     }
 
     getContract(pairName, contractName) {

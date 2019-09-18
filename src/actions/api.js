@@ -62,6 +62,7 @@ export const apiRemoveConfigs = configs => {
 };
 
 export const apiWsHandler = event => (dispatch, getState) => {
+    console.log(345345, event);
     if (event.stream === 'collections') {
         const configs = getState().api.configs;
         configs.forEach(config => {
@@ -74,9 +75,5 @@ export const apiWsHandler = event => (dispatch, getState) => {
                     }));
             }
         });
-
-        if (event.data.collectionName === CollectionEnum.NEUTRINO_PRICES) {
-
-        }
     }
 };
