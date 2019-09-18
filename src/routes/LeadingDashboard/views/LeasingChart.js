@@ -89,6 +89,19 @@ export default class LeasingChart extends React.PureComponent {
                 data: [2500, 2800, 1400, 2500, 1300, 2100]
             }],
             credits: false,
+            tooltip: {
+                backgroundColor: '#17183A',
+                borderColor: '#494991',
+                borderRadius: 7,
+                padding: 10,
+                headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
+                //shape: 'square',
+                style: {
+                    color: '#ffffff',
+                    fontSize: '10px',
+                    fontFamily: 'Montserrat'
+                }
+            }
         }
     }
 

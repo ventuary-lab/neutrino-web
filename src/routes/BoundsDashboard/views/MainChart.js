@@ -144,6 +144,17 @@ export default class MainChart extends React.PureComponent {
                     ]
                 },
             }],
+            tooltip: {
+                backgroundColor: '#17183A',
+                borderColor: '#494991',
+                borderRadius: 7,
+                padding: 10,
+                style: {
+                    color: '#ffffff',
+                    fontSize: '10px',
+                    fontFamily: 'Montserrat'
+                }
+            },
         };
     }
 
