@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _orderBy from 'lodash-es/orderBy';
-import _upperFirst from 'lodash-es/upperFirst';
+import _isInteger from 'lodash-es/isInteger';
 import moment from 'moment';
 
 import {dal, html} from 'components';
 
 import './OrdersTable.scss';
-import BalanceCurrencyEnum from '../../../enums/BalanceCurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('OrdersTable');
 
@@ -18,6 +18,7 @@ export default class OrdersTable extends React.PureComponent {
 
     static propTypes = {
         items: PropTypes.arrayOf(OrderSchema),
+        pairName: PropTypes.string,
         isHistory: PropTypes.bool,
     };
 
@@ -46,6 +47,9 @@ export default class OrdersTable extends React.PureComponent {
                 <table>
                     <thead>
                         <tr>
+                            <td className={bem.element('id-column')}>
+                                {__('ID')}
+                            </td>
                             <th className={bem.element('search-column')}>
                                 <div className={bem.element('header')}>
                                     {__('Name')}
@@ -88,6 +92,9 @@ export default class OrdersTable extends React.PureComponent {
                                 <th className={bem.element('cancel-column')}>
                                     <div
                                         className={bem.element('cancel')}
+                                        onClick={() => {
+                                            items.forEach(item => dal.cancelOrder(this.props.pairName, item.type, item.id));
+                                        }}
                                     >
                                         <span className={bem(
                                             bem.element('cancel-icon'),
@@ -104,8 +111,13 @@ export default class OrdersTable extends React.PureComponent {
                             <>
                                 {items.map((item, index) => (
                                     <tr key={index}>
+                                        <td className={bem.element('id-column')}>
+                                            {item.id}
+                                        </td>
                                         <td>
-                                            {PairsEnum.getLabel(item.pairName) || '--'}
+                                            {item.type === OrderTypeEnum.LIQUIDATE
+                                                ? CurrencyEnum.getLabel(item.currency)
+                                                : PairsEnum.getLabel(item.pairName)}
                                         </td>
                                         <td className={bem.element('type-column', item.type)}>
                                             {(OrderTypeEnum.getLabel(item.type)) || '--'}
@@ -114,19 +126,25 @@ export default class OrdersTable extends React.PureComponent {
                                             {moment(item.timestamp).format('DD MMM YYYY hh:mm:ss') || '--'}
                                         </td>
                                         <td>
-                                            {item.amount || '--'}
-                                        </td>
-                                        <td>
-                                            {item.discountPercent + '%' || '--'}
-                                        </td>
-                                        <td>
                                             {item.restAmount || '--'}
+                                        </td>
+                                        <td>
+                                            {item.discountPercent ? item.discountPercent + '%' : '--'}
+                                        </td>
+                                        <td>
+                                            {_isInteger(item.restTotal)
+                                                ? item.restTotal
+                                                : (_isInteger(item.total)
+                                                    ? item.total
+                                                    : '--'
+                                                )
+                                            }
                                         </td>
                                         {!this.props.isHistory && (
                                             <td className={bem.element('cancel-column')}>
                                                 <div
                                                     className={bem.element('cancel')}
-                                                    onClick={() => dal.cancelOrder(item.id)}
+                                                    onClick={() => dal.cancelOrder(this.props.pairName, item.type, item.id)}
                                                 >
                                                     <span className={bem(
                                                         bem.element('cancel-icon'),
@@ -166,8 +184,11 @@ export default class OrdersTable extends React.PureComponent {
                         asc: true,
                         active: this.state.sort[0] === column && this.state.sort[1] === 'asc',
                     })}
-                    href='javascript:void(0)'
-                    onClick={() => this.setState({sort: [column, 'asc']})}
+                    href='#'
+                    onClick={e => {
+                        e.preventDefault();
+                        this.setState({sort: [column, 'asc']});
+                    }}
                 />
                 <a
                     className={bem.element('sort-button', {
@@ -175,7 +196,10 @@ export default class OrdersTable extends React.PureComponent {
                         active: this.state.sort[0] === column && this.state.sort[1] === 'desc',
                     })}
                     href='javascript:void(0)'
-                    onClick={() => this.setState({sort: [column, 'desc']})}
+                    onClick={e => {
+                        e.preventDefault();
+                        this.setState({sort: [column, 'desc']});
+                    }}
                 />
             </div>
         );

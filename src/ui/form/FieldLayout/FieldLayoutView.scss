@@ -18,6 +18,10 @@
   }
   &__invalid-feedback {
     display: block !important;
+    color: $color-brand-red;
+    padding-top: 3px;
+    margin-bottom: 5px !important;
+    font-size: 12px;
   }
   &__hint {
     width: 100%;

@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import _get from 'lodash/get';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import {html} from 'components';
@@ -14,7 +13,7 @@ import MainChart from './views/MainChart';
 import './BoundsDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
 import {dal} from 'components';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/layout';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 import {getUser} from 'yii-steroids/reducers/auth';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
@@ -29,24 +28,33 @@ const bem = html.bem('BoundsDashboard');
         user: getUser(state),
     })
 )
-@dal.hoc2(
+@dal.hoc(
     props => [
         {
             url: `/api/v1/bonds/${props.pairName}/orders`,
-            key: 'orders',
+            key: 'bondOrders',
+            collection: CollectionEnum.BONDS_ORDERS,
+        },
+        {
+            url: `/api/v1/liquidate/${props.pairName}/orders`,
+            key: 'liquidateOrders',
             collection: CollectionEnum.BONDS_ORDERS,
         },
         props.user && {
             url: `/api/v1/bonds/user/${props.user.address}`,
             key: 'userOrders',
-            collection: CollectionEnum.BONDS_ORDERS,
+            collection: [
+                CollectionEnum.BONDS_ORDERS,
+                CollectionEnum.NEUTRINO_ORDERS,
+            ],
         }
     ].filter(Boolean)
 )
 export default class BoundsDashboard extends React.PureComponent {
 
     static propTypes = {
-        orders: PropTypes.arrayOf(OrderSchema),
+        bondOrders: PropTypes.arrayOf(OrderSchema),
+        liquidateOrders: PropTypes.arrayOf(OrderSchema),
         user: UserSchema,
         userOrders: PropTypes.shape({
             opened: PropTypes.arrayOf(OrderSchema),
@@ -54,8 +62,16 @@ export default class BoundsDashboard extends React.PureComponent {
         }),
     };
 
+    constructor() {
+        super(...arguments);
+
+        this.state = {
+            formTab: 'buy',
+        };
+    }
+
     render() {
-        if (!this.props.orders) {
+        if (!this.props.bondOrders && !this.props.liquidateOrders) {
             return null;
         }
 
@@ -64,16 +80,18 @@ export default class BoundsDashboard extends React.PureComponent {
                 <div className={bem.element('column', 'left')}>
                     <div className={bem.element('order-book')}>
                         <OrderBook
-                            orders={this.props.orders}
+                            orders={this.state.formTab === 'buy' ? this.props.bondOrders : this.props.liquidateOrders}
                             user={this.props.user}
                             baseCurrency={this.props.baseCurrency}
                             quoteCurrency={this.props.quoteCurrency}
+                            formTab={this.state.formTab}
                         />
                     </div>
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
                             layout={'tabs'}
+                            onChange={formTab => this.setState({formTab})}
                             items={[
                                 {
                                     id: 'buy',
@@ -92,7 +110,9 @@ export default class BoundsDashboard extends React.PureComponent {
                 </div>
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('graph')}>
-                        <MainChart/>
+                        <MainChart
+                            pairName={this.props.pairName}
+                        />
                     </div>
                     <div className={bem.element('orders')}>
                         {this.props.userOrders && (
@@ -105,6 +125,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                         content: OrdersTable,
                                         contentProps: {
                                             items: this.props.userOrders.opened,
+                                            pairName: this.props.pairName,
                                         }
                                     },
                                     {
@@ -113,6 +134,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                         content: OrdersTable,
                                         contentProps: {
                                             items: this.props.userOrders.history,
+                                            pairName: this.props.pairName,
                                             isHistory: true,
                                         }
                                     },

@@ -1,4 +1,5 @@
 import Enum from './Enum';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 export default class PairsEnum extends Enum {
 
@@ -8,6 +9,13 @@ export default class PairsEnum extends Enum {
         return [
             this.USDNB_USDN,
         ];
+    }
+
+    static getSource(name) {
+        const map = {
+            [this.USDNB_USDN]: CurrencyEnum.USD,
+        };
+        return map[name] || null;
     }
 
     static getLabels() {

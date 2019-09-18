@@ -1,66 +1,38 @@
 import _get from 'lodash/get';
+import _isEqual from 'lodash/isEqual';
 import {setUser} from 'yii-steroids/actions/auth';
-import {getUser} from 'yii-steroids/reducers/auth';
-import fetchHoc from './dal/fetchHoc';
 import apiHoc from './dal/apiHoc';
-import {http} from 'components';
+import {clientStorage} from 'components';
 
 import WavesTransport from './dal/WavesTransport';
+import BalanceListener from './dal/BalanceListener';
+import Keeper from './dal/Keeper';
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
-import BalanceCurrencyEnum from '../enums/BalanceCurrencyEnum';
+import UserRole from 'enums/UserRole';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import OrderTypeEnum from 'enums/OrderTypeEnum';
+
+export const STORAGE_AUTH_KEY = 'isAuth';
 
 export default class DalComponent {
 
     constructor() {
-        this.neutrinoAddress = null;
-        this.auctionAddress = null;
         this.network = null;
+        this.nodeUrl = null;
+        this.assets = null;
+        this.contracts = null;
 
-        this.hoc = fetchHoc;
-        this.hoc2 = apiHoc;
-        this._authInterval = null;
-        this._authChecker = this._authChecker.bind(this);
+        this.hoc = apiHoc;
+
+        this.balance = new BalanceListener(this);
+        this.balance.onUpdate = this.login.bind(this);
+
+        this.keeper = new Keeper(this);
+        this.keeper.onUpdate = this.login.bind(this);
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
-        }
-
-        this._transports = {};
-    }
-
-
-    getTransport(contract = ContractEnum.NEUTRINO) {
-        if (!this._transports[contract]) {
-            this._transports[contract] = new WavesTransport(this, contract);
-        }
-        return this._transports[contract];
-    }
-
-    async getWavesToUsdPrice() {
-        return  await this.getTransport().nodeFetchKey('price') / 100;
-    }
-
-    async getBalance(address) {
-        return await this.getTransport().getBalance(address);
-    }
-
-    async isKeeperInstalled() {
-        const keeper = await this.getTransport().getKeeper();
-        return !!keeper;
-    }
-
-    async getAccount() {
-        const keeper = await this.getTransport().getKeeper();
-        if (!keeper) {
-            return null;
-        }
-
-        try {
-            const userData = await keeper.publicState();
-            return userData.account;
-        } catch {
-            return null;
         }
     }
 
@@ -68,42 +40,63 @@ export default class DalComponent {
      * Auth current user and return it data
      * @returns {Promise}
      */
-    async auth() {
-        const account = await this.getAccount();
+    async login() {
+        // Start keeper listener, fetch balances
+        const account = await this.keeper.getAccount();
+        await this.keeper.start();
+        await this.balance.start(account.address);
 
-        const user = account ?
-            {
+        // Keeper user
+        const user = account
+            ? {
+                role: UserRole.REGISTERED,
                 address: account.address,
-                balance: await this.getBalance(account.address),
                 network: account.network,
-            } : null;
+                balances: this.balance.getBalances(),
+            }
+            : null;
 
-        if (this._authInterval) {
-            clearInterval(this._authInterval);
+        // Mark logged
+        if (account && !this.isLogged()) {
+            clientStorage.set(STORAGE_AUTH_KEY, '1');
         }
-        this._authInterval = setInterval(this._authChecker, 1000);
+
+        // Update redux store
+        const store = require('components').store;
+        const storeUser = store.getState().auth.user || null;
+        if (!_isEqual(storeUser, user)) {
+            store.dispatch(setUser(user));
+        }
 
         return user;
     }
 
-    async _authChecker() {
-        // Get prev address
-        const store = require('components').store;
-        const prevAddress = _get(getUser(store.getState()), 'address');
-
-        // Get next address
-        const account = await this.getAccount();
-        const nextAddress = account ? account.address : null;
-
-        if (prevAddress && nextAddress && prevAddress !== nextAddress) {
-
-            const user = await this.auth();
-            store.dispatch(setUser(user));
-        }
+    /**
+     * Check is logged flag
+     * @returns {boolean}
+     */
+    isLogged() {
+        return clientStorage.get(STORAGE_AUTH_KEY) === '1';
     }
 
-    async swapWavesToNeutrino(amount) {
-        await this.getTransport().nodePublish(
+    /**
+     * Logout user
+     * @returns {Promise<void>}
+     */
+    async logout() {
+        require('components').store.dispatch(setUser(null));
+        clientStorage.remove(STORAGE_AUTH_KEY);
+
+        this.keeper.stop();
+        this.balance.stop();
+    }
+
+
+
+    async swapWavesToNeutrino(pairName, amount) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.NEUTRINO,
             'swapWavesToNeutrino',
             [],
             'WAVES',
@@ -111,66 +104,75 @@ export default class DalComponent {
         );
     }
 
-    async swapNeutrinoToWaves(amount) {
-        await this.getTransport().nodePublish(
+    async swapNeutrinoToWaves(pairName, amount) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.NEUTRINO,
             'swapNeutrinoToWaves',
             [],
-            await this.getTransport().nodeFetchKey('neutrino_asset_id'),
+            this.assets[CurrencyEnum.USD_N],
             amount,
         );
     }
 
-    async setOrder(price, bondsAmount) {
+    async setBondOrder(pairName, price, bondsAmount) {
         price = Math.round(price * 100) / 100;
         const contractPrice = price * 100;
-        let position =  _get(await axios.get('/api/v1/orders/position', {params: {price: contractPrice}}), 'data.position');
+        let position = _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
-            await this.getTransport(ContractEnum.AUCTION).nodePublish(
+            await this.keeper.sendTransaction(
+                pairName,
+                ContractEnum.AUCTION,
                 'setOrder',
                 [
                     contractPrice,
                     position
                 ],
-                await this.getTransport(ContractEnum.AUCTION).nodeFetchKey('neutrino_asset_id'),
+                this.assets[CurrencyEnum.USD_N],
                 bondsAmount * price,
-                true,
             );
         }
     }
 
-    async cancelOrder(hash) {
-        await this.getTransport(ContractEnum.AUCTION).nodePublish(
-            'cancelOrder',
-            [
-                hash
-            ],
-            'WAVES',
-            0,
-            true,
+    async setLiquidateOrder(pairName, total) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.NEUTRINO,
+            'setOrder',
+            [],
+            this.assets[CurrencyEnum.USD_NB],
+            total,
         );
     }
 
-    /*async getOrderBook() {
-        const orders = await this.getTransport(ContractEnum.AUCTION).nodeFetchKey('orderbook');
-        return await Promise.all(
-            orders.substr(1).split('_').map(async address => {
-                return {
-                    amount: await this.getTransport(ContractEnum.AUCTION).nodeFetchKey(`order_amount_${address}`) / this.getTransport().wvs,
-                    price: await this.getTransport(ContractEnum.AUCTION).nodeFetchKey(`order_price_${address}`) / 100,
-                };
-            })
-        );
-    }*/
+    async cancelOrder(pairName, type, hash) {
+        switch (type) {
+            case OrderTypeEnum.BUY:
+                await this.keeper.sendTransaction(
+                    pairName,
+                    ContractEnum.AUCTION,
+                    'cancelOrder',
+                    [
+                        hash
+                    ],
+                    'WAVES',
+                    0,
+                );
+                break;
 
-    async getUserOrders() {
-        const account = await this.getAccount();
-        let orders = await http.get('/api/v1/orders', {address: account.address});
-        return orders.map((order) => {
-            return {
-                currency: BalanceCurrencyEnum.USD_NB,
-                ...order,
-            }
-        })
-
+            case OrderTypeEnum.LIQUIDATE:
+                await this.keeper.sendTransaction(
+                    pairName,
+                    ContractEnum.NEUTRINO,
+                    'cancelOrder',
+                    [
+                        hash
+                    ],
+                    'WAVES',
+                    0,
+                );
+                break;
+        }
     }
+
 }

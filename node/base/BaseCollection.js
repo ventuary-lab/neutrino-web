@@ -84,6 +84,10 @@ module.exports = class BaseCollection {
         await this._updateNext(Object.keys(data), data);
     }
 
+    async removeAll() {
+        await this.storage._call('del',this.STORAGE_KEY_PREFIX + this.collectionName);
+    }
+
     async updateByKeys(updatedKeys) {
         const ids = [];
         this.getKeys().forEach(key => {

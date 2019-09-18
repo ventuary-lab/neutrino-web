@@ -31,6 +31,11 @@
     background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
   }
 
+  &_color_secondary {
+    border: none;
+    background: linear-gradient(1.04deg, #00ADFF -339.25%, #3E3E79 36.53%);
+  }
+
   &_color_danger {
     border: none;
     background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
@@ -57,5 +62,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  &_disabled {
+    background: linear-gradient(0.65deg, #B1A872 -339.25%, #3E3E79 36.53%);
+    pointer-events: none;
   }
 }

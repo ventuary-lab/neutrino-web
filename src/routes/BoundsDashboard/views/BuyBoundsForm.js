@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import _round from 'lodash-es/round';
 import _isFunction from 'lodash-es/isFunction';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
-import {dal, html, http} from 'components';
-// import {getQuoteCurrency} from 'reducers/layout';
+import {dal, html} from 'components';
 import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
+import {getLastWavesExchange, getPairName} from 'reducers/currency';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
@@ -20,17 +22,16 @@ const FORM_ID = 'BuyBoundsForm';
 @connect(
     state => ({
         // activeCurrency: getQuoteCurrency(state),
+        pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
+        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
-)
-@dal.hoc(
-    () => dal.getWavesToUsdPrice()
-        .then(wavesToUsdPrice => ({wavesToUsdPrice}))
 )
 export default class BuyBoundsForm extends React.PureComponent {
 
     static propTypes = {
-        wavesToUsdPrice: PropTypes.number,
+        pairName: PropTypes.string,
+        usdToWavesExchange: PropTypes.number,
     };
 
     constructor() {
@@ -77,14 +78,18 @@ export default class BuyBoundsForm extends React.PureComponent {
                         discount: 15,
                     }}
                     onSubmit={this._onSubmit}
+                    validators={[
+                        [['discount', 'bounds'], 'required'],
+                        [['discount', 'bounds'], 'integer'],
+                    ]}
                 >
                     <NumberField
                         min={0}
                         max={99}
-                        required
                         step='any'
+                        required
                         inputProps={{
-                            autocomplete: 'off',
+                            autoComplete: 'off',
                         }}
                         label={__('Bonds discount')}
                         layoutClassName={bem.element('input')}
@@ -95,10 +100,10 @@ export default class BuyBoundsForm extends React.PureComponent {
                     />
                     <NumberField
                         min={0}
-                        required
                         step='any'
+                        required
                         inputProps={{
-                            autocomplete: 'off'
+                            autoComplete: 'off'
                         }}
                         label={__('Amount')}
                         layoutClassName={bem.element('input', 'with-hint')}
@@ -108,7 +113,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
-                            ? `${_get(this.props, 'formValues.bounds') / this.props.wavesToUsdPrice} WAVES`
+                            ? `${_round(_get(this.props, 'formValues.bounds') / this.props.usdToWavesExchange, 2)} WAVES`
                             : ' '
                         }
                     />
@@ -116,7 +121,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         min={0}
                         step='any'
                         inputProps={{
-                            autocomplete: 'off'
+                            autoComplete: 'off'
                         }}
                         label={__('Total')}
                         layoutClassName={bem.element('input')}
@@ -141,7 +146,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        return dal.setOrder(price, values.bounds)
+        return dal.setBondOrder(this.props.pairName, price, values.bounds)
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();

@@ -19,6 +19,10 @@
     display: flex;
     align-items: center;
   }
+  &__header-row_summary &__header-column {
+    color: #00F59E;
+    font-weight: 600;
+  }
 
   &__header-column {
     padding: 12px 5px;
@@ -34,9 +38,22 @@
   }
 
   &__body-row {
+    position: relative;
     padding: 0 10px;
     display: flex;
     align-items: center;
+
+    &_my::after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 25px;
+      width: 8px;
+      height: 8px;
+      margin-top: -4px;
+      background: url(../../../static/icons/order-my-arrow.svg);
+    }
   }
 
   &__body-column {
@@ -47,12 +64,6 @@
     font-size: 13px;
     line-height: 16px;
     text-align: center;
-
-    &_my::after {
-      position: absolute;
-
-
-    }
 
     &_bg {
       background-color: #26274F;
@@ -83,6 +94,19 @@
       background: #11122F;
       border: 1px solid #00F5FF;
     }
+  }
+
+  &__body-column_address {
+    width: 66%;
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 190px;
+    padding-left: 15px;
   }
 
 }

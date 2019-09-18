@@ -1,0 +1,134 @@
+.LeasingTable {
+
+  $root: &;
+
+  &__thead {
+    border-radius: 4px 4px 0px 0px;
+    background: linear-gradient(180deg, #22224F -9.18%, #2D2F67 144.84%);
+  }
+
+  &__tbody {
+    max-height: 348px;
+    overflow: auto;
+    padding: 15px 0px;
+  }
+
+  &__tbody::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &__tbody::-webkit-scrollbar-thumb {
+    background: #11122F;
+    border: 1px solid #00F5FF;
+  }
+
+  &__tr {
+    display: flex;
+    align-items: center;
+  }
+
+  &__th {
+    padding: 25px 20px;
+    font-size: 16px;
+  }
+
+  &__td {
+    padding: 5px 20px;
+    font-size: 13px;
+  }
+
+  %num {
+    width: 3%;
+  }
+
+  %favorites {
+    width: 3%;
+  }
+
+  %address {
+    width: 25%;
+  }
+
+  %site {
+    width: 15%;
+  }
+
+  %mining {
+    width: 15%;
+  }
+
+  %payouts {
+    width: 15%;
+    text-align: center;
+  }
+
+  %leasing {
+    width: 24%;
+  }
+
+  &__th_num, &__td_num {
+    @extend %num;
+  }
+
+  &__th_favorites, &__td_favorites {
+    @extend %favorites;
+  }
+
+  &__th_address, &__td_address {
+    @extend %address;
+  }
+
+  &__th_site, &__td_site {
+    @extend %site;
+  }
+
+  &__td_site {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__th_mining, &__td_mining {
+    @extend %mining;
+  }
+
+  &__th_payouts, &__td_payouts {
+    @extend %payouts;
+  }
+
+  &__th_leasing, &__td_leasing {
+    @extend %leasing;
+  }
+
+  &__tfoot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0px;
+    border-top: 1px solid #343869;
+  }
+
+  &__text {
+    font-size: 12px;
+    margin-right: 20px;
+  }
+
+  &__btn {
+    width: 121px;
+    height: 37px;
+    font-weight: 800;
+    font-size: 12px;
+    color: #ffffff;
+    border-radius: 50px;
+  }
+
+  &__btn_apply {
+    background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
+    border: none;
+  }
+
+  &__btn_edit {
+    border: 1px solid #4A4A7F;
+    background: transparent;
+    margin-right: 10px;
+  }
+}

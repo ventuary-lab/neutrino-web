@@ -1,0 +1,33 @@
+.LeasingMiningShare {
+  & {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__bar {
+    position: relative;
+    background: #25255B;
+    width: 90px;
+    height: 27px;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+
+  &__progress {
+    position: absolute;
+    background: #35356F;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 20%;
+  }
+
+  &__percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+  }
+}

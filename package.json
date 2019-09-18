@@ -14,8 +14,8 @@
     "react-highcharts": "^16.0.2",
     "dotenv": "^8.1.0",
     "react-slick": "^0.25.2",
-    "waves-contract-cache": "^0.2.0",
+    "waves-contract-cache": "^0.2.1",
     "websocket": "^1.0.29",
-    "yii-steroids": "^1.12.7"
+    "yii-steroids": "^1.12.16"
   }
 }

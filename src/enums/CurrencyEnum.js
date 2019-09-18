@@ -2,6 +2,8 @@ import Enum from './Enum';
 
 export default class CurrencyEnum extends Enum {
 
+    static WAVES = 'waves';
+    static USD = 'usd';
     static USD_N = 'usd-n';
     static USD_NB = 'usd-nb';
     static EUR_N = 'eur-n';
@@ -17,15 +19,27 @@ export default class CurrencyEnum extends Enum {
         ];
     }
 
+    static getContractPow(name) {
+        const map = {
+            [this.WAVES]: Math.pow(10, 8),
+            [this.USD_N]: Math.pow(10, 8),
+            [this.USD_NB]: 1,
+        };
+        return map[name] || null;
+    }
+
     static getBaseCurrency(id) {
         const map = {
             [this.USD_N]: this.USD_NB, // TODO
+            [this.EUR_N]: this.EUR_NB, // TODO
+            [this.BTC_N]: this.BTC_NB, // TODO
         };
         return map[id] || null;
     }
 
     static getLabels() {
         return {
+            [this.WAVES]: __('WAVES'),
             [this.USD_N]: __('USD-N'),
             [this.USD_NB]: __('USD-NB'),
             [this.EUR_N]: __('EUR-N'),
