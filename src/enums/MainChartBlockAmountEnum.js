@@ -1,6 +1,6 @@
 import Enum from './Enum';
 
-export default class ChartBlockAmountEnum extends Enum {
+export default class MainChartBlockAmountEnum extends Enum {
 
     static AMOUNT_100 = 100;
     static AMOUNT_500 = 500;

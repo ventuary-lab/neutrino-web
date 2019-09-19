@@ -152,6 +152,7 @@ module.exports = class App {
     createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
         const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
+
         const collection = new CollectionClass({
             pairName: pairName,
             collectionName: collectionName,

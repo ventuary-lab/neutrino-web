@@ -6,7 +6,7 @@ import _orderBy from 'lodash/orderBy';
 import {dal, html} from 'components';
 import './MainChart.scss';
 import CollectionEnum from 'enums/CollectionEnum';
-import ChartBlockAmountEnum from '../../../enums/ChartBlockAmountEnum';
+import MainChartBlockAmountEnum from '../../../enums/MainChartBlockAmountEnum';
 
 const bem = html.bem('MainChart');
 
@@ -127,7 +127,7 @@ export default class MainChart extends React.PureComponent {
             <div className={bem.block()}>
                 <div className={bem.element('chart-controls-line')}>
                     <div className={bem.element('chart-interval-picker')}>
-                        {ChartBlockAmountEnum.getKeys().map((id) => {
+                        {MainChartBlockAmountEnum.getKeys().map((id) => {
                             return (
                                 <a
                                     href='javascript:void(0)'
@@ -141,7 +141,7 @@ export default class MainChart extends React.PureComponent {
                                         });
                                     }}
                                 >
-                                    {ChartBlockAmountEnum.getLabels()[id]}
+                                    {MainChartBlockAmountEnum.getLabels()[id]}
                                 </a>
                             );
                         })}
