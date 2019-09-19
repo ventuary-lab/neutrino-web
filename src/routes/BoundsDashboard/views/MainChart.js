@@ -114,9 +114,11 @@ export default class MainChart extends React.PureComponent {
 
                     },
                 },
+                crosshair: {
+                    width: 0,
+                },
             },
-            yAxis:
-            {
+            yAxis: {
                 opposite: false,
                 gridLineWidth: 0,
                 minorGridLineWidth: 0,
@@ -143,18 +145,28 @@ export default class MainChart extends React.PureComponent {
                         [1, 'rgba(41,77,167)'], // end
                     ]
                 },
+                marker: {
+                    fillColor: '#1D1E46',
+                    lineColor: '#00F5FF',
+                    width: '20px',
+                }
             }],
             tooltip: {
+                headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
                 backgroundColor: '#17183A',
                 borderColor: '#494991',
-                borderRadius: 7,
                 padding: 10,
+                shadow: false,
+                split: false,
+                shape: 'callout',
+                borderRadius: 7,
                 style: {
                     color: '#ffffff',
                     fontSize: '10px',
                     fontFamily: 'Montserrat'
                 }
             },
+            credits: false,
         };
     }
 
@@ -162,6 +174,13 @@ export default class MainChart extends React.PureComponent {
     componentDidMount() {
         this._refresh();
         this._timer = setInterval(() => this._refresh(), 60000);
+
+
+        //custom shape for tooltip
+        this._chart.current.Highcharts.SVGRenderer.prototype.symbols.softRect = function (x, y, w, h) {
+            return ['M0.5 7C0.5 3.41015 3.41015 0.5 7 0.5H133C136.59 0.5 139.5 3.41015 139.5 7V41C139.5 44.5899 136.59 47.5 133 47.5H7C3.41015 47.5 0.5 44.5899 0.5 41V7Z'];
+        };
+
     }
 
     componentWillUnmount() {

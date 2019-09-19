@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactCharts from 'react-highcharts/ReactHighcharts.src';
 
+import './LeasingChart.scss';
+
 import {html} from 'components';
 const bem = html.bem('LeasingChart');
 
@@ -11,6 +13,8 @@ export default class LeasingChart extends React.PureComponent {
             chart: {
                 type: 'column',
                 backgroundColor: null,
+                height: '60%',
+                width: 420
             },
             title: {
                 text: __('Cashout and Income'),
@@ -28,10 +32,10 @@ export default class LeasingChart extends React.PureComponent {
                 labels: {
                     style: {
                         fontFamily: 'Roboto',
-                        fontSize: '10px',
+                        fontSize: '8px',
                         color: 'rgba(203, 203, 218, 0.62)'
                     }
-                }
+                },
             },
             yAxis: {
                 gridLineWidth: 0,
@@ -48,10 +52,10 @@ export default class LeasingChart extends React.PureComponent {
                     format: '{value}',
                     style: {
                         fontFamily: 'Roboto',
-                        fontSize: '12px',
+                        fontSize: '7px',
                         color: 'rgba(203, 203, 218, 0.62)'
                     },
-                    step: 2
+                    step: 1
                 }
             },
             legend: {
@@ -62,7 +66,7 @@ export default class LeasingChart extends React.PureComponent {
                 shadow: false,
                 itemStyle: {
                     color: '#ffffff',
-                    fontSize: '14px',
+                    fontSize: '12px',
                     fontFamily: 'Montserrat',
                     fontWeight: 300
                 },
@@ -95,7 +99,8 @@ export default class LeasingChart extends React.PureComponent {
                 borderRadius: 7,
                 padding: 10,
                 headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
-                //shape: 'square',
+                shape: 'callout',
+                shadow: false,
                 style: {
                     color: '#ffffff',
                     fontSize: '10px',
