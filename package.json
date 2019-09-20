@@ -11,9 +11,11 @@
   "dependencies": {
     "@waves/waves-crypto": "^3.0.17",
     "@waves/waves-transactions": "^3.16.3",
-    "react-highcharts": "^16.0.2",
     "dotenv": "^8.1.0",
+    "react-highcharts": "^16.0.2",
     "react-slick": "^0.25.2",
+    "svg-inline-loader": "^0.8.0",
+    "svg-inline-react": "^3.1.0",
     "waves-contract-cache": "^0.2.0",
     "websocket": "^1.0.29",
     "yii-steroids": "^1.12.7"
