@@ -9,6 +9,8 @@ const bem = html.bem('LeasingChart');
 export default class LeasingChart extends React.PureComponent {
     constructor(props) {
         super(props);
+        this._chart = React.createRef();
+
         this._config = {
             chart: {
                 type: 'column',
@@ -99,7 +101,7 @@ export default class LeasingChart extends React.PureComponent {
                 borderRadius: 7,
                 padding: 10,
                 headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
-                shape: 'callout',
+                shape: 'softRect',
                 shadow: false,
                 style: {
                     color: '#ffffff',
@@ -113,7 +115,7 @@ export default class LeasingChart extends React.PureComponent {
     render() {
         return (
             <div className={bem.block()}>
-                <ReactCharts config={this._config}/>
+                <ReactCharts ref={this._chart} config={this._config}/>
             </div>
         )
     }
