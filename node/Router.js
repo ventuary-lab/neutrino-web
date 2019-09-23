@@ -3,6 +3,7 @@ const CurrencyEnum = require('./enums/CurrencyEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
+const meanBy = require('lodash/meanBy');
 const moment = require('moment');
 
 
@@ -40,8 +41,16 @@ module.exports = class Router {
             '/api/v1/prices': async request => {
                 return await this._getPrices();
             },
+            '/api/v1/neutrino-balances': async request => {
+                return await this.app.neutrinoBalanceListner.getBalances();;
+            },
             '/api/v1/waves-exchange/:period': async request => {
                 return this._getWavesExchanges(request.params.period);
+            },
+            '/api/v1/price-feed/:period': async request => {
+                let prices = await this._getPrices();
+                prices = prices[CurrencyEnum.USD].slice(-1 * request.params.period);
+                return meanBy(prices, 'price');
             },
             '/api/v1/bonds/:pairName/position': async request => {
                 const price = request.query.price;

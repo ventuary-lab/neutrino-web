@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import round from 'lodash-es/round';
 import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
@@ -15,10 +16,12 @@ import {getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/curr
 import Hint from 'shared/Hint';
 
 import './NeutrinoDashboard.scss';
+import CollectionEnum from '../../enums/CollectionEnum';
+import {login} from 'yii-steroids/actions/auth';
 
 const bem = html.bem('NeutrinoDashboard');
 const FORM_ID = 'GenerationForm';
-
+const PRICE_FEED_PERIOD = 1000;
 
 @connect(
     state => ({
@@ -28,13 +31,32 @@ const FORM_ID = 'GenerationForm';
         usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
 )
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/neutrino-balances`,
+            key: 'neutrinoBalances',
+            collection: CollectionEnum.NEUTRINO_PRICES,
+        },
+        {
+            url: `/api/v1/price-feed/${PRICE_FEED_PERIOD}`,
+            key: 'priceFeed',
+            collection: CollectionEnum.NEUTRINO_PRICES,
+        },
+
+    ]
+)
 export default class NeutrinoDashboard extends React.PureComponent {
-
-
     static propTypes = {
         activeCurrency: PropTypes.string,
         pairName: PropTypes.string,
         usdToWavesExchange: PropTypes.number,
+        neutrinoBalances: PropTypes.shape({
+            totalIssued: PropTypes.number,
+            totalUsed: PropTypes.number,
+            contractBalance: PropTypes.number,
+        }),
+        priceFeed: PropTypes.number,
     };
 
     constructor() {
@@ -174,7 +196,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     </div>
                                     <span>{__('Price feed period')}</span>
                                 </div>
-                                <span>{__('10 blocks')}</span>
+                                <span>
+                                    {round(this.props.priceFeed, 2)}
+                                </span>
                             </div>
                             <div className={bem.element('info-row')}>
                                 <div className={bem.element('info-string')}>
@@ -185,7 +209,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     </div>
                                     <span>{__('Number of oracles')}</span>
                                 </div>
-                                <span>{__('21')}</span>
+                                <span>{__('1')}</span>
                             </div>
                         </div>
                         <div className={bem.element('info-column')}>
@@ -202,7 +226,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         })}
                                     </span>
                                 </div>
-                                <span>{__('580k')}</span>
+                                <span>{round(_get(this.props.neutrinoBalances, 'totalUsed'), 2)}</span>
                             </div>
                             <div className={bem.element('info-row')}>
                                 <div className={bem.element('info-string', 'without-hint')}>
