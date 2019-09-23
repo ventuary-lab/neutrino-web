@@ -1,31 +1,29 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
-import _orderBy from 'lodash/orderBy';
+import _orderBy from 'lodash-es/orderBy';
 
 import {dal, html} from 'components';
 import './WavesExchangeChart.scss';
-import CollectionEnum from 'enums/CollectionEnum';
-import {getPairName, getPrices, getWavesExchanges} from 'reducers/currency';
-import CurrencyEnum from 'enums/CurrencyEnum';
-import PairsEnum from 'enums/PairsEnum';
+import CollectionEnum from '../../../enums/CollectionEnum';
+import WavesExchangePeriodEnum from '../../../enums/WavesExchangePeriodEnum';
 
 const bem = html.bem('WavesExchangeChart');
 
-@connect(
-    state => {
-        const pairName = getPairName(state);
-        return {
-            prices: pairName ? getWavesExchanges(state, PairsEnum.getSource(pairName)) : null,
-        };
-    }
+
+@dal.hoc(
+    props => ({
+        url: `/api/v1/waves-exchange/${props.period || WavesExchangePeriodEnum.PERIOD_1H}`,
+        key: 'chartData',
+        collection: CollectionEnum.NEUTRINO_PRICES,
+    })
 )
 export default class WavesExchangeChart extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
-        prices: PropTypes.array,
+        period: PropTypes.string,
+        updateApiConfig: PropTypes.func,
     };
 
     constructor() {
@@ -34,163 +32,77 @@ export default class WavesExchangeChart extends React.PureComponent {
         this._chart = React.createRef();
 
         this._config = {
+
             scrollbar: {
                 enabled: false
             },
             credits: {
                 enabled: false
             },
-            colors: [''],
-            chart: {
-                backgroundColor: null,
-                height: 120,
-            },
             navigator: {
                 enabled: false,
-            },
-            rangeSelector: {
-                buttons: [
-                    /*{
-                        type: '100',
-                        count: 1,
-                        text: '100'
-                    }, {
-                        type: '500',
-                        count: 2,
-                        text: '500'
-                    }, {
-                        type: '1000',
-                        count: 3,
-                        text: '1K'
-                    }, {
-                        type: '5000',
-                        count: 4,
-                        text: '5K'
-                    }, {
-                        type: '10000',
-                        count: 5,
-                        text: '10K'
-                    },*/
-                ],
-                buttonPosition: {
-                    align: 'right',
-                    x: -15,
-                },
-                buttonTheme: {
-                    width: 32,
-                    height: 28,
-                    r: 4,
-                    fill: {
-                        linearGradient: { x1: 0, x2: 1, y1: 1, y2: 0 },
-                        stops: [
-                            [0, '#00ADFF'], // start
-                            [0.4, '#3e3e79'], // middle
-                            [1, '#3e3e79'] // end
-                        ]
-                    },
-                    style: {
-                        color: '#fff',
-                        fontSize: '12px',
-                        lineHeight: '16px',
-                        fontWeight: 500,
-                        fontFamily: 'Montserrat',
-                        textAlign: 'center',
-                    },
-                    states: {
-                        hover: {
-                        },
-                        select: {
-                            fill: '#039',
-                        }
-                    }
-                },
-                labelStyle: {
-                    visibility: 'hidden',
-                },
-                inputEnabled: false,
             },
             legend: {
                 enabled: false,
             },
-            tooltip: {
-                backgroundColor: '#17183A',
-                borderWidth: 1,
-                borderColor: '#494991',
-                borderRadius: 7,
-                shadow: false,
-                crosshairs: false,
-                style: {
-                    color: '#fff'
+            rangeSelector: {
+                enabled: false,
+            },
+            title: {
+                text: ''
+            },
+            chart: {
+                backgroundColor: null,
+                height: 200,
+            },
+            plotOptions: {
+                candlestick: {
+                    lineWidth: 2,
+                    lineColor: '#FF6D6D',
+                    upLineColor: '#01E675',
+                    color: '#FFF',
+                },
+                column: {
+                    color: '#305442'
                 }
             },
             xAxis: {
-                type: 'datetime',
-                lineWidth: 0.5,
                 lineColor: '#CBCBDA',
-                tickWidth: 0.5,
-                tickColor: '#CBCBDA',
-                showFirstLabel: false,
-                showLastLabel: false,
-                events: {
-                    afterSetExtremes: e => {
-                        //return this.props.prices;
-                    }
-                },
-                labels: {
-                    style: {
-                        fontFamily: 'Roboto',
-                        color: '#CBCBDA',
-                        fontSize: '10px',
-                    },
-                },
+                lineWidth: 1,
             },
-            yAxis:
-            {
-                opposite: false,
-                gridLineWidth: 0,
-                minorGridLineWidth: 0,
-                labels: {
-                    format: '{value}%',
-                    style: {
-                        fontFamily: 'Roboto',
-                        color: '#CBCBDA',
-                        fontSize: '10px',
-                    },
+            yAxis: {
+                    opposite: false,
+                    lineColor: '#CBCBDA',
+                    lineWidth: 1,
+                    gridLineWidth: 0.5,
+                    gridLineColor: '#DFDFE8',
+                    gridLineDashStyle: 'dash',
+                    minorGridLineWidth: 0,
+                    labels: {
+                            format: '$ {value}',
+                            style: {
+                                fontFamily: 'Roboto',
+                                color: '#DFDFE8',
+                                fontSize: '8px',
+                            },
+                        },
                 },
-            },
+
             series: [{
-                name: 'USD',
-                type: 'areaspline',
+                type: 'candlestick',
+                name: 'AAPL Stock Price',
                 data: [],
-                tooltip: {
-                    valueDecimals: 2
-                },
-                fillColor: {
-                    linearGradient: { x1: 0, x2: 0.4, y1: 1, y2: 0 },
-                    stops: [
-                        [0, 'rgba(110,54,77)'], // start
-                        [1, 'rgba(41,77,167)'], // end
-                    ]
-                },
             }],
         };
     }
 
-    componentDidMount() {
-        this._refresh(this.props.prices);
-    }
-
     componentWillReceiveProps(nextProps) {
-        if (this.props.prices !== nextProps.prices) {
-            this._refresh(nextProps.prices);
+        if (this.props.chartData !== nextProps.chartData) {
+            this._refresh(nextProps.chartData);
         }
     }
 
     render() {
-        if (!this.props.prices) {
-            return null;
-        }
-
         return (
             <div className={bem.block()}>
                 <ReactHighstock
@@ -199,16 +111,35 @@ export default class WavesExchangeChart extends React.PureComponent {
                     config={this._config}
                     backgroundColor='#1d1d45'
                 />
+                <div className={bem.element('chart-controls-line')}>
+                    <div className={bem.element('chart-interval-picker')}>
+                        {WavesExchangePeriodEnum.getKeys().map((id) => {
+                            return (
+                                <a
+                                    href='javascript:void(0)'
+                                    key={id}
+                                    className={bem.element('chart-block-amount-picker', {
+                                        selected: this.props.period === id,
+                                    })}
+                                    onClick={() => {
+                                        this.props.updateApiConfig({
+                                            period: id,
+                                        });
+                                    }}
+                                >
+                                    {WavesExchangePeriodEnum.getLabels()[id]}
+                                </a>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
         );
     }
 
-    _refresh(prices) {
+    _refresh(data) {
         if (this._chart.current) {
-            let data = _orderBy(prices, 'timestamp', 'asc').map(item => ([
-                item['timestamp'],
-                item['price'],
-            ]));
+            data = _orderBy(data, 0, 'asc');
             this._chart.current.getChart().series[0].setData(data);
         }
     }

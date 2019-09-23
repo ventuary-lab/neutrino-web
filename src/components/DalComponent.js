@@ -116,6 +116,9 @@ export default class DalComponent {
     }
 
     async setBondOrder(pairName, price, bondsAmount) {
+        if (price <= 0 || price >= 1) {
+            return;
+        }
         price = Math.round(price * 100) / 100;
         const contractPrice = price * 100;
         let position = _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');

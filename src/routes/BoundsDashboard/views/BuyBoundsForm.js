@@ -84,7 +84,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     ]}
                 >
                     <NumberField
-                        min={0}
+                        min={1}
                         max={99}
                         step='any'
                         required

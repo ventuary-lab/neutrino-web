@@ -1,6 +1,11 @@
 const CollectionEnum = require('./enums/CollectionEnum');
+const CurrencyEnum = require('./enums/CurrencyEnum');
+const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
+const meanBy = require('lodash/meanBy');
+const moment = require('moment');
+
 
 module.exports = class Router {
 
@@ -36,6 +41,17 @@ module.exports = class Router {
             '/api/v1/prices': async request => {
                 return await this._getPrices();
             },
+            '/api/v1/neutrino-balances': async request => {
+                return await this.app.neutrinoBalanceListner.getBalances();;
+            },
+            '/api/v1/waves-exchange/:period': async request => {
+                return this._getWavesExchanges(request.params.period);
+            },
+            '/api/v1/price-feed/:period': async request => {
+                let prices = await this._getPrices();
+                prices = prices[CurrencyEnum.USD].slice(-1 * request.params.period);
+                return meanBy(prices, 'price');
+            },
             '/api/v1/bonds/:pairName/position': async request => {
                 const price = request.query.price;
                 const orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
@@ -47,10 +63,11 @@ module.exports = class Router {
                 });
                 return {position};
             },
-            '/api/v1/bonds/:pairName/chart': async request => {
+            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
                 let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOrders();
                 const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
                 orders = _orderBy(orders, 'height', 'desc');
+                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
                 return orders.map(order => [timestamps[order.height], order.discountPercent])
             },
             '/api/v1/bonds/:pairName/orders': async request => {
@@ -114,6 +131,51 @@ module.exports = class Router {
             }
         }
         return result;
+    }
+
+    async _getWavesExchanges(period) {
+        const candlesLimit = 10;
+        const seconds = WavesExchangePeriodEnum.getSeconds(period);
+        // Получаем все данные с редиса и сортируем по времени по убыванию
+        let prices = _orderBy((await this._getPrices())[CurrencyEnum.USD], 'timestamp', 'desc');;
+        //Первый лемент - это закрытие последней свечи. Получаем время закрытия предыдущей свечи
+        let prevCandleTimestamp = prices[0].timestamp - seconds * 1000;
+        // Начинаем с последней свечи
+        let candleIndex = candlesLimit;
+        let chartData = {};
+        for (let item of prices) {
+            // Если новый элемент относится к предыдущей свече, то начинаем новую свечу
+            if (item.timestamp < prevCandleTimestamp) {
+                prevCandleTimestamp -= seconds * 1000;
+                candleIndex--;
+                // Если набрали нужное количество свечей, выходим
+                if (candleIndex <= 0) {
+                    break;
+                }
+            }
+
+            if (!chartData[candleIndex]) {
+                chartData[candleIndex] = {
+                    timestamp: item.timestamp,
+                    open: item.price,
+                    max: item.price,
+                    min: item.price,
+                    close: item.price,
+                };
+            } else {
+                chartData[candleIndex]['min'] = Math.min(item.price, chartData[candleIndex]['min']);
+                chartData[candleIndex]['max'] = Math.max(item.price, chartData[candleIndex]['max']);
+                // Обновляем цену открытия, поскольку перебираем с конца
+                chartData[candleIndex]['open'] = item.price;
+            }
+        }
+
+        // return chartData;
+        let data = [];
+        for (let key in chartData) {
+            data.push(Object.values(chartData[key]));
+        }
+        return data;
     }
 
 };

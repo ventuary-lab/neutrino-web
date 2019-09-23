@@ -4,6 +4,7 @@ const WavesContractCache = require('waves-contract-cache');
 const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
 const WebSocketServer = require('./components/WebSocketServer');
 const HeightListener = require('./components/HeightListener');
+const NeutrinoBalanceListner = require('./components/NeutrinoBalanceListner');
 const WavesTransport = require('./components/WavesTransport');
 const PairsEnum = require('./enums/PairsEnum');
 const ContractEnum = require('./enums/ContractEnum');
@@ -101,6 +102,16 @@ module.exports = class App {
         // Load asset ids
         this.assets = await this._loadAssetIds();
 
+        // Create neutrino balance listener
+        this.neutrinoBalanceListner = new NeutrinoBalanceListner({
+            nodeUrl: this.nodeUrl,
+            logger: this.logger,
+            storage: this.storage,
+            address: this.getContract(PairsEnum.USDNB_USDN, ContractEnum.NEUTRINO).dApp,
+            assetId: this.assets[CurrencyEnum.USD_N],
+        });
+        await this.neutrinoBalanceListner.start();
+
         await this._updateAll(true);
         this._isSkipUpdates = false;
 
@@ -152,6 +163,7 @@ module.exports = class App {
     createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
         const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
+
         const collection = new CollectionClass({
             pairName: pairName,
             collectionName: collectionName,
