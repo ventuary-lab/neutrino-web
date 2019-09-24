@@ -27,4 +27,24 @@
   &_direction_right {
     right: 100px;
   }
+
+  @media screen and (max-width: 768px) {
+    & {
+      top: calc(100% + 163px);
+    }
+
+    &_direction_left {
+      left: calc(50% - 70px);
+    }
+
+    &_direction_right {
+      right: calc(50% - 70px);
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    & {
+      display: none;
+    }
+  }
 }

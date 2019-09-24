@@ -180,17 +180,17 @@ export default class MainChart extends React.PureComponent {
             const borderRadius = 7;
 
             const initial = `M${x+6},${y}`;
-            const firstPoint = `h${w-13}`;
-            const secondPoint = `v${h-14}`;
-            const thirdPoint = `h${-(w-13)}`;
-            const fourPoint = `v${-(h-14)}`;
+            const rightTopPoint = `h${w-13}`;
+            const rightBottomPoint = `v${h-14}`;
+            const leftBottomPoint = `h${-(w-13)}`;
+            const leftTopPoint = `v${-(h-14)}`;
 
-            const firstCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${borderRadius}`;
-            const secondCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${borderRadius}`;
-            const thirdCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${-borderRadius}`;
-            const fourCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${-borderRadius}`;
+            const rightTopCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${borderRadius}`;
+            const rightBottomCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${borderRadius}`;
+            const leftBottomCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${-borderRadius}`;
+            const leftTopCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${-borderRadius}`;
 
-            return [initial, firstPoint, firstCorner, secondPoint, secondCorner, thirdPoint, thirdCorner, fourPoint, fourCorner, 'z'];
+            return [initial, rightTopPoint, rightTopCorner, rightBottomPoint, rightBottomCorner, leftBottomPoint, leftBottomCorner, leftTopPoint, leftTopCorner, 'z'];
         };
     }
 

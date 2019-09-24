@@ -19,6 +19,9 @@ import './Layout.scss';
 import {setUser} from 'yii-steroids/actions/auth';
 import CurrencyEnum from 'enums/CurrencyEnum';
 
+import WarningMobileModal from 'modals/WarningMobileModal';
+import {openModal} from 'yii-steroids/actions/modal';
+
 const bem = html.bem('Layout');
 
 @layoutHoc(
@@ -51,7 +54,9 @@ export default class Layout extends React.PureComponent {
                     this.props.dispatch(setUser(user));
                 });
         }
+
     }
+
 
     componentWillReceiveProps(nextProps) {
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
