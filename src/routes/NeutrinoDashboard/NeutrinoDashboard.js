@@ -85,8 +85,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
-        console.log(1, this.props);
-
         const steps = [
             {
                 id: 'generation',
@@ -297,9 +295,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     <span className={bem.element('value-number')}>
                                         {_get(this.props.formValues, this.state.isWavesLeft ? 'waves' : 'neutrino')}
                                     </span>
-                                    <span className={bem(bem.element('value-icon'), 'Icon' + this.state.isWavesLeft
+                                    <span className={bem(bem.element('value-icon'), `Icon ${this.state.isWavesLeft
                                         ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)
-                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N))}
+                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)}`)}
                                     />
                                     <span className={bem.element('value-name')}>
                                         {this.state.isWavesLeft
@@ -317,9 +315,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     <span className={bem.element('value-number')}>
                                         {_get(this.props.formValues, this.state.isWavesLeft ? 'neutrino' : 'waves')}
                                     </span>
-                                    <span className={bem(bem.element('value-icon'), 'Icon' + this.state.isWavesLeft
+                                    <span className={bem(bem.element('value-icon'), `Icon ${this.state.isWavesLeft
                                         ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
-                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES))}
+                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)}`)}
                                     />
                                     <span className={bem.element('value-name')}>
                                         {this.state.isWavesLeft
