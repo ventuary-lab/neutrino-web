@@ -42,7 +42,7 @@ module.exports = class Router {
                 return await this._getPrices();
             },
             '/api/v1/neutrino-balances': async request => {
-                return await this.app.neutrinoBalanceListner.getBalances();;
+                return await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.NEUTRINO_BALANCES).getBalances();
             },
             '/api/v1/waves-exchange/:period': async request => {
                 return this._getWavesExchanges(request.params.period);
