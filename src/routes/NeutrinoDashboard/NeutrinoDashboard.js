@@ -36,14 +36,12 @@ const PRICE_FEED_PERIOD = 1000;
         {
             url: `/api/v1/neutrino-balances`,
             key: 'neutrinoBalances',
-            collection: CollectionEnum.NEUTRINO_PRICES,
+            collection: CollectionEnum.NEUTRINO_BALANCES,
         },
         {
             url: `/api/v1/price-feed/${PRICE_FEED_PERIOD}`,
             key: 'priceFeed',
-            collection: CollectionEnum.NEUTRINO_PRICES,
         },
-
     ]
 )
 export default class NeutrinoDashboard extends React.PureComponent {
@@ -226,7 +224,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         })}
                                     </span>
                                 </div>
-                                <span>{round(_get(this.props.neutrinoBalances, 'totalUsed'), 2)}</span>
+                                <span>{this.props.neutrinoBalances && round(this.props.neutrinoBalances.totalUsed, 2)}</span>
                             </div>
                             <div className={bem.element('info-row')}>
                                 <div className={bem.element('info-string', 'without-hint')}>
