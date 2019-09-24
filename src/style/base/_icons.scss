@@ -180,4 +180,10 @@ $icons-dir: '../static/icons';
     min-height: 11px;
     background-image: url('#{$icons-dir}/search.svg');
   }
+
+  &__checkbox {
+    min-width: 11px;
+    min-height: 10px;
+    background-image: url('#{$icons-dir}/checkbox.svg');
+  }
 }

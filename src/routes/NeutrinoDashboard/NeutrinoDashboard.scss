@@ -20,7 +20,6 @@
   }
 
   &__step {
-    cursor: pointer;
     position: relative;
     display: flex;
     align-items: center;
@@ -162,5 +161,106 @@
 
   &__submit-button.ButtonView {
     min-width: 322px;
+  }
+
+  &__details {
+    margin-bottom: 48px;
+  }
+
+  &__details-label {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 16px;
+  }
+
+  &__details-item {
+    &:not(:last-child) {
+      margin-bottom: 38px;
+    }
+  }
+
+  &__details-inner {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid $color-brand-purple-light;
+    border-bottom: 1px solid $color-brand-purple-light;
+    padding: 16px 0;
+
+    &_generation {
+      padding: 0;
+    }
+  }
+
+  &__values {
+    width: 50%;
+    padding: 16px 0 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:first-child {
+      padding: 16px 32px 16px 0;
+      border-right: 1px solid #343869;
+    }
+  }
+
+  &__value-title {
+
+  }
+
+  &__value-item {
+    display: flex;
+    align-items: baseline;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  &__value-number {
+    font-size: 14px;
+    line-height: 17px;
+    margin-right: 4px;
+  }
+
+  &__value-icon {
+    position: relative;
+    top: 2px;
+    min-width: 12px;
+    min-height: 12px;
+    margin-right: 4px;
+  }
+
+  &__value-name {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  &__terms-checkbox {
+    margin-bottom: 25px;
+
+    a {
+      color: $fc-gray;
+      text-decoration: underline;
+
+      &:hover {
+        color: $fc-gray;
+      }
+    }
+  }
+
+  &__details-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__back-button {
+    margin-right: 12px;
+  }
+
+  &__finalize-button.ButtonView {
+      min-width: 320px;
   }
 }
