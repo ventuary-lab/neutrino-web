@@ -458,6 +458,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     _withdraw() {
-        return dal.withdraw(this.props.pairName, this.props.user.address);
+        // return dal.withdraw(this.props.pairName, this.props.user.address);
+        console.log('---test');
     }
 }
