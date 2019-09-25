@@ -44,11 +44,11 @@ const PRICE_FEED_PERIOD = 1000;
             url: `/api/v1/price-feed/${PRICE_FEED_PERIOD}`,
             key: 'priceFeed',
         },
-        {
-            url: `/api/v1/withdraw/${props.user.address}`,
-            key: 'withdraw',
-            collection: CollectionEnum.NEUTRINO_WITHDRAW,
-        },
+        // {
+        //     url: `/api/v1/withdraw/${props.user.address}`,
+        //     key: 'withdraw',
+        //     collection: CollectionEnum.NEUTRINO_WITHDRAW,
+        // },
     ]
 )
 export default class NeutrinoDashboard extends React.PureComponent {
@@ -74,7 +74,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         };
 
         this._onSubmit = this._onSubmit.bind(this);
-        this._withdraw = this._withdraw.bind(this);
+        // this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
     }
 
@@ -281,42 +281,42 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         }) : __('Generate Waves')}
                         onClick={() => this.setState({step: 'details'})}
                     />
-                    {this.renderWithdraw()}
+                    {/*{this.renderWithdraw()}*/}
                 </div>
             </>
         );
     }
 
-    renderWithdraw() {
-        const neutrinoBlocked = _get(this.props, 'withdraw.neutrino-blocked');
-        const wavesBlocked = _get(this.props, 'withdraw.waves-blocked');
-        const height = _get(this.props, 'withdraw.height');
-        const unblockBlock = _get(this.props, 'withdraw.unblock-block');
-        const countBlock = (unblockBlock - height) > 0 ? unblockBlock - height : 0;
-
-        return (
-            <div className={bem.element('withdraw')}>
-                <div className={bem.element('withdraw-info')}>
-                    <div className={bem.element('withdraw-hint')}>
-                        <Hint text={__('Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)', {
-                            'count-blocks': countBlock,
-                            'count-minutes': countBlock, // 1block = 1min
-                        })}/>
-                    </div>
-                    {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
-                        neutrino: neutrinoBlocked,
-                        waves: wavesBlocked,
-                    })}
-                </div>
-                <Button
-                    disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
-                    className={bem.element('withdraw-button')}
-                    label={__('Withdraw')}
-                    onClick={this._withdraw}
-                />
-            </div>
-        );
-    }
+    // renderWithdraw() {
+    //     const neutrinoBlocked = _get(this.props, 'withdraw.neutrino-blocked');
+    //     const wavesBlocked = _get(this.props, 'withdraw.waves-blocked');
+    //     const height = _get(this.props, 'withdraw.height');
+    //     const unblockBlock = _get(this.props, 'withdraw.unblock-block');
+    //     const countBlock = (unblockBlock - height) > 0 ? unblockBlock - height : 0;
+    //
+    //     return (
+    //         <div className={bem.element('withdraw')}>
+    //             <div className={bem.element('withdraw-info')}>
+    //                 <div className={bem.element('withdraw-hint')}>
+    //                     <Hint text={__('Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)', {
+    //                         'count-blocks': countBlock,
+    //                         'count-minutes': countBlock, // 1block = 1min
+    //                     })}/>
+    //                 </div>
+    //                 {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
+    //                     neutrino: neutrinoBlocked,
+    //                     waves: wavesBlocked,
+    //                 })}
+    //             </div>
+    //             <Button
+    //                 disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
+    //                 className={bem.element('withdraw-button')}
+    //                 label={__('Withdraw')}
+    //                 onClick={this._withdraw}
+    //             />
+    //         </div>
+    //     );
+    // }
 
     renderDetailsStep() {
         return (
@@ -457,8 +457,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 });
     }
 
-    _withdraw() {
-        // return dal.withdraw(this.props.pairName, this.props.user.address);
-        console.log('---test');
-    }
+    // _withdraw() {
+    //     return dal.withdraw(this.props.pairName, this.props.user.address);
+    // }
 }
