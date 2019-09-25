@@ -14,7 +14,7 @@ export default class CurrencyEnum extends Enum {
     static getKeys() {
         return [
             this.USD_N,
-            //this.EUR_N,
+            this.EUR_N,
             //this.BTC_N,
         ];
     }
@@ -24,15 +24,17 @@ export default class CurrencyEnum extends Enum {
             [this.WAVES]: Math.pow(10, 8),
             [this.USD_N]: Math.pow(10, 8),
             [this.USD_NB]: 1,
+            [this.EUR_N]: Math.pow(10, 8),
+            [this.EUR_NB]: 1,
         };
         return map[name] || null;
     }
 
     static getBaseCurrency(id) {
         const map = {
-            [this.USD_N]: this.USD_NB, // TODO
-            [this.EUR_N]: this.EUR_NB, // TODO
-            [this.BTC_N]: this.BTC_NB, // TODO
+            [this.USD_N]: this.USD_NB,
+            [this.EUR_N]: this.EUR_NB,
+            [this.BTC_N]: this.BTC_NB,
         };
         return map[id] || null;
     }
@@ -47,6 +49,20 @@ export default class CurrencyEnum extends Enum {
             [this.BTC_N]: __('BTC-N'),
             [this.BTC_NB]: __('BTC-NB'),
         };
+    }
+
+    static getBalanceIconClasses() {
+        return {
+            [this.WAVES]: 'Icon__wave',
+            [this.USD_N]: 'Icon__usd-n-2_green',
+            [this.USD_NB]: 'Icon__usd-nb_green',
+            [this.EUR_N]: 'Icon__eur-n_green',
+            [this.EUR_NB]: 'Icon__eur-nb_green',
+        };
+    }
+
+    static getBalanceIconClass(id) {
+        return this.getBalanceIconClasses()[id] || '';
     }
 
     static getIconClasses() {
@@ -71,21 +87,6 @@ export default class CurrencyEnum extends Enum {
 
     static getIconActiveClass(id) {
         return this.getIconActiveClasses()[id] || '';
-    }
-
-    static getDexAssetIds() {
-        return {
-            [this.WAVES]:'WAVES',
-            [this.USD]: 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck',
-
-            // TODO add correct assetId after add to dex
-            [this.USD_N]: 'WAVES',
-            [this.USD_NB]: 'WAVES',
-        }
-    }
-
-    static getDexAssetId(id) {
-        return this.getDexAssetIds()[id] || '';
     }
 
 }

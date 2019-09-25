@@ -4,7 +4,6 @@ const WavesContractCache = require('waves-contract-cache');
 const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
 const WebSocketServer = require('./components/WebSocketServer');
 const HeightListener = require('./components/HeightListener');
-// const NeutrinoBalanceListner = require('./components/NeutrinoBalanceListner');
 const WavesTransport = require('./components/WavesTransport');
 const PairsEnum = require('./enums/PairsEnum');
 const ContractEnum = require('./enums/ContractEnum');
@@ -21,6 +20,7 @@ module.exports = class App {
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
             [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL', // testnet
+            [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
         // Create main redis client & storage
@@ -102,16 +102,6 @@ module.exports = class App {
         // Load asset ids
         this.assets = await this._loadAssetIds();
 
-        // // Create neutrino balance listener
-        // this.neutrinoBalanceListner = new NeutrinoBalanceListner({
-        //     nodeUrl: this.nodeUrl,
-        //     logger: this.logger,
-        //     storage: this.storage,
-        //     address: this.getContract(PairsEnum.USDNB_USDN, ContractEnum.NEUTRINO).dApp,
-        //     assetId: this.assets[CurrencyEnum.USD_N],
-        // });
-        // await this.neutrinoBalanceListner.start();
-
         await this._updateAll(true);
         this._isSkipUpdates = false;
 
@@ -141,7 +131,7 @@ module.exports = class App {
             nodeUrl: this.nodeUrl,
             updateHandler: keys => this._onContractUpdate(pairName, contractName, keys),
             storage: {
-                namespace: this.redisNamespace + '_' + this.network + ':' + contractName,
+                namespace: this.redisNamespace + '_' + this.network + ':' + pairName,
                 redisClient: this._redisClient,
             },
             logger: {
@@ -149,9 +139,9 @@ module.exports = class App {
             },
         });
         contract.transport = transport;
-        contract.storage.set('address', dApp);
+        contract.storage.set('address_' + contractName, dApp);
 
-        this._contracts[pairName] = this._contracts[pairName] || [];
+        this._contracts[pairName] = this._contracts[pairName] || {};
         this._contracts[pairName][contractName] = contract;
         return contract;
     }
@@ -183,12 +173,14 @@ module.exports = class App {
 
     async _loadAssetIds() {
         const assets = {};
-        const keysMap = CurrencyEnum.getAssetContractKeysMap();
-
         for (let pairName of PairsEnum.getKeys()) {
-            for (let currency in keysMap) {
-                if (keysMap.hasOwnProperty(currency) && !assets[currency]) {
-                    const key = keysMap[currency];
+            const currencies = [
+                PairsEnum.getBase(pairName),
+                PairsEnum.getQuote(pairName),
+            ];
+            for (let currency of currencies) {
+                if (!assets[currency]) {
+                    const key = CurrencyEnum.getAssetContractKey(currency);
                     const transport = this.getContract(pairName, ContractEnum.NEUTRINO).transport;
 
                     assets[currency] = await transport.nodeFetchKey(key);

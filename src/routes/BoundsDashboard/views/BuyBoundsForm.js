@@ -10,10 +10,9 @@ import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {dal, html} from 'components';
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BuyBoundsForm.scss';
-import {getLastWavesExchange, getPairName} from 'reducers/currency';
+import {getBaseCurrency, getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('BuyBoundsForm');
@@ -23,6 +22,8 @@ const FORM_ID = 'BuyBoundsForm';
     state => ({
         // activeCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
+        baseCurrency: getBaseCurrency(state),
+        quoteCurrency: getQuoteCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
         usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
@@ -31,6 +32,8 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
+        baseCurrency: PropTypes.string,
+        quoteCurrency: PropTypes.string,
         usdToWavesExchange: PropTypes.number,
     };
 
@@ -109,8 +112,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
                         inners={{
-                            label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
-                            icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
+                            label: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                            icon: CurrencyEnum.getBalanceIconClass(this.props.quoteCurrency)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
                             ? `${_round(_get(this.props, 'formValues.bounds') / this.props.usdToWavesExchange, 2)} WAVES`
@@ -127,8 +130,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                         layoutClassName={bem.element('input')}
                         attribute={'neutrino'}
                         inners={{
-                            label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N),
-                            icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
+                            label: CurrencyEnum.getLabel(this.props.baseCurrency),
+                            icon: CurrencyEnum.getBalanceIconClass(this.props.baseCurrency)
                         }}
                     />
                     <Button
@@ -136,7 +139,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Buy {bounds}', {
-                            bounds: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
+                            bounds: CurrencyEnum.getLabel(this.props.quoteCurrency),
                         })}
                     />
                 </Form>

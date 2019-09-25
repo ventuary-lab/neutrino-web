@@ -18,6 +18,10 @@ module.exports = class BaseCollection {
         return [];
     }
 
+    getStorageKey() {
+        return this.STORAGE_KEY_PREFIX + this.collectionName;
+    }
+
     async _prepareItem(id, item) {
         return item;
     }
@@ -27,7 +31,7 @@ module.exports = class BaseCollection {
     }
 
     async getItem(id) {
-        let item = await this.storage.hget(this.STORAGE_KEY_PREFIX + this.collectionName, id);
+        let item = await this.storage.hget(this.getStorageKey(), id);
         if (!item) {
             return null;
         }
@@ -39,7 +43,7 @@ module.exports = class BaseCollection {
     }
 
     async getItemsAll() {
-        const result = await this.storage.hgetall(this.STORAGE_KEY_PREFIX + this.collectionName);
+        const result = await this.storage.hgetall(this.getStorageKey());
         if (!result) {
             return [];
         }
@@ -55,7 +59,7 @@ module.exports = class BaseCollection {
     }
 
     async updateAll(nodeData) {
-        this.logger.debug('Update all items of ' + this.collectionName + ' collection... ');
+        this.logger.debug('Update all items of ' + this.pairName + ':' + this.collectionName + ' collection... ');
 
         // Get ids
         const ids = [];
@@ -88,7 +92,7 @@ module.exports = class BaseCollection {
     }
 
     async removeAll() {
-        await this.storage._call('del',this.STORAGE_KEY_PREFIX + this.collectionName);
+        await this.storage._call('del', this.getStorageKey());
     }
 
     async updateByKeys(updatedKeys) {
@@ -122,7 +126,7 @@ module.exports = class BaseCollection {
      * @private
      */
     async _updateItem(id, data = null) {
-        this.logger.debug('Update item of ' + this.collectionName + ' collection... ' + id);
+        this.logger.debug('Update item of ' + this.pairName + ':' + this.collectionName + ' collection... ' + id);
 
         // Fetch data, if not set
         data = data || await this._fetch(this.getKeys(id));
@@ -131,12 +135,12 @@ module.exports = class BaseCollection {
         if (item) {
             const nextJson = JSON.stringify(item);
             if (this.updateHandler) {
-                const prevJson = await this.storage.hget(this.STORAGE_KEY_PREFIX + this.collectionName, id);
+                const prevJson = await this.storage.hget(this.getStorageKey(), id);
                 if (!prevJson || prevJson !== nextJson) {
                     this.updateHandler(id, item, this);
                 }
             }
-            await this.storage.hset(this.STORAGE_KEY_PREFIX + this.collectionName, id, nextJson);
+            await this.storage.hset(this.getStorageKey(), id, nextJson);
         }
     }
 

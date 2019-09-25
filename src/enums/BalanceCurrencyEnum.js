@@ -21,16 +21,4 @@ export default class BalanceCurrencyEnum extends Enum {
             [this.USD_NB]: __('USD-NB'),
         };
     }
-
-    static getIconClasses() {
-        return {
-            [this.WAVES]: 'Icon__wave',
-            [this.USD_N]: 'Icon__usd-n-2_green',
-            [this.USD_NB]: 'Icon__usd-nb_green',
-        };
-    }
-
-    static getIconClass(id) {
-        return this.getIconClasses()[id] || '';
-    }
 }

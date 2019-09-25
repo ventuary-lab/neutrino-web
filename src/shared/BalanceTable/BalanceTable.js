@@ -5,7 +5,6 @@ import {getUser} from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
 
 import {html} from 'components';
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 
 import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -52,12 +51,12 @@ export default class BalanceTable extends React.PureComponent {
                                     <span
                                         className={bem(
                                             bem.element('icon'),
-                                            `Icon ${BalanceCurrencyEnum.getIconClass(currency)}`
+                                            `Icon ${CurrencyEnum.getBalanceIconClass(currency)}`
                                         )}
                                     />
                                     <div className={bem.element('labels')}>
                                         <span className={bem.element('label')}>
-                                            {BalanceCurrencyEnum.getLabel(currency)}
+                                            {CurrencyEnum.getLabel(currency)}
                                         </span>
                                         <span className={bem.element('label', 'tiny')}>
                                             {__('USD')}
@@ -71,7 +70,7 @@ export default class BalanceTable extends React.PureComponent {
                                         {this.props.user.balances[currency]}
                                     </span>
                                     <span className={bem.element('label', 'tiny')}>
-                                        $ {currency === BalanceCurrencyEnum.WAVES
+                                        $ {currency === CurrencyEnum.WAVES
                                             ? _round(this.props.user.balances[currency] * this.props.usdToWavesExchange, 2)
                                             : this.props.user.balances[currency]
                                         }
@@ -89,13 +88,18 @@ export default class BalanceTable extends React.PureComponent {
     }
 
     renderDexButtons(currency) {
+        if (dal.assets[currency]) {
+            currency = dal.assets[currency];
+        }
+
+        const assetUsdId = 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'; // TODO
         return (
             <div className={bem.element('controls-column')}>
                 {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
                     .map((item, index) => (
                         <a
                             key={index}
-                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${CurrencyEnum.getDexAssetId(currency)}&assetId1=${CurrencyEnum.getDexAssetId(CurrencyEnum.USD)}`}
+                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${currency}&assetId1=${assetUsdId}`}
                             target={'_blank'}
                             className={bem.element('control')}
                         >

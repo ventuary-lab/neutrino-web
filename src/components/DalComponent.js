@@ -4,7 +4,6 @@ import {setUser} from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
 import {clientStorage} from 'components';
 
-import WavesTransport from './dal/WavesTransport';
 import BalanceListener from './dal/BalanceListener';
 import Keeper from './dal/Keeper';
 import axios from 'axios';

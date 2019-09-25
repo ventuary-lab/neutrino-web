@@ -8,7 +8,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import _get from 'lodash/get';
 
 import {dal, html} from 'components';
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 import './LiquidateBoundsFrom.scss';
 import {getUser} from 'yii-steroids/reducers/auth';
@@ -75,8 +75,8 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
                         inners={{
-                            label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_NB),
-                            icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_NB)
+                            label: CurrencyEnum.getLabel(CurrencyEnum.USD_NB),
+                            icon: CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_NB)
                         }}
                     />
 
@@ -86,7 +86,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Set liquidate {bonds} order', {
-                            bonds: BalanceCurrencyEnum.USD_NB,
+                            bonds: CurrencyEnum.USD_NB,
                         })}
                     />
                 </Form>

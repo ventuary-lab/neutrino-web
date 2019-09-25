@@ -63,7 +63,7 @@ export default class BalanceListener {
             await this._refreshBalance();
         //}
 
-        this._timer = setTimeout(this._next, 2000);
+        this._timer = setTimeout(this._next, 5000);
     }
 
     async _refreshBalance() {

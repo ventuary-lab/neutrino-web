@@ -11,7 +11,6 @@ import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import _isFunction from 'lodash-es/isFunction';
 
 import {html, dal} from 'components';
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import {getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
@@ -141,7 +140,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <div className={bem.element('input-label')}>
                             {__('How much {currency} would you like to collateralize?', {
                                 currency: this.state.isWavesLeft
-                                    ? BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES)
+                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.activeCurrency),
                             })}
                         </div>
@@ -150,17 +149,17 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             attribute={this.state.isWavesLeft ? 'waves' : 'neutrino'}
                             inners={{
                                 label: this.state.isWavesLeft
-                                    ? BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES)
+                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.activeCurrency),
                                 icon: this.state.isWavesLeft
-                                    ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)
-                                    : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
+                                    ? CurrencyEnum.getBalanceIconClass(CurrencyEnum.WAVES)
+                                    : CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_N)
                             }}
                         />
                         <div className={bem.element('input-hint')}>
                             {__('Min. {currency} required: 100 {currency}', {
                                 currency: this.state.isWavesLeft
-                                    ? BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES)
+                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.activeCurrency),
                             })}
                             <div className={bem.element('input-hint-icon')}>
@@ -192,17 +191,17 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             inners={{
                                 label: this.state.isWavesLeft
                                     ? CurrencyEnum.getLabel(this.props.activeCurrency)
-                                    : BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES),
+                                    : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
                                 icon: this.state.isWavesLeft
-                                    ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
-                                    : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)
+                                    ? CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_N)
+                                    : CurrencyEnum.getBalanceIconClass(CurrencyEnum.WAVES)
                             }}
                         />
                         <div className={bem.element('input-hint')}>
                             {__('Max {currency} available to generate: 10k {currency}', {
                                 currency: this.state.isWavesLeft
                                     ? CurrencyEnum.getLabel(this.props.activeCurrency)
-                                    : BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES),
+                                    : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
                             })}
                         </div>
                     </div>
@@ -294,12 +293,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         {_get(this.props.formValues, this.state.isWavesLeft ? 'waves' : 'neutrino')}
                                     </span>
                                     <span className={bem(bem.element('value-icon'), `Icon ${this.state.isWavesLeft
-                                        ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)
-                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)}`)}
+                                        ? CurrencyEnum.getBalanceIconClass(CurrencyEnum.WAVES)
+                                        : CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_N)}`)}
                                     />
                                     <span className={bem.element('value-name')}>
                                         {this.state.isWavesLeft
-                                            ? BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES)
+                                            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                             : CurrencyEnum.getLabel(this.props.activeCurrency)
                                         }
                                     </span>
@@ -314,13 +313,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         {_get(this.props.formValues, this.state.isWavesLeft ? 'neutrino' : 'waves')}
                                     </span>
                                     <span className={bem(bem.element('value-icon'), `Icon ${this.state.isWavesLeft
-                                        ? BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
-                                        : BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.WAVES)}`)}
+                                        ? CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_N)
+                                        : CurrencyEnum.getBalanceIconClass(CurrencyEnum.WAVES)}`)}
                                     />
                                     <span className={bem.element('value-name')}>
                                         {this.state.isWavesLeft
                                             ? CurrencyEnum.getLabel(this.props.activeCurrency)
-                                            : BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.WAVES)
+                                            : CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                         }
                                     </span>
                                 </div>
