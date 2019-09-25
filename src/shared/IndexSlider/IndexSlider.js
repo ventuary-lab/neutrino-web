@@ -90,7 +90,7 @@ export default class IndexSlider extends React.Component {
                     {__('What is a Collateralized Debt Position (CDP)?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('A CDP enables the generation of USD-N stable coins against the collateral (currently WAVES) that you lock up in the CDP until you pay back the USD-N you generation')}
+                    {__('A CDP enables the generation of USD-N stablecoins against the collateral (currently WAVES) that are locked up in the CDP until the generated USD-Ns are paid back.')}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
@@ -101,7 +101,7 @@ export default class IndexSlider extends React.Component {
                     {__('What are the benefits of opening a CDP?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('You can get liquidity by generation USD-N stable coins without giving up ownership of your collateral (as long as yo make sure that the CDP holds enough collateral to cover the value oh the USD-N stablecoins). When using WAVES as collateral, the value of the locked up collateral must always be more than 150% of the amount of USD-N stable coins that you generation')}
+                    {__('Users can derive liquidity by generating USD-N stablecoins without giving up ownership of the collateral, as long as they ensure that the CDP holds enough collateral to cover the value of the USD-N stablecoins. When using WAVES as collateral, the value of the locked up collateral must always be more than 150% of the amount of the USD-N stablecoins that were generated.')}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
@@ -112,7 +112,7 @@ export default class IndexSlider extends React.Component {
                     {__('How does it work?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('You determine how much WAVES you want to lock up in the CDP. You generate USD-N stablecoins against the WAVES you locked up, and spend them as you wish. You pay back the USD-N stablecoins when you no longer need the liquidity, together with a stability fee, and then you can withdraw the collateral that you locked up.')}
+                    {__('First, you determine the amount of WAVES to lock up in the CDP. Some USD-N stablecoins are generated against the locked up WAVES. The user can spend those USD-Ns at their discretion. Finally, you pay back the USD-N stablecoins together with a stability fee when you no longer need the liquidity, and then you can withdraw the collateral that you locked up.')}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
@@ -123,18 +123,18 @@ export default class IndexSlider extends React.Component {
                     {__('Is there any risk involved in creating a CDP?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('As long as you monitor your CDP and make sure that the value of the locked up WAVES is always more than 150% of the USD-N stablecoins that you have generated, your CDP will not be liquidated. If the value of the collateral comes close to 150% you can add more collateral, or pay back some of the debt. If the value of the locked up collateral falls below 150% then your CDP will be liquidated. This means that your collateral is being sold by the system in order to cover the value of the USD-N stablecoins that you generated. Any leftover collateral is returned to you CDP so you can withdraw it. See the Terms of Service for risks involved.')}
+                    {__('As long as you monitor your CDP and ensure that the value of the locked up WAVES is always more that 150% of the USD-N stablecoins that you have generated, your CDP will not be liquidated. If the value of the collateral approaches 150%, you can add more collateral or pay back some of the debt. If the value of the locked up collateral fails below 150%, then your CDP will be liquidated. This means that your collateral is being sold automatically to cover the value of the USD-N stablecoins that you generated. Any remaining collateral is returned to your CDP and made available for withdrawal. See the Terms of Service for risks involved.')}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
                 <div className={bem.element('slide-sub-title')}>
-                    {__('04. The cost')}
+                    {__('05. The cost')}
                 </div>
                 <h3 className={bem.element('slide-title')}>
                     {__('Does it cost anything?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('There is a stability fee on the USD-N stablecoins of 18.50% per year. You pay the fee with USD-NB when you pay back the USD-N. If your CDP becomes liquidated, then there is a 13% liquidation penalty that will be subtracted when the locked collateral is sold.')}
+                    {__('There is a stability fee on the USD-N stablecoins of 18.50% per year. You pay the fee with USD-NB (bonds) when you pay back the USD-N. If your CDP is liquidated, there is a 13% liquidation penalty subtracted when the locked collateral is sold.')}
                 </p>
             </div>
         ];
