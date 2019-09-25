@@ -21,6 +21,9 @@ import {ROUTE_ROOT} from 'routes';
 import {getData} from 'yii-steroids/reducers/auth';
 import {getPrices} from 'reducers/currency';
 
+import WarningMobileModal from 'modals/WarningMobileModal';
+import {openModal} from 'yii-steroids/actions/modal';
+
 const bem = html.bem('Layout');
 
 @layoutHoc(

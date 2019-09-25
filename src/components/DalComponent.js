@@ -114,6 +114,19 @@ export default class DalComponent {
         );
     }
 
+    async withdraw(pairName, address) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.NEUTRINO,
+            'withdraw',
+            [
+                address,
+            ],
+            'WAVES',
+            0,
+        );
+    }
+
     async setBondOrder(pairName, price, bondsAmount) {
         if (price <= 0 || price >= 1) {
             return;

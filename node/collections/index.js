@@ -3,4 +3,5 @@ module.exports = {
     NeutrinoOrders: require('./NeutrinoOrders'),
     NeutrinoPrices: require('./NeutrinoPrices'),
     NeutrinoBalances: require('./NeutrinoBalances'),
+    NeutrinoWithdraw: require('./NeutrinoWithdraw'),
 };

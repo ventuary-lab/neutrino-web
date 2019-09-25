@@ -1,8 +1,13 @@
 .LeasingMiningShare {
   & {
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  &__abs {
+    font-size: 12px;
   }
 
   &__bar {

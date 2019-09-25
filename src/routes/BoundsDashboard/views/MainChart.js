@@ -60,17 +60,6 @@ export default class MainChart extends React.PureComponent {
             legend: {
                 enabled: false,
             },
-            tooltip: {
-                backgroundColor: '#17183A',
-                borderWidth: 1,
-                borderColor: '#494991',
-                borderRadius: 7,
-                shadow: false,
-                crosshairs: false,
-                style: {
-                    color: '#fff'
-                }
-            },
             xAxis: {
                 lineWidth: 0.5,
                 lineColor: '#CBCBDA',
@@ -84,8 +73,7 @@ export default class MainChart extends React.PureComponent {
                     },
                 },
             },
-            yAxis:
-            {
+            yAxis: {
                 opposite: false,
                 gridLineWidth: 0,
                 minorGridLineWidth: 0,
@@ -112,7 +100,48 @@ export default class MainChart extends React.PureComponent {
                         [1, 'rgba(41,77,167)'], // end
                     ]
                 },
+                marker: {
+                    fillColor: '#1D1E46',
+                    lineColor: '#00F5FF',
+                    width: '20px',
+                }
             }],
+            tooltip: {
+                headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
+                backgroundColor: '#17183A',
+                borderColor: '#494991',
+                shadow: false,
+                split: false,
+                shape: 'softRect',
+                borderRadius: 7,
+                style: {
+                    color: '#ffffff',
+                    fontSize: '10px',
+                    fontFamily: 'Montserrat'
+                }
+            },
+        };
+    }
+
+
+    componentDidMount() {
+        //custom shape for tooltip
+        const Highcharts = this._chart.current.Highcharts;
+        Highcharts.SVGRenderer.prototype.symbols.softRect = function (x, y, w, h) {
+            const borderRadius = 7;
+
+            const initial = `M${x+6},${y}`;
+            const rightTopPoint = `h${w-13}`;
+            const rightBottomPoint = `v${h-14}`;
+            const leftBottomPoint = `h${-(w-13)}`;
+            const leftTopPoint = `v${-(h-14)}`;
+
+            const rightTopCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${borderRadius}`;
+            const rightBottomCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${borderRadius}`;
+            const leftBottomCorner = `a${borderRadius},${borderRadius} 0 0 1 ${-borderRadius},${-borderRadius}`;
+            const leftTopCorner = `a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${-borderRadius}`;
+
+            return [initial, rightTopPoint, rightTopCorner, rightBottomPoint, rightBottomCorner, leftBottomPoint, leftBottomCorner, leftTopPoint, leftTopCorner, 'z'];
         };
     }
 

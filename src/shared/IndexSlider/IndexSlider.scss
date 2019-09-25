@@ -102,4 +102,14 @@
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    &__slider {
+      padding-bottom: 250px;
+    }
+
+    .slick-dots {
+      bottom: -115px;
+    }
+  }
 }

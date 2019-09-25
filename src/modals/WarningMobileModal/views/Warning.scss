@@ -1,0 +1,17 @@
+.Warning {
+  $root: &;
+
+  & {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 539px;
+    width: 90%;
+  }
+
+  &__text {
+    max-width: 397px;
+    width: 90%;
+    margin-bottom: 50px;
+  }
+}

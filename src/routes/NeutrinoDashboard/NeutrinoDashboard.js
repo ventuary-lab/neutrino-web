@@ -18,6 +18,7 @@ import Hint from 'shared/Hint';
 import './NeutrinoDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
 import {login} from 'yii-steroids/actions/auth';
+import {getUser} from 'yii-steroids/reducers/auth';
 
 const bem = html.bem('NeutrinoDashboard');
 const FORM_ID = 'GenerationForm';
@@ -29,6 +30,7 @@ const PRICE_FEED_PERIOD = 1000;
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
         usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
+        user: getUser(state),
     })
 )
 @dal.hoc(
@@ -41,6 +43,11 @@ const PRICE_FEED_PERIOD = 1000;
         {
             url: `/api/v1/price-feed/${PRICE_FEED_PERIOD}`,
             key: 'priceFeed',
+        },
+        {
+            url: `/api/v1/withdraw/${props.user.address}`,
+            key: 'withdraw',
+            collection: CollectionEnum.NEUTRINO_WITHDRAW,
         },
     ]
 )
@@ -55,6 +62,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             contractBalance: PropTypes.number,
         }),
         priceFeed: PropTypes.number,
+        withdraw: PropTypes.object,
     };
 
     constructor() {
@@ -82,6 +90,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
+
+        console.log('withdraw', this.props.withdraw);
+
         const steps = [
             {
                 id: 'generation',
@@ -258,19 +269,38 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         </div>
                     </div>
                 </div>
-                <Button
-                    disabled={
-                        !_get(this.props.formValues, 'waves') ||
-                        !_get(this.props.formValues, 'neutrino') ||
-                        !parseInt(_get(this.props.formValues, 'waves')) ||
-                        !parseInt(_get(this.props.formValues, 'neutrino'))
-                    }
-                    className={bem.element('submit-button')}
-                    label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
-                        currency: CurrencyEnum.getLabel(this.props.activeCurrency)
-                    }) : __('Generate Waves')}
-                    onClick={() => this.setState({step: 'details'})}
-                />
+                <div className={bem.element('generate-actions')}>
+                    <Button
+                        disabled={
+                            !_get(this.props.formValues, 'waves') ||
+                            !_get(this.props.formValues, 'neutrino') ||
+                            !parseInt(_get(this.props.formValues, 'waves')) ||
+                            !parseInt(_get(this.props.formValues, 'neutrino'))
+                        }
+                        className={bem.element('submit-button')}
+                        label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
+                            currency: CurrencyEnum.getLabel(this.props.activeCurrency)
+                        }) : __('Generate Waves')}
+                        onClick={() => this.setState({step: 'details'})}
+                    />
+                    <div className={bem.element('withdraw')}>
+                        <div className={bem.element('withdraw-info')}>
+                            <div className={bem.element('withdraw-hint')}>
+                                <Hint text={'Some text'}/>
+                            </div>
+                            {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
+                                neutrino: _get(this.props, 'withdraw.neutrino-blocked'),
+                                waves: _get(this.props, 'withdraw.waves-blocked')
+                            })}
+                        </div>
+                        <Button
+                            // disabled={}
+                            className={bem.element('withdraw-button')}
+                            label={__('Withdraw')}
+                            onClick={() => dal.withdraw(this.props.pairName, this.props.user.address)}
+                        />
+                    </div>
+                </div>
             </>
         );
     }
