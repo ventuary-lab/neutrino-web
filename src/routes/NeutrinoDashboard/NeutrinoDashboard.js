@@ -298,7 +298,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             // disabled={}
                             className={bem.element('withdraw-button')}
                             label={__('Withdraw')}
-                            onClick={() => {}}
+                            onClick={() => dal.withdraw(this.props.pairName, this.props.user.address)}
                         />
                     </div>
                 </div>
