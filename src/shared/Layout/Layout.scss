@@ -62,4 +62,14 @@ body {
     margin-left: $gap;
     @include gradient-bg(242.05deg);
   }
+
+  @media screen and (max-width: 1024px) {
+    &__right {
+      display: none;
+    }
+
+    &__center {
+      width: 100%;
+    }
+  }
 }

@@ -8,6 +8,7 @@ import routes from './routes';
 // Automatically import all views from yii-steroids
 ui.addViews({
     'form.FormView': require('yii-steroids/ui/form/Form/FormView').default,
+    'modal.ModalView': require('./ui/modal/Modal/ModalView').default,
     'form.NumberFieldView': require('./ui/form/InputField/InputFieldView').default,
 });
 ui.addViews(require.context('./ui', true, /View.js$/));

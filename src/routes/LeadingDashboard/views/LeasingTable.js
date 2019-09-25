@@ -1,52 +1,10 @@
 import React from 'react';
 import './LeasingTable.scss'
-import LeasingSlider from './LeasingTableSlider';
-import Favorites from './LeasingTableFavorites';
-import MiningShare from './LeasingTableMiningShare';
-import LeasersPayouts from './LeasingTablePayouts';
+import LeasingTableRow from './LeasingTableRow';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {html} from 'components';
 const bem = html.bem('LeasingTable');
-
-
-class LeasingTableRow extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
-        const { leaser: { address, website, miningShare, leasersPayouts, myLeasing }, index } = this.props;
-        const num = index + 1;
-
-        return (
-            <div className={bem.element('tr')}>
-                <div className={bem.element('td', 'num')}>
-                    {num}
-                </div>
-                <div className={bem.element('td', 'favorites')}>
-                    <Favorites />
-                </div>
-                <div className={bem.element('td', 'address')}>
-                    {address}
-                </div>
-                <div className={bem.element('td', 'site')}>
-                    {website}
-                </div>
-                <div className={bem.element('td', 'mining')}>
-                    <MiningShare {...miningShare}/>
-                </div>
-                <div className={bem.element('td', 'payouts')}>
-                    <LeasersPayouts {...leasersPayouts}/>
-                </div>
-                <div className={bem.element('td', 'leasing')}>
-                    <LeasingSlider myLeasing={myLeasing}/>
-                </div>
-            </div>
-        )
-    }
-}
 
 
 export default class LeasingTable extends React.PureComponent {
@@ -58,7 +16,7 @@ export default class LeasingTable extends React.PureComponent {
         return (
             <div className={bem.element('sort-buttons')}>
                 <a className={bem.element('sort-button', {
-                    asc: true, //разобраться
+                    asc: true,
                     active: false,
                 })}/>
                 <a className={bem.element('sort-button', {
@@ -68,7 +26,6 @@ export default class LeasingTable extends React.PureComponent {
             </div>
         );
     }
-
 
     render() {
 
@@ -87,18 +44,24 @@ export default class LeasingTable extends React.PureComponent {
                             <div className={bem.element('th', 'site')}>{__('Website')}</div>
                             <div className={bem.element('th', 'mining')}>
                                 {this.renderSortButtons('mining share')}
-                                {__('Mining Share')}
+                                <span>
+                                    {__('Mining Share')}
+                                </span>
                             </div>
                             <div className={bem.element('th', 'payouts')}>
                                 {this.renderSortButtons('mining share')}
-                                {__('Leasers payouts')}
+                                <span>
+                                    {__('Leasers payouts')}
+                                </span>
                             </div>
                             <div className={bem.element('th', 'leasing')}>
-                                <div>
+                                <div className={bem.element('my-leasing')}>
                                     {this.renderSortButtons('mining share')}
-                                    {__('My leasing')}
+                                    <span>
+                                        {__('My leasing')}
+                                    </span>
                                 </div>
-                                <div>
+                                <div className={bem.element('my-favorites')}>
                                     <span>
                                         {__('My favorites')}
                                     </span>
@@ -114,18 +77,18 @@ export default class LeasingTable extends React.PureComponent {
                     </div>
                     <div className={bem.element('tfoot')}>
                         <span className={bem.element('text')} >
-                            USD-Neutrino and USD-Bonds holders are able to change the leassing configuration for collateralized balance in WAVES
+                            {__('USD-Neutrino and USD-Bonds holders are able to change the leassing configuration for collateralized balance in WAVES')}
                         </span>
                         <Button
                             type={'submit'}
                             className={bem.element('edit-button')}
-                            label={'Edit'}
+                            label={__('Edit')}
                             color={'secondary'}
                         />
                         <Button
                             type={'submit'}
                             className={bem.element('submit-button')}
-                            label={'Apply'}
+                            label={__('Apply')}
                         />
                     </div>
                 </div>

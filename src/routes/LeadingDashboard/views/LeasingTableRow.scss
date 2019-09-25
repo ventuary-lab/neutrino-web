@@ -1,0 +1,62 @@
+@import 'style/helpers/vars';
+
+.LeasingTableRow {
+  $root: &;
+
+  & {
+    display: flex;
+    align-items: center;
+  }
+
+  &__td {
+    /*border: 1px solid white;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0px;
+    font-size: 11px;
+  }
+
+  &__td_num {
+    min-width: $width-num;
+  }
+
+  &__td_favorites {
+    min-width: $width-favorites;
+  }
+
+  @function sum-fix-width() {
+    @return $width-num + $width-favorites + $width-site + $width-mining + $width-payouts + $width-leasing;
+  }
+
+  &__td_address {
+    justify-content: flex-start;
+    width: calc((100% - #{sum-fix-width()}));
+    min-width: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  &__td_site {
+    justify-content: flex-start;
+    min-width: $width-site;
+  }
+
+  &__td_mining {
+    min-width: $width-mining;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &__td_payouts {
+    min-width: $width-payouts;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &__td_leasing {
+    min-width: $width-leasing;
+    justify-content: flex-start;
+    padding-left: 15px;
+  }
+}

@@ -1,4 +1,4 @@
-@import '../../../style/helpers/vars';
+@import 'style/helpers/vars';
 
 .LeasingTable {
 
@@ -14,10 +14,12 @@
     overflow: auto;
     padding-top: 15px;
     margin-bottom: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: #11122F transparent;
   }
 
   &__tbody::-webkit-scrollbar {
-    width: 5px;
+    width: $width-scroll;
   }
 
   &__tbody::-webkit-scrollbar-thumb {
@@ -31,55 +33,59 @@
   }
 
   &__th {
-    /*border: 1px white solid;*/
-    padding: 25px 20px;
-    font-size: 16px;
-  }
-
-  &__td {
-    /*border: 1px white solid;*/
-    padding: 5px 20px;
+    /*border: 1px solid white;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0px;
     font-size: 13px;
   }
 
-  &__th_num, &__td_num {
-    text-align: center;
-    min-width: 60px;
+  &__th_num {
+    min-width: $width-num;
   }
 
-  &__th_favorites, &__td_favorites {
-    text-align: center;
-    min-width: 60px;
+  &__th_favorites {
+    min-width: $width-favorites;
   }
 
-  &__th_address, &__td_address {
-    width: calc(100% - 970px);
-    min-width: 400px;
+  @function sum-fix-width() {
+    @return $width-num + $width-favorites + $width-site + $width-mining + $width-payouts + $width-leasing + $width-scroll;
   }
 
-  &__th_site, &__td_site {
-    width: 200px;
+  &__th_address {
+    justify-content: flex-start;
+    width: calc((100% - #{sum-fix-width()}));
+    min-width: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  &__th_mining, &__td_mining {
-    width: 200px;
+  &__th_site {
+    justify-content: flex-start;
+    min-width: $width-site;
   }
 
-  &__th_mining, &__th_payouts  {
-    text-align: center;
+  &__th_mining {
+    min-width: $width-mining;
   }
 
-  &__th_payouts, &__td_payouts {
-    width: 200px;
-  }
-
-  &__th_leasing, &__td_leasing {
-    width: 300px;
+  &__th_payouts {
+    min-width: $width-payouts;
   }
 
   &__th_leasing {
-    display: flex;
+    min-width: $width-leasing;
+  }
+
+  &__th_leasing {
     justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  &__my-leasing, &__my-favorites {
+    display: flex;
     align-items: center;
   }
 
@@ -108,12 +114,11 @@
     }
   }
 
-
   &__tfoot {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px 0px;
+    padding: 15px 20px;
     border-top: 1px solid #343869;
   }
 
@@ -121,7 +126,6 @@
     font-size: 12px;
     margin-right: 20px;
   }
-
 
   &__submit-button {
     background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
@@ -151,5 +155,4 @@
     margin-left: 10px;
     font-size: 12px;
   }
-
 }

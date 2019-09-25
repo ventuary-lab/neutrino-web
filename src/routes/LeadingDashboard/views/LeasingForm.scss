@@ -1,0 +1,36 @@
+.LeasingForm {
+  $root: &;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, #22224F -9.18%, #2D2F67 144.84%);
+    border-radius: 4px 4px 0px 0px;
+    padding: 15px 30px;
+  }
+
+  &__available-amount {
+    font-weight: 800;
+  }
+
+  &__form-wrap {
+    padding: 35px 30px;
+  }
+
+  &__form {
+    .FieldLayoutView__label {
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .ButtonView__label {
+      text-transform: uppercase;
+    }
+  }
+
+  &__submit-button {
+     margin-top: 27px;
+  }
+
+}

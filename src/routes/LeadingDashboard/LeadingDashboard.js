@@ -1,6 +1,7 @@
 import React from 'react';
 import LeasingTable from './views/LeasingTable';
 import LeasingChart from './views/LeasingChart';
+import LeasingForm from './views/LeasingForm';
 import './LeadingDashboard.scss';
 
 import {html} from 'components';
@@ -185,10 +186,13 @@ export default class LeadingDashboard extends React.PureComponent {
                 <div className={bem.element('leasing-table')}>
                     <LeasingTable leasers={LEASERS} />
                 </div>
-                <div className={bem.element('leasing-chart')}>
-                    <LeasingChart />
-                </div>
-                <div className={bem.element('leasing-form')}>
+                <div className={bem.element('leasing-footer-wrap')}>
+                    <div className={bem.element('leasing-chart')}>
+                        <LeasingChart />
+                    </div>
+                    <div className={bem.element('leasing-form')}>
+                        <LeasingForm />
+                    </div>
                 </div>
             </div>
         );

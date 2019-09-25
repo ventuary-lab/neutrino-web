@@ -1,19 +1,25 @@
 import React from 'react';
 import ReactCharts from 'react-highcharts/ReactHighcharts.src';
 
+import './LeasingChart.scss';
+
 import {html} from 'components';
 const bem = html.bem('LeasingChart');
 
 export default class LeasingChart extends React.PureComponent {
     constructor(props) {
         super(props);
+        this._chart = React.createRef();
+
         this._config = {
             chart: {
                 type: 'column',
                 backgroundColor: null,
+                height: '60%',
+                width: 420
             },
             title: {
-                text: 'Cashout and Income',
+                text: __('Cashout and Income'),
                 style: {
                     color: '#ffffff',
                     fontSize: '14px',
@@ -28,10 +34,10 @@ export default class LeasingChart extends React.PureComponent {
                 labels: {
                     style: {
                         fontFamily: 'Roboto',
-                        fontSize: '10px',
+                        fontSize: '8px',
                         color: 'rgba(203, 203, 218, 0.62)'
                     }
-                }
+                },
             },
             yAxis: {
                 gridLineWidth: 0,
@@ -48,10 +54,10 @@ export default class LeasingChart extends React.PureComponent {
                     format: '{value}',
                     style: {
                         fontFamily: 'Roboto',
-                        fontSize: '12px',
+                        fontSize: '7px',
                         color: 'rgba(203, 203, 218, 0.62)'
                     },
-                    step: 2
+                    step: 1
                 }
             },
             legend: {
@@ -62,7 +68,7 @@ export default class LeasingChart extends React.PureComponent {
                 shadow: false,
                 itemStyle: {
                     color: '#ffffff',
-                    fontSize: '14px',
+                    fontSize: '12px',
                     fontFamily: 'Montserrat',
                     fontWeight: 300
                 },
@@ -78,24 +84,38 @@ export default class LeasingChart extends React.PureComponent {
                 }
             },
             series: [{
-                name: 'Cashout',
+                name: __('Cashout'),
                 borderColor: null,
                 color: '#134EC8',
                 data: [2500, 2700, 1600, 2400, 1200, 2000]
             }, {
-                name: 'Income',
+                name: __('Income'),
                 borderColor: null,
                 color: '#00F59E',
                 data: [2500, 2800, 1400, 2500, 1300, 2100]
             }],
             credits: false,
+            tooltip: {
+                backgroundColor: '#17183A',
+                borderColor: '#494991',
+                borderRadius: 7,
+                padding: 10,
+                headerFormat: '<span style="font-family: Roboto; color: rgba(203, 203, 218, 0.62);">{point.key}</span><br/>',
+                shape: 'softRect',
+                shadow: false,
+                style: {
+                    color: '#ffffff',
+                    fontSize: '10px',
+                    fontFamily: 'Montserrat'
+                }
+            }
         }
     }
 
     render() {
         return (
             <div className={bem.block()}>
-                <ReactCharts config={this._config}/>
+                <ReactCharts ref={this._chart} config={this._config}/>
             </div>
         )
     }
