@@ -129,7 +129,13 @@ module.exports = class BaseCollection {
         this.logger.debug('Update item of ' + this.pairName + ':' + this.collectionName + ' collection... ' + id);
 
         // Fetch data, if not set
-        data = data || await this._fetch(this.getKeys(id));
+        const keys = this.getKeys(id);
+        if (!data) {
+            data = await this.transport.fetchKeys(keys);
+        }
+        if (keys.includes('height')) {
+            data.height = this.heightListener.getLast();
+        }
 
         const item = await this._prepareItem(id, data);
         if (item) {
@@ -142,18 +148,6 @@ module.exports = class BaseCollection {
             }
             await this.storage.hset(this.getStorageKey(), id, nextJson);
         }
-    }
-
-    async _fetch(keys) {
-        // Fetch data
-        const data = await this.transport.fetchKeys(keys);
-
-        // Append height, if need
-        if (keys.includes('height')) {
-            data.height = this.heightListener.getLast();
-        }
-
-        return data;
     }
 
 };
