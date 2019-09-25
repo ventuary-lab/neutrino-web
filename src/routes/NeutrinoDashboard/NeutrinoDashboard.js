@@ -171,11 +171,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.activeCurrency),
                             })}
-                            <div className={bem.element('input-hint-icon')}>
-                                <Hint
-                                    text={__('Some text')}
-                                />
-                            </div>
                         </div>
                     </div>
 
@@ -222,7 +217,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <div className={bem.element('info-string')}>
                                 <div className={bem.element('info-hint')}>
                                     <Hint
-                                        text={__('Some text')}
+                                        text={__('The average price feed period calculated during 1000 blocks')}
                                     />
                                 </div>
                                 <span>{__('Price feed period')}</span>
@@ -232,12 +227,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             </span>
                         </div>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <div className={bem.element('info-hint')}>
-                                    <Hint
-                                        text={__('Some text')}
-                                    />
-                                </div>
+                            <div className={bem.element('info-string', 'without-hint')}>
                                 <span>{__('Number of oracles')}</span>
                             </div>
                             <span>{__('1')}</span>
@@ -246,11 +236,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <div className={bem.element('info-column')}>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string')}>
-                                <div className={bem.element('info-hint')}>
-                                    <Hint
-                                        text={__('Some text')}
-                                    />
-                                </div>
                                 <span>
                                     {__('Total issued {currency}', {
                                         currency: CurrencyEnum.getLabel(this.props.activeCurrency)
@@ -260,7 +245,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <span>{this.props.neutrinoBalances && round(this.props.neutrinoBalances.totalUsed, 2)}</span>
                         </div>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string', 'without-hint')}>
+                            <div className={bem.element('info-string')}>
                                 <span>{__('Current WAVES / USD price')}</span>
                             </div>
                             <span>{this.props.usdToWavesExchange} $</span>
