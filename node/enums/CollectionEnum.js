@@ -7,6 +7,7 @@ module.exports = class CollectionEnum {
     static NEUTRINO_ORDERS = 'neutrino_orders';
     static NEUTRINO_PRICES = 'neutrino_prices';
     static NEUTRINO_BALANCES = 'neutrino_balances';
+    static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
 
     static getKeys() {
         return [
@@ -14,6 +15,7 @@ module.exports = class CollectionEnum {
             this.NEUTRINO_ORDERS,
             this.NEUTRINO_PRICES,
             this.NEUTRINO_BALANCES,
+            this.NEUTRINO_WITHDRAW,
         ];
     }
 
@@ -23,6 +25,7 @@ module.exports = class CollectionEnum {
             [this.NEUTRINO_ORDERS]: collections.NeutrinoOrders,
             [this.NEUTRINO_PRICES]: collections.NeutrinoPrices,
             [this.NEUTRINO_BALANCES]: collections.NeutrinoBalances,
+            [this.NEUTRINO_WITHDRAW]: collections.NeutrinoWithdraw,
         };
         return map[name] || null;
     }
@@ -33,6 +36,7 @@ module.exports = class CollectionEnum {
             [this.NEUTRINO_ORDERS]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_PRICES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_BALANCES]: ContractEnum.NEUTRINO,
+            [this.NEUTRINO_WITHDRAW]: ContractEnum.NEUTRINO,
         };
         return map[name] || null;
     }

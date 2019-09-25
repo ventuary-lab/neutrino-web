@@ -117,7 +117,7 @@
   &__info {
     margin-left: -$page-padding;
     margin-right: -$page-padding;
-    margin-bottom: 48px;
+    margin-bottom: 67px;
     background-color: #292959;
     display: flex;
     align-items: center;
@@ -159,8 +159,13 @@
     margin-right: 12px;
   }
 
-  &__submit-button.ButtonView {
+  &__submit-button.ButtonView,
+  &__withdraw-button.ButtonView {
     min-width: 322px;
+  }
+
+  &__submit-button {
+    margin-right: 55px;
   }
 
   &__details {
@@ -251,7 +256,8 @@
     }
   }
 
-  &__details-actions {
+  &__details-actions,
+  &__generate-actions {
     display: flex;
     align-items: center;
   }
@@ -262,5 +268,24 @@
 
   &__finalize-button.ButtonView {
       min-width: 320px;
+  }
+
+  &__withdraw {
+    position: relative;
+
+  }
+
+  &__withdraw-hint {
+    margin-right: 8px;
+  }
+
+  &__withdraw-info {
+    position: absolute;
+    top: -38px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    line-height: 16px;
   }
 }
