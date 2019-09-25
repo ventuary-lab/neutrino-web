@@ -10279,9 +10279,9 @@ yargs@^7.0.0, yargs@^7.1.0:
     yargs-parser "^5.0.0"
 
 yii-steroids@^1.12.16:
-  version "1.12.16"
-  resolved "https://registry.yarnpkg.com/yii-steroids/-/yii-steroids-1.12.16.tgz#400570ccfa2b99c521ce42f1d08d4b72116629fe"
-  integrity sha512-QDss74wI0B76SnZjbjvqlh7ZWJ09xLLokRIJLjPYlkq0belba3rMikiyzUyXGklbbx5yBNnM6gf7+Aqj3Vi+YQ==
+  version "1.12.17"
+  resolved "https://registry.yarnpkg.com/yii-steroids/-/yii-steroids-1.12.17.tgz#2fdc19aec9e24a3ed72f64f9b29f7d09620bcfef"
+  integrity sha512-LiBHxKTmcCYh6IIW/N9eTrIEqVRvbZeVJHM7osmMY9oWSXbNs6Qd1DKQv0xha8CDuUkdvphAk1Sm/t25nTqzfg==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/plugin-proposal-class-properties" "^7.5.5"

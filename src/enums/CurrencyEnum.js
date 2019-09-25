@@ -73,4 +73,19 @@ export default class CurrencyEnum extends Enum {
         return this.getIconActiveClasses()[id] || '';
     }
 
+    static getDexAssetIds() {
+        return {
+            [this.WAVES]:'WAVES',
+            [this.USD]: 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck',
+
+            // TODO add correct assetId after add to dex
+            [this.USD_N]: 'WAVES',
+            [this.USD_NB]: 'WAVES',
+        }
+    }
+
+    static getDexAssetId(id) {
+        return this.getDexAssetIds()[id] || '';
+    }
+
 }

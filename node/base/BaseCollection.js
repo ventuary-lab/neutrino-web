@@ -8,6 +8,8 @@ module.exports = class BaseCollection {
         this.logger = params.logger;
         this.heightListener = params.heightListener;
         this.updateHandler = params.updateHandler;
+        this.updateHandler = params.updateHandler;
+        this.dApp = params.dApp;
 
         this.STORAGE_KEY_PREFIX = '';
     }
@@ -80,6 +82,7 @@ module.exports = class BaseCollection {
                     });
             });
         });
+
 
         await this._updateNext(Object.keys(data), data);
     }
