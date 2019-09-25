@@ -90,9 +90,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
-
-        console.log('withdraw', this.props.withdraw);
-
         const steps = [
             {
                 id: 'generation',
@@ -283,25 +280,40 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         }) : __('Generate Waves')}
                         onClick={() => this.setState({step: 'details'})}
                     />
-                    <div className={bem.element('withdraw')}>
-                        <div className={bem.element('withdraw-info')}>
-                            <div className={bem.element('withdraw-hint')}>
-                                <Hint text={'Some text'}/>
-                            </div>
-                            {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
-                                neutrino: _get(this.props, 'withdraw.neutrino-blocked'),
-                                waves: _get(this.props, 'withdraw.waves-blocked')
-                            })}
-                        </div>
-                        <Button
-                            // disabled={}
-                            className={bem.element('withdraw-button')}
-                            label={__('Withdraw')}
-                            onClick={() => dal.withdraw(this.props.pairName, this.props.user.address)}
-                        />
-                    </div>
+                    {this.renderWithdraw()}
                 </div>
             </>
+        );
+    }
+
+    renderWithdraw() {
+        const neutrinoBlocked = _get(this.props, 'withdraw.neutrino-blocked');
+        const wavesBlocked = _get(this.props, 'withdraw.waves-blocked');
+        const height = _get(this.props, 'withdraw.height');
+        const unblockBlock = _get(this.props, 'withdraw.unblock-block');
+        const countBlock = (unblockBlock - height) > 0 ? unblockBlock - height : 0;
+
+        return (
+            <div className={bem.element('withdraw')}>
+                <div className={bem.element('withdraw-info')}>
+                    <div className={bem.element('withdraw-hint')}>
+                        <Hint text={__('Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)', {
+                            'count-blocks': countBlock,
+                            'count-minutes': countBlock, // 1block = 1min
+                        })}/>
+                    </div>
+                    {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
+                        neutrino: neutrinoBlocked,
+                        waves: wavesBlocked,
+                    })}
+                </div>
+                <Button
+                    disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
+                    className={bem.element('withdraw-button')}
+                    label={__('Withdraw')}
+                    onClick={() => dal.withdraw(this.props.pairName, this.props.user.address)}
+                />
+            </div>
         );
     }
 
