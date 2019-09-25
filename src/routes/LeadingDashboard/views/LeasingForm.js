@@ -37,7 +37,7 @@ export default class LeasingForm extends React.PureComponent {
                             attribute={'neutrino'}
                             inners={{
                                 label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N),
-                                icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
+                                // icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
                             }}
                         />
                         <Button
