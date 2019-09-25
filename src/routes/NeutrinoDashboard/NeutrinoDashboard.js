@@ -74,6 +74,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         };
 
         this._onSubmit = this._onSubmit.bind(this);
+        this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
     }
 
@@ -311,7 +312,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
                     className={bem.element('withdraw-button')}
                     label={__('Withdraw')}
-                    onClick={() => dal.withdraw(this.props.pairName, this.props.user.address)}
+                    onClick={this._withdraw}
                 />
             </div>
         );
@@ -395,7 +396,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             className={bem.element('finalize-button')}
                             disabled={!_get(this.props.formValues, 'terms')}
                             label={__('Finalize and create CDP')}
-                            onClick={() => this.props.dispatch(submit(FORM_ID))}
                         />
                     </div>
                 </div>
@@ -455,5 +455,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         this.props.onComplete();
                     }
                 });
+    }
+
+    _withdraw() {
+        return dal.withdraw(this.props.pairName, this.props.user.address);
     }
 }
