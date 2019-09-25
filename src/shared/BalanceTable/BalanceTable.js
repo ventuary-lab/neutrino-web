@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getUser} from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
 
-import {html} from 'components';
+import {html, dal} from 'components';
 
 import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
