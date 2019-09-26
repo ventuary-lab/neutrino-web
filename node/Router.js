@@ -47,8 +47,8 @@ module.exports = class Router {
             '/api/v1/neutrino-balances/:pairName': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_BALANCES).getBalances();
             },
-            '/api/v1/waves-exchange/:period': async request => {
-                return this._getWavesExchanges(request.params.period);
+            '/api/v1/waves-exchange/:currency/:period': async request => {
+                return this._getWavesExchanges(request.params.currency, request.params.period);
             },
             '/api/v1/price-feed/:period': async request => {
                 let prices = await this._getPrices();
@@ -136,11 +136,11 @@ module.exports = class Router {
         return result;
     }
 
-    async _getWavesExchanges(period) {
+    async _getWavesExchanges(currency, period) {
         const candlesLimit = 10;
         const seconds = WavesExchangePeriodEnum.getSeconds(period);
         // Получаем все данные с редиса и сортируем по времени по убыванию
-        let prices = _orderBy((await this._getPrices())[CurrencyEnum.USD], 'timestamp', 'desc');;
+        let prices = _orderBy((await this._getPrices())[currency], 'timestamp', 'desc');;
         //Первый лемент - это закрытие последней свечи. Получаем время закрытия предыдущей свечи
         let prevCandleTimestamp = prices[0].timestamp - seconds * 1000;
         // Начинаем с последней свечи
