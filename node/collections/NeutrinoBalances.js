@@ -29,14 +29,14 @@ module.exports = class NeutrinoBalances extends BaseCollection {
         }
 
         const data = {
-            [CurrencyEnum.USD_N]: {},
+            [this.pairName]: {},
         };
 
         const totalIssued = await this._request(`assets/details/${this.assetId}`);
-        data[CurrencyEnum.USD_N]['totalIssued'] = totalIssued.quantity;
+        data[this.pairName]['totalIssued'] = totalIssued.quantity;
 
         const contractBalance = await this._request(`assets/balance/${this.dApp[this.pairName]}/${this.assetId}`);
-        data[CurrencyEnum.USD_N]['contractBalance'] = contractBalance.balance;
+        data[this.pairName]['contractBalance'] = contractBalance.balance;
 
         await this._updateNext(Object.keys(data), data);
     }
@@ -45,7 +45,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
      * @returns {Promise}
      */
     async getBalances() {
-        let items = await this.getItem(CurrencyEnum.USD_N);
+        let items = await this.getItem(this.pairName);
         return items;
     }
 

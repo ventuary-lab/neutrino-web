@@ -26,18 +26,18 @@ const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
 @connect(
-    state => ({
+    (state, props) => ({
         activeCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
-        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
+        currencyToWavesExchange: getLastWavesExchange(state, CurrencyEnum.getGeneralCurrency(getQuoteCurrency(state))),
         user: getUser(state),
     })
 )
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/neutrino-balances`,
+            url: `/api/v1/neutrino-balances/${props.pairName}`,
             key: 'neutrinoBalances',
             collection: CollectionEnum.NEUTRINO_BALANCES,
         },
@@ -46,7 +46,7 @@ const PRICE_FEED_PERIOD = 1000;
             key: 'priceFeed',
         },
         {
-            url: `/api/v1/withdraw/${_get(props, 'user.address')}`,
+            url: `/api/v1/withdraw/${props.pairName}/${_get(props, 'user.address')}`,
             key: 'withdraw',
             collection: CollectionEnum.NEUTRINO_WITHDRAW,
         },
@@ -56,7 +56,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     static propTypes = {
         activeCurrency: PropTypes.string,
         pairName: PropTypes.string,
-        usdToWavesExchange: PropTypes.number,
+        currencyToWavesExchange: PropTypes.number,
         neutrinoBalances: PropTypes.shape({
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
@@ -254,7 +254,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <div className={bem.element('info-string')}>
                                 <span>{__('Current WAVES / USD price')}</span>
                             </div>
-                            <span>{this.props.usdToWavesExchange} $</span>
+                            <span>{this.props.currencyToWavesExchange} $</span>
                         </div>
                     </div>
                 </div>
@@ -403,7 +403,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = this.props.usdToWavesExchange;
+        const rate = this.props.currencyToWavesExchange;
 
         let amount = this._parseAmount(isRefreshToAmount
             ? _get(props.formValues, 'waves') * rate
@@ -440,7 +440,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     _onSubmit(values) {
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
-            : dal.swapNeutrinoToWaves(this.props.pairName, values.neutrino)
+            : dal.swapNeutrinoToWaves(this.props.pairName, this.props.activeCurrency, values.neutrino)
                 .then(() => {
                     if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                         this.props.onComplete();

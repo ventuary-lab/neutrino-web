@@ -103,13 +103,13 @@ export default class DalComponent {
         );
     }
 
-    async swapNeutrinoToWaves(pairName, amount) {
+    async swapNeutrinoToWaves(pairName, paymentCurrency, amount) {
         await this.keeper.sendTransaction(
             pairName,
             ContractEnum.NEUTRINO,
             'swapNeutrinoToWaves',
             [],
-            this.assets[CurrencyEnum.USD_N],
+            this.assets[paymentCurrency],
             amount,
         );
     }

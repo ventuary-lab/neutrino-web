@@ -38,14 +38,14 @@ module.exports = class Router {
                     prices: await this._getPrices(),
                 };
             },
-            '/api/v1/withdraw/:address': async request => {
-                return await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address);
+            '/api/v1/withdraw/:pairName/:address': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address);
             },
             '/api/v1/prices': async request => {
                 return await this._getPrices();
             },
-            '/api/v1/neutrino-balances': async request => {
-                return await this.app.getCollection(PairsEnum.USDNB_USDN, CollectionEnum.NEUTRINO_BALANCES).getBalances();
+            '/api/v1/neutrino-balances/:pairName': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_BALANCES).getBalances();
             },
             '/api/v1/waves-exchange/:period': async request => {
                 return this._getWavesExchanges(request.params.period);
