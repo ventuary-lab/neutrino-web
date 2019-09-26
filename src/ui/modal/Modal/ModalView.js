@@ -12,6 +12,13 @@ export default class ModalView extends React.PureComponent {
     static propTypes = {
         onClose: PropTypes.func,
         children: PropTypes.node,
+        canNotClose: PropTypes.bool,
+        blurOverlay: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        canNotClose: false,
+        blurOverlay: false,
     };
 
     render() {
@@ -19,7 +26,9 @@ export default class ModalView extends React.PureComponent {
             <div className={bem.block()}>
                 <Modal
                     isOpen={true}
-                    overlayClassName={bem.element('overlay')}
+                    overlayClassName={bem.element('overlay', {
+                        blur: this.props.blurOverlay,
+                    })}
                     ariaHideApp={false}
                     {...this.props}
                     className={bem(
@@ -28,11 +37,13 @@ export default class ModalView extends React.PureComponent {
                     )}
                 >
                     <div className={bem.element('inner')}>
-                        <a
-                            className={bem.element('close')}
-                            href='javascript:void(0)'
-                            onClick={this.props.onClose}
-                        />
+                        {!this.props.canNotClose && (
+                            <a
+                                className={bem.element('close')}
+                                href='javascript:void(0)'
+                                onClick={this.props.onClose}
+                            />
+                        )}
                         <div className={bem.element('content')}>
                             {this.props.children}
                         </div>

@@ -1,0 +1,15 @@
+.BlockedAppModal {
+  $root: &;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__text {
+    max-width: 440px;
+    width: 90%;
+    margin-bottom: 60px;
+  }
+}
