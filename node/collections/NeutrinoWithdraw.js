@@ -14,9 +14,9 @@ module.exports = class NeutrinoWithdraw extends BaseCollection {
 
     async _prepareItem(id, item) {
         return {
-            'neutrino-blocked': item['neutrino_' + id] / Math.pow(10, 8),
-            'waves-blocked': item['waves_' + id] / Math.pow(10, 8),
-            'unblock-block': item['balance_block_' + id] + 2,
+            'neutrinoBlocked': item['neutrino_' + id] / Math.pow(10, 8),
+            'wavesBlocked': item['waves_' + id] / Math.pow(10, 8),
+            'unblockBlock': item['balance_block_' + id] + 2,
             height: item['height']
         }
     }

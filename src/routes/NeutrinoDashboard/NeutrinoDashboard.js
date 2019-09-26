@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import _toNumber from 'lodash-es/toNumber';
 import round from 'lodash-es/round';
 import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
@@ -62,7 +63,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
             contractBalance: PropTypes.number,
         }),
         priceFeed: PropTypes.number,
-        withdraw: PropTypes.object,
+        withdraw: PropTypes.shape({
+            neutrinoBlocked: PropTypes.number,
+            wavesBlocked: PropTypes.number,
+            unblockBlock: PropTypes.number,
+            height: PropTypes.number,
+        }),
     };
 
     constructor() {
@@ -257,8 +263,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         disabled={
                             !_get(this.props.formValues, 'waves') ||
                             !_get(this.props.formValues, 'neutrino') ||
-                            !parseInt(_get(this.props.formValues, 'waves')) ||
-                            !parseInt(_get(this.props.formValues, 'neutrino'))
+                            !_toNumber(_get(this.props.formValues, 'waves')) ||
+                            !_toNumber(_get(this.props.formValues, 'neutrino'))
                         }
                         className={bem.element('submit-button')}
                         label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
@@ -273,10 +279,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     renderWithdraw() {
-        const neutrinoBlocked = _get(this.props, 'withdraw.neutrino-blocked');
-        const wavesBlocked = _get(this.props, 'withdraw.waves-blocked');
+        const neutrinoBlocked = _get(this.props, 'withdraw.neutrinoBlocked');
+        const wavesBlocked = _get(this.props, 'withdraw.wavesBlocked');
         const height = _get(this.props, 'withdraw.height');
-        const unblockBlock = _get(this.props, 'withdraw.unblock-block');
+        const unblockBlock = _get(this.props, 'withdraw.unblockBlock');
         const countBlock = (unblockBlock - height) > 0 ? unblockBlock - height : 0;
 
         return (
@@ -289,8 +295,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         })}/>
                     </div>
                     {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
-                        neutrino: neutrinoBlocked,
-                        waves: wavesBlocked,
+                        neutrino: neutrinoBlocked || 0,
+                        waves: wavesBlocked || 0,
                     })}
                 </div>
                 <Button
