@@ -21,7 +21,8 @@ const FORM_ID = 'LiquidateBoundsFrom';
     state => ({
         formValues: getFormValues(FORM_ID)(state),
         pairName: getPairName(state),
-        bondBalance: _get(getUser(state), ['balances', getBaseCurrency(state)])
+        bondBalance: _get(getUser(state), ['balances', getBaseCurrency(state)]),
+        baseCurrency: getBaseCurrency(state),
     })
 )
 export default class LiquidateBoundsFrom extends React.PureComponent {
@@ -29,6 +30,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
     static propTypes = {
         formValues: PropTypes.object,
         bondBalance: PropTypes.number,
+        baseCurrency: PropTypes.string,
     };
 
     constructor(props) {
@@ -95,6 +97,6 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
     }
 
     _onSubmit() {
-        return dal.setLiquidateOrder(this.props.pairName, this.props.formValues.bonds);
+        return dal.setLiquidateOrder(this.props.pairName, this.props.baseCurrency,this.props.formValues.bonds);
     }
 }

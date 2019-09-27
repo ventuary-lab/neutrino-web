@@ -127,7 +127,7 @@ export default class DalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, bondsAmount) {
+    async setBondOrder(pairName, price, paymentCurrency, bondsAmount) {
         if (price <= 0 || price >= 1) {
             return;
         }
@@ -143,19 +143,19 @@ export default class DalComponent {
                     contractPrice,
                     position
                 ],
-                this.assets[CurrencyEnum.USD_N],
+                this.assets[paymentCurrency],
                 bondsAmount * price,
             );
         }
     }
 
-    async setLiquidateOrder(pairName, total) {
+    async setLiquidateOrder(pairName, paymentCurrency, total) {
         await this.keeper.sendTransaction(
             pairName,
             ContractEnum.NEUTRINO,
             'setOrder',
             [],
-            this.assets[CurrencyEnum.USD_NB],
+            this.assets[paymentCurrency],
             total,
         );
     }

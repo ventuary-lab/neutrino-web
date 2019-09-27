@@ -35,7 +35,8 @@ module.exports = class BondsOrders extends BaseCollection {
      * @returns {Promise}
      */
     async getOpenedOrders() {
-        let orders = await this.getOrders();
+        // let orders = await this.getOrders();
+        let orders = await this.getItemsAll();
         orders = orders.filter(order => order.index !== null);
         orders = _orderBy(orders, 'index', 'asc');
         return orders;

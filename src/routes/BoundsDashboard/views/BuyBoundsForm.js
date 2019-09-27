@@ -149,7 +149,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        return dal.setBondOrder(this.props.pairName, price, values.bounds)
+        return dal.setBondOrder(this.props.pairName, price, this.props.quoteCurrency,values.bounds)
             .then(() => {
                 if (this.props.onComplete && _isFunction(this.props.onComplete)) {
                     this.props.onComplete();
