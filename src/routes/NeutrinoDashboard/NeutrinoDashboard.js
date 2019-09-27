@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getFormValues, change} from 'redux-form';
+import {getFormValues, change, reset} from 'redux-form';
 import _get from 'lodash-es/get';
 import _toNumber from 'lodash-es/toNumber';
 import round from 'lodash-es/round';
@@ -9,11 +9,10 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
-import _isFunction from 'lodash-es/isFunction';
 
 import {html, dal} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
+import {getPairName, getQuoteCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
 
 import './NeutrinoDashboard.scss';
@@ -89,7 +88,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const thisNeutrino = _get(this.props.formValues, 'neutrino');
         const nextNeutrino = _get(nextProps.formValues, 'neutrino');
         const thisPrice = _get(this.props, 'neutrinoBalances.price');
-        const nextPrice = _get(nextProps, 'neutrinoBalances.price')
+        const nextPrice = _get(nextProps, 'neutrinoBalances.price');
 
 
         const isChangeWavesAmount = thisWaves !== nextWaves;
@@ -372,16 +371,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             </div>
                         </div>
                     </div>
-                    <div className={bem.element('details-item')}>
-                        <span className={bem.element('details-label')}>
-                            {__('Transaction details')}
-                        </span>
-                        <div className={bem.element('details-inner')}>
-                            <p>
-                                {__('Automated smart contract transaction')}
-                            </p>
-                        </div>
-                    </div>
                     <CheckboxField
                         className={bem.element('terms-checkbox')}
                         label={<span>{__('I have read and accept the')} <a href='javascript:void(0)'>{__('Terms of Service')}</a></span>}
@@ -454,9 +443,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
             : dal.swapNeutrinoToWaves(this.props.pairName, this.props.activeCurrency, values.neutrino)
                 .then(() => {
-                    if (this.props.onComplete && _isFunction(this.props.onComplete)) {
-                        this.props.onComplete();
-                    }
+                    this.setState({step: 'generation'});
+                    this.props.dispatch(reset(FORM_ID));
                 });
     }
 
