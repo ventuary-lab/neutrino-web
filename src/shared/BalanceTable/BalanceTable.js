@@ -8,7 +8,7 @@ import {html, dal} from 'components';
 
 import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getLastWavesExchange} from 'reducers/currency';
+import {getLastWavesExchange, getQuoteCurrency, getBaseCurrency} from 'reducers/currency';
 
 const bem = html.bem('BalanceTable');
 
@@ -16,6 +16,8 @@ const bem = html.bem('BalanceTable');
     state => ({
         user: getUser(state),
         usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
+        quoteCurrency: getQuoteCurrency(state),
+        baseCurrency: getBaseCurrency(state),
     })
 )
 export default class BalanceTable extends React.PureComponent {
@@ -23,6 +25,8 @@ export default class BalanceTable extends React.PureComponent {
     static propTypes = {
         user: PropTypes.object,
         usdToWavesExchange: PropTypes.number,
+        quoteCurrency: PropTypes.string,
+        baseCurrency: PropTypes.string,
     };
 
     render() {
@@ -44,46 +48,55 @@ export default class BalanceTable extends React.PureComponent {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(this.props.user.balances).map(currency => (
-                        <tr key={currency}>
-                            <td>
-                                <div className={bem.element('labels-column')}>
-                                    <span
-                                        className={bem(
-                                            bem.element('icon'),
-                                            `Icon ${CurrencyEnum.getBalanceIconClass(currency)}`
-                                        )}
-                                    />
-                                    <div className={bem.element('labels')}>
+                    {Object.keys(this.props.user.balances)
+                        //waves + current _n + current _nb
+                        .filter(currency => {
+                            if (currency !== CurrencyEnum.WAVES) {
+                                return [this.props.quoteCurrency, this.props.baseCurrency].includes(currency);
+                            }
+
+                            return true;
+                        })
+                        .map(currency => (
+                            <tr key={currency}>
+                                <td>
+                                    <div className={bem.element('labels-column')}>
+                                        <span
+                                            className={bem(
+                                                bem.element('icon'),
+                                                `Icon ${CurrencyEnum.getBalanceIconClass(currency)}`
+                                            )}
+                                        />
+                                        <div className={bem.element('labels')}>
+                                            <span className={bem.element('label')}>
+                                                {CurrencyEnum.getLabel(currency)}
+                                            </span>
+                                            <span className={bem.element('label', 'tiny')}>
+                                                {currency === CurrencyEnum.WAVES
+                                                    ? __('USD')
+                                                    : CurrencyEnum.getGeneralCurrency(currency).toUpperCase()
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className={bem.element('values-column')}>
                                         <span className={bem.element('label')}>
-                                            {CurrencyEnum.getLabel(currency)}
+                                            {this.props.user.balances[currency]}
                                         </span>
                                         <span className={bem.element('label', 'tiny')}>
-                                            {currency === CurrencyEnum.WAVES
-                                                ? __('USD')
-                                                : CurrencyEnum.getGeneralCurrency(currency).toUpperCase()
+                                            $ {currency === CurrencyEnum.WAVES
+                                                ? _round(this.props.user.balances[currency] * this.props.usdToWavesExchange, 2)
+                                                : this.props.user.balances[currency]
                                             }
                                         </span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className={bem.element('values-column')}>
-                                    <span className={bem.element('label')}>
-                                        {this.props.user.balances[currency]}
-                                    </span>
-                                    <span className={bem.element('label', 'tiny')}>
-                                        $ {currency === CurrencyEnum.WAVES
-                                            ? _round(this.props.user.balances[currency] * this.props.usdToWavesExchange, 2)
-                                            : this.props.user.balances[currency]
-                                        }
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                {this.renderDexButtons(currency)}
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    {this.renderDexButtons(currency)}
+                                </td>
+                            </tr>
                     ))}
                 </tbody>
             </table>
