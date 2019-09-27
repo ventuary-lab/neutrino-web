@@ -30,7 +30,6 @@ const PRICE_FEED_PERIOD = 1000;
         activeCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
-        currencyToWavesExchange: getLastWavesExchange(state, CurrencyEnum.getGeneralCurrency(getQuoteCurrency(state))),
         user: getUser(state),
     })
 )
@@ -56,11 +55,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
     static propTypes = {
         activeCurrency: PropTypes.string,
         pairName: PropTypes.string,
-        currencyToWavesExchange: PropTypes.number,
         neutrinoBalances: PropTypes.shape({
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
             contractBalance: PropTypes.number,
+            price: PropTypes.number,
         }),
         priceFeed: PropTypes.number,
         withdraw: PropTypes.shape({
@@ -85,11 +84,20 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        const isChangeWavesAmount = _get(this.props.formValues, 'waves') !== _get(nextProps.formValues, 'waves');
-        const isChangeCurrencyAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
+        const thisWaves = _get(this.props.formValues, 'waves');
+        const nextWaves = _get(nextProps.formValues, 'waves');
+        const thisNeutrino = _get(this.props.formValues, 'neutrino');
+        const nextNeutrino = _get(nextProps.formValues, 'neutrino');
+        const thisPrice = _get(this.props, 'neutrinoBalances.price');
+        const nextPrice = _get(nextProps, 'neutrinoBalances.price')
 
-        if (isChangeWavesAmount || isChangeCurrencyAmount) {
-            this._refreshAmount(nextProps, isChangeWavesAmount);
+
+        const isChangeWavesAmount = thisWaves !== nextWaves;
+        const isChangeCurrencyAmount = thisNeutrino !== nextNeutrino;
+        const isChangePrice = (nextWaves && nextNeutrino) && (thisPrice && nextPrice) && (thisPrice !== nextPrice);
+
+        if (isChangeWavesAmount || isChangeCurrencyAmount || isChangePrice) {
+            this._refreshAmount(nextProps, isChangeWavesAmount || (isChangePrice && this.state.isWavesLeft));
         }
         else {
             this._isProgramChange = false;
@@ -252,9 +260,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         </div>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string')}>
-                                <span>{__('Current WAVES / USD price')}</span>
+                                <span>
+                                    {__('Current WAVES / {currency} price', {
+                                        currency: CurrencyEnum.getGeneralCurrency(this.props.activeCurrency).toUpperCase()
+                                    })}
+                                </span>
                             </div>
-                            <span>{this.props.currencyToWavesExchange} $</span>
+                            <span>{_get(this.props, 'neutrinoBalances.price')} $</span>
                         </div>
                     </div>
                 </div>
@@ -295,8 +307,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         })}/>
                     </div>
                     {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
-                        neutrino: neutrinoBlocked || 0,
-                        waves: wavesBlocked || 0,
+                        neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,
+                        waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
                     })}
                 </div>
                 <Button
@@ -403,7 +415,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = this.props.currencyToWavesExchange;
+        const rate = _get(props, 'neutrinoBalances.price');
 
         let amount = this._parseAmount(isRefreshToAmount
             ? _get(props.formValues, 'waves') * rate
