@@ -72,7 +72,7 @@ module.exports = class BondsOrders extends BaseCollection {
             filledAmount: _round(filledTotal / (price * 100000000 / 100), 2),
             restAmount: _round((total - filledTotal) / (price * 100000000 / 100), 2),
             discountPercent: 100 - price,
-            pairName: PairsEnum.USDNB_USDN,
+            pairName: this.pairName,
             type: OrderTypeEnum.BUY,
         };
     }
