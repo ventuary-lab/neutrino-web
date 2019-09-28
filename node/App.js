@@ -30,7 +30,7 @@ module.exports = class App {
         }
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
-            [PairsEnum.USDNB_USDN]: process.enUSDNB_USDNv.APP_ADDRESS_USDNB_USDN || '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL', // testnet
+            [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MrtHeXquGPcRd3YjJQHfY1Ss6oSDpfxGuL', // testnet
             [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
