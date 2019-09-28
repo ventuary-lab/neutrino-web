@@ -22,7 +22,7 @@ module.exports = class App {
                 this.nodeUrl = 'https://nodes.wavesplatform.com' 
                 break
             case 'test': 
-                this.nodeUrl = 'https://nodes.wavesplatform.com' 
+                this.nodeUrl = 'https://testnode1.wavesnodes.com' 
                 break
             case 'custom': 
                 this.nodeUrl = process.env.NODE_URL
