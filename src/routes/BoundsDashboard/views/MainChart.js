@@ -48,15 +48,6 @@ export default class MainChart extends React.PureComponent {
             rangeSelector: {
                 enabled: false,
             },
-            title: {
-                align: 'left',
-                text: 'Discount %',
-                y: 40,
-                style: {
-                    color: '#fff',
-                    fontSize: '14px',
-                },
-            },
             legend: {
                 enabled: false,
             },

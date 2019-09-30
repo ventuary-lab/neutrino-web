@@ -48,9 +48,9 @@ export default class OrdersTable extends React.PureComponent {
                 <table>
                     <thead>
                         <tr>
-                            <td className={bem.element('id-column')}>
+                            <th className={bem.element('id-column')}>
                                 {__('ID')}
-                            </td>
+                            </th>
                             <th className={bem.element('search-column')}>
                                 <div className={bem.element('header')}>
                                     {__('Name')}

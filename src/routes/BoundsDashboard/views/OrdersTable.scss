@@ -1,21 +1,25 @@
 @import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 .OrdersTable {
 
   $root: &;
+
+  height: 100%;
+  overflow: auto;
+  @include scrollbar;
 
   table {
     width: 100%;
     border-collapse: collapse;
   }
 
-  thead {
-    background-color: #26274f;
-  }
-
   th {
+    background-color: #26274f;
     font-size: 13px;
     line-height: 16px;
+    position: sticky;
+    top: 0;
   }
 
   td {

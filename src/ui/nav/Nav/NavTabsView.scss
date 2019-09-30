@@ -2,6 +2,7 @@
 
 .NavTabsView {
   $root: &;
+  $tab-item-height: 36px;
 
   &_full-width-tabs {
     #{$root}__list {
@@ -37,7 +38,10 @@
   }
 
   &__item {
-    text-align: center;
+    height: $tab-item-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: 10px;
     min-width: 164px;
@@ -46,20 +50,33 @@
     font-weight: 800;
     font-size: 12px;
     line-height: 15px;
+    position: relative;
 
     &_active {
       border: 1px solid #4a4a7f;
       border-bottom: none;
-      border-top: 3px solid $color-brand-azure;
       font-weight: 700;
 
       &:first-child {
         border-left: none;
+      }
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: -1px;
+        width: calc(100% + 2px);
+        height: 3px;
+        background-color: $color-brand-azure;
       }
     }
   }
 
   &__content {
     padding-top: 16px;
+    padding-bottom: 18px;
+    height: calc(100% - #{$tab-item-height});
   }
 }

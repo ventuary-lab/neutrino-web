@@ -1,4 +1,5 @@
 @import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 .OrderBook {
   $root: &;
@@ -86,14 +87,7 @@
     overflow: auto;
     margin-bottom: 20px;
 
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #11122F;
-      border: 1px solid #00F5FF;
-    }
+    @include scrollbar;
   }
 
   &__body-column_address {

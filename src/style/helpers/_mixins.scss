@@ -91,3 +91,14 @@
 @mixin gradient-bg($deg) {
   background: linear-gradient($deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
 }
+
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: $width-scroll;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-layout-bg;
+    border: 1px solid $color-brand-azure;
+  }
+}

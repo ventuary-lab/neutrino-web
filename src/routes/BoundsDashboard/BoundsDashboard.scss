@@ -23,6 +23,8 @@
 
     &_right {
       width: 100%;
+      display: flex;
+      flex-direction: column;
       @include gradient-bg(222.77deg)
     }
   }
@@ -33,13 +35,33 @@
   }
   &__forms {
     height: 360px;
+  }
+
+  &__orders {
+    height: 360px;
     padding-bottom: 18px;
   }
+
+  &__orders-nav {
+    height: 100%;
+  }
+
   &__graph {
-    max-height: 320px;
+    flex-grow: 1;
+    height: calc(100% - 340px);
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+  }
+
+  &__graph-title {
+    font-size: 14px;
+    line-height: 17px;
+    padding: 24px 40px 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   &__danger-tab {

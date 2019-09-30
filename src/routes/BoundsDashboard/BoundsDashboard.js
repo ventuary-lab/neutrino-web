@@ -110,6 +110,9 @@ export default class BoundsDashboard extends React.PureComponent {
                 </div>
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('graph')}>
+                        <span className={bem.element('graph-title')}>
+                            {__('Discount (%)')}
+                        </span>
                         <MainChart
                             pairName={this.props.pairName}
                         />
@@ -117,6 +120,7 @@ export default class BoundsDashboard extends React.PureComponent {
                     <div className={bem.element('orders')}>
                         {this.props.userOrders && (
                             <Nav
+                                className={bem.element('orders-nav')}
                                 layout={'tabs'}
                                 items={[
                                     {
