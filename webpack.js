@@ -17,5 +17,22 @@ require('yii-steroids/webpack')
                 },
             ]
         },
+        webpack: {
+            module: {
+                rules: {
+                    favicon: {
+                        test: /\.ico$/,
+                        use: {
+                            file: {
+                                loader: 'file-loader',
+                                options: {
+                                    name: 'images/[name].[ext]',
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
     })
     .base('./src/index.js');
