@@ -77,8 +77,8 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
                         inners={{
-                            label: CurrencyEnum.getLabel(CurrencyEnum.USD_NB),
-                            icon: CurrencyEnum.getBalanceIconClass(CurrencyEnum.USD_NB)
+                            label: CurrencyEnum.getLabel(this.props.baseCurrency),
+                            icon: CurrencyEnum.getBalanceIconClass(this.props.baseCurrency)
                         }}
                     />
 
@@ -88,7 +88,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Set liquidate {bonds} order', {
-                            bonds: CurrencyEnum.USD_NB,
+                            bonds: this.props.baseCurrency,
                         })}
                     />
                 </Form>
