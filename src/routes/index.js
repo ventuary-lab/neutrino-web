@@ -80,6 +80,7 @@ export default {
         },
         [ROUTE_LEASING]: {
             exact: true,
+            isVisible: false, //TODO del when leasing dashboard was ready
             path: '/leasing/:currency',
             component: LeadingDashboard,
             label: __('Leasing dashboard'),

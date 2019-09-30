@@ -440,13 +440,16 @@ export default class NeutrinoDashboard extends React.PureComponent {
     };
 
     _onSubmit(values) {
+        this.setState({step: 'generation'});
+        this.props.dispatch(reset(FORM_ID));
+
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
             : dal.swapNeutrinoToWaves(this.props.pairName, this.props.activeCurrency, values.neutrino)
-                .then(() => {
-                    this.setState({step: 'generation'});
-                    this.props.dispatch(reset(FORM_ID));
-                });
+                // .then(() => {
+                //     this.setState({step: 'generation'});
+                //     this.props.dispatch(reset(FORM_ID));
+                // });
     }
 
     _withdraw() {

@@ -48,15 +48,11 @@ export default class BalanceTable extends React.PureComponent {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(this.props.user.balances)
-                        //waves + current _n + current _nb
-                        .filter(currency => {
-                            if (currency !== CurrencyEnum.WAVES) {
-                                return [this.props.quoteCurrency, this.props.baseCurrency].includes(currency);
-                            }
-
-                            return true;
-                        })
+                    {[
+                        CurrencyEnum.WAVES,
+                        this.props.quoteCurrency,
+                        this.props.baseCurrency
+                    ]
                         .map(currency => (
                             <tr key={currency}>
                                 <td>
