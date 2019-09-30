@@ -50,9 +50,9 @@ module.exports = class Router {
             '/api/v1/waves-exchange/:currency/:period': async request => {
                 return this._getWavesExchanges(request.params.currency, request.params.period);
             },
-            '/api/v1/price-feed/:period': async request => {
+            '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
-                prices = prices[CurrencyEnum.USD].slice(-1 * request.params.period);
+                prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },
             '/api/v1/bonds/:pairName/position': async request => {

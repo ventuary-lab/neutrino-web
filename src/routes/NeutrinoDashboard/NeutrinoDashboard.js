@@ -41,7 +41,7 @@ const PRICE_FEED_PERIOD = 1000;
             collection: CollectionEnum.NEUTRINO_BALANCES,
         },
         {
-            url: `/api/v1/price-feed/${PRICE_FEED_PERIOD}`,
+            url: `/api/v1/price-feed/${CurrencyEnum.getGeneralCurrency(props.activeCurrency)}/${PRICE_FEED_PERIOD}`,
             key: 'priceFeed',
         },
         {
