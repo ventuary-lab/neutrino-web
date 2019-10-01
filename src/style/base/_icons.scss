@@ -48,63 +48,6 @@ $icons-dir: '../static/icons';
     }
   }
 
-  &__usd-n-1 {
-    &_big {
-      width: 32px;
-      height: 32px;
-      background-image: url('#{$icons-dir}/usd-n-1_big.svg');
-
-      @include icon-hover {
-        background-image: url('#{$icons-dir}/usd-n-1_big_green.svg');
-      }
-    }
-
-    &_big_green {
-      width: 32px;
-      height: 32px;
-
-      background-image: url('#{$icons-dir}/usd-n-1_big_green.svg');
-    }
-  }
-
-  &__eur-n {
-    &_big {
-      width: 32px;
-      height: 32px;
-      background-image: url('#{$icons-dir}/eur-n_big.svg');
-
-      @include icon-hover {
-        background-image: url('#{$icons-dir}/eur-n_big_green.svg');
-      }
-    }
-
-    &_big_green {
-      width: 32px;
-      height: 32px;
-
-      background-image: url('#{$icons-dir}/eur-n_big_green.svg');
-    }
-  }
-
-  &__btc-n {
-    &_big {
-      width: 32px;
-      height: 32px;
-      background-image: url('#{$icons-dir}/btc-n_big.svg');
-
-      @include icon-hover {
-        background-image: url('#{$icons-dir}/btc-n_big_green.svg');
-      }
-    }
-
-    &_big_green {
-      width: 32px;
-      height: 32px;
-
-      background-image: url('#{$icons-dir}/btc-n_big_green.svg');
-    }
-  }
-
   &__home {
     min-width: 16px;
     min-height: 16px;
@@ -115,28 +58,6 @@ $icons-dir: '../static/icons';
     min-width: 16px;
     min-height: 13px;
     background-image: url('#{$icons-dir}/learn.svg');
-  }
-
-  &__wave {
-    min-width: 18px;
-    min-height: 18px;
-    background-image: url('#{$icons-dir}/wave.svg');
-  }
-
-  &__usd-n-2 {
-    &_green {
-      min-width: 18px;
-      min-height: 18px;
-      background-image: url('#{$icons-dir}/usd-n-2_green.svg');
-    }
-  }
-
-  &__usd-nb {
-    &_green {
-      min-width: 18px;
-      min-height: 18px;
-      background-image: url('#{$icons-dir}/usd-nb_green.svg');
-    }
   }
 
   &__double-arrow-up {
@@ -185,5 +106,59 @@ $icons-dir: '../static/icons';
     min-width: 11px;
     min-height: 10px;
     background-image: url('#{$icons-dir}/checkbox.svg');
+  }
+
+  &__wave {
+    min-width: 20px;
+    min-height: 20px;
+    background-image: url('#{$icons-dir}/wave.svg');
+  }
+
+  &__usd-n {
+    min-width: 20px;
+    min-height: 20px;
+    background-image: url('#{$icons-dir}/usd-n.svg');
+
+    //&_big {
+    //  min-width: 32px;
+    //  min-height: 32px;
+    //  background-image: url('#{$icons-dir}/usd-n.svg');
+    //}
+  }
+
+  &__usd-nb {
+    min-width: 20px;
+    min-height: 20px;
+    background-image: url('#{$icons-dir}/usd-nb.svg');
+
+    //&_big {
+    //  min-width: 32px;
+    //  min-height: 32px;
+    //  background-image: url('#{$icons-dir}/usd-nb.svg');
+    //}
+  }
+
+  &__eur-n {
+    min-width: 20px;
+    min-height: 20px;
+    background-image: url('#{$icons-dir}/eur-n.svg');
+
+    //&_big {
+    //  min-width: 32px;
+    //  min-height: 32px;
+    //  background-image: url('#{$icons-dir}/eur-n.svg');
+    //}
+  }
+
+  &__eur-nb {
+    min-width: 20px;
+    min-height: 20px;
+    background-image: url('#{$icons-dir}/eur-nb.svg');
+
+    //&_big {
+    //  min-width: 32px;
+    //  min-height: 32px;
+    //  background-image: url('#{$icons-dir}/eur-nb.svg');
+    //}
   }
 }

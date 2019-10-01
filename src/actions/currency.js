@@ -5,10 +5,13 @@ import {http} from 'components';
 export const CURRENCY_SET_CURRENT = 'CURRENCY_SET_CURRENT';
 export const CURRENCY_SET_PRICES = 'CURRENCY_SET_PRICES';
 
-export const currencySetCurrent = (quote, base = null) => {
+export const currencySetCurrent = (quote, base = null, source = null) => {
     base = base || CurrencyEnum.getBaseCurrency(quote);
+    source = source || CurrencyEnum.getSourceCurrency(quote);
+
     return {
         type: CURRENCY_SET_CURRENT,
+        source,
         base,
         quote,
     };

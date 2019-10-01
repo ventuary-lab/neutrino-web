@@ -75,7 +75,7 @@ export default class BalanceTable extends React.PureComponent {
                                         <span
                                             className={bem(
                                                 bem.element('icon'),
-                                                `Icon ${CurrencyEnum.getBalanceIconClass(currency)}`
+                                                `Icon ${CurrencyEnum.getIconClass(currency)}`
                                             )}
                                         />
                                         <div className={bem.element('labels')}>
@@ -85,7 +85,7 @@ export default class BalanceTable extends React.PureComponent {
                                             <span className={bem.element('label', 'tiny')}>
                                                 {currency === CurrencyEnum.WAVES
                                                     ? __('USD')
-                                                    : CurrencyEnum.getGeneralCurrency(currency).toUpperCase()
+                                                    : CurrencyEnum.getSourceCurrency(currency).toUpperCase()
                                                 }
                                             </span>
                                         </div>

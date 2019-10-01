@@ -78,7 +78,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         attribute={'bonds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                            icon: CurrencyEnum.getBalanceIconClass(this.props.baseCurrency)
+                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency)
                         }}
                     />
 

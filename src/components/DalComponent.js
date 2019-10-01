@@ -9,7 +9,6 @@ import Keeper from './dal/Keeper';
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
-import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
 
 export const STORAGE_AUTH_KEY = 'isAuth';

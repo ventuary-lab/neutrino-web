@@ -29,7 +29,7 @@ const FORM_ID = 'SectionToggle';
         formValues: getFormValues(FORM_ID)(state),
         navItems: getNavItems(state, ROUTE_ROOT),
         currentItem: getCurrentItem(state),
-        activeCurrency: getQuoteCurrency(state),
+        quoteCurrency: getQuoteCurrency(state),
         userRole: getUserRole(state),
     })
 )
@@ -38,7 +38,7 @@ export default class Header extends React.PureComponent {
     static propTypes = {
         navItems: PropTypes.arrayOf(NavItemSchema),
         currentItem: NavItemSchema,
-        activeCurrency: PropTypes.oneOf(CurrencyEnum.getKeys()),
+        quoteCurrency: PropTypes.string,
         userRole: PropTypes.string,
     };
 
@@ -77,7 +77,7 @@ export default class Header extends React.PureComponent {
                                 attribute={'section'}
                                 items={this.props.navItems}
                                 onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
-                                    currency: this.props.activeCurrency
+                                    currency: this.props.quoteCurrency
                                 }))}
                                 defaultItemLabel={'Products'}
                             />

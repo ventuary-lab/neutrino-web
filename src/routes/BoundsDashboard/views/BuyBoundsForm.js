@@ -126,7 +126,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         attribute={'bounds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            icon: CurrencyEnum.getBalanceIconClass(this.props.quoteCurrency)
+                            icon: CurrencyEnum.getIconClass(this.props.quoteCurrency)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
                             ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoBalances.price'), 2)} WAVES`
@@ -144,7 +144,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         attribute={'neutrino'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                            icon: CurrencyEnum.getBalanceIconClass(this.props.baseCurrency)
+                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency)
                         }}
                     />
                     <Button

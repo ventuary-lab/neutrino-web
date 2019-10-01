@@ -7,6 +7,7 @@ import PairsEnum from 'enums/PairsEnum';
 
 const initialState = {
     base: CurrencyEnum.getBaseCurrency(CurrencyEnum.USD_N),
+    source: CurrencyEnum.getSourceCurrency(CurrencyEnum.USD_N),
     quote: CurrencyEnum.USD_N,
     prices: null,
 };
@@ -19,6 +20,7 @@ export default (state = initialState, action) => {
                 ...state,
                 base: action.base,
                 quote: action.quote,
+                source: action.source,
             };
 
         case CURRENCY_SET_PRICES:
@@ -33,6 +35,7 @@ export default (state = initialState, action) => {
 
 export const getBaseCurrency = state => _get(state, 'currency.base');
 export const getQuoteCurrency = state => _get(state, 'currency.quote');
+export const getSourceCurrency = state => _get(state, 'currency.source');
 export const getPairName = state => getBaseCurrency(state) + '_' + getQuoteCurrency(state);
 export const getPrices = state => state.currency.prices;
 export const getWavesExchanges = (state, currency) => state.currency.prices[currency] || [];

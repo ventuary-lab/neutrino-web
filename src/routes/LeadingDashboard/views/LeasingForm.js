@@ -7,7 +7,7 @@ import './LeasingForm.scss';
 
 import {html} from 'components';
 const bem = html.bem('LeasingForm');
-import BalanceCurrencyEnum from 'enums/BalanceCurrencyEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 export default class LeasingForm extends React.PureComponent {
     constructor(props) {
@@ -19,7 +19,7 @@ export default class LeasingForm extends React.PureComponent {
                 <div className={bem.element('header')}>
                     <span className={bem.element('head')}>{__('Available')}</span>
                     <span className={bem.element('available-amount')}>
-                        59,976.38 {BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N)}
+                        59,976.38 {CurrencyEnum.getLabel(CurrencyEnum.USD_N)}
                     </span>
                 </div>
                 <div className={bem.element('form-wrap')}>
@@ -36,8 +36,8 @@ export default class LeasingForm extends React.PureComponent {
                             className={bem.element('input')}
                             attribute={'neutrino'}
                             inners={{
-                                label: BalanceCurrencyEnum.getLabel(BalanceCurrencyEnum.USD_N),
-                                // icon: BalanceCurrencyEnum.getIconClass(BalanceCurrencyEnum.USD_N)
+                                label: CurrencyEnum.getLabel(CurrencyEnum.USD_N),
+                                icon: CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
                             }}
                         />
                         <Button

@@ -17,7 +17,7 @@ const bem = html.bem('LeftSidebar');
 
 @connect(
     state => ({
-        activeCurrency: getQuoteCurrency(state),
+        quoteCurrency: getQuoteCurrency(state),
         currentItem: getCurrentItem(state),
     })
 )
@@ -42,7 +42,7 @@ export default class LeftSidebar extends React.PureComponent {
                         <div
                             key={currency}
                             className={bem.element('currency', {
-                                active: this.props.activeCurrency === currency,
+                                active: this.props.quoteCurrency === currency,
                             })}
                             onClick={() => {
                                 this.props.dispatch([
@@ -55,7 +55,7 @@ export default class LeftSidebar extends React.PureComponent {
                         >
                             <span className={bem(
                                 bem.element('currency-icon'),
-                                CurrencyEnum.getIconActiveClass(currency)
+                                CurrencyEnum.getIconClass(currency)
                             )}/>
                             <span className={bem.element('currency-label')}>
                                 {CurrencyEnum.getLabel(currency)}

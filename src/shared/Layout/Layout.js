@@ -33,7 +33,7 @@ const bem = html.bem('Layout');
         ws.wsUrl = location.port ? 'ws://localhost:5000' : location.origin.replace('http', 'ws');
         ws.onMessage = event => store.dispatch([
             apiWsHandler(event),
-            currencyWsHandler(event),
+            // currencyWsHandler(event),
         ]);
         ws.open();
 

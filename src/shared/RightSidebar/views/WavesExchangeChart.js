@@ -2,12 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
-import {getQuoteCurrency} from 'reducers/currency';
+import {getSourceCurrency} from 'reducers/currency';
 import _orderBy from 'lodash-es/orderBy';
 
 import {dal, html} from 'components';
 import CollectionEnum from 'enums/CollectionEnum';
-import CurrencyEnum from 'enums/CurrencyEnum';
 import WavesExchangePeriodEnum from 'enums/WavesExchangePeriodEnum';
 import './WavesExchangeChart.scss';
 
@@ -15,12 +14,12 @@ const bem = html.bem('WavesExchangeChart');
 
 @connect(
     state => ({
-        activeCurrency: getQuoteCurrency(state),
+        sourceCurrency: getSourceCurrency(state),
     })
 )
 @dal.hoc(
     props => ({
-        url: `/api/v1/waves-exchange/${CurrencyEnum.getGeneralCurrency(props.activeCurrency)}/${props.period || WavesExchangePeriodEnum.PERIOD_1H}`,
+        url: `/api/v1/waves-exchange/${props.sourceCurrency}/${props.period || WavesExchangePeriodEnum.PERIOD_1H}`,
         key: 'chartData',
         collection: CollectionEnum.NEUTRINO_PRICES,
     })

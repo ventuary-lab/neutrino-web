@@ -64,6 +64,9 @@
 
   &__currency-icon {
     filter: grayscale(1);
+    min-width: 32px;
+    min-height: 32px;
+
   }
 
   &__currency-label {

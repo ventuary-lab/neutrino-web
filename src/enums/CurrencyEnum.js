@@ -36,19 +36,19 @@ export default class CurrencyEnum extends Enum {
         const map = {
             [this.USD_N]: this.USD_NB,
             [this.EUR_N]: this.EUR_NB,
-            [this.BTC_N]: this.BTC_NB,
+            // [this.BTC_N]: this.BTC_NB,
         };
         return map[id] || null;
     }
 
-    static getGeneralCurrency(id) {
+    static getSourceCurrency(id) {
         const map = {
             [this.USD_N]: this.USD,
             [this.USD_NB]: this.USD,
             [this.EUR_N]: this.EUR,
             [this.EUR_NB]: this.EUR,
-            [this.BTC_N]: this.BTC,
-            [this.BTC_NB]: this.BTC,
+            // [this.BTC_N]: this.BTC,
+            // [this.BTC_NB]: this.BTC,
         };
         return map[id] || null;
     }
@@ -60,47 +60,22 @@ export default class CurrencyEnum extends Enum {
             [this.USD_NB]: __('USD-NB'),
             [this.EUR_N]: __('EUR-N'),
             [this.EUR_NB]: __('EUR-NB'),
-            [this.BTC_N]: __('BTC-N'),
-            [this.BTC_NB]: __('BTC-NB'),
+            // [this.BTC_N]: __('BTC-N'),
+            // [this.BTC_NB]: __('BTC-NB'),
         };
-    }
-
-    static getBalanceIconClasses() {
-        return {
-            [this.WAVES]: 'Icon__wave',
-            [this.USD_N]: 'Icon__usd-n-2_green',
-            [this.USD_NB]: 'Icon__usd-nb_green',
-            [this.EUR_N]: 'Icon__eur-n_green',
-            [this.EUR_NB]: 'Icon__eur-nb_green',
-        };
-    }
-
-    static getBalanceIconClass(id) {
-        return this.getBalanceIconClasses()[id] || '';
     }
 
     static getIconClasses() {
         return {
-            [this.USD_N]: 'Icon__usd-n-1_big',
-            [this.EUR_N]: 'Icon__eur-n_big',
-            [this.BTC_N]: 'Icon__btc-n_big',
+            [this.WAVES]: 'Icon__wave',
+            [this.USD_N]: 'Icon__usd-n',
+            [this.USD_NB]: 'Icon__usd-nb',
+            [this.EUR_N]: 'Icon__eur-n',
+            [this.EUR_NB]: 'Icon__eur-nb',
         };
     }
 
     static getIconClass(id) {
         return this.getIconClasses()[id] || '';
     }
-
-    static getIconActiveClasses() {
-        return {
-            [this.USD_N]: 'Icon__usd-n-1_big_green',
-            [this.EUR_N]: 'Icon__eur-n_big_green',
-            [this.BTC_N]: 'Icon__btc-n_big_green',
-        };
-    }
-
-    static getIconActiveClass(id) {
-        return this.getIconActiveClasses()[id] || '';
-    }
-
 }
