@@ -19,10 +19,13 @@ export default class Keeper {
         this._addressChecker = this._addressChecker.bind(this);
     }
 
-    start() {
+    async start() {
         if (this._checkerInterval) {
             clearInterval(this._checkerInterval);
         }
+
+        this._address = await this.getAddress();
+
         this._checkerInterval = setInterval(this._addressChecker, 1000);
     }
 
@@ -51,6 +54,16 @@ export default class Keeper {
         } catch {
             return null;
         }
+    }
+
+    async getAddress() {
+        const account = await this.getAccount();
+
+        if (!account) {
+            return null
+        }
+
+        return account.address;
     }
 
     /**
@@ -136,8 +149,8 @@ export default class Keeper {
 
     async _addressChecker() {
         // Get next address
-        const account = await this.getAccount();
-        const address = account ? account.address : null;
+
+        const address = await this.getAddress();
 
         if (this._address && address && this._address !== address) {
             this._address = address;

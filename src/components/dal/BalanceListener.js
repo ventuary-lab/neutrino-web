@@ -1,5 +1,6 @@
 import _round from 'lodash/round';
 import _isEqual from 'lodash/isEqual';
+import _get from 'lodash/get';
 import axios from 'axios';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -74,13 +75,13 @@ export default class BalanceListener {
 
         // Fetch waves
         const balances = {
-            [CurrencyEnum.WAVES]: (await this._request(`addresses/balance/${address}`)).balance,
+            [CurrencyEnum.WAVES]: _get(await this._request(`addresses/balance/${address}`), 'balance', null),
         };
 
         // Add assets
         for (let currency in this.dal.assets) {
             if (this.dal.assets.hasOwnProperty(currency)) {
-                balances[currency] = (await this._request(`assets/balance/${address}/${this.dal.assets[currency]}`)).balance;
+                balances[currency] = _get(await this._request(`assets/balance/${address}/${this.dal.assets[currency]}`), 'balance', null)
             }
         }
 
