@@ -115,9 +115,6 @@ module.exports = class App {
 
         await this._updateAll(true);
         this._isSkipUpdates = false;
-
-        // TODO
-        setInterval(() => this._updateAll(), 5000);
     }
 
     getContract(pairName, contractName) {
@@ -230,11 +227,14 @@ module.exports = class App {
             this._isNeedUpdateAgain = false;
             this._updateAll();
         }
+
+        // TODO
+        setTimeout(() => this._updateAll(), 5000);
     }
 
     _onHeightUpdate() {
         if (!this._isSkipUpdates) {
-            this._updateAll();
+            //this._updateAll();
         }
     }
 
