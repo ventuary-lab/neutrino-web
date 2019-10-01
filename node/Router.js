@@ -35,7 +35,7 @@ module.exports = class Router {
                             contracts,
                         }
                     },
-                    prices: await this._getPrices(),
+                    // prices: await this._getPrices(),
                 };
             },
             '/api/v1/withdraw/:pairName/:address': async request => {

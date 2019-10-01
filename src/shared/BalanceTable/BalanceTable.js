@@ -8,29 +8,44 @@ import {html, dal} from 'components';
 
 import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getLastWavesExchange, getQuoteCurrency, getBaseCurrency} from 'reducers/currency';
+import {getLastWavesExchange, getQuoteCurrency, getBaseCurrency, getPairName} from 'reducers/currency';
+import CollectionEnum from '../../enums/CollectionEnum';
 
 const bem = html.bem('BalanceTable');
 
 @connect(
     state => ({
         user: getUser(state),
-        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
+        pairName: getPairName(state),
         quoteCurrency: getQuoteCurrency(state),
         baseCurrency: getBaseCurrency(state),
     })
+)
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/neutrino-balances/${props.pairName}`,
+            key: 'neutrinoBalances',
+            collection: CollectionEnum.NEUTRINO_BALANCES,
+        },
+    ]
 )
 export default class BalanceTable extends React.PureComponent {
 
     static propTypes = {
         user: PropTypes.object,
-        usdToWavesExchange: PropTypes.number,
         quoteCurrency: PropTypes.string,
         baseCurrency: PropTypes.string,
+        neutrinoBalances: PropTypes.shape({
+            totalIssued: PropTypes.number,
+            totalUsed: PropTypes.number,
+            contractBalance: PropTypes.number,
+            price: PropTypes.number,
+        }),
     };
 
     render() {
-        if (!this.props.user || !this.props.user.balances || !this.props.usdToWavesExchange) {
+        if (!this.props.user || !this.props.user.balances || !this.props.neutrinoBalances) {
             return null;
         }
 
@@ -83,7 +98,7 @@ export default class BalanceTable extends React.PureComponent {
                                         </span>
                                         <span className={bem.element('label', 'tiny')}>
                                             $ {currency === CurrencyEnum.WAVES
-                                                ? _round(this.props.user.balances[currency] * this.props.usdToWavesExchange, 2)
+                                                ? _round(this.props.user.balances[currency] * this.props.neutrinoBalances.price, 2)
                                                 : this.props.user.balances[currency]
                                             }
                                         </span>

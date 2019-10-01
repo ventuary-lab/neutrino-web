@@ -46,7 +46,7 @@ const bem = html.bem('Layout');
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
         matchParams: state.navigation.params,
         data: getData(state),
-        prices: getPrices(state),
+        // prices: getPrices(state),
     })
 )
 @screenWatcherHoc()
@@ -61,7 +61,7 @@ export default class Layout extends React.PureComponent {
             Promise.resolve(dal.isLogged() ? dal.login() : null)
                 .then(user => {
                     this.props.dispatch([
-                        currencySetPrices(nextProps.data.prices),
+                        // currencySetPrices(nextProps.data.prices),
                         setUser(user),
                     ]);
                 });
@@ -76,7 +76,8 @@ export default class Layout extends React.PureComponent {
     }
 
     render() {
-        if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
+        // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
+        if (this.props.status === STATUS_RENDER_ERROR) {
             return null;
         }
 

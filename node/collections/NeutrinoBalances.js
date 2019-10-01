@@ -10,11 +10,13 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     constructor() {
         super(...arguments);
         this.assetId = '';
+        this.price = ''
     }
 
     getKeys() {
         return [
             'neutrino_asset_id',
+            'price'
         ];
     }
 
@@ -24,6 +26,13 @@ module.exports = class NeutrinoBalances extends BaseCollection {
         for (let nodeKey in nodeData) {
             if (nodeKey.match(this.getKeys()[0])) {
                 this.assetId = nodeData[nodeKey];
+            }
+
+            if (nodeKey.match(`${this.getKeys()[1]}$`)) {
+                this.price = nodeData[nodeKey];
+            }
+
+            if (this.price && this.assetId) {
                 break;
             }
         }
@@ -37,6 +46,8 @@ module.exports = class NeutrinoBalances extends BaseCollection {
 
         const contractBalance = await this._request(`assets/balance/${this.dApp[this.pairName]}/${this.assetId}`);
         data[this.pairName]['contractBalance'] = contractBalance.balance;
+
+        data[this.pairName]['price'] = this.price;
 
         await this._updateNext(Object.keys(data), data);
     }
@@ -54,6 +65,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
             totalIssued: item['totalIssued'] / Math.pow(10, 8),
             contractBalance: item['contractBalance'] / Math.pow(10, 8),
             totalUsed: _round((item['totalIssued'] - item['contractBalance']) / Math.pow(10, 8), 2),
+            price: _round(item['price'] / 100, 2),
         };
     }
 

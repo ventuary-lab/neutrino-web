@@ -14,19 +14,27 @@ import {dal, html} from 'components';
 import './BuyBoundsForm.scss';
 import {getBaseCurrency, getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from '../../../enums/CollectionEnum';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
 
 @connect(
     state => ({
-        // activeCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
         baseCurrency: getBaseCurrency(state),
         quoteCurrency: getQuoteCurrency(state),
         formValues: getFormValues(FORM_ID)(state),
-        usdToWavesExchange: getLastWavesExchange(state, CurrencyEnum.USD),
     })
+)
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/neutrino-balances/${props.pairName}`,
+            key: 'neutrinoBalances',
+            collection: CollectionEnum.NEUTRINO_BALANCES,
+        },
+    ]
 )
 export default class BuyBoundsForm extends React.PureComponent {
 
@@ -34,7 +42,12 @@ export default class BuyBoundsForm extends React.PureComponent {
         pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-        usdToWavesExchange: PropTypes.number,
+        neutrinoBalances: PropTypes.shape({
+            totalIssued: PropTypes.number,
+            totalUsed: PropTypes.number,
+            contractBalance: PropTypes.number,
+            price: PropTypes.number,
+        }),
     };
 
     constructor() {
@@ -116,7 +129,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: CurrencyEnum.getBalanceIconClass(this.props.quoteCurrency)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
-                            ? `${_round(_get(this.props, 'formValues.bounds') / this.props.usdToWavesExchange, 2)} WAVES`
+                            ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoBalances.price'), 2)} WAVES`
                             : ' '
                         }
                     />
