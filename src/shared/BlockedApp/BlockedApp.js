@@ -1,22 +1,29 @@
 import React from 'react';
-import Modal from 'yii-steroids/ui/modal/Modal';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
-import {html} from 'components';
-import './BlockedAppModal.scss';
+import {dal, html} from 'components';
+
+import './BlockedApp.scss';
 import illustration from '../../static/images/modal-blocked-illustration.svg';
 
-const bem = html.bem('BlockedAppModal');
+const bem = html.bem('BlockedApp');
 
-export default class BlockedAppModal extends React.PureComponent {
+@connect(
+    state => ({
+
+    })
+)
+export default class BlockedApp extends React.PureComponent {
+
+    static propTypes = {
+
+    };
 
     render() {
+
         return (
-            <Modal
-                {...this.props.modalProps}
-                className={bem.block()}
-                canNotClose
-                blurOverlay
-            >
+            <div className={bem.block()}>
                 <div className={bem.element('inner')}>
                     <div className={bem.element('text')}>
                         {__('For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required')}
@@ -27,7 +34,7 @@ export default class BlockedAppModal extends React.PureComponent {
                         alt='blocked illustration'
                     />
                 </div>
-            </Modal>
+            </div>
         );
     }
 }

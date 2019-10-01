@@ -30,6 +30,7 @@ body {
   }
 
   &__center {
+    position: relative;
     width: calc(100% - #{$right-width} - #{$gap});
     display: flex;
     flex-direction: column;

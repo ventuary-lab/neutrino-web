@@ -6,23 +6,20 @@ import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
 import {setUser} from 'yii-steroids/actions/auth';
 import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
-import {getCurrentItemParam} from 'yii-steroids/reducers/navigation';
+import {getCurrentItem, getCurrentItemParam} from 'yii-steroids/reducers/navigation';
+import {getData} from 'yii-steroids/reducers/auth';
+import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
 
 import {html, http, dal, ws, store} from 'components';
-import {currencyFetchPrices, currencySetCurrent, currencySetPrices, currencyWsHandler} from 'actions/currency';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
-
-import './Layout.scss';
+import BlockedApp from 'shared/BlockedApp';
 import {apiWsHandler} from 'actions/api';
-import {goToPage} from 'yii-steroids/actions/navigation';
 import {ROUTE_ROOT} from 'routes';
-import {getData} from 'yii-steroids/reducers/auth';
 import {getPrices} from 'reducers/currency';
 
-import WarningMobileModal from 'modals/WarningMobileModal';
-import {openModal} from 'yii-steroids/actions/modal';
+import './Layout.scss';
 
 const bem = html.bem('Layout');
 
@@ -46,6 +43,7 @@ const bem = html.bem('Layout');
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
         matchParams: state.navigation.params,
         data: getData(state),
+        currentItem: getCurrentItem(state),
         // prices: getPrices(state),
     })
 )
@@ -76,6 +74,9 @@ export default class Layout extends React.PureComponent {
     }
 
     render() {
+
+        const isBlocked = false; //TODO
+
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {
             return null;
@@ -92,6 +93,9 @@ export default class Layout extends React.PureComponent {
                         </aside>
                     )}
                     <div className={bem.element('center')}>
+                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                            <BlockedApp/>
+                        )}
                         <header className={bem.element('header')}>
                             <Header/>
                         </header>
