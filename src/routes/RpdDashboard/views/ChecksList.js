@@ -21,38 +21,23 @@ const LIST_ID = 'ChecksList';
 export default class ChecksList extends React.PureComponent {
 
     static propTypes = {
-
-
+        items: PropTypes.arrayOf(PropTypes.object),
+        isHistory: PropTypes.bool,
     };
 
-    constructor() {
-        super(...arguments);
-    }
-
     render() {
-        const items = [
-            {
-                id: '001',
-                time: '30.09.19 | 9:23 AM',
-                profit: 1000,
-            },
-            {
-                id: '001',
-                time: '30.09.19 | 9:23 AM',
-                profit: 1000,
-            }
-        ];
-
-
         return (
             <List
                 listId={LIST_ID}
                 className={bem.block()}
-                items={items}
+                items={this.props.items}
+                itemProps={{
+                    isHistory: this.props.isHistory,
+                }}
                 itemView={CheckItem}
                 emptyView={() => (
                     <div className={bem.element('empty')}>
-                        {__('No checks')}
+                        {this.props.isHistory ? __('No history') : __('No checks')}
                     </div>
                 )}
             />

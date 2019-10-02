@@ -22,13 +22,10 @@ export default class CheckItem extends React.PureComponent {
             id: PropTypes.string,
             time: PropTypes.string,
             profit: PropTypes.number,
-        })
+        }),
+        isHistory: PropTypes.bool,
 
     };
-
-    constructor() {
-        super(...arguments);
-    }
 
     render() {
         return (
@@ -50,11 +47,13 @@ export default class CheckItem extends React.PureComponent {
                         })}
                     </div>
                     <div className={bem.element('action')}>
-                        <Button
-                            color={'success'}
-                            block
-                            label={__('Withdraw')}
-                        />
+                        {!this.props.isHistory && (
+                            <Button
+                                color={'success'}
+                                block
+                                label={__('Withdraw')}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

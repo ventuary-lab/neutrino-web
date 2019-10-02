@@ -45,6 +45,20 @@ export default class RpdDashboard extends React.PureComponent {
     }
 
     render() {
+
+        const checksItems = [
+            {
+                id: '001',
+                time: '30.09.19 | 9:23 AM',
+                profit: 1000,
+            },
+            {
+                id: '001',
+                time: '30.09.19 | 9:23 AM',
+                profit: 1000,
+            }
+        ];
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
@@ -149,11 +163,18 @@ export default class RpdDashboard extends React.PureComponent {
                                 id: 'checks',
                                 label: __('Checks'),
                                 content: ChecksList,
+                                contentProps: {
+                                    items: checksItems
+                                }
                             },
                             {
                                 id: 'history',
                                 label: __('History'),
-                                content: '',
+                                content: ChecksList,
+                                contentProps: {
+                                    items: checksItems,
+                                    isHistory: true,
+                                }
                             },
                         ]}
                     />

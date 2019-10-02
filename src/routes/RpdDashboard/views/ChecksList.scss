@@ -5,4 +5,15 @@
 
   $root: &;
 
+  padding-top: 20px;
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    min-height: 200px;
+    color: $fc-gray;
+  }
+
 }
