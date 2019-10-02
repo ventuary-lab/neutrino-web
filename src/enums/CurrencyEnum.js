@@ -53,6 +53,14 @@ export default class CurrencyEnum extends Enum {
         return map[id] || null;
     }
 
+    static getSign(id) {
+        const map = {
+            [this.USD]: '$',
+            [this.EUR]: '€',
+        };
+        return map[id] || null;
+    }
+
     static getLabels() {
         return {
             [this.WAVES]: __('WAVES'),

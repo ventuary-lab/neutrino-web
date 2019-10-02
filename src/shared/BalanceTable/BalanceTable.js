@@ -8,7 +8,13 @@ import {html, dal} from 'components';
 
 import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getLastWavesExchange, getQuoteCurrency, getBaseCurrency, getPairName} from 'reducers/currency';
+import {
+    getLastWavesExchange,
+    getQuoteCurrency,
+    getBaseCurrency,
+    getPairName,
+    getSourceCurrency
+} from 'reducers/currency';
 import CollectionEnum from '../../enums/CollectionEnum';
 
 const bem = html.bem('BalanceTable');
@@ -19,6 +25,7 @@ const bem = html.bem('BalanceTable');
         pairName: getPairName(state),
         quoteCurrency: getQuoteCurrency(state),
         baseCurrency: getBaseCurrency(state),
+        sourceCurrency: getSourceCurrency(state),
     })
 )
 @dal.hoc(
@@ -36,6 +43,7 @@ export default class BalanceTable extends React.PureComponent {
         user: PropTypes.object,
         quoteCurrency: PropTypes.string,
         baseCurrency: PropTypes.string,
+        sourceCurrency: PropTypes.string,
         neutrinoBalances: PropTypes.shape({
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
@@ -83,10 +91,7 @@ export default class BalanceTable extends React.PureComponent {
                                                 {CurrencyEnum.getLabel(currency)}
                                             </span>
                                             <span className={bem.element('label', 'tiny')}>
-                                                {currency === CurrencyEnum.WAVES
-                                                    ? __('USD')
-                                                    : CurrencyEnum.getSourceCurrency(currency).toUpperCase()
-                                                }
+                                                {this.props.sourceCurrency.toUpperCase()}
                                             </span>
                                         </div>
                                     </div>
@@ -97,7 +102,9 @@ export default class BalanceTable extends React.PureComponent {
                                             {this.props.user.balances[currency]}
                                         </span>
                                         <span className={bem.element('label', 'tiny')}>
-                                            $ {currency === CurrencyEnum.WAVES
+                                            {CurrencyEnum.getSign(this.props.sourceCurrency)}
+                                            &nbsp;
+                                            {currency === CurrencyEnum.WAVES
                                                 ? _round(this.props.user.balances[currency] * this.props.neutrinoBalances.price, 2)
                                                 : this.props.user.balances[currency]
                                             }
