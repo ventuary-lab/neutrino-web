@@ -306,7 +306,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             'count-minutes': countBlock, // 1block = 1min
                         })}/>
                     </div>
-                    {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
+                    {__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
                         neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,
                         waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
                     })}
