@@ -10,7 +10,6 @@ import {goToPage} from 'yii-steroids/actions/navigation';
 
 import {dal, html} from 'components';
 import {getQuoteCurrency} from 'reducers/currency';
-import CurrencyEnum from 'enums/CurrencyEnum';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
 import {ROUTE_ROOT} from 'routes';

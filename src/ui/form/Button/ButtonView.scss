@@ -39,11 +39,24 @@
   &_color_danger {
     border: none;
     background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
+
+    &:hover {
+      background: #ff536d;
+    }
   }
 
   &_color_secondary {
     border: 1px solid #4A4A7F;
     background: transparent;
+  }
+
+  &_color_success {
+    border: none;
+    background: linear-gradient(6.65deg, #{$color-brand-green} 18.12%, #008B61 101.23%);
+
+    &:hover {
+      background: #00bc78;
+    }
   }
 
   &_block {

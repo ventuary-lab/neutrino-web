@@ -19,6 +19,6 @@
     "svg-inline-react": "^3.1.0",
     "waves-contract-cache": "^0.2.0",
     "websocket": "^1.0.29",
-    "yii-steroids": "^1.12.16"
+    "yii-steroids": "^1.13.2"
   }
 }

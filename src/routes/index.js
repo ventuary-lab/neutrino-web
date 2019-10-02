@@ -4,6 +4,7 @@ import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
+import RpdDashboard from './RpdDashboard';
 import UserRole from 'enums/UserRole';
 
 export const ROUTE_ROOT = 'root';
@@ -13,6 +14,8 @@ export const ROUTE_BOUNDS = 'bounds';
 export const ROUTE_BOUNDS_REDIRECT = 'bounds_redirect';
 export const ROUTE_LEASING = 'leasing';
 export const ROUTE_LEASING_REDIRECT = 'leasing_redirect';
+export const ROUTE_RPD = 'rpd';
+export const ROUTE_RPD_REDIRECT = 'rpd_redirect';
 
 const store = require('components').store;
 const activeCurrency = store.getState().currency.quote;
@@ -84,6 +87,26 @@ export default {
             path: '/leasing/:currency',
             component: LeadingDashboard,
             label: __('Leasing dashboard'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        [ROUTE_RPD_REDIRECT]: {
+            exact: true,
+            path: '/rpd',
+            component: Route,
+            componentProps: {
+                render: () => (
+                    <Redirect to={`/rpd/${activeCurrency}`}/>
+                )
+            },
+            isVisible: false,
+            roles: UserRole.getAuth(),
+        },
+        [ROUTE_RPD]: {
+            exact: true,
+            path: '/rpd/:currency',
+            component: RpdDashboard,
+            label: __('RPD dashboard'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },

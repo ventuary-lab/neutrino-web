@@ -1,0 +1,75 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.RpdDashboard {
+
+  $root: &;
+
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+
+  &__column {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    height: 100%;
+    width: 50%;
+    padding: 33px 38px;
+
+    &_left {
+      @include gradient-bg(242.47deg);
+      margin-right: 4px;
+    }
+
+    &_right {
+      @include gradient-bg(222.77deg);
+      margin-left: 4px;
+    }
+  }
+
+  &__balances {
+    padding-bottom: 28px;
+    border-bottom: 1px solid #343869;
+    margin-bottom: 28px;
+  }
+
+  &__balance-item {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 15px;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__balance-icon {
+    margin-right: 6px;
+  }
+
+  &__currency-toggler {
+    width: 244px;
+    margin-bottom: 28px;
+  }
+
+  &__input-block {
+    &:not(:last-child) {
+      margin-bottom: 28px;
+    }
+  }
+
+  &__input {
+    margin-bottom: 18px;
+  }
+
+  &__check-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 26px;
+  }
+
+  &__check-hint {
+    margin-left: 6px;
+  }
+}
