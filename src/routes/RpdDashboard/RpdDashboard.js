@@ -2,15 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getFormValues, change} from 'redux-form';
+import _get from 'lodash-es/get';
+import _sumBy from 'lodash-es/sumBy';
 import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 import Nav from 'yii-steroids/ui/nav/Nav';
+import {getUser} from 'yii-steroids/reducers/auth';
 
-import {html} from 'components';
-import {getBaseCurrency, getQuoteCurrency} from 'reducers/currency';
+import {html, dal} from 'components';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from 'enums/CollectionEnum';
 import Hint from 'shared/Hint';
 import ChecksList from './views/ChecksList';
 
@@ -23,15 +27,45 @@ const FORM_ID = 'RpdDashboard';
     state => ({
         quoteCurrency: getQuoteCurrency(state),
         baseCurrency: getBaseCurrency(state),
+        pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
+        user: getUser(state),
     })
+)
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/rpd-balance/${props.pairName}`,
+            key: 'rpdBalances',
+            collection: CollectionEnum.RPD_NEUTRINO_BALANCES,
+        },
+        {
+            url: `/api/v1/rpd-neutrino-balance/${props.pairName}/${_get(props, 'user.address')}`,
+            key: 'rpdNeutrinoBalances',
+            collection: CollectionEnum.RPD_NEUTRINO_BALANCES,
+        },
+        {
+            url: `/api/v1/rpd-bonds-balance/${props.pairName}/${_get(props, 'user.address')}`,
+            key: 'rpdBondsBalances',
+            collection: CollectionEnum.RPD_BONDS_BALANCES,
+        },
+    ]
 )
 export default class RpdDashboard extends React.PureComponent {
 
     static propTypes = {
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-
+        rpdNeutrinoBalances: PropTypes.shape({
+            balance: PropTypes.string,
+        }),
+        rpdBondsBalances: PropTypes.shape({
+            balance: PropTypes.string,
+        }),
+        rpdBalances: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            balance: PropTypes.number,
+        }))
     };
 
     constructor() {
@@ -45,7 +79,6 @@ export default class RpdDashboard extends React.PureComponent {
     }
 
     render() {
-
         const checksItems = [
             {
                 id: '001',
@@ -59,6 +92,14 @@ export default class RpdDashboard extends React.PureComponent {
             }
         ];
 
+        const rpdNeutrinoBalance = _get(this.props, 'rpdNeutrinoBalances.balance', 0);
+        const rpdBondsBalance = _get(this.props, 'rpdBondsBalances.balance', 0);
+        const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalances'), 'balance');
+
+        const share = rpdTotalBalance
+            ? (rpdNeutrinoBalance + rpdBondsBalance) / rpdTotalBalance * 100
+            : 0;
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
@@ -70,7 +111,7 @@ export default class RpdDashboard extends React.PureComponent {
                             <span>
                                 {__('{currency} Balance: {value}', {
                                     currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                    value: '10000' //TODO
+                                    value: rpdNeutrinoBalance.toFixed(2),
                                 })}
                             </span>
                         </div>
@@ -81,8 +122,8 @@ export default class RpdDashboard extends React.PureComponent {
                             <span>
                                 {__('{currency} Balance: {value} | Share: {share}%', {
                                     currency: CurrencyEnum.getLabel(this.props.baseCurrency),
-                                    value: '10000', //TODO
-                                    share: '12' //TODO
+                                    value: rpdBondsBalance.toFixed(2),
+                                    share: share.toFixed(2),
                                 })}
                             </span>
                         </div>
@@ -122,9 +163,16 @@ export default class RpdDashboard extends React.PureComponent {
                                 attribute={'wrap'}
                             />
                             <Button
-                                type={'submit'}
                                 block
                                 label={__('Wrap')}
+                                onClick={() => {
+                                    return dal.lockNeutrino(
+                                        this.props.pairName,
+                                        _get(this.props, 'formValues.currency'),
+                                        _get(this.props, 'formValues.wrap')
+                                    )
+                                        .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')))
+                                }}
                             />
                         </div>
                         <div className={bem.element('input-block')}>
@@ -139,9 +187,16 @@ export default class RpdDashboard extends React.PureComponent {
                                 attribute={'unlock'}
                             />
                             <Button
-                                type={'submit'}
                                 block
                                 label={__('Unlock')}
+                                onClick={() => {
+                                    return dal.unlockNeutrino(
+                                        this.props.pairName,
+                                        _get(this.props, 'formValues.currency'),
+                                        parseInt(_get(this.props, 'formValues.unlock'))
+                                    )
+                                        .then(() => this.props.dispatch(change(FORM_ID, 'unlock', '')))
+                                }}
                             />
                         </div>
                     </Form>

@@ -189,4 +189,30 @@ export default class DalComponent {
         }
     }
 
+    //RPD
+    async lockNeutrino(pairName, paymentCurrency, amount) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.RPD,
+            'lockNeutrino',
+            [],
+            this.assets[paymentCurrency],
+            amount,
+        );
+    }
+
+    async unlockNeutrino(pairName, paymentCurrency, amount) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.RPD,
+            'unlockNeutrino',
+            [
+                amount,
+                this.assets[paymentCurrency]
+            ],
+            'WAVES',
+            0,
+        );
+    }
+
 }

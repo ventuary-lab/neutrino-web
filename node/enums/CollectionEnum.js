@@ -8,6 +8,9 @@ module.exports = class CollectionEnum {
     static NEUTRINO_PRICES = 'neutrino_prices';
     static NEUTRINO_BALANCES = 'neutrino_balances';
     static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
+    static RPD_NEUTRINO_BALANCES = 'rpd_neutrino_balances'; //for users
+    static RPD_BONDS_BALANCES = 'rpd_bonds_balances'; //for users
+    static RPD_BALANCES = 'rpd_balances'; // total
 
     static getKeys() {
         return [
@@ -16,6 +19,9 @@ module.exports = class CollectionEnum {
             this.NEUTRINO_PRICES,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
+            this.RPD_NEUTRINO_BALANCES,
+            this.RPD_BONDS_BALANCES,
+            this.RPD_BALANCES,
         ];
     }
 
@@ -26,6 +32,9 @@ module.exports = class CollectionEnum {
             [this.NEUTRINO_PRICES]: collections.NeutrinoPrices,
             [this.NEUTRINO_BALANCES]: collections.NeutrinoBalances,
             [this.NEUTRINO_WITHDRAW]: collections.NeutrinoWithdraw,
+            [this.RPD_NEUTRINO_BALANCES]: collections.RpdNeutrinoBalances,
+            [this.RPD_BONDS_BALANCES]: collections.RpdBondsBalances,
+            [this.RPD_BALANCES]: collections.RpdBalances,
         };
         return map[name] || null;
     }
@@ -37,6 +46,9 @@ module.exports = class CollectionEnum {
             [this.NEUTRINO_PRICES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_BALANCES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_WITHDRAW]: ContractEnum.NEUTRINO,
+            [this.RPD_NEUTRINO_BALANCES]: ContractEnum.RPD,
+            [this.RPD_BONDS_BALANCES]: ContractEnum.RPD,
+            [this.RPD_BALANCES]: ContractEnum.RPD,
         };
         return map[name] || null;
     }

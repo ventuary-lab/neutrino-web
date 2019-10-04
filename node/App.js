@@ -158,7 +158,7 @@ module.exports = class App {
         return this._collections[pairName][collectionName];
     }
 
-    createCollection(pairName, collectionName) {
+    async createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
         const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
 
@@ -171,6 +171,7 @@ module.exports = class App {
             heightListener: this.heightListener,
             updateHandler: this._onCollectionUpdate.bind(this),
             dApp: this.dApps,
+            assets: await this._loadAssetIds(),
         });
 
         this._collections[pairName] = this._collections[pairName] || {};
