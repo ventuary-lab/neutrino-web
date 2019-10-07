@@ -57,7 +57,7 @@ export default class IndexSlider extends React.Component {
                             if(index === slides.length - 1) {
                                 if(clientStorage.get('warningModalState')) return;
 
-                                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Chrome/i.test(navigator.userAgent)) {
+                                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                                     clientStorage.set('warningModalState', 'open');
                                 }
                             }
