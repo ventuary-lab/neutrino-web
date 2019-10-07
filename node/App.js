@@ -31,6 +31,7 @@ module.exports = class App {
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
             [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3N4Pj4MutKVgrmcuX7jgyVGWoBhDyKYFZBj', // testnet
+            // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
             [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
@@ -158,7 +159,7 @@ module.exports = class App {
         return this._collections[pairName][collectionName];
     }
 
-    createCollection(pairName, collectionName) {
+    async createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
         const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
 
@@ -171,6 +172,7 @@ module.exports = class App {
             heightListener: this.heightListener,
             updateHandler: this._onCollectionUpdate.bind(this),
             dApp: this.dApps,
+            assets: await this._loadAssetIds(),
         });
 
         this._collections[pairName] = this._collections[pairName] || {};

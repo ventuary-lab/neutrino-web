@@ -2,6 +2,7 @@ import React from 'react';
 import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 import _isFunction from 'lodash-es/isFunction';
+import _includes from 'lodash-es/includes';
 
 import {html} from 'components';
 import './DropDownFieldView.scss';
@@ -32,6 +33,7 @@ export default class DropDownFieldView extends React.PureComponent {
                 PropTypes.bool,
             ]),
             label: PropTypes.string,
+            icon: PropTypes.string,
         })),
         selectedItems: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.oneOfType([
@@ -40,6 +42,7 @@ export default class DropDownFieldView extends React.PureComponent {
                 PropTypes.bool,
             ]),
             label: PropTypes.string,
+            icon: PropTypes.string,
             isSelected: PropTypes.bool,
             isHovered: PropTypes.bool,
         })),
@@ -54,6 +57,7 @@ export default class DropDownFieldView extends React.PureComponent {
         onItemMouseOver: PropTypes.func,
         onItemChange: PropTypes.func,
         defaultItemLabel: PropTypes.string,
+        excludeSelectedFromItems: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -71,7 +75,12 @@ export default class DropDownFieldView extends React.PureComponent {
     }
 
     render() {
+        const items = this.props.excludeSelectedFromItems
+            ? this.props.items.filter(item => !_includes(this.props.selectedItems.map(item => item.id), item.id))
+            : this.props.items;
+
         return (
+
             <div className={bem.block({size: this.props.size})}>
                 <div
                     className={bem.element('selected-items', {
@@ -83,9 +92,18 @@ export default class DropDownFieldView extends React.PureComponent {
                     {this.props.selectedItems && this.props.selectedItems.length > 0 && (
                         <>
                             {this.props.selectedItems.map(item => (
-                                <span key={item.id}>
-                                    {item.label} &nbsp;
-                                </span>
+                                <div
+                                    className={bem.element('selected-item')}
+                                    key={item.id}
+                                >
+                                    {item.icon && (
+                                        <span className={bem(bem.element('item-icon'), `Icon ${item.icon}`)}/>
+                                    )}
+                                    <span>
+                                        {item.label}
+                                    </span>
+                                    &nbsp;
+                                </div>
                             ))}
                         </>
                     ) || (
@@ -121,7 +139,7 @@ export default class DropDownFieldView extends React.PureComponent {
                             </div>
                         )}
                         <div className={bem.element('drop-down-list')}>
-                            {this.props.items.map(item => (
+                            {items.map(item => (
                                 <div
                                     key={item.id}
                                     className={bem.element('drop-down-item', {hover: item.isHovered, select: item.isSelected})}
@@ -133,8 +151,12 @@ export default class DropDownFieldView extends React.PureComponent {
                                     }}
                                     onMouseOver={() => this.props.onItemMouseOver(item)}
                                 >
-
-                                    {item.label}
+                                    {item.icon && (
+                                        <span className={bem(bem.element('item-icon'), `Icon ${item.icon}`)}/>
+                                    )}
+                                    <span>
+                                        {item.label}
+                                    </span>
                                 </div>
                             ))}
                         </div>

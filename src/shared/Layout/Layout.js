@@ -11,13 +11,14 @@ import {getData} from 'yii-steroids/reducers/auth';
 import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
 
 import {html, http, dal, ws, store} from 'components';
+import CollectionEnum from 'enums/CollectionEnum';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
 import BlockedApp from 'shared/BlockedApp';
 import {apiWsHandler} from 'actions/api';
 import {ROUTE_ROOT} from 'routes';
-import {getPrices} from 'reducers/currency';
+import {getPairName, getPrices} from 'reducers/currency';
 
 import './Layout.scss';
 
@@ -44,8 +45,18 @@ const bem = html.bem('Layout');
         matchParams: state.navigation.params,
         data: getData(state),
         currentItem: getCurrentItem(state),
+        pairName: getPairName(state),
         // prices: getPrices(state),
     })
+)
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/neutrino-balances/${props.pairName}`,
+            key: 'neutrinoBalances',
+            collection: CollectionEnum.NEUTRINO_BALANCES,
+        },
+    ]
 )
 @screenWatcherHoc()
 export default class Layout extends React.PureComponent {
@@ -75,7 +86,7 @@ export default class Layout extends React.PureComponent {
 
     render() {
 
-        const isBlocked = false; //TODO
+        const isBlocked = _get(this.props, 'neutrinoBalances.isBlocked');
 
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {

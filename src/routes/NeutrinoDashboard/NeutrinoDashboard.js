@@ -54,6 +54,7 @@ const PRICE_FEED_PERIOD = 1000;
 export default class NeutrinoDashboard extends React.PureComponent {
     static propTypes = {
         quoteCurrency: PropTypes.string,
+        sourceCurrency: PropTypes.string,
         pairName: PropTypes.string,
         neutrinoBalances: PropTypes.shape({
             totalIssued: PropTypes.number,
@@ -266,7 +267,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{_get(this.props, 'neutrinoBalances.price')} $</span>
+                            <span>{_get(this.props, 'neutrinoBalances.price')} {CurrencyEnum.getSign(this.props.sourceCurrency)}</span>
                         </div>
                     </div>
                 </div>
@@ -306,7 +307,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             'count-minutes': countBlock, // 1block = 1min
                         })}/>
                     </div>
-                    {__('Neutrino blocked: {neutrino} | Waves blocked: {waves}', {
+                    {__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
                         neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,
                         waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
                     })}

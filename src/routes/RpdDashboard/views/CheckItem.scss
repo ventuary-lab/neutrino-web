@@ -1,0 +1,48 @@
+@import 'style/helpers/vars';
+
+
+.CheckItem {
+
+  $root: &;
+
+  padding: 10px;
+  background-color: #292959;
+
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
+
+  &__inner {
+    border: 1px solid #17183A;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 28px;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  &__profit {
+    background-color: #1d1d45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 8px 10px;
+  }
+
+  &__action {
+    padding: 20px 75px;
+    background-image: url('../../../static/images/logo_gray.svg');
+    background-size: cover;
+    background-position: bottom;
+    min-height: 77px;
+  }
+
+}

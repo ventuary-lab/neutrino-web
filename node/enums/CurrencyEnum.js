@@ -31,4 +31,8 @@ module.exports = class CurrencyEnum {
         return this.getAssetContractKeysMap()[name] || null;
     }
 
+    static isBond(currency) {
+        return currency.slice(-3) === '-nb'
+    }
+
 };

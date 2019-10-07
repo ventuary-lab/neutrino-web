@@ -30,6 +30,11 @@
     }
   }
 
+  &__selected-item {
+    display: flex;
+    align-items: center;
+  }
+
   &__arrow {
     position: relative;
     top: 1px;
@@ -100,6 +105,8 @@
   &__drop-down-item {
     padding: 7px 24px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 
     &_hover {
       color: $color-brand-azure;
@@ -108,5 +115,9 @@
     &_select {
       color: $color-brand-azure;
     }
+  }
+
+  &__item-icon {
+    margin-right: 6px;
   }
 }

@@ -10,13 +10,15 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     constructor() {
         super(...arguments);
         this.assetId = '';
-        this.price = ''
+        this.price = '';
+        this.isBlocked = undefined;
     }
 
     getKeys() {
         return [
             'neutrino_asset_id',
-            'price'
+            'price',
+            'is_blocked',
         ];
     }
 
@@ -32,7 +34,11 @@ module.exports = class NeutrinoBalances extends BaseCollection {
                 this.price = nodeData[nodeKey];
             }
 
-            if (this.price && this.assetId) {
+            if (nodeKey.match(this.getKeys()[2])) {
+                this.isBlocked = nodeData[nodeKey];
+            }
+
+            if (this.price && this.assetId && this.isBlocked !== undefined) {
                 break;
             }
         }
@@ -48,6 +54,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
         data[this.pairName]['contractBalance'] = contractBalance.balance;
 
         data[this.pairName]['price'] = this.price;
+        data[this.pairName]['isBlocked'] = this.isBlocked === undefined ? false : this.isBlocked;
 
         await this._updateNext(Object.keys(data), data);
     }
@@ -66,17 +73,22 @@ module.exports = class NeutrinoBalances extends BaseCollection {
             contractBalance: item['contractBalance'] / Math.pow(10, 8),
             totalUsed: _round((item['totalIssued'] - item['contractBalance']) / Math.pow(10, 8), 2),
             price: _round(item['price'] / 100, 2),
+            isBlocked: item['isBlocked'],
         };
     }
 
     async _request(url) {
         let result = null;
         try {
+            // console.log('---url: ', `${this.transport.nodeUrl}/${url}`);
             result = await axios.get(`${this.transport.nodeUrl}/${url}`);
+            // console.log('---try result', result.data);
         } catch (e) {
             this.logger.error(`NeutrinoBalanceListner Error on fetch balance: ${String(e)}`);
             throw e;
         }
+
+        // console.log('---result', result.data);
         return result.data;
     }
 
