@@ -36,18 +36,18 @@ const FORM_ID = 'RpdDashboard';
     props => [
         {
             url: `/api/v1/rpd-balance/${props.pairName}`,
-            key: 'rpdBalances',
-            collection: CollectionEnum.RPD_NEUTRINO_BALANCES,
+            key: 'rpdBalance',
+            collection: CollectionEnum.RPD_BALANCES,
         },
         {
-            url: `/api/v1/rpd-neutrino-balance/${props.pairName}/${_get(props, 'user.address')}`,
-            key: 'rpdNeutrinoBalances',
-            collection: CollectionEnum.RPD_NEUTRINO_BALANCES,
+            url: `/api/v1/rpd-user-balance/${props.pairName}/${_get(props, 'user.address')}`,
+            key: 'rpdUserBalance',
+            collection: CollectionEnum.RPD_USER_BALANCES,
         },
         {
-            url: `/api/v1/rpd-bonds-balance/${props.pairName}/${_get(props, 'user.address')}`,
-            key: 'rpdBondsBalances',
-            collection: CollectionEnum.RPD_BONDS_BALANCES,
+            url: `/api/v1/rpd-checks/${props.pairName}/${_get(props, 'user.address')}`,
+            key: 'rpdChecks',
+            collection: CollectionEnum.RPD_NEXT_INDEX,
         },
     ]
 )
@@ -56,15 +56,23 @@ export default class RpdDashboard extends React.PureComponent {
     static propTypes = {
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-        rpdNeutrinoBalances: PropTypes.shape({
-            balance: PropTypes.string,
-        }),
-        rpdBondsBalances: PropTypes.shape({
-            balance: PropTypes.string,
-        }),
-        rpdBalances: PropTypes.arrayOf(PropTypes.shape({
+        rpdUserBalance: PropTypes.arrayOf(PropTypes.shape({
+            neutrino: PropTypes.shape({
+                balance: PropTypes.number,
+                id: PropTypes.string,
+            }),
+            bond: PropTypes.shape({
+                balance: PropTypes.number,
+                id: PropTypes.string,
+            })
+        })),
+        rpdBalance: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
             balance: PropTypes.number,
+        })),
+        rpdChecks: PropTypes.arrayOf(PropTypes.shape({
+            index: PropTypes.number,
+            profit: PropTypes.number,
         }))
     };
 
@@ -79,22 +87,22 @@ export default class RpdDashboard extends React.PureComponent {
     }
 
     render() {
-        const checksItems = [
-            {
-                id: '001',
-                time: '30.09.19 | 9:23 AM',
-                profit: 1000,
-            },
-            {
-                id: '001',
-                time: '30.09.19 | 9:23 AM',
-                profit: 1000,
-            }
-        ];
+        // const checksItems = [
+        //     {
+        //         id: '001',
+        //         time: '30.09.19 | 9:23 AM',
+        //         profit: 1000,
+        //     },
+        //     {
+        //         id: '001',
+        //         time: '30.09.19 | 9:23 AM',
+        //         profit: 1000,
+        //     }
+        // ];
 
-        const rpdNeutrinoBalance = _get(this.props, 'rpdNeutrinoBalances.balance', 0);
-        const rpdBondsBalance = _get(this.props, 'rpdBondsBalances.balance', 0);
-        const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalances'), 'balance');
+        const rpdNeutrinoBalance = _get(this.props, 'rpdUserBalance.neutrino.balance', 0);
+        const rpdBondsBalance = _get(this.props, 'rpdUserBalance.bond.balance', 0);
+        const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalance'), 'balance');
 
         const share = rpdTotalBalance
             ? (rpdNeutrinoBalance + rpdBondsBalance) / rpdTotalBalance * 100
@@ -184,18 +192,18 @@ export default class RpdDashboard extends React.PureComponent {
                                 }}
                                 label={__('Select amount')}
                                 layoutClassName={bem.element('input')}
-                                attribute={'unlock'}
+                                attribute={'unwrap'}
                             />
                             <Button
                                 block
-                                label={__('Unlock')}
+                                label={__('Unwrap')}
                                 onClick={() => {
                                     return dal.unlockNeutrino(
                                         this.props.pairName,
                                         _get(this.props, 'formValues.currency'),
-                                        parseInt(_get(this.props, 'formValues.unlock'))
+                                        parseInt(_get(this.props, 'formValues.unwrap'))
                                     )
-                                        .then(() => this.props.dispatch(change(FORM_ID, 'unlock', '')))
+                                        .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')))
                                 }}
                             />
                         </div>
@@ -219,7 +227,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 label: __('Checks'),
                                 content: ChecksList,
                                 contentProps: {
-                                    items: checksItems
+                                    items: _get(this.props, 'rpdChecks') || []
                                 }
                             },
                             {
@@ -227,7 +235,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 label: __('History'),
                                 content: ChecksList,
                                 contentProps: {
-                                    items: checksItems,
+                                    items: [], //TODO
                                     isHistory: true,
                                 }
                             },

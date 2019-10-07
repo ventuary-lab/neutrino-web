@@ -80,15 +80,15 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     async _request(url) {
         let result = null;
         try {
-            console.log('---url: ', `${this.transport.nodeUrl}/${url}`);
+            // console.log('---url: ', `${this.transport.nodeUrl}/${url}`);
             result = await axios.get(`${this.transport.nodeUrl}/${url}`);
-            console.log('---try result', result.data);
+            // console.log('---try result', result.data);
         } catch (e) {
             this.logger.error(`NeutrinoBalanceListner Error on fetch balance: ${String(e)}`);
             throw e;
         }
 
-        console.log('---result', result.data);
+        // console.log('---result', result.data);
         return result.data;
     }
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import _get from 'lodash-es/get';
 import Button from 'yii-steroids/ui/form/Button';
 
-import {html} from 'components';
+import {html, dal} from 'components';
+import {getPairName} from 'reducers/currency';
 
 import './CheckItem.scss';
 
@@ -12,16 +14,17 @@ const bem = html.bem('CheckItem');
 
 @connect(
     state => ({
-
+        pairName: getPairName(state),
     })
 )
 export default class CheckItem extends React.PureComponent {
 
     static propTypes = {
         item: PropTypes.shape({
-            id: PropTypes.string,
-            time: PropTypes.string,
+            index: PropTypes.number,
+            // time: PropTypes.string,
             profit: PropTypes.number,
+            historyIndex: PropTypes.number,
         }),
         isHistory: PropTypes.bool,
 
@@ -34,16 +37,16 @@ export default class CheckItem extends React.PureComponent {
                     <div className={bem.element('header')}>
                         <span>
                             {__('Check № {number}', {
-                                number: this.props.item.id,
+                                number: this.props.item.index,
                             })}
                         </span>
                         <span>
-                            {this.props.item.time}
+                            {/*{this.props.item.time}*/} //TODO
                         </span>
                     </div>
                     <div className={bem.element('profit')}>
                         {__('Profit: {profit}', {
-                            profit: 1000,
+                            profit: this.props.item.profit,
                         })}
                     </div>
                     <div className={bem.element('action')}>
@@ -52,6 +55,14 @@ export default class CheckItem extends React.PureComponent {
                                 color={'success'}
                                 block
                                 label={__('Withdraw')}
+                                onClick={() => {
+                                    return dal.checkWithdraw(
+                                        this.props.pairName,
+                                        _get(this.props, 'item.index'),
+                                        _get(this.props, 'item.historyIndex')
+                                    )
+                                        .then(() => console.log('success check withdraw'))
+                                }}
                             />
                         )}
                     </div>

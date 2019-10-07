@@ -1,6 +1,6 @@
 
 const BaseCollection = require('../base/BaseCollection');
-const PairsEnum = require('../enums/PairsEnum');
+const CurrencyEnum = require('../enums/CurrencyEnum');
 
 module.exports = class RpdNeutrinoBalances extends BaseCollection {
 
@@ -17,15 +17,6 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
         return Object.entries(this.assets).find(item => item[1] === assetId)[0];
     }
 
-
-    //TODO normal method
-    _isBond(assetId) {
-        const currency = this._getCurrencyByAsset(assetId);
-
-        return currency.slice(-2) === 'nb'
-    }
-
-
     async getBalances() {
         const items = await this.getItemsAll();
         return items.map(item => ({
@@ -35,8 +26,10 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
+        const currency = this._getCurrencyByAsset(id);
+
         return {
-            'balance': this._isBond(id)
+            'balance': CurrencyEnum.isBond(currency)
                 ? item[`rpd_balance_${id}`]
                 : item[`rpd_balance_${id}`] / Math.pow(10, 8)
         }

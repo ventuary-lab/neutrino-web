@@ -215,4 +215,18 @@ export default class DalComponent {
         );
     }
 
+    async checkWithdraw(pairName, index, historyIndex) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.RPD,
+            'withdraw',
+            [
+                index,
+                historyIndex
+            ],
+            'WAVES',
+            0,
+        );
+    }
+
 }

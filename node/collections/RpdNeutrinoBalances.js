@@ -15,12 +15,14 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
 
         return [
             `rpd_balance_${this.neutrinoAssetId}_${id}`,
+            `balance_history_${id}`
         ];
     }
 
     async _prepareItem(id, item) {
         return {
             'balance': item[`rpd_balance_${this.neutrinoAssetId}_${id}`] / Math.pow(10, 8),
+            'balanceHistory': item[`balance_history_${id}`],
         }
     }
 };

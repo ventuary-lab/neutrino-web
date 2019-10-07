@@ -38,6 +38,71 @@ module.exports = class Router {
                     // prices: await this._getPrices(),
                 };
             },
+            '/api/v1/rpd-checks/:pairName/:address': async request => {
+
+                const nextIndex = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX).getNextIndex();
+
+                // console.log('---nextIndex', nextIndex);
+
+                if (!nextIndex) {
+                    return null;
+                }
+
+                const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];
+                const bondAssetId = this.app.assets[PairsEnum.getBase(request.params.pairName)];
+
+                let rpdChecks = [];
+
+                for (let index = 0; index < nextIndex; index++) {
+                    // console.log('---index', index);
+                    const allProfit = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT).getProfit(index);
+                    // console.log('---allProfit', allProfit);
+                    const neutrinoBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${index}`);
+                    const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
+
+                    // console.log('---balances', neutrinoBalance, bondBalance);
+
+                    const contractHistoryBalance = neutrinoBalance + bondBalance;
+                    const balanceHistory = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS).getArray(request.params.address);
+
+                    // console.log('---balanceHistory', balanceHistory);
+
+                    //find closest
+                    const historySyncIndex = balanceHistory.reduce(function(prev, curr) {
+                        return (Math.abs(curr - index) < Math.abs(prev - index) ? curr : prev);
+                    });
+
+                    // console.log('---balanceHistory2', balanceHistory);
+
+                    const historyElementIndex = balanceHistory.findIndex(() => historySyncIndex);
+                    // console.log('---historyElementIndex', historyElementIndex);
+
+                    // console.log('---historySyncIndex', historySyncIndex);
+
+                    const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
+                    const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
+
+                    // console.log('---balances2', neutrinoHistoryBalance, bondHistoryBalance);
+
+                    const totalUserHistoryBalance = neutrinoHistoryBalance + bondHistoryBalance;
+                    const profit = allProfit * totalUserHistoryBalance / contractHistoryBalance;
+
+                    // console.log('---profit', profit);
+
+                    rpdChecks.push({
+                        index: index,
+                        profit: profit,
+                        historyIndex: historyElementIndex,
+                    })
+                }
+
+                // console.log('---checks', rpdChecks);
+
+
+
+                return rpdChecks;
+
+            },
             '/api/v1/rpd-balance/:pairName': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BALANCES).getBalances();
             },
@@ -46,6 +111,15 @@ module.exports = class Router {
             },
             '/api/v1/rpd-bonds-balance/:pairName/:address': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BONDS_BALANCES).getItem(request.params.address);
+            },
+            '/api/v1/rpd-user-balance/:pairName/:address': async request => {
+                const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];
+                const bondAssetId = this.app.assets[PairsEnum.getBase(request.params.pairName)];
+
+                return {
+                    'neutrino': await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES).getItem(`${neutrinoAssetId}_${request.params.address}`),
+                    'bond': await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES).getItem(`${bondAssetId}_${request.params.address}`),
+                };
             },
             '/api/v1/withdraw/:pairName/:address': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address);
