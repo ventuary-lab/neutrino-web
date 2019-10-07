@@ -4,7 +4,9 @@ module.exports = {
     NeutrinoPrices: require('./NeutrinoPrices'),
     NeutrinoBalances: require('./NeutrinoBalances'),
     NeutrinoWithdraw: require('./NeutrinoWithdraw'),
-    RpdNeutrinoBalances: require('./RpdNeutrinoBalances'),
-    RpdBondsBalances: require('./RpdBondsBalances'),
     RpdBalances: require('./RpdBalances'),
+    RpdNeutrinoBalances: require('./RpdNeutrinoBalances'),
+    RpdNeutrinoHistoryBalances: require('./RpdNeutrinoHistoryBalances'),
+    RpdBondsBalances: require('./RpdBondsBalances'),
+    RpdBondsHistoryBalances: require('./RpdBondsHistoryBalances'),
 };
