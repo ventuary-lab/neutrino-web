@@ -38,6 +38,15 @@ module.exports = class Router {
                     // prices: await this._getPrices(),
                 };
             },
+            '/api/v1/rpd-balance/:pairName': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BALANCES).getBalances();
+            },
+            '/api/v1/rpd-neutrino-balance/:pairName/:address': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_NEUTRINO_BALANCES).getItem(request.params.address);
+            },
+            '/api/v1/rpd-bonds-balance/:pairName/:address': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BONDS_BALANCES).getItem(request.params.address);
+            },
             '/api/v1/withdraw/:pairName/:address': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address);
             },
