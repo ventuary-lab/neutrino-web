@@ -42,8 +42,6 @@ module.exports = class Router {
 
                 const nextIndex = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX).getNextIndex();
 
-                // console.log('---nextIndex', nextIndex);
-
                 if (!nextIndex) {
                     return null;
                 }
@@ -65,17 +63,20 @@ module.exports = class Router {
                     const contractHistoryBalance = neutrinoBalance + bondBalance;
                     const balanceHistory = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS).getArray(request.params.address);
 
-                    // console.log('---balanceHistory', balanceHistory);
+                    //console.log('---index', index);
+                    //console.log('---balanceHistory', balanceHistory);
 
                     //find closest
                     const historySyncIndex = balanceHistory.reduce(function(prev, curr) {
                         return (Math.abs(curr - index) < Math.abs(prev - index) ? curr : prev);
                     });
 
+                    //console.log('---historySyncIndex', historySyncIndex);
+
                     // console.log('---balanceHistory2', balanceHistory);
 
-                    const historyElementIndex = balanceHistory.findIndex(() => historySyncIndex);
-                    // console.log('---historyElementIndex', historyElementIndex);
+                    const historyElementIndex = balanceHistory.indexOf(historySyncIndex);
+                    //console.log('---historyElementIndex', historyElementIndex);
 
                     // console.log('---historySyncIndex', historySyncIndex);
 
@@ -86,6 +87,7 @@ module.exports = class Router {
 
                     const totalUserHistoryBalance = neutrinoHistoryBalance + bondHistoryBalance;
                     const profit = allProfit * totalUserHistoryBalance / contractHistoryBalance;
+                    const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
 
                     // console.log('---profit', profit);
 
@@ -93,6 +95,7 @@ module.exports = class Router {
                         index: index,
                         profit: profit,
                         historyIndex: historyElementIndex,
+                        isClaimed: isClaimed,
                     })
                 }
 

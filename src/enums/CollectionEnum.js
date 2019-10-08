@@ -8,11 +8,13 @@ export default class CollectionEnum extends Enum {
     static NEUTRINO_BALANCES = 'neutrino_balances';
     static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
     static RPD_BALANCES = 'rpd_balances';
-    static RPD_NEUTRINO_BALANCES = 'rpd_neutrino_balances';
-    static RPD_NEUTRINO_HISTORY_BALANCES = 'rpd_neutrino_history_balances';
-    static RPD_BONDS_BALANCES = 'rpd_bonds_balances';
-    static RPD_BONDS_HISTORY_BALANCES = 'rpd_bonds_history_balances';
+    static RPD_HISTORY_BALANCES = 'rpd_history_balances';
     static RPD_USER_BALANCES = 'rpd_user_balances';
+    static RPD_USER_HISTORY_BALANCES = 'rpd_user_history_balances';
+    static RPD_PROFIT = 'rpd_profit';
+    static RPD_NEXT_INDEX = 'rpd_next_index';
+    static RPD_INDEX_NUMBERS = 'rpd_index_numbers';
+    static RPD_IS_CLAIMED = 'rpd_is_claimed';
 
     static getKeys() {
         return [
@@ -21,12 +23,13 @@ export default class CollectionEnum extends Enum {
             this.NEUTRINO_PRICES,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
-            this.RPD_BALANCES,
-            this.RPD_NEUTRINO_BALANCES,
-            this.RPD_NEUTRINO_HISTORY_BALANCES,
-            this.RPD_BONDS_BALANCES,
-            this.RPD_BONDS_HISTORY_BALANCES,
+            this.RPD_HISTORY_BALANCES,
             this.RPD_USER_BALANCES,
+            this.RPD_USER_HISTORY_BALANCES,
+            this.RPD_PROFIT,
+            this.RPD_NEXT_INDEX,
+            this.RPD_INDEX_NUMBERS,
+            this.RPD_IS_CLAIMED,
         ];
     }
 

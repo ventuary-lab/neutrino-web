@@ -72,11 +72,11 @@ export default class Keeper {
      */
     async getPlugin() {
         const checker = resolve => {
-            if (this._isAvailable === true || window.WavesKeeper && window.WavesKeeper.publicState) {
+            if (this._isAvailable === true || (Date.now() - this._pageStart > 2000 && window.WavesKeeper && window.WavesKeeper.publicState)) {
                 this._isAvailable = true;
-                resolve(window.WavesKeeper);
+                setTimeout(() => resolve(window.WavesKeeper));
 
-            } else if (this._isAvailable === false || Date.now() - this._pageStart > 3000) {
+            } else if (this._isAvailable === false || Date.now() - this._pageStart > 5000) {
                 this._isAvailable = false;
                 resolve(null);
             }

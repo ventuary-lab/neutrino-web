@@ -90,14 +90,19 @@ module.exports = class App {
     }
 
     async start() {
+        console.log('---start', );
         this._isSkipUpdates = true;
 
         this._router.start();
         this._websocket.start();
         await this.heightListener.start();
 
+        console.log('---before heightListener', );
+
         // Try get timestamp
         this.heightListener.getTimestamps([this.heightListener.getLast()]);
+
+        console.log('---after heightListener', );
 
         // Create contracts and collections
         for (const pairName of PairsEnum.getKeys()) {
@@ -111,8 +116,22 @@ module.exports = class App {
             }
         }
 
+        console.log('---after create contracts and collections', );
+
+
         // Load asset ids
         this.assets = await this._loadAssetIds();
+
+        console.log('---after loads assets', );
+
+        //add assets to collections
+        for (const pairName of PairsEnum.getKeys()) {
+            for (const collectionName of CollectionEnum.getKeys()) {
+                this._collections[pairName][collectionName].assets = this.assets;
+            }
+        }
+
+        console.log('---before update all', );
 
         await this._updateAll(true);
         this._isSkipUpdates = false;
@@ -134,6 +153,8 @@ module.exports = class App {
             dApp,
             nodeUrl: this.nodeUrl,
         });
+
+        console.log('---createContract', );
 
         const contract = new WavesContractCache({
             dApp,
@@ -159,7 +180,7 @@ module.exports = class App {
         return this._collections[pairName][collectionName];
     }
 
-    async createCollection(pairName, collectionName) {
+    createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
         const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
 
@@ -172,7 +193,6 @@ module.exports = class App {
             heightListener: this.heightListener,
             updateHandler: this._onCollectionUpdate.bind(this),
             dApp: this.dApps,
-            assets: await this._loadAssetIds(),
         });
 
         this._collections[pairName] = this._collections[pairName] || {};
@@ -242,8 +262,10 @@ module.exports = class App {
 
     _onContractUpdate(pairName, contractName, keys) {
         if (!this._isSkipUpdates) {
+            console.log('---_onContractUpdate', );
             Object.keys(this._collections[pairName]).forEach(collectionName => {
                 if (CollectionEnum.getContractName(collectionName) === contractName) {
+                    console.log('---update', );
                     this.getCollection(pairName, collectionName).updateByKeys(keys);
                 }
             });
