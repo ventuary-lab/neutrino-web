@@ -3,6 +3,7 @@ const CurrencyEnum = require('./enums/CurrencyEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
+const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
 const moment = require('moment');
 
@@ -48,48 +49,45 @@ module.exports = class Router {
 
                 const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];
                 const bondAssetId = this.app.assets[PairsEnum.getBase(request.params.pairName)];
+                const balanceHistory = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS).getArray(request.params.address);
 
                 let rpdChecks = [];
 
                 for (let index = 0; index < nextIndex; index++) {
-                    // console.log('---index', index);
+                    console.log('---index', index);
                     const allProfit = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT).getProfit(index);
-                    // console.log('---allProfit', allProfit);
+                    console.log('---allProfit', allProfit);
                     const neutrinoBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${index}`);
                     const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
 
-                    // console.log('---balances', neutrinoBalance, bondBalance);
+                    console.log('---balances', neutrinoBalance, bondBalance);
 
                     const contractHistoryBalance = neutrinoBalance + bondBalance;
-                    const balanceHistory = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS).getArray(request.params.address);
 
-                    //console.log('---index', index);
-                    //console.log('---balanceHistory', balanceHistory);
+                    console.log('---balanceHistory', balanceHistory);
 
                     //find closest
                     const historySyncIndex = balanceHistory.reduce(function(prev, curr) {
                         return (Math.abs(curr - index) < Math.abs(prev - index) ? curr : prev);
                     });
 
-                    //console.log('---historySyncIndex', historySyncIndex);
+                    console.log('---historySyncIndex', historySyncIndex);
 
-                    // console.log('---balanceHistory2', balanceHistory);
 
                     const historyElementIndex = balanceHistory.indexOf(historySyncIndex);
-                    //console.log('---historyElementIndex', historyElementIndex);
+                    console.log('---historyElementIndex', historyElementIndex);
 
-                    // console.log('---historySyncIndex', historySyncIndex);
 
                     const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
                     const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
 
-                    // console.log('---balances2', neutrinoHistoryBalance, bondHistoryBalance);
+
 
                     const totalUserHistoryBalance = neutrinoHistoryBalance + bondHistoryBalance;
                     const profit = allProfit * totalUserHistoryBalance / contractHistoryBalance;
                     const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
 
-                    // console.log('---profit', profit);
+                    console.log('---profit', profit);
 
                     rpdChecks.push({
                         index: index,
@@ -103,7 +101,7 @@ module.exports = class Router {
 
 
 
-                return rpdChecks;
+                return rpdChecks.filter(item => item.index > _min(balanceHistory.map(item => parseInt(item))));
 
             },
             '/api/v1/rpd-balance/:pairName': async request => {

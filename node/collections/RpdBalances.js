@@ -2,7 +2,7 @@
 const BaseCollection = require('../base/BaseCollection');
 const CurrencyEnum = require('../enums/CurrencyEnum');
 
-module.exports = class RpdNeutrinoBalances extends BaseCollection {
+module.exports = class RpdBalances extends BaseCollection {
 
     getKeys(id = '([A-Za-z0-9]{44})$') {
         //id - assetId
@@ -14,6 +14,7 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
 
 
     _getCurrencyByAsset(assetId) {
+
         return Object.entries(this.assets).find(item => item[1] === assetId)[0];
     }
 
