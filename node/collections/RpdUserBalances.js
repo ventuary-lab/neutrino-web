@@ -23,7 +23,7 @@ module.exports = class RpdUserBalances extends BaseCollection {
         return {
             'balance': CurrencyEnum.isBond(currency)
                 ? item[`rpd_balance_${id}`]
-                : item[`rpd_balance_${id}`] /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N),,
+                : item[`rpd_balance_${id}`] /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N),
         }
     }
 };

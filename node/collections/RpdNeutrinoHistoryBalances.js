@@ -20,7 +20,7 @@ module.exports = class RpdNeutrinoHistoryBalances extends BaseCollection {
 
     async _prepareItem(id, item) {
         return {
-            'balance': item[`rpd_balance_${this.neutrinoAssetId}_${id}`] /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N),,
+            'balance': item[`rpd_balance_${this.neutrinoAssetId}_${id}`] /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N),
         }
     }
 };
