@@ -5,6 +5,8 @@ const PairsEnum = require('../enums/PairsEnum');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
+const CurrencyEnum = require('../enums/CurrencyEnum');
+
 
 module.exports = class BondsOrders extends BaseCollection {
 
