@@ -68,10 +68,12 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     }
 
     async _prepareItem(currency, item) {
+        let totalIssued =  item['totalIssued'] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N);
+        let contractBalance = item['contractBalance'] / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
         return {
-            totalIssued: item['totalIssued'] / Math.pow(10, 8),
-            contractBalance: item['contractBalance'] / Math.pow(10, 8),
-            totalUsed: _round((item['totalIssued'] - item['contractBalance']) / Math.pow(10, 8), 2),
+            totalIssued: totalIssued,
+            contractBalance: contractBalance,
+            totalUsed: _round(totalIssued - contractBalance, 2),
             price: _round(item['price'] / 100, 2),
             isBlocked: item['isBlocked'],
         };
