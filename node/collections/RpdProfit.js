@@ -21,7 +21,7 @@ module.exports = class RpdProfit extends BaseCollection {
     async _prepareItem(id, item) {
 
         return {
-            'profit': item[`rpd_profit_${id}`] / Math.pow(10, 8),
+            'profit': item[`rpd_profit_${id}`] /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N),
         }
     }
 };
