@@ -2,7 +2,7 @@
 const BaseCollection = require('../base/BaseCollection');
 const CurrencyEnum = require('../enums/CurrencyEnum');
 
-module.exports = class RpdNeutrinoBalances extends BaseCollection {
+module.exports = class RpdBalances extends BaseCollection {
 
     getKeys(id = '([A-Za-z0-9]{44})$') {
         //id - assetId
@@ -19,6 +19,7 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
 
     async getBalances() {
         const items = await this.getItemsAll();
+
         return items.map(item => ({
             ...item,
             id: this._getCurrencyByAsset(item.id)
@@ -26,6 +27,11 @@ module.exports = class RpdNeutrinoBalances extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
+
+        if (!Object.values(this.assets).includes(id)) {
+            return null;
+        }
+
         const currency = this._getCurrencyByAsset(id);
 
         return {

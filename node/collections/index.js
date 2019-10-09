@@ -11,4 +11,5 @@ module.exports = {
     RpdProfit: require('./RpdProfit'),
     RpdNextIndex: require('./RpdNextIndex'),
     RpdIndexNumbers: require('./RpdIndexNumbers'),
+    RpdIsClaimed: require('./RpdIsClaimed'),
 };
