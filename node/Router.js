@@ -1,5 +1,4 @@
 const CollectionEnum = require('./enums/CollectionEnum');
-const CurrencyEnum = require('./enums/CurrencyEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
@@ -106,12 +105,6 @@ module.exports = class Router {
             },
             '/api/v1/rpd-balance/:pairName': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BALANCES).getBalances();
-            },
-            '/api/v1/rpd-neutrino-balance/:pairName/:address': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_NEUTRINO_BALANCES).getItem(request.params.address);
-            },
-            '/api/v1/rpd-bonds-balance/:pairName/:address': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BONDS_BALANCES).getItem(request.params.address);
             },
             '/api/v1/rpd-user-balance/:pairName/:address': async request => {
                 const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];

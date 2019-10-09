@@ -1,6 +1,7 @@
 
 module.exports = class CurrencyEnum {
 
+    static WAVES = 'waves';
     static USD = 'usd';
     static EUR = 'eur';
     static USD_N = 'usd-n';
@@ -16,6 +17,17 @@ module.exports = class CurrencyEnum {
             this.EUR_N,
             //this.BTC_N,
         ];
+    }
+
+    static getContractPow(name) {
+        const map = {
+            [this.WAVES]: Math.pow(10, 8),
+            [this.USD_N]: Math.pow(10, 2),
+            [this.USD_NB]: 1,
+            [this.EUR_N]: Math.pow(10, 2),
+            [this.EUR_NB]: 1,
+        };
+        return map[name] || null;
     }
 
     static getAssetContractKeysMap() {
