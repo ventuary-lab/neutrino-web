@@ -1,11 +1,18 @@
 @import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 
 .ChecksList {
 
   $root: &;
 
-  padding-top: 20px;
+  height: 562px;
+  overflow: auto;
+  @include scrollbar;
+
+  margin-top: 20px;
+  margin-right: -38px;
+  padding-right: 30px;
 
   &__empty {
     display: flex;

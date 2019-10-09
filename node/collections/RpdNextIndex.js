@@ -5,7 +5,7 @@ module.exports = class RpdNextIndex extends BaseCollection {
 
     constructor() {
         super(...arguments);
-        this.nextIndex = undefined;
+        this.nextIndex = '';
     }
 
 
@@ -26,9 +26,6 @@ module.exports = class RpdNextIndex extends BaseCollection {
         for (let nodeKey in nodeData) {
             if (nodeKey.match(this.getKeys()[0])) {
                 this.nextIndex = nodeData[nodeKey];
-            }
-
-            if (this.nextIndex !== undefined) {
                 break;
             }
         }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import _round from 'lodash-es/round';
 import _get from 'lodash-es/get';
 import Button from 'yii-steroids/ui/form/Button';
 
@@ -25,8 +26,8 @@ export default class CheckItem extends React.PureComponent {
             // time: PropTypes.string,
             profit: PropTypes.number,
             historyIndex: PropTypes.number,
+            isClaimed: PropTypes.bool,
         }),
-        isHistory: PropTypes.bool,
 
     };
 
@@ -41,16 +42,16 @@ export default class CheckItem extends React.PureComponent {
                             })}
                         </span>
                         <span>
-                            {/*{this.props.item.time}*/} //TODO
+                            {/*{this.props.item.time}*/}
                         </span>
                     </div>
                     <div className={bem.element('profit')}>
                         {__('Profit: {profit}', {
-                            profit: this.props.item.profit,
+                            profit: _round(this.props.item.profit, 2),
                         })}
                     </div>
                     <div className={bem.element('action')}>
-                        {!this.props.isHistory && (
+                        {!this.props.item.isClaimed && (
                             <Button
                                 color={'success'}
                                 block
@@ -61,7 +62,7 @@ export default class CheckItem extends React.PureComponent {
                                         _get(this.props, 'item.index'),
                                         _get(this.props, 'item.historyIndex')
                                     )
-                                        .then(() => console.log('success check withdraw'))
+                                        .then(() => console.log('success profit withdraw'))
                                 }}
                             />
                         )}

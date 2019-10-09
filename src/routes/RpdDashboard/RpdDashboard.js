@@ -47,7 +47,7 @@ const FORM_ID = 'RpdDashboard';
         {
             url: `/api/v1/rpd-checks/${props.pairName}/${_get(props, 'user.address')}`,
             key: 'rpdChecks',
-            collection: CollectionEnum.RPD_NEXT_INDEX,
+            collection: [CollectionEnum.RPD_NEXT_INDEX, CollectionEnum.RPD_IS_CLAIMED],
         },
     ]
 )
@@ -87,19 +87,6 @@ export default class RpdDashboard extends React.PureComponent {
     }
 
     render() {
-        // const checksItems = [
-        //     {
-        //         id: '001',
-        //         time: '30.09.19 | 9:23 AM',
-        //         profit: 1000,
-        //     },
-        //     {
-        //         id: '001',
-        //         time: '30.09.19 | 9:23 AM',
-        //         profit: 1000,
-        //     }
-        // ];
-
         const rpdNeutrinoBalance = _get(this.props, 'rpdUserBalance.neutrino.balance', 0);
         const rpdBondsBalance = _get(this.props, 'rpdUserBalance.bond.balance', 0);
         const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalance'), 'balance');
@@ -177,7 +164,7 @@ export default class RpdDashboard extends React.PureComponent {
                                     return dal.lockNeutrino(
                                         this.props.pairName,
                                         _get(this.props, 'formValues.currency'),
-                                        _get(this.props, 'formValues.wrap')
+                                        parseInt(_get(this.props, 'formValues.wrap'))
                                     )
                                         .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')))
                                 }}
@@ -201,7 +188,9 @@ export default class RpdDashboard extends React.PureComponent {
                                     return dal.unlockNeutrino(
                                         this.props.pairName,
                                         _get(this.props, 'formValues.currency'),
-                                        parseInt(_get(this.props, 'formValues.unwrap'))
+                                        parseInt(_get(this.props, 'formValues.currency') === this.props.quoteCurrency
+                                            ? _get(this.props, 'formValues.unwrap') * Math.pow(10, 8)
+                                            : _get(this.props, 'formValues.unwrap'))
                                     )
                                         .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')))
                                 }}
@@ -227,7 +216,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 label: __('Checks'),
                                 content: ChecksList,
                                 contentProps: {
-                                    items: _get(this.props, 'rpdChecks') || []
+                                    items: _get(this.props, 'rpdChecks', []).filter(item => !item.isClaimed),
                                 }
                             },
                             {
@@ -235,8 +224,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 label: __('History'),
                                 content: ChecksList,
                                 contentProps: {
-                                    items: [], //TODO
-                                    isHistory: true,
+                                    items: _get(this.props, 'rpdChecks', []).filter(item => item.isClaimed),
                                 }
                             },
                         ]}
