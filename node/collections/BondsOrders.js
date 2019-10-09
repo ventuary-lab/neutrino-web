@@ -5,6 +5,8 @@ const PairsEnum = require('../enums/PairsEnum');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
+const CurrencyEnum = require('../enums/CurrencyEnum');
+
 
 module.exports = class BondsOrders extends BaseCollection {
 
@@ -63,14 +65,14 @@ module.exports = class BondsOrders extends BaseCollection {
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
             price,
-            total: _round(total / 100000000, 2),
-            filledTotal: _round(filledTotal / 100000000, 2),
-            restTotal: _round((total - filledTotal) / 100000000, 2),
+            total: _round(total /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
+            filledTotal: _round(filledTotal /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
+            restTotal: _round((total - filledTotal) /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            amount: _round(total / (price * 100000000 / 100), 2),
-            filledAmount: _round(filledTotal / (price * 100000000 / 100), 2),
-            restAmount: _round((total - filledTotal) / (price * 100000000 / 100), 2),
+            amount: _round(total / (price *  CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
+            filledAmount: _round(filledTotal / (price *  CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
+            restAmount: _round((total - filledTotal) / (price * CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
             discountPercent: 100 - price,
             pairName: this.pairName,
             type: OrderTypeEnum.BUY,
