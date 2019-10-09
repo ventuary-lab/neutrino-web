@@ -14,12 +14,12 @@ module.exports = class RpdBalances extends BaseCollection {
 
 
     _getCurrencyByAsset(assetId) {
-
         return Object.entries(this.assets).find(item => item[1] === assetId)[0];
     }
 
     async getBalances() {
         const items = await this.getItemsAll();
+
         return items.map(item => ({
             ...item,
             id: this._getCurrencyByAsset(item.id)
@@ -27,6 +27,11 @@ module.exports = class RpdBalances extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
+
+        if (!Object.values(this.assets).includes(id)) {
+            return null;
+        }
+
         const currency = this._getCurrencyByAsset(id);
 
         return {
