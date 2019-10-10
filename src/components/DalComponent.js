@@ -148,6 +148,51 @@ export default class DalComponent {
         }
     }
 
+    async swapAndSetBondOrder(pairName, price, paymentCurrency, bondsAmount, neutrinoAmount, wavesToUsdPrice) {
+        if (price <= 0 || price >= 1) {
+            return;
+        }
+        price = Math.round(price * 100) / 100;
+        const contractPrice = price * 100;
+        let position = _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');
+        if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
+            try {
+                const txSwap = await this.keeper.signTransaction(
+                    pairName,
+                    ContractEnum.NEUTRINO,
+                    'swapWavesToNeutrino',
+                    [],
+                    'WAVES',
+                    neutrinoAmount / wavesToUsdPrice,
+                );
+
+                const txSetOrder = await this.keeper.signTransaction(
+                    pairName,
+                    ContractEnum.AUCTION,
+                    'setOrder',
+                    [
+                        contractPrice,
+                        position
+                    ],
+                    this.assets[paymentCurrency],
+                    bondsAmount * price,
+                );
+
+                console.log('Signed vote tx:', {txSwap, txSetOrder});
+
+                return this.keeper.broadcast(txSwap)
+                    .then(() => {
+                        this.keeper.broadcast(txSetOrder);
+                    })
+                    .catch(e => {
+                        throw e;
+                    })
+            } catch (e) {
+                throw e;
+            }
+        }
+    }
+
     async setLiquidateOrder(pairName, paymentCurrency, total) {
         await this.keeper.sendTransaction(
             pairName,
