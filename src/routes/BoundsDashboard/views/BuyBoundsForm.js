@@ -152,7 +152,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         className={bem.element('submit-button')}
                         label={__('Buy {bounds}', {
-                            bounds: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                            bounds: CurrencyEnum.getLabel(this.props.baseCurrency),
                         })}
                     />
                 </Form>

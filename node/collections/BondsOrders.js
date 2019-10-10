@@ -29,6 +29,13 @@ module.exports = class BondsOrders extends BaseCollection {
         let orders = await this.getItemsAll();
         orders = orders.filter(order => order.discountPercent > 0 && order.discountPercent < 100); // Fix data
         orders = _orderBy(orders, 'height', 'desc');
+        return orders;
+    }
+
+    async getOrdersHistory() {
+        let orders = await this.getItemsAll();
+        orders = orders.filter(order => order.filledTotal > 0 && order.discountPercent < 100); // Fix data
+        orders = _orderBy(orders, 'height', 'desc');
 
         return orders;
     }
