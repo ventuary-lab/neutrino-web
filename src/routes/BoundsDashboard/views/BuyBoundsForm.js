@@ -4,17 +4,18 @@ import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
 import _round from 'lodash-es/round';
-import _isFunction from 'lodash-es/isFunction';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
+import {openModal} from 'yii-steroids/actions/modal';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from 'enums/CollectionEnum';
+import MessageModal from 'modals/MessageModal';
 
 import {dal, html} from 'components';
 
 import './BuyBoundsForm.scss';
-import {getBaseCurrency, getLastWavesExchange, getPairName, getQuoteCurrency} from 'reducers/currency';
-import CurrencyEnum from 'enums/CurrencyEnum';
-import CollectionEnum from '../../../enums/CollectionEnum';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
@@ -130,6 +131,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         }}
                         hint={_get(this.props, 'formValues.bounds')
                             ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoBalances.price'), 2)} WAVES`
+                            // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
                             : ' '
                         }
                     />
@@ -162,12 +164,25 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        return dal.setBondOrder(this.props.pairName, price, this.props.quoteCurrency,values.bounds)
+        const wavesToUsdPrice = _get(this.props, 'neutrinoBalances.price');
+
+        return dal.swapAndSetBondOrder(
+            this.props.pairName,
+            price,
+            this.props.quoteCurrency,
+            values.bounds,
+            values.neutrino,
+            wavesToUsdPrice
+        )
             .then(() => {
-                if (this.props.onComplete && _isFunction(this.props.onComplete)) {
-                    this.props.onComplete();
-                }
-            });
+                console.log('---swapAndSetBondOrder success');
+            })
+            .catch(e => {
+                console.log('---swapAndSetBondOrder error', e);
+                this.props.dispatch(openModal(MessageModal, {
+                    description: __('You have canceled the order')
+                }))
+            })
     }
 
     _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {

@@ -1,4 +1,4 @@
-const {waitForTx} = require('@waves/waves-transactions');
+const {waitForTx, broadcast} = require('@waves/waves-transactions');
 const _isArray = require('lodash/isArray');
 const _isString = require('lodash/isString');
 const _isInteger = require('lodash/isInteger');
@@ -117,6 +117,12 @@ export default class Keeper {
 
     }
 
+    async signTransaction(pairName, contractName, method, args, paymentCurrency, paymentAmount) {
+        const keeper = await this.getPlugin();
+        const dApp = this.dal.contracts[pairName][contractName];
+        return keeper.signTransaction(this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount));
+    }
+
     _buildTransaction(dApp, method, args, paymentCurrency, paymentAmount) {
         const transaction = {
             type: 16,
@@ -145,6 +151,13 @@ export default class Keeper {
             console.log('Transaction:', transaction); // eslint-disable-line no-console
         }
         return transaction;
+    }
+
+    async broadcast(tx) {
+        if (_isString(tx)) {
+            tx = JSON.parse(tx);
+        }
+        return broadcast(tx, this.dal.nodeUrl);
     }
 
     async _addressChecker() {
