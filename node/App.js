@@ -16,8 +16,8 @@ module.exports = class App {
 
     constructor(params = {}) {
         this.network = process.env.APP_DAPP_NETWORK || 'test';
-
-        switch(this.network){
+        this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
+        switch (this.network) {
             case 'main':
                 this.nodeUrl = 'https://nodes.wavesplatform.com';
                 break;
@@ -90,19 +90,19 @@ module.exports = class App {
     }
 
     async start() {
-        console.log('---start', );
+        console.log('---start');
         this._isSkipUpdates = true;
 
         this._router.start();
         this._websocket.start();
         await this.heightListener.start();
 
-        console.log('---before heightListener', );
+        console.log('---before heightListener');
 
         // Try get timestamp
         this.heightListener.getTimestamps([this.heightListener.getLast()]);
 
-        console.log('---after heightListener', );
+        console.log('---after heightListener');
 
         // Create contracts and collections
         for (const pairName of PairsEnum.getKeys()) {
@@ -116,13 +116,13 @@ module.exports = class App {
             }
         }
 
-        console.log('---after create contracts and collections', );
+        console.log('---after create contracts and collections');
 
 
         // Load asset ids
         this.assets = await this._loadAssetIds();
 
-        console.log('---after loads assets', );
+        console.log('---after loads assets');
 
         //add assets to collections
         for (const pairName of PairsEnum.getKeys()) {
@@ -131,9 +131,9 @@ module.exports = class App {
             }
         }
 
-        console.log('---before update all', );
+        console.log('---before update all');
 
-        await this._updateAll(true);
+        await this._updateAll(this.isCleaningRedis);
         this._isSkipUpdates = false;
     }
 
@@ -154,7 +154,7 @@ module.exports = class App {
             nodeUrl: this.nodeUrl,
         });
 
-        console.log('---createContract', );
+        console.log('---createContract');
 
         const contract = new WavesContractCache({
             dApp,
@@ -221,35 +221,39 @@ module.exports = class App {
     }
 
     async _updateAll(flush) {
-        if (this._isNowUpdated) {
-            this._isNeedUpdateAgain = true;
-            return;
-        }
-        this._isNowUpdated = true;
-
-        for (const pairName of PairsEnum.getKeys()) {
-            const data = {};
-            for (const collectionName of CollectionEnum.getKeys()) {
-                const collection = this.getCollection(pairName, collectionName);
-                const contractName = CollectionEnum.getContractName(collectionName);
-                if (!data[contractName]) {
-                    data[contractName] = await collection.transport.fetchAll();
-                }
-
-                this.logger.info('Update all data in collection... ' + collectionName);
-                if (flush) {
-                    await collection.removeAll();
-                }
-                await collection.updateAll(data[contractName]);
+        try {
+            if (this._isNowUpdated) {
+                this._isNeedUpdateAgain = true;
+                return;
             }
-        }
+            this._isNowUpdated = true;
 
-        this._isNowUpdated = false;
-        if (this._isNeedUpdateAgain) {
-            this._isNeedUpdateAgain = false;
-            this._updateAll();
-        }
+            for (const pairName of PairsEnum.getKeys()) {
+                const data = {};
+                for (const collectionName of CollectionEnum.getKeys()) {
+                    const collection = this.getCollection(pairName, collectionName);
+                    const contractName = CollectionEnum.getContractName(collectionName);
+                    if (!data[contractName]) {
+                        data[contractName] = await collection.transport.fetchAll();
+                    }
 
+                    this.logger.info('Update all data in collection... ' + collectionName);
+                    if (flush) {
+                        await collection.removeAll();
+                    }
+                    await collection.updateAll(data[contractName]);
+                }
+            }
+
+            this._isNowUpdated = false;
+            if (this._isNeedUpdateAgain) {
+                this._isNeedUpdateAgain = false;
+                this._updateAll();
+            }
+
+        } catch (ex) {
+            this.logger.error("Update All:" + ex)
+        }
         // TODO
         setTimeout(() => this._updateAll(), 5000);
     }
@@ -261,14 +265,18 @@ module.exports = class App {
     }
 
     _onContractUpdate(pairName, contractName, keys) {
-        if (!this._isSkipUpdates) {
-            console.log('---_onContractUpdate', );
-            Object.keys(this._collections[pairName]).forEach(collectionName => {
-                if (CollectionEnum.getContractName(collectionName) === contractName) {
-                    console.log('---update', );
-                    this.getCollection(pairName, collectionName).updateByKeys(keys);
-                }
-            });
+        try {
+            if (!this._isSkipUpdates) {
+                console.log('---_onContractUpdate');
+                Object.keys(this._collections[pairName]).forEach(collectionName => {
+                    if (CollectionEnum.getContractName(collectionName) === contractName) {
+                        console.log('---update');
+                        this.getCollection(pairName, collectionName).updateByKeys(keys);
+                    }
+                });
+            }
+        } catch (ex) {
+            this.logger.error(ex)
         }
     }
 

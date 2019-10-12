@@ -47,14 +47,17 @@ module.exports = class HeightListener {
      * @private
      */
     async _listenNext() {
-        const response = await this._request('blocks/height');
-        const height = response.height;
+        try {
+            const response = await this._request('blocks/height');
+            const height = response.height;
 
-        if (!this._lastHeight || this._lastHeight !== height) {
-            this._lastHeight = height;
-            this.updateHandler(height);
+            if (!this._lastHeight || this._lastHeight !== height) {
+                this._lastHeight = height;
+                this.updateHandler(height);
+            }
+        } catch(ex){
+            this.logger.error(`HeightListener Error: ${String(ex)}`);
         }
-
         // Next tick
         setTimeout(this._listenNext, this.intervalSec * 1000);
     }
@@ -79,7 +82,7 @@ module.exports = class HeightListener {
         try {
             result = await axios.get(`${this.nodeUrl}/${url}`);
         } catch (e) {
-            this.logger.error(`HeightListener Error on fetch height: ${String(e)}`);
+            this.logger.error(`HeightListener Requst Error: ${String(e)}`);
             throw e;
         }
         return result.data;

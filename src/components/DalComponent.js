@@ -178,15 +178,12 @@ export default class DalComponent {
                     bondsAmount * price,
                 );
 
+                console.log(position)
                 console.log('Signed vote tx:', {txSwap, txSetOrder});
 
-                return this.keeper.broadcast(txSwap)
-                    .then(() => {
-                        this.keeper.broadcast(txSetOrder);
-                    })
-                    .catch(e => {
-                        throw e;
-                    })
+                await this.keeper.broadcastAndWait(txSwap);
+                await this.keeper.broadcastAndWait(txSetOrder);
+
             } catch (e) {
                 throw e;
             }

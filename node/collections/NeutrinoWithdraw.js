@@ -4,7 +4,7 @@ const CurrencyEnum = require('../enums/CurrencyEnum');
 
 module.exports = class NeutrinoWithdraw extends BaseCollection {
 
-    getKeys(id = '([A-Za-z0-9]{35})$') {
+    getKeys(id = '([A-Za-z0-9]{30,40})$') {
         return [
             `neutrino_${id}`,
             `waves_${id}`,

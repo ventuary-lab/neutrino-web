@@ -153,11 +153,25 @@ export default class Keeper {
         return transaction;
     }
 
+    async broadcastAndWait(tx) {
+        if (_isString(tx)) {
+            tx = JSON.parse(tx);
+        }
+        await broadcast(tx, this.dal.nodeUrl);
+        await waitForTx(tx.id, { apiBase: this.dal.nodeUrl });
+    }
     async broadcast(tx) {
         if (_isString(tx)) {
             tx = JSON.parse(tx);
         }
         return broadcast(tx, this.dal.nodeUrl);
+    }
+
+    async waitForTx(tx) {
+        if (_isString(tx)) {
+            tx = JSON.parse(tx);
+        }
+        return waitForTx(tx.id, { apiBase: this.dal.nodeUrl });
     }
 
     async _addressChecker() {

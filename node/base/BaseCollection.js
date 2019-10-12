@@ -45,6 +45,7 @@ module.exports = class BaseCollection {
 
     async getItemsAll() {
         const result = await this.storage.hgetall(this.getStorageKey());
+    
         if (!result) {
             return [];
         }
