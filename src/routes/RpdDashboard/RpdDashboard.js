@@ -35,11 +35,6 @@ const FORM_ID = 'RpdDashboard';
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/rpd-balance/${props.pairName}`,
-            key: 'rpdBalance',
-            collection: CollectionEnum.RPD_BALANCES,
-        },
-        {
             url: `/api/v1/rpd-user-balance/${props.pairName}/${_get(props, 'user.address')}`,
             key: 'rpdUserBalance',
             collection: CollectionEnum.RPD_USER_BALANCES,
@@ -66,10 +61,6 @@ export default class RpdDashboard extends React.PureComponent {
                 id: PropTypes.string,
             })
         })),
-        rpdBalance: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
-            balance: PropTypes.number,
-        })),
         rpdChecks: PropTypes.arrayOf(PropTypes.shape({
             index: PropTypes.number,
             profit: PropTypes.number,
@@ -78,49 +69,60 @@ export default class RpdDashboard extends React.PureComponent {
 
     constructor() {
         super(...arguments);
-    }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.quoteCurrency !== nextProps.quoteCurrency) {
-            this.props.dispatch(change(FORM_ID, 'currency', nextProps.quoteCurrency))
-        }
+        this.state = {
+            isLeasingStart: false,
+        };
     }
 
     render() {
         const rpdNeutrinoBalance = _get(this.props, 'rpdUserBalance.neutrino.balance', 0);
         const rpdBondsBalance = _get(this.props, 'rpdUserBalance.bond.balance', 0);
-        const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalance'), 'balance');
-
-        const share = rpdTotalBalance
-            ? (rpdNeutrinoBalance + rpdBondsBalance) / rpdTotalBalance * 100
-            : 0;
 
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
+                    <div className={bem.element('column-title')}>
+                        <span>{__('Wrapped')}</span>
+                    </div>
                     <div className={bem.element('balances')}>
                         <div className={bem.element('balance-item')}>
-                            <div className={bem.element('balance-icon')}>
-                                <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
+                            <div className={bem.element('balance')}>
+                                <div className={bem.element('balance-icon')}>
+                                    <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
+                                </div>
+                                <span className={bem.element('balance-text', 'leased')}>
+                                    {__('{currency} Balance: {value}', {
+                                        currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                        value: rpdNeutrinoBalance.toFixed(2),
+                                    })}
+                                    <br/>
+                                    {__('Leased')}
+                                </span>
                             </div>
-                            <span>
-                                {__('{currency} Balance: {value}', {
-                                    currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                    value: rpdNeutrinoBalance.toFixed(2),
-                                })}
-                            </span>
+                            <div className={bem.element('leasing-action')}>
+                                <Button
+                                    block
+                                    color={this.state.isLeasingStart ? 'secondary' : 'success'}
+                                    label={this.state.isLeasingStart ? __('Cancel lease') : __('Start leasing')}
+                                    onClick={() => {
+                                        this.setState({isLeasingStart: !this.state.isLeasingStart});
+                                    }}
+                                />
+                            </div>
                         </div>
                         <div className={bem.element('balance-item')}>
-                            <div className={bem.element('balance-icon')}>
-                                <span className={`Icon ${CurrencyEnum.getIconClass(this.props.baseCurrency)}`}/>
+                            <div className={bem.element('balance')}>
+                                <div className={bem.element('balance-icon')}>
+                                    <span className={`Icon ${CurrencyEnum.getIconClass(this.props.baseCurrency)}`}/>
+                                </div>
+                                <span className={bem.element('balance-text')}>
+                                    {__('{currency} Balance: {value}', {
+                                        currency: CurrencyEnum.getLabel(this.props.baseCurrency),
+                                        value: rpdBondsBalance.toFixed(2),
+                                    })}
+                                </span>
                             </div>
-                            <span>
-                                {__('{currency} Balance: {value} | Share: {share}%', {
-                                    currency: CurrencyEnum.getLabel(this.props.baseCurrency),
-                                    value: rpdBondsBalance.toFixed(2),
-                                    share: share.toFixed(2),
-                                })}
-                            </span>
                         </div>
                     </div>
                     <Form
@@ -129,23 +131,6 @@ export default class RpdDashboard extends React.PureComponent {
                             currency: this.props.quoteCurrency,
                         }}
                     >
-                        <DropDownField
-                            layoutClassName={bem.element('currency-toggler')}
-                            attribute={'currency'}
-                            excludeSelectedFromItems
-                            items={[
-                                {
-                                    id: this.props.quoteCurrency,
-                                    icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
-                                    label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                },
-                                {
-                                    id: this.props.baseCurrency,
-                                    icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
-                                    label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                                }]
-                            }
-                        />
                         <div className={bem.element('input-block')}>
                             <NumberField
                                 min={0}
@@ -163,7 +148,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 onClick={() => {
                                     return dal.lockNeutrino(
                                         this.props.pairName,
-                                        _get(this.props, 'formValues.currency'),
+                                        _get(this.props, 'quoteCurrency'),
                                         parseInt(_get(this.props, 'formValues.wrap'))
                                     )
                                         .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')))
@@ -187,10 +172,8 @@ export default class RpdDashboard extends React.PureComponent {
                                 onClick={() => {
                                     return dal.unlockNeutrino(
                                         this.props.pairName,
-                                        _get(this.props, 'formValues.currency'),
-                                        parseInt(_get(this.props, 'formValues.currency') === this.props.quoteCurrency
-                                            ? _get(this.props, 'formValues.unwrap') * Math.pow(10, 8)
-                                            : _get(this.props, 'formValues.unwrap'))
+                                        _get(this.props, 'quoteCurrency'),
+                                        _get(this.props, 'formValues.unwrap') * Math.pow(10, 8)
                                     )
                                         .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')))
                                 }}
@@ -199,7 +182,7 @@ export default class RpdDashboard extends React.PureComponent {
                     </Form>
                 </div>
                 <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('check-title')}>
+                    <div className={bem.element('column-title')}>
                         <span>{__('RPD Check')}</span>
                         <div className={bem.element('check-hint')}>
                             <Hint
@@ -213,7 +196,7 @@ export default class RpdDashboard extends React.PureComponent {
                         items={[
                             {
                                 id: 'checks',
-                                label: __('Checks'),
+                                label: __('Payouts'),
                                 content: ChecksList,
                                 contentProps: {
                                     items: _get(this.props, 'rpdChecks', []).filter(item => !item.isClaimed),
