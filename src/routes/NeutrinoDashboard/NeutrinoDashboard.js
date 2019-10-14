@@ -12,8 +12,9 @@ import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 
 import {html, dal} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getPairName, getQuoteCurrency, getLastWavesExchange, getSourceCurrency} from 'reducers/currency';
+import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
+import SwapLoader from 'shared/SwapLoader';
 
 import './NeutrinoDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
@@ -77,6 +78,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         this.state = {
             step: 'generation',
             isWavesLeft: true,
+            isSwapInProgress: false,
         };
 
         this._onSubmit = this._onSubmit.bind(this);
@@ -103,9 +105,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
         else {
             this._isProgramChange = false;
         }
+
     }
 
     render() {
+
+        console.log('---11', this.props.withdraw, );
+
         const steps = [
             {
                 id: 'generation',
@@ -121,6 +127,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
+                {(!!_get(this.props, 'withdraw.neutrinoBlocked') || !!_get(this.props, 'withdraw.wavesBlocked')) && (
+                    <SwapLoader
+                        {...this.props.withdraw}
+                    />
+                )}
+
                 {this.renderStepChanger(steps)}
                 <Form
                     className={bem.element('form')}
@@ -443,6 +455,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
     _onSubmit(values) {
         this.setState({step: 'generation'});
         this.props.dispatch(reset(FORM_ID));
+
+
+        // if (this.state.isWavesLeft) {
+        //     this.setState({isSwapInProgress: true})
+        // }
 
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
