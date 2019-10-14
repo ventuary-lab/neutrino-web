@@ -68,7 +68,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     }
 
     async _prepareItem(currency, item) {
-        let totalIssued =  item['totalIssued'] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N);
+        let totalIssued = item['totalIssued'] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N);
         let contractBalance = item['contractBalance'] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
         return {
             totalIssued: totalIssued,
