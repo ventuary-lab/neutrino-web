@@ -221,13 +221,12 @@ module.exports = class App {
     }
 
     async _updateAll(flush) {
-        try {
-            if (this._isNowUpdated) {
-                this._isNeedUpdateAgain = true;
-                return;
-            }
-            this._isNowUpdated = true;
+        if (this._isNowUpdated) {
+            return;
+        }
+        this._isNowUpdated = true;
 
+        try {
             for (const pairName of PairsEnum.getKeys()) {
                 const data = {};
                 for (const collectionName of CollectionEnum.getKeys()) {
@@ -244,16 +243,11 @@ module.exports = class App {
                     await collection.updateAll(data[contractName]);
                 }
             }
-
-            this._isNowUpdated = false;
-            if (this._isNeedUpdateAgain) {
-                this._isNeedUpdateAgain = false;
-                this._updateAll();
-            }
-
         } catch (ex) {
             this.logger.error("Update All:" + ex)
         }
+
+        this._isNowUpdated = false;
         // TODO
         setTimeout(() => this._updateAll(), 5000);
     }
