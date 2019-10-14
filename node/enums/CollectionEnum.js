@@ -21,7 +21,6 @@ module.exports = class CollectionEnum {
         return [
             this.BONDS_ORDERS,
             this.NEUTRINO_ORDERS,
-            this.NEUTRINO_PRICES,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
             this.RPD_BALANCES,
@@ -32,6 +31,7 @@ module.exports = class CollectionEnum {
             this.RPD_NEXT_INDEX,
             this.RPD_INDEX_NUMBERS,
             this.RPD_IS_CLAIMED,
+            this.NEUTRINO_PRICES
         ];
     }
 

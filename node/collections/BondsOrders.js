@@ -10,7 +10,7 @@ const CurrencyEnum = require('../enums/CurrencyEnum');
 
 module.exports = class BondsOrders extends BaseCollection {
 
-    getKeys(id = '([A-Za-z0-9]{44})') {
+    getKeys(id = '([A-Za-z0-9]{40,50})') {
         return [
             `order_height_${id}`,
             `order_owner_${id}`,
@@ -28,6 +28,13 @@ module.exports = class BondsOrders extends BaseCollection {
     async getOrders() {
         let orders = await this.getItemsAll();
         orders = orders.filter(order => order.discountPercent > 0 && order.discountPercent < 100); // Fix data
+        orders = _orderBy(orders, 'height', 'desc');
+        return orders;
+    }
+
+    async getOrdersHistory() {
+        let orders = await this.getItemsAll();
+        orders = orders.filter(order => order.filledTotal > 0 && order.discountPercent < 100); // Fix data
         orders = _orderBy(orders, 'height', 'desc');
 
         return orders;
@@ -56,6 +63,7 @@ module.exports = class BondsOrders extends BaseCollection {
 
     async _prepareItem(id, item) {
         const index = item.orderbook.split('_').filter(Boolean).indexOf(id);
+        
         const height = item['order_height_' + id];
         const price = item['order_price_' + id] || 0;
         const total = item['order_total_' + id] || 0;
