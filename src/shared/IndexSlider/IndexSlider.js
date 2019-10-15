@@ -16,7 +16,6 @@ import { STORAGE_AUTH_KEY } from '../RightSidebar/RightSidebar';
 
 const bem = html.bem('IndexSlider');
 
-@connect()
 export default class IndexSlider extends React.Component {
 
     static propTypes = {
@@ -55,7 +54,9 @@ export default class IndexSlider extends React.Component {
                         )}
                         afterChange={index => {
                             if(index === slides.length - 1) {
-                                if(clientStorage.get('warningModalState')) return;
+                                if(clientStorage.get('warningModalState')) {
+                                    return;
+                                };
 
                                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                                     clientStorage.set('warningModalState', 'open');

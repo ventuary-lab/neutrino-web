@@ -60,7 +60,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
             contractBalance: PropTypes.number,
-            price: PropTypes.number,
+            price: PropTypes.number
         }),
         priceFeed: PropTypes.number,
         withdraw: PropTypes.shape({
@@ -109,7 +109,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const steps = [
             {
                 id: 'generation',
-                label: __('Collateralize & generation {currency}', {
+                label: __('Generate {currency}', {
                     currency: CurrencyEnum.getLabel(this.props.quoteCurrency)
                 }),
             },
@@ -181,7 +181,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: 100 {currency}', {
+                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? "0.1" : "100")  +' {currency}', 
+                            {
                                 currency: this.state.isWavesLeft
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.quoteCurrency),
@@ -232,20 +233,20 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <div className={bem.element('info-string')}>
                                 <div className={bem.element('info-hint')}>
                                     <Hint
-                                        text={__('The average price feed period calculated during 1000 blocks')}
+                                        text={__('3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo')}
                                     />
                                 </div>
-                                <span>{__('Price feed period')}</span>
+                                <span>{__('Smart contract')}</span>
                             </div>
                             <span>
-                                {round(this.props.priceFeed, 2)}
+                                {/*round(this.props.priceFeed, 2)*/"3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo"}
                             </span>
                         </div>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string', 'without-hint')}>
                                 <span>{__('Number of oracles')}</span>
                             </div>
-                            <span>{__('1')}</span>
+                            <span>{__('5')}</span>
                         </div>
                     </div>
                     <div className={bem.element('info-column')}>
@@ -307,10 +308,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             'count-minutes': countBlock, // 1block = 1min
                         })}/>
                     </div>
-                    {__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
+                    {/*__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
                         neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,
                         waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
-                    })}
+                    })*/}
                 </div>
                 <Button
                     disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
@@ -328,7 +329,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('details')}>
                     <div className={bem.element('details-item')}>
                         <span className={bem.element('details-label')}>
-                            {__('Collateralize & generation USDN')}
+                            {__('Generate new asset')}
                         </span>
                         <div className={bem.element('details-inner', 'generation')}>
                             <div className={bem.element('values')}>
@@ -375,7 +376,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
                     <CheckboxField
                         className={bem.element('terms-checkbox')}
-                        label={<span>{__('I have read and accept the')} <a href='javascript:void(0)'>{__('Terms of Service')}</a></span>}
+                        label={<span>{__('I have read and accept the')} <a href='https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit?usp=sharing' target='_blank'>{__('Terms of Service')}</a></span>}
                         attribute={'terms'}
                     />
                     <div className={bem.element('details-actions')}>
@@ -389,7 +390,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             type={'submit'}
                             className={bem.element('finalize-button')}
                             disabled={!_get(this.props.formValues, 'terms')}
-                            label={__('Finalize and create CDP')}
+                            label={__('Confirm')}
                         />
                     </div>
                 </div>

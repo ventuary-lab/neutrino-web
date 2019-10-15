@@ -104,21 +104,9 @@ export default class RpdDashboard extends React.PureComponent {
                                 <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
                             </div>
                             <span>
-                                {__('{currency} Balance: {value}', {
+                                {__('Staked {currency}: {value}', {
                                     currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
                                     value: rpdNeutrinoBalance.toFixed(2),
-                                })}
-                            </span>
-                        </div>
-                        <div className={bem.element('balance-item')}>
-                            <div className={bem.element('balance-icon')}>
-                                <span className={`Icon ${CurrencyEnum.getIconClass(this.props.baseCurrency)}`}/>
-                            </div>
-                            <span>
-                                {__('{currency} Balance: {value} | Share: {share}%', {
-                                    currency: CurrencyEnum.getLabel(this.props.baseCurrency),
-                                    value: rpdBondsBalance.toFixed(2),
-                                    share: share.toFixed(2),
                                 })}
                             </span>
                         </div>
@@ -129,23 +117,7 @@ export default class RpdDashboard extends React.PureComponent {
                             currency: this.props.quoteCurrency,
                         }}
                     >
-                        <DropDownField
-                            layoutClassName={bem.element('currency-toggler')}
-                            attribute={'currency'}
-                            excludeSelectedFromItems
-                            items={[
-                                {
-                                    id: this.props.quoteCurrency,
-                                    icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
-                                    label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                },
-                                {
-                                    id: this.props.baseCurrency,
-                                    icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
-                                    label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                                }]
-                            }
-                        />
+                        
                         <div className={bem.element('input-block')}>
                             <NumberField
                                 min={0}
@@ -159,7 +131,7 @@ export default class RpdDashboard extends React.PureComponent {
                             />
                             <Button
                                 block
-                                label={__('Wrap')}
+                                label={__('Start staking')}
                                 onClick={() => {
                                     return dal.lockNeutrino(
                                         this.props.pairName,
@@ -183,13 +155,13 @@ export default class RpdDashboard extends React.PureComponent {
                             />
                             <Button
                                 block
-                                label={__('Unwrap')}
+                                label={__('Cancel staking')}
                                 onClick={() => {
                                     return dal.unlockNeutrino(
                                         this.props.pairName,
                                         _get(this.props, 'formValues.currency'),
                                         parseInt(_get(this.props, 'formValues.currency') === this.props.quoteCurrency
-                                            ? _get(this.props, 'formValues.unwrap') * Math.pow(10, 8)
+                                            ? _get(this.props, 'formValues.unwrap') * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
                                             : _get(this.props, 'formValues.unwrap'))
                                     )
                                         .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')))
@@ -200,7 +172,7 @@ export default class RpdDashboard extends React.PureComponent {
                 </div>
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('check-title')}>
-                        <span>{__('RPD Check')}</span>
+                        <span>{__('Payouts')}</span>
                         <div className={bem.element('check-hint')}>
                             <Hint
                                 text={__('A check appears every 7 days')}
@@ -213,7 +185,7 @@ export default class RpdDashboard extends React.PureComponent {
                         items={[
                             {
                                 id: 'checks',
-                                label: __('Checks'),
+                                label: __('Active'),
                                 content: ChecksList,
                                 contentProps: {
                                     items: _get(this.props, 'rpdChecks', []).filter(item => !item.isClaimed),

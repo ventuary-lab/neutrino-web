@@ -37,7 +37,7 @@ export default class ChecksList extends React.PureComponent {
                 itemView={CheckItem}
                 emptyView={() => (
                     <div className={bem.element('empty')}>
-                        {this.props.isHistory ? __('No history') : __('No checks')}
+                        {this.props.isHistory ? __('No history') : __('No payouts')}
                     </div>
                 )}
             />

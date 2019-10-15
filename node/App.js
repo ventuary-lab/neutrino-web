@@ -252,7 +252,7 @@ module.exports = class App {
             }
 
         } catch (ex) {
-            this.logger.error("Update All:" + ex)
+            this.logger.error("Update All:" + ex.stack)
         }
         // TODO
         setTimeout(() => this._updateAll(), 5000);
