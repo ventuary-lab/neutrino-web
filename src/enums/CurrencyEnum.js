@@ -16,7 +16,7 @@ export default class CurrencyEnum extends Enum {
     static getKeys() {
         return [
             this.USD_N,
-            this.EUR_N,
+           // this.EUR_N,
             //this.BTC_N,
         ];
     }

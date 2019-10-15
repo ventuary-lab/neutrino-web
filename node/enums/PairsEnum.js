@@ -8,22 +8,22 @@ module.exports = class PairsEnum {
     static getKeys() {
         return [
             this.USDNB_USDN,
-            this.EURNB_EURN,
+         //   this.EURNB_EURN,
         ];
     }
 
     static getBase(name) {
         const map = {
-            [this.USDNB_USDN]: CurrencyEnum.USD_NB,
-            [this.EURNB_EURN]: CurrencyEnum.EUR_NB,
+            [this.USDNB_USDN]: CurrencyEnum.USD_NB
+       //     [this.EURNB_EURN]: CurrencyEnum.EUR_NB,
         };
         return map[name] || null;
     }
 
     static getQuote(name) {
         const map = {
-            [this.USDNB_USDN]: CurrencyEnum.USD_N,
-            [this.EURNB_EURN]: CurrencyEnum.EUR_N,
+            [this.USDNB_USDN]: CurrencyEnum.USD_N
+         //   [this.EURNB_EURN]: CurrencyEnum.EUR_N,
         };
         return map[name] || null;
     }
