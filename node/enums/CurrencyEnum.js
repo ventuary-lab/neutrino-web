@@ -14,7 +14,7 @@ module.exports = class CurrencyEnum {
     static getKeys() {
         return [
             this.USD_N,
-            this.EUR_N,
+            //this.EUR_N,
             //this.BTC_N,
         ];
     }
