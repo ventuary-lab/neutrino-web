@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {getUser} from 'yii-steroids/reducers/auth';
 
 import {dal, html} from 'components';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 
 import './SwapLoader.scss';
-import CurrencyEnum from '../../enums/CurrencyEnum';
-import {getBaseCurrency, getQuoteCurrency} from '../../reducers/currency';
 
 const bem = html.bem('SwapLoader');
 
@@ -15,6 +16,8 @@ const bem = html.bem('SwapLoader');
     state => ({
         quoteCurrency: getQuoteCurrency(state),
         baseCurrency: getBaseCurrency(state),
+        pairName: getPairName(state),
+        user: getUser(state),
     })
 )
 export default class SwapLoader extends React.PureComponent {
@@ -26,7 +29,13 @@ export default class SwapLoader extends React.PureComponent {
         height: PropTypes.number,
     };
 
+    constructor() {
+        super(...arguments);
+        this.startBlock = this.props.height;
+    }
+
     render() {
+        const isCompleted = this.getScalePercent() === 100;
 
         return (
             <div className={bem.block()}>
@@ -66,26 +75,36 @@ export default class SwapLoader extends React.PureComponent {
                             </div>
                         </div>
                         <div className={bem.element('text')}>
-                            {__('The swap procedure has been started. Please wait for it to finish in ~X blocks before closing this tab.')}
+                            {__('The swap procedure has been started.')}
+                            <br/>
+                            {__('Please wait for it to finish in ~{value} blocks before closing this tab.', {
+                                value: Math.abs(this.props.unblockBlock - this.startBlock),
+                            })}
                         </div>
                     </div>
                     <div className={bem.element('footer')}>
                         <div className={bem.element('progress-block')}>
                             <span className={bem.element('progress-status')}>
-                                {__('In progress...')}
+                                {isCompleted ? __('Completed') :__('In progress...')}
                             </span>
-                            <div className={bem.element('progress-scale')}>
+                            <div className={bem.element('progress-scale', {
+                                completed: isCompleted,
+                            })}>
                                 <div
-                                    style={{width: '33%'}}
+                                    style={{width: `${this.getScalePercent()}%`}}
                                     className={bem.element('progress-value')}
                                 />
                             </div>
                             <div className={bem.element('progress-hints')}>
                                 <span>
-                                    50 blocks
+                                    {__('{value} blocks', {
+                                        value: this.startBlock,
+                                    })}
                                 </span>
                                 <span>
-                                    100 blocks
+                                    {__('{value} blocks', {
+                                        value: this.props.unblockBlock,
+                                    })}
                                 </span>
                             </div>
                         </div>
@@ -93,5 +112,16 @@ export default class SwapLoader extends React.PureComponent {
                 </div>
             </div>
         );
+    }
+
+    getScalePercent() {
+        if (this.props.height >= this.props.unblockBlock) {
+            return 100;
+        }
+
+        const total = this.props.unblockBlock - this.startBlock;
+        const current = total - (this.props.unblockBlock - this.props.height);
+
+        return 100 / (total / current);
     }
 }

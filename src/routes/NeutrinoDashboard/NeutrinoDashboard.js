@@ -78,7 +78,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         this.state = {
             step: 'generation',
             isWavesLeft: true,
-            isSwapInProgress: false,
+            isSwapLoading: false,
         };
 
         this._onSubmit = this._onSubmit.bind(this);
@@ -106,11 +106,33 @@ export default class NeutrinoDashboard extends React.PureComponent {
             this._isProgramChange = false;
         }
 
+
+        const thisWithdraw = _get(this.props, 'withdraw');
+        const nextWithdraw = _get(nextProps, 'withdraw');
+
+        const nextUnblockBlock = _get(nextProps, 'withdraw.unblockBlock');
+        const thisUnblockBlock = _get(this.props, 'withdraw.unblockBlock');
+
+        const nextHeight = _get(nextProps, 'withdraw.height');
+        const thisHeight = _get(this.props, 'withdraw.height');
+
+        if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
+            this.setState({isSwapLoading: true})
+        } else if (thisWithdraw && nextWithdraw) {
+
+            if (nextUnblockBlock > nextHeight) {
+                this.setState({isSwapLoading: true})
+            } else {
+                this.setState({isSwapLoading: false})
+            }
+
+            if ((thisUnblockBlock > thisHeight) && (nextUnblockBlock <= nextHeight)) {
+                setTimeout(() => this.setState({isSwapLoading: false}), 3000);
+            }
+        }
     }
 
     render() {
-
-        console.log('---11', this.props.withdraw, );
 
         const steps = [
             {
@@ -127,7 +149,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
-                {(!!_get(this.props, 'withdraw.neutrinoBlocked') || !!_get(this.props, 'withdraw.wavesBlocked')) && (
+                {this.state.isSwapLoading && (
                     <SwapLoader
                         {...this.props.withdraw}
                     />

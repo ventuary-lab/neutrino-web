@@ -1,6 +1,9 @@
 @import 'style/helpers/vars';
 
 .SwapLoader {
+
+  $root: &;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -120,6 +123,13 @@
     display: flex;
     align-items: center;
     padding: 2px 1px;
+
+    &_completed {
+      #{$root}__progress-value {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
   }
 
   &__progress-value {
@@ -127,6 +137,7 @@
     background-color: $color-brand-azure;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
+    transition: width ease-in 2s;
   }
 
   &__progress-hints {
