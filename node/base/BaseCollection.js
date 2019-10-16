@@ -45,7 +45,7 @@ module.exports = class BaseCollection {
 
     async getItemsAll() {
         const result = await this.storage.hgetall(this.getStorageKey());
-    
+
         if (!result) {
             return [];
         }
@@ -151,4 +151,7 @@ module.exports = class BaseCollection {
         }
     }
 
+    _getCurrencyByAsset(assetId) {
+        return Object.entries(this.assets).find(item => item[1] === assetId)[0];
+    }
 };

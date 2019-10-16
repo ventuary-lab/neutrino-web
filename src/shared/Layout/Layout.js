@@ -7,7 +7,8 @@ import {setUser} from 'yii-steroids/actions/auth';
 import layoutHoc, {STATUS_ACCESS_DENIED, STATUS_LOADING, STATUS_RENDER_ERROR} from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
 import {getCurrentItem, getCurrentItemParam} from 'yii-steroids/reducers/navigation';
-import {getData} from 'yii-steroids/reducers/auth';
+import {getData, getUser} from 'yii-steroids/reducers/auth';
+import {openModal} from 'yii-steroids/actions/modal';
 import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
 
 import {html, http, dal, ws, store} from 'components';
@@ -16,6 +17,7 @@ import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
 import BlockedApp from 'shared/BlockedApp';
+import MessageModal from 'modals/MessageModal';
 import {apiWsHandler} from 'actions/api';
 import {ROUTE_ROOT} from 'routes';
 import {getPairName, getPrices} from 'reducers/currency';
@@ -46,6 +48,7 @@ const bem = html.bem('Layout');
         data: getData(state),
         currentItem: getCurrentItem(state),
         pairName: getPairName(state),
+        user: getUser(state),
         // prices: getPrices(state),
     })
 )
@@ -65,6 +68,12 @@ export default class Layout extends React.PureComponent {
         status: PropTypes.string,
     };
 
+    constructor() {
+        super(...arguments);
+
+        this.wasWrongNetworkMessageShown = false;
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             Promise.resolve(dal.isLogged() ? dal.login() : null)
@@ -81,6 +90,23 @@ export default class Layout extends React.PureComponent {
         }
         if (nextProps.data && nextProps.status === STATUS_ACCESS_DENIED) {
             //this.props.dispatch(goToPage(ROUTE_ROOT));
+        }
+
+        const nextAppNetwork = _get(nextProps, 'data.config.dal.network');
+        const nextUserNetwork = _get(nextProps, 'user.network');
+        const thisUserNetwork = _get(this.props, 'user.network');
+
+        if (thisUserNetwork && nextUserNetwork && thisUserNetwork !== nextUserNetwork) {
+            this.wasWrongNetworkMessageShown = false;
+        }
+
+        if (!this.wasWrongNetworkMessageShown && nextAppNetwork && nextUserNetwork && nextAppNetwork !== nextUserNetwork) {
+            this.props.dispatch(openModal(MessageModal, {
+                description: __('Switch Waves Keeper to \"{name}\" network', {
+                    name: nextAppNetwork,
+                })
+            }));
+            this.wasWrongNetworkMessageShown = true;
         }
     }
 

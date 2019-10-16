@@ -108,6 +108,12 @@ $icons-dir: '../static/icons';
     background-image: url('#{$icons-dir}/checkbox.svg');
   }
 
+  &__swap {
+    min-width: 88px;
+    min-height: 85px;
+    background-image: url('#{$icons-dir}/swap.svg');
+  }
+
   &__wave {
     min-width: 20px;
     min-height: 20px;
@@ -118,47 +124,23 @@ $icons-dir: '../static/icons';
     min-width: 20px;
     min-height: 20px;
     background-image: url('#{$icons-dir}/usd-n.svg');
-
-    //&_big {
-    //  min-width: 32px;
-    //  min-height: 32px;
-    //  background-image: url('#{$icons-dir}/usd-n.svg');
-    //}
   }
 
   &__usd-nb {
     min-width: 20px;
     min-height: 20px;
     background-image: url('#{$icons-dir}/usd-nb.svg');
-
-    //&_big {
-    //  min-width: 32px;
-    //  min-height: 32px;
-    //  background-image: url('#{$icons-dir}/usd-nb.svg');
-    //}
   }
 
   &__eur-n {
     min-width: 20px;
     min-height: 20px;
     background-image: url('#{$icons-dir}/eur-n.svg');
-
-    //&_big {
-    //  min-width: 32px;
-    //  min-height: 32px;
-    //  background-image: url('#{$icons-dir}/eur-n.svg');
-    //}
   }
 
   &__eur-nb {
     min-width: 20px;
     min-height: 20px;
     background-image: url('#{$icons-dir}/eur-nb.svg');
-
-    //&_big {
-    //  min-width: 32px;
-    //  min-height: 32px;
-    //  background-image: url('#{$icons-dir}/eur-nb.svg');
-    //}
   }
 }

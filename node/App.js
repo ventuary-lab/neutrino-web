@@ -15,13 +15,13 @@ const Router = require('./Router');
 module.exports = class App {
 
     constructor(params = {}) {
-        this.network = process.env.APP_DAPP_NETWORK || 'test';
+        this.network = process.env.APP_DAPP_NETWORK || 'testnet';
         this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
         switch (this.network) {
-            case 'main':
+            case 'mainnet':
                 this.nodeUrl = 'https://nodes.wavesplatform.com';
                 break;
-            case 'test':
+            case 'testnet':
                 this.nodeUrl = 'https://testnode1.wavesnodes.com';
                 break;
             case 'custom':
@@ -221,13 +221,12 @@ module.exports = class App {
     }
 
     async _updateAll(flush) {
-        try {
-            if (this._isNowUpdated) {
-                this._isNeedUpdateAgain = true;
-                return;
-            }
-            this._isNowUpdated = true;
+        if (this._isNowUpdated) {
+            return;
+        }
+        this._isNowUpdated = true;
 
+        try {
             for (const pairName of PairsEnum.getKeys()) {
                 const data = {};
                 for (const collectionName of CollectionEnum.getKeys()) {
@@ -244,16 +243,11 @@ module.exports = class App {
                     await collection.updateAll(data[contractName]);
                 }
             }
-
-            this._isNowUpdated = false;
-            if (this._isNeedUpdateAgain) {
-                this._isNeedUpdateAgain = false;
-                this._updateAll();
-            }
-
         } catch (ex) {
             this.logger.error("Update All:" + ex.stack)
         }
+
+        this._isNowUpdated = false;
         // TODO
         setTimeout(() => this._updateAll(), 5000);
     }

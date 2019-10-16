@@ -12,11 +12,6 @@ module.exports = class RpdBalances extends BaseCollection {
         ];
     }
 
-
-    _getCurrencyByAsset(assetId) {
-        return Object.entries(this.assets).find(item => item[1] === assetId)[0];
-    }
-
     async getBalances() {
         const items = await this.getItemsAll();
 
@@ -35,9 +30,7 @@ module.exports = class RpdBalances extends BaseCollection {
         const currency = this._getCurrencyByAsset(id);
 
         return {
-            'balance': CurrencyEnum.isBond(currency)
-                ? item[`rpd_balance_${id}`]
-                : item[`rpd_balance_${id}`] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
+            'balance': item[`rpd_balance_${id}`] / CurrencyEnum.getContractPow(currency)
         }
     }
 };

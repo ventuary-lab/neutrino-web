@@ -12,8 +12,9 @@ import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 
 import {html, dal} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getPairName, getQuoteCurrency, getLastWavesExchange, getSourceCurrency} from 'reducers/currency';
+import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
+import SwapLoader from 'shared/SwapLoader';
 
 import './NeutrinoDashboard.scss';
 import CollectionEnum from '../../enums/CollectionEnum';
@@ -77,6 +78,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         this.state = {
             step: 'generation',
             isWavesLeft: true,
+            isSwapLoading: false,
         };
 
         this._onSubmit = this._onSubmit.bind(this);
@@ -103,9 +105,35 @@ export default class NeutrinoDashboard extends React.PureComponent {
         else {
             this._isProgramChange = false;
         }
+
+
+        const thisWithdraw = _get(this.props, 'withdraw');
+        const nextWithdraw = _get(nextProps, 'withdraw');
+        const nextUnblockBlock = _get(nextProps, 'withdraw.unblockBlock');
+        const nextHeight = _get(nextProps, 'withdraw.height');
+
+        //first loading component
+        if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
+            this.setState({isSwapLoading: true})
+        }
+
+        //changing withdraw
+        if (thisWithdraw && nextWithdraw) {
+            if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
+                this.setState({isSwapLoading: true})
+            } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
+                this.setState({isSwapLoading: false})
+            } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
+                //close delay
+                setTimeout(() => this.setState({isSwapLoading: false}), 3000);
+            }
+        } else if (this.state.isSwapLoading) {
+            this.setState({isSwapLoading: false})
+        }
     }
 
     render() {
+
         const steps = [
             {
                 id: 'generation',
@@ -121,6 +149,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
+                {this.state.isSwapLoading && (
+                    <SwapLoader
+                        {...this.props.withdraw}
+                    />
+                )}
+
                 {this.renderStepChanger(steps)}
                 <Form
                     className={bem.element('form')}
@@ -444,6 +478,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
     _onSubmit(values) {
         this.setState({step: 'generation'});
         this.props.dispatch(reset(FORM_ID));
+
+
+        // if (this.state.isWavesLeft) {
+        //     this.setState({isSwapInProgress: true})
+        // }
 
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)

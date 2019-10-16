@@ -63,7 +63,7 @@ module.exports = class BondsOrders extends BaseCollection {
 
     async _prepareItem(id, item) {
         const index = item.orderbook.split('_').filter(Boolean).indexOf(id);
-        
+
         const height = item['order_height_' + id];
         const price = item['order_price_' + id] || 0;
         const total = item['order_total_' + id] || 0;
@@ -73,13 +73,13 @@ module.exports = class BondsOrders extends BaseCollection {
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
             price,
-            total: _round(total /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
-            filledTotal: _round(filledTotal /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
-            restTotal: _round((total - filledTotal) /  CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
+            total: _round(total / CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
+            filledTotal: _round(filledTotal / CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
+            restTotal: _round((total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2),
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            amount: _round(total / (price *  CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
-            filledAmount: _round(filledTotal / (price *  CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
+            amount: _round(total / (price * CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
+            filledAmount: _round(filledTotal / (price * CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
             restAmount: _round((total - filledTotal) / (price * CurrencyEnum.getContractPow(CurrencyEnum.USD_N) / 100), 2),
             discountPercent: 100 - price,
             pairName: this.pairName,
