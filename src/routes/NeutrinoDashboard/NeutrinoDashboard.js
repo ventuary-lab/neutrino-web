@@ -109,12 +109,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         const thisWithdraw = _get(this.props, 'withdraw');
         const nextWithdraw = _get(nextProps, 'withdraw');
-
         const nextUnblockBlock = _get(nextProps, 'withdraw.unblockBlock');
-        const thisUnblockBlock = _get(this.props, 'withdraw.unblockBlock');
-
         const nextHeight = _get(nextProps, 'withdraw.height');
-        const thisHeight = _get(this.props, 'withdraw.height');
 
         //first loading component
         if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
@@ -125,11 +121,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
         if (thisWithdraw && nextWithdraw) {
             if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
                 this.setState({isSwapLoading: true})
-            } else if (nextUnblockBlock <= nextHeight && this.state.isSwapLoading) {
+            } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
                 this.setState({isSwapLoading: false})
-            }
-
-            if (thisUnblockBlock > thisHeight && nextUnblockBlock <= nextHeight && this.props.pairName === nextProps.pairName)  {
+            } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
+                //close delay
                 setTimeout(() => this.setState({isSwapLoading: false}), 3000);
             }
         } else if (this.state.isSwapLoading) {
