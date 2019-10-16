@@ -15,13 +15,13 @@ const Router = require('./Router');
 module.exports = class App {
 
     constructor(params = {}) {
-        this.network = process.env.APP_DAPP_NETWORK || 'test';
+        this.network = process.env.APP_DAPP_NETWORK || 'testnet';
         this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
         switch (this.network) {
-            case 'main':
+            case 'mainnet':
                 this.nodeUrl = 'https://nodes.wavesplatform.com';
                 break;
-            case 'test':
+            case 'testnet':
                 this.nodeUrl = 'https://testnode1.wavesnodes.com';
                 break;
             case 'custom':

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getUser} from 'yii-steroids/reducers/auth';
 
-import {dal, html} from 'components';
+import {html} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 
@@ -45,8 +45,8 @@ export default class SwapLoader extends React.PureComponent {
                         <span
                             className={bem.element('title')}
                         >
-                        {__('SWAP')}
-                    </span>
+                            {__('SWAP')}
+                        </span>
                         <div className={bem.element('icon')}>
                             <span className={'Icon Icon__swap'}/>
                         </div>
