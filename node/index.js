@@ -1,8 +1,14 @@
 const App = require('./App');
 const express = require('express');
 const expressApp = express();
+const Sentry = require('@sentry/node');
 
 require('dotenv').config();
+
+//dev sentry
+if (process.env.APP_ENV === 'dev') {
+    Sentry.init({ dsn: 'https://af513f82d6cb4b2b8a6812b3dc545c70@sentry.kozhindev.com/25' });
+}
 
 // Create app
 const port = process.env.PORT || 5000;

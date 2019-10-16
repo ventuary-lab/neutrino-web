@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "5.7.0",
     "@waves/waves-crypto": "^3.0.17",
     "@waves/waves-transactions": "^3.16.3",
     "dotenv": "^8.1.0",
