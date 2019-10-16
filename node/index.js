@@ -6,6 +6,7 @@ const Sentry = require('@sentry/node');
 require('dotenv').config();
 
 //dev sentry
+console.log(process.env.APP_ENV);
 if (process.env.APP_ENV === 'dev') {
     Sentry.init({ dsn: 'https://af513f82d6cb4b2b8a6812b3dc545c70@sentry.kozhindev.com/25' });
 }
