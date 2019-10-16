@@ -6,9 +6,9 @@ module.exports = class NeutrinoWithdraw extends BaseCollection {
 
     getKeys(id = '([A-Za-z0-9]{30,40})$') {
         return [
+            `balance_block_${id}`,
             `neutrino_${id}`,
             `waves_${id}`,
-            `balance_block_${id}`,
             'height',
         ];
     }
