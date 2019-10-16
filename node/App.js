@@ -118,7 +118,6 @@ module.exports = class App {
 
         console.log('---after create contracts and collections');
 
-        myUndefinedFunction();
 
         // Load asset ids
         this.assets = await this._loadAssetIds();
