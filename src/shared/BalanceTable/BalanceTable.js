@@ -55,7 +55,12 @@ export default class BalanceTable extends React.PureComponent {
     render() {
         if (!this.props.user || !this.props.user.balances || !this.props.neutrinoBalances) {
             return null;
-        }
+        };
+        const assetLinks = [
+            '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
+            '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
+            '2c5Qbbx9satfqYvuqtAfNXAg7Q8FVjmvcpKwcafPbsgP',
+        ]
 
         return (
             <table className={bem.block()}>
@@ -76,7 +81,7 @@ export default class BalanceTable extends React.PureComponent {
                         this.props.quoteCurrency,
                         this.props.baseCurrency
                     ]
-                        .map(currency => (
+                        .map((currency, currencyIndex) => (
                             <tr key={currency}>
                                 <td>
                                     <div className={bem.element('labels-column')}>
@@ -112,7 +117,7 @@ export default class BalanceTable extends React.PureComponent {
                                     </div>
                                 </td>
                                 <td>
-                                    {this.renderDexButtons(currency)}
+                                    {this.renderDexButtons(assetLinks[currencyIndex])}
                                 </td>
                             </tr>
                     ))}
@@ -126,7 +131,9 @@ export default class BalanceTable extends React.PureComponent {
             currency = dal.assets[currency];
         }
 
-        const assetUsdId = 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'; // TODO
+        // const assetUsdId = 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'; // TODO
+        const assetUsdId = 'WAVES'; // TODO
+
         return (
             <div className={bem.element('controls-column')}>
                 {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
