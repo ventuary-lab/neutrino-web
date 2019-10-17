@@ -89,13 +89,13 @@ module.exports = class Router {
                     
 
                     const totalUserHistoryBalance = neutrinoHistoryBalance;
-                    const profit = allProfit * totalUserHistoryBalance / contractHistoryBalance;
+                    const profit =  Math.floor((allProfit * totalUserHistoryBalance / contractHistoryBalance)*100)/100;
                     const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
                     
-                    if(neutrinoHistoryBalance <= 0 || Math.floor(profit, 2) == 0) 
-                        continue;
-                    
                     console.log('---profit', profit);
+
+                    if(neutrinoHistoryBalance <= 0 || profit == 0) 
+                        continue;
 
                     rpdChecks.push({
                         index: index,
