@@ -75,7 +75,7 @@ module.exports = class Router {
                         historySyncIndex = balanceHistory[i]
                         historyElementIndex = index
 
-                        if(balanceHistory == index) 
+                        if(balanceHistory[i] == index) 
                             break;
                     }
                     
