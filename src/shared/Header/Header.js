@@ -101,7 +101,7 @@ export default class Header extends React.PureComponent {
                             },
                             {
                                 label: __('Blog'),
-                                //action: todo
+                                linkUrl: 'https://medium.com/@neutrinoteam'
                             }
                         ]}
                     />

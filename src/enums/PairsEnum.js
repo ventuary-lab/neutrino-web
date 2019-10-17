@@ -8,23 +8,23 @@ export default class PairsEnum extends Enum {
 
     static getKeys() {
         return [
-            this.USDNB_USDN,
-            this.EURNB_EURN,
+            this.USDNB_USDN
+         //   this.EURNB_EURN,
         ];
     }
 
     static getSource(name) {
         const map = {
-            [this.USDNB_USDN]: CurrencyEnum.USD,
-            [this.EURNB_EURN]: CurrencyEnum.EUR,
+            [this.USDNB_USDN]: CurrencyEnum.USD
+          //  [this.EURNB_EURN]: CurrencyEnum.EUR,
         };
         return map[name] || null;
     }
 
     static getLabels() {
         return {
-            [this.USDNB_USDN]: 'USD-NB/USD-N',
-            [this.EURNB_EURN]: 'EUR-NB/EUR-N'
+            [this.USDNB_USDN]: 'USD-NB/USD-N'
+        //    [this.EURNB_EURN]: 'EUR-NB/EUR-N'
         }
     }
 };

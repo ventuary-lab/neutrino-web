@@ -58,7 +58,7 @@ module.exports = class CollectionEnum {
         const map = {
             [this.BONDS_ORDERS]: ContractEnum.AUCTION,
             [this.NEUTRINO_ORDERS]: ContractEnum.NEUTRINO,
-            [this.NEUTRINO_PRICES]: ContractEnum.NEUTRINO,
+            [this.NEUTRINO_PRICES]: ContractEnum.CONTROL,
             [this.NEUTRINO_BALANCES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_WITHDRAW]: ContractEnum.NEUTRINO,
             [this.RPD_BALANCES]: ContractEnum.RPD,

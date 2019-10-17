@@ -102,7 +102,7 @@ export default class RightSidebar extends React.PureComponent {
                     </a>
                     <br/>
                     <a
-                        href='#'
+                        href='https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit?usp=sharing'
                         target={'_blank'}
                     >
                         Privacy Policy
