@@ -9,9 +9,10 @@ import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
 import {getCurrentItem, getCurrentItemParam} from 'yii-steroids/reducers/navigation';
 import {getData, getUser} from 'yii-steroids/reducers/auth';
 import {openModal} from 'yii-steroids/actions/modal';
-import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
+import {isPhone} from 'yii-steroids/reducers/screen';
 
 import {html, http, dal, ws, store} from 'components';
+import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
@@ -19,6 +20,7 @@ import RightSidebar from 'shared/RightSidebar';
 import BlockedApp from 'shared/BlockedApp';
 import MessageModal from 'modals/MessageModal';
 import {apiWsHandler} from 'actions/api';
+import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
 import {ROUTE_ROOT} from 'routes';
 import {getPairName, getPrices} from 'reducers/currency';
 
@@ -41,6 +43,7 @@ const bem = html.bem('Layout');
         return http.get('/api/v1/init');
     }
 )
+@screenWatcherHoc()
 @connect(
     state => ({
         isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
@@ -49,6 +52,7 @@ const bem = html.bem('Layout');
         currentItem: getCurrentItem(state),
         pairName: getPairName(state),
         user: getUser(state),
+        isPhone: isPhone(state),
         // prices: getPrices(state),
     })
 )
@@ -61,7 +65,6 @@ const bem = html.bem('Layout');
         },
     ]
 )
-@screenWatcherHoc()
 export default class Layout extends React.PureComponent {
 
     static propTypes = {
@@ -96,22 +99,28 @@ export default class Layout extends React.PureComponent {
         const nextUserNetwork = _get(nextProps, 'user.network');
         const thisUserNetwork = _get(this.props, 'user.network');
 
-        if (thisUserNetwork && nextUserNetwork && thisUserNetwork !== nextUserNetwork) {
-            this.wasWrongNetworkMessageShown = false;
-        }
+        if (!this.props.isPhone) {
+            if (thisUserNetwork && nextUserNetwork && thisUserNetwork !== nextUserNetwork) {
+                this.wasWrongNetworkMessageShown = false;
+            }
 
-        if (!this.wasWrongNetworkMessageShown && nextAppNetwork && nextUserNetwork && nextAppNetwork !== nextUserNetwork) {
-            this.props.dispatch(openModal(MessageModal, {
-                description: __('Switch Waves Keeper to \"{name}\" network', {
-                    name: nextAppNetwork,
-                })
-            }));
-            this.wasWrongNetworkMessageShown = true;
+            if (!this.wasWrongNetworkMessageShown && nextAppNetwork && nextUserNetwork && nextAppNetwork !== nextUserNetwork) {
+                this.props.dispatch(openModal(MessageModal, {
+                    text: __('Switch your Waves Keeper network to {name}', {
+                        name: nextAppNetwork.toUpperCase(),
+                    }),
+                    image: {
+                        src: wrongNetworkImage,
+                        alt: 'Switch Waves Keeper network'
+                    }
+                }));
+
+                this.wasWrongNetworkMessageShown = true;
+            }
         }
     }
 
     render() {
-
         const isBlocked = _get(this.props, 'neutrinoBalances.isBlocked');
 
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {

@@ -177,11 +177,21 @@ export default class BuyBoundsForm extends React.PureComponent {
             .then(() => {
                 console.log('---swapAndSetBondOrder success');
             })
-            .catch(e => {
-                console.log('---swapAndSetBondOrder error', e);
-                this.props.dispatch(openModal(MessageModal, {
-                    description: __('You have canceled the order')
-                }))
+            .catch(err => {
+                console.log('---swapAndSetBondOrder error', err);
+
+                //User denied message
+                if (err && err.code === '10') {
+                    this.props.dispatch(openModal(MessageModal, {
+                        text: __('You have canceled the order'),
+                    }))
+                } else if (err) {
+                    this.props.dispatch(openModal(MessageModal, {
+                        text: __('The order was canceled.\n Error: {err}', {
+                            err: err.message,
+                        }),
+                    }))
+                }
             })
     }
 
