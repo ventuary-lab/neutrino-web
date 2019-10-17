@@ -27,6 +27,11 @@ const httpServer = expressApp.listen(port, () => {
 const mainApp = new App({expressApp, httpServer});
 
 // Express
+if (process.env.APP_ENV) {
+    expressApp.use(Sentry.Handlers.requestHandler());
+    expressApp.use(Sentry.Handlers.errorHandler());
+}
+
 expressApp.use(function(req, res, next) {
     if (req.header('x-forwarded-proto') === 'http') {
         res.redirect(301, 'https://' + req.headers.host + req.url);
