@@ -18,6 +18,8 @@ ui.addViews(require.context('./ui', true, /View.js$/));
 export default class Application extends React.PureComponent {
 
     render() {
+        myUndefinedFunction();
+
         return (
             <Router
                 wrapperView={Layout}
