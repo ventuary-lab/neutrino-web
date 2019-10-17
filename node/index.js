@@ -15,7 +15,10 @@ console.log('---env', process.env);
 
 if (process.env.APP_ENV) {
     console.log('---dsn', sentryDsn[process.env.APP_ENV]);
-    Sentry.init({dsn: sentryDsn[process.env.APP_ENV]});
+    Sentry.init({
+        dsn: sentryDsn[process.env.APP_ENV],
+        debug: true,
+    });
 }
 
 // Create app

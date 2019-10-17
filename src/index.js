@@ -12,7 +12,10 @@ import './style/index.scss';
     };
 
     if (window.Sentry && process.env.APP_ENV) {
-        window.Sentry.init({ dsn: sentryDsn[process.env.APP_ENV] });
+        window.Sentry.init({
+            dsn: sentryDsn[process.env.APP_ENV],
+            debug: true,
+        });
     } else {
         init();
     }
