@@ -12,6 +12,7 @@ import './style/index.scss';
     } else {
         init();
     }
+
 })(() => {
     const Application = require('./Application').default;
     ReactDOM.render(

@@ -2,6 +2,7 @@ const App = require('./App');
 const express = require('express');
 const expressApp = express();
 const Sentry = require('@sentry/node');
+const Raven = require('raven');
 
 require('dotenv').config();
 
@@ -23,7 +24,6 @@ const httpServer = expressApp.listen(port, () => {
 });
 const mainApp = new App({expressApp, httpServer});
 
-// Express
 expressApp.use(function(req, res, next) {
     if (req.header('x-forwarded-proto') === 'http') {
         res.redirect(301, 'https://' + req.headers.host + req.url);
