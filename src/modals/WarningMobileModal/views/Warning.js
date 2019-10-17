@@ -1,6 +1,6 @@
 import React from 'react';
 import './Warning.scss';
-import illustration from 'static/images/modal-warning-illustration.svg';
+import image from 'static/images/idea-image.svg';
 import { html } from '../../../components';
 
 const bem = html.bem('Warning');
@@ -15,8 +15,8 @@ export default class Warning extends React.PureComponent {
                 </div>
                 <img
                     className={bem.element('illustration')}
-                    src={illustration}
-                    alt='warning illustration'
+                    src={image}
+                    alt='Warning illustration'
                 />
             </div>
         );

@@ -1,24 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
-import {dal, html} from 'components';
+import {html} from 'components';
 
 import './BlockedApp.scss';
-import illustration from '../../static/images/modal-blocked-illustration.svg';
+import image from '../../static/images/security-image.svg';
 
 const bem = html.bem('BlockedApp');
 
-@connect(
-    state => ({
-
-    })
-)
 export default class BlockedApp extends React.PureComponent {
-
-    static propTypes = {
-
-    };
 
     render() {
 
@@ -30,8 +19,8 @@ export default class BlockedApp extends React.PureComponent {
                     </div>
                     <img
                         className={bem.element('illustration')}
-                        src={illustration}
-                        alt='blocked illustration'
+                        src={image}
+                        alt='Blocked illustration'
                     />
                 </div>
             </div>

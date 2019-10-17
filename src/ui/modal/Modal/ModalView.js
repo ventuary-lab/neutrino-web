@@ -18,7 +18,7 @@ export default class ModalView extends React.PureComponent {
 
     static defaultProps = {
         canNotClose: false,
-        blurOverlay: false,
+        blurOverlay: true,
     };
 
     render() {

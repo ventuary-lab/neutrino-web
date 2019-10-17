@@ -14,12 +14,16 @@
     z-index: $zi-popup;
 
     &_blur {
-      backdrop-filter: blur(20px);
+      //fallback
+      background: rgba(23, 24, 58, 0.7);
     }
   }
 
   &__modal {
-    max-width: 803px;
+    max-width: 800px;
+    min-height: 400px;
+    //height: 1px;
+    display: flex;
     width: 90%;
     background: $color-brand-purple;
     border: 1px solid $color-brand-purple-light;
@@ -27,6 +31,7 @@
   }
 
   &__inner {
+    width: 100%;
     position: relative;
     display: flex;
     justify-content: center;
@@ -73,10 +78,19 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 70px 0px;
+    padding: 70px 0;
     font-weight: 300;
     font-size: 16px;
     line-height: 28px;
+    height: 100%;
+  }
+}
+
+@supports ((-webkit-backdrop-filter: blur(20px)) or (backdrop-filter: blur(20px))) {
+  .ModalView__overlay_blur {
+    background: transparent;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
   }
 }
 
