@@ -96,6 +96,7 @@ module.exports = class App {
         this._router.start();
         this._websocket.start();
         await this.heightListener.start();
+        myUndefinedFunction();
 
         console.log('---before heightListener');
 
