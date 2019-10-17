@@ -66,27 +66,35 @@ module.exports = class Router {
                     console.log('---balanceHistory', balanceHistory);
 
                     //find closest
-                    const historySyncIndex = balanceHistory.reduce(function(prev, curr) {
-                        return (Math.abs(curr - index) < Math.abs(prev - index) ? curr : prev);
-                    });
+                    let historySyncIndex = -1;
+                    let historyElementIndex = -1;
+                    for(let i = 0; i < balanceHistory.length; i++){
+                        if(balanceHistory[i] > index)
+                            break;
+                        
+                        historySyncIndex = balanceHistory[i]
+                        historyElementIndex = index
 
+                        if(balanceHistory == index) 
+                            break;
+                    }
+                    
                     console.log('---historySyncIndex', historySyncIndex);
-
-
-                    const historyElementIndex = balanceHistory.indexOf(historySyncIndex);
                     console.log('---historyElementIndex', historyElementIndex);
 
 
                     const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
                   //  const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
                     console.log('---userHistoryBlanace', neutrinoHistoryBalance);
-                    if(neutrinoHistoryBalance <= 0) 
-                        continue;
+                    
 
                     const totalUserHistoryBalance = neutrinoHistoryBalance;
                     const profit = allProfit * totalUserHistoryBalance / contractHistoryBalance;
                     const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
-
+                    
+                    if(neutrinoHistoryBalance <= 0 || Math.floor(profit, 2) == 0) 
+                        continue;
+                    
                     console.log('---profit', profit);
 
                     rpdChecks.push({
@@ -101,7 +109,7 @@ module.exports = class Router {
 
 
 
-                return rpdChecks.filter(item => item.index >= _min(balanceHistory.map(item => parseInt(item))));
+                return rpdChecks;
 
             },
             '/api/v1/rpd-balance/:pairName': async request => {
