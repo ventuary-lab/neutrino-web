@@ -15,7 +15,7 @@ export default class CollectionEnum extends Enum {
     static RPD_NEXT_INDEX = 'rpd_next_index';
     static RPD_INDEX_NUMBERS = 'rpd_index_numbers';
     static RPD_IS_CLAIMED = 'rpd_is_claimed';
-    static NEUTRINO_CONTROL_PIRCE = 'neutrino_control_price'
+    static CONTROL_CONFIG = 'control_config';
 
     static getKeys() {
         return [
@@ -31,7 +31,7 @@ export default class CollectionEnum extends Enum {
             this.RPD_NEXT_INDEX,
             this.RPD_INDEX_NUMBERS,
             this.RPD_IS_CLAIMED,
-            this.NEUTRINO_CONTROL_PIRCE
+            this.CONTROL_CONFIG
         ];
     }
 

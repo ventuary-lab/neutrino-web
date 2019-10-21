@@ -59,9 +59,9 @@ const bem = html.bem('Layout');
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/neutrino-balances/${props.pairName}`,
-            key: 'neutrinoBalances',
-            collection: CollectionEnum.NEUTRINO_BALANCES,
+            url: `/api/v1/neutrino-config/${props.pairName}`,
+            key: 'neutrinoConfig',
+            collection: CollectionEnum.CONTROL_CONFIG,
         },
     ]
 )
@@ -121,7 +121,7 @@ export default class Layout extends React.PureComponent {
     }
 
     render() {
-        const isBlocked = _get(this.props, 'neutrinoBalances.isBlocked');
+        const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
 
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {

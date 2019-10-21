@@ -42,6 +42,11 @@ const PRICE_FEED_PERIOD = 1000;
             collection: CollectionEnum.NEUTRINO_BALANCES,
         },
         {
+            url: `/api/v1/neutrino-config/${props.pairName}`,
+            key: 'neutrinoConfig',
+            collection: CollectionEnum.CONTROL_CONFIG,
+        },
+        {
             url: `/api/v1/price-feed/${props.sourceCurrency}/${PRICE_FEED_PERIOD}`,
             key: 'priceFeed',
         },
@@ -61,7 +66,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
             contractBalance: PropTypes.number,
-            price: PropTypes.number
+        }),
+        neutrinoConfig: PropTypes.shape({
+            price: PropTypes.number,
         }),
         priceFeed: PropTypes.number,
         withdraw: PropTypes.shape({
@@ -91,8 +98,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const nextWaves = _get(nextProps.formValues, 'waves');
         const thisNeutrino = _get(this.props.formValues, 'neutrino');
         const nextNeutrino = _get(nextProps.formValues, 'neutrino');
-        const thisPrice = _get(this.props, 'neutrinoBalances.price');
-        const nextPrice = _get(nextProps, 'neutrinoBalances.price');
+        const thisPrice = _get(this.props, 'neutrinoConfig.price');
+        const nextPrice = _get(nextProps, 'neutrinoConfig.price');
 
 
         const isChangeWavesAmount = thisWaves !== nextWaves;
@@ -133,6 +140,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
+
+        console.log('---test', this.props);
 
         const steps = [
             {
@@ -215,7 +224,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? "0.1" : "100")  +' {currency}', 
+                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? "0.1" : "100")  +' {currency}',
                             {
                                 currency: this.state.isWavesLeft
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
@@ -302,7 +311,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{_get(this.props, 'neutrinoBalances.price')} {CurrencyEnum.getSign(this.props.sourceCurrency)}</span>
+                            <span>{_get(this.props, 'neutrinoConfig.price')} {CurrencyEnum.getSign(this.props.sourceCurrency)}</span>
                         </div>
                     </div>
                 </div>
@@ -441,7 +450,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = _get(props, 'neutrinoBalances.price');
+        const rate = _get(props, 'neutrinoConfig.price');
 
         let amount = this._parseAmount(isRefreshToAmount
             ? _get(props.formValues, 'waves') * rate

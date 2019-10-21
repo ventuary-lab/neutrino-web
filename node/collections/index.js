@@ -12,4 +12,5 @@ module.exports = {
     RpdNextIndex: require('./RpdNextIndex'),
     RpdIndexNumbers: require('./RpdIndexNumbers'),
     RpdIsClaimed: require('./RpdIsClaimed'),
+    ControlConfig: require('./ControlConfig'),
 };

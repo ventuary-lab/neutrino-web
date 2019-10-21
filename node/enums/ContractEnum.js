@@ -3,7 +3,7 @@ module.exports = class ContractEnum {
     static NEUTRINO = 'neutrino';
     static AUCTION = 'auction';
     static RPD = 'rpd';
-    static CONTROL = 'control'
+    static CONTROL = 'control';
 
     static getKeys() {
         return [

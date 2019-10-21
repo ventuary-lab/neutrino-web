@@ -71,14 +71,14 @@ module.exports = class Router {
                     for(let i = 0; i < balanceHistory.length; i++){
                         if(balanceHistory[i] > index)
                             break;
-                        
+
                         historySyncIndex = balanceHistory[i]
                         historyElementIndex = i
 
-                        if(balanceHistory[i] == index) 
+                        if(balanceHistory[i] == index)
                             break;
                     }
-                    
+
                     console.log('---historySyncIndex', historySyncIndex);
                     console.log('---historyElementIndex', historyElementIndex);
 
@@ -86,15 +86,15 @@ module.exports = class Router {
                     const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
                   //  const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
                     console.log('---userHistoryBlanace', neutrinoHistoryBalance);
-                    
+
 
                     const totalUserHistoryBalance = neutrinoHistoryBalance;
                     const profit =  Math.floor((allProfit * totalUserHistoryBalance / contractHistoryBalance)*100)/100;
                     const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
-                    
+
                     console.log('---profit', profit);
 
-                    if(neutrinoHistoryBalance <= 0 || profit == 0) 
+                    if(neutrinoHistoryBalance <= 0 || profit == 0)
                         continue;
 
                     rpdChecks.push({
@@ -132,6 +132,9 @@ module.exports = class Router {
             },
             '/api/v1/neutrino-balances/:pairName': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_BALANCES).getBalances();
+            },
+            '/api/v1/neutrino-config/:pairName': async request => {
+                return await this.app.getCollection(request.params.pairName, CollectionEnum.CONTROL_CONFIG).getConfig();
             },
             '/api/v1/waves-exchange/:currency/:period': async request => {
                 return this._getWavesExchanges(request.params.currency, request.params.period);

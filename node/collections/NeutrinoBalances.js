@@ -1,4 +1,3 @@
-const _orderBy = require('lodash/orderBy');
 const _round = require('lodash/round');
 const axios = require('axios');
 const CurrencyEnum = require('../enums/CurrencyEnum');
@@ -10,15 +9,11 @@ module.exports = class NeutrinoBalances extends BaseCollection {
     constructor() {
         super(...arguments);
         this.assetId = '';
-        this.price = '';
-        this.isBlocked = undefined;
     }
 
     getKeys() {
         return [
             'neutrino_asset_id',
-            'price',
-            'is_blocked',
         ];
     }
 
@@ -30,15 +25,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
                 this.assetId = nodeData[nodeKey];
             }
 
-            if (nodeKey.match(`${this.getKeys()[1]}$`)) {
-                this.price = nodeData[nodeKey];
-            }
-
-            if (nodeKey.match(this.getKeys()[2])) {
-                this.isBlocked = nodeData[nodeKey];
-            }
-
-            if (this.price && this.assetId && this.isBlocked !== undefined) {
+            if (this.assetId) {
                 break;
             }
         }
@@ -52,9 +39,6 @@ module.exports = class NeutrinoBalances extends BaseCollection {
 
         const contractBalance = await this._request(`assets/balance/${this.dApp[this.pairName]}/${this.assetId}`);
         data[this.pairName]['contractBalance'] = contractBalance.balance;
-
-        data[this.pairName]['price'] = this.price;
-        data[this.pairName]['isBlocked'] = this.isBlocked === undefined ? false : this.isBlocked;
 
         await this._updateNext(Object.keys(data), data);
     }
@@ -74,8 +58,6 @@ module.exports = class NeutrinoBalances extends BaseCollection {
             totalIssued: totalIssued,
             contractBalance: contractBalance,
             totalUsed: _round(totalIssued - contractBalance, 2),
-            price: _round(item['price'] / 100, 2),
-            isBlocked: item['isBlocked'],
         };
     }
 

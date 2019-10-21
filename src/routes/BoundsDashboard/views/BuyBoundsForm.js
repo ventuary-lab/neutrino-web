@@ -31,8 +31,8 @@ const FORM_ID = 'BuyBoundsForm';
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/neutrino-balances/${props.pairName}`,
-            key: 'neutrinoBalances',
+            url: `/api/v1/neutrino-config/${props.pairName}`,
+            key: 'neutrinoConfig',
             collection: CollectionEnum.NEUTRINO_BALANCES,
         },
     ]
@@ -43,10 +43,7 @@ export default class BuyBoundsForm extends React.PureComponent {
         pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-        neutrinoBalances: PropTypes.shape({
-            totalIssued: PropTypes.number,
-            totalUsed: PropTypes.number,
-            contractBalance: PropTypes.number,
+        neutrinoConfig: PropTypes.shape({
             price: PropTypes.number,
         }),
     };
@@ -130,7 +127,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                             icon: CurrencyEnum.getIconClass(this.props.baseCurrency)
                         }}
                         hint={_get(this.props, 'formValues.bounds')
-                            ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoBalances.price'), 2)} WAVES`
+                            ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
                             // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
                             : ' '
                         }
@@ -164,7 +161,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        const wavesToUsdPrice = _get(this.props, 'neutrinoBalances.price');
+        const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
 
         return dal.swapAndSetBondOrder(
             this.props.pairName,

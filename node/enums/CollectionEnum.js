@@ -16,11 +16,13 @@ module.exports = class CollectionEnum {
     static RPD_NEXT_INDEX = 'rpd_next_index';
     static RPD_INDEX_NUMBERS = 'rpd_index_numbers';
     static RPD_IS_CLAIMED = 'rpd_is_claimed';
+    static CONTROL_CONFIG = 'control_config';
 
     static getKeys() {
         return [
             this.BONDS_ORDERS,
             this.NEUTRINO_ORDERS,
+            this.CONTROL_CONFIG,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
             this.RPD_BALANCES,
@@ -31,7 +33,7 @@ module.exports = class CollectionEnum {
             this.RPD_NEXT_INDEX,
             this.RPD_INDEX_NUMBERS,
             this.RPD_IS_CLAIMED,
-            this.NEUTRINO_PRICES
+            this.NEUTRINO_PRICES,
         ];
     }
 
@@ -50,6 +52,7 @@ module.exports = class CollectionEnum {
             [this.RPD_NEXT_INDEX]: collections.RpdNextIndex,
             [this.RPD_INDEX_NUMBERS]: collections.RpdIndexNumbers,
             [this.RPD_IS_CLAIMED]: collections.RpdIsClaimed,
+            [this.CONTROL_CONFIG]: collections.ControlConfig,
         };
         return map[name] || null;
     }
@@ -69,6 +72,7 @@ module.exports = class CollectionEnum {
             [this.RPD_NEXT_INDEX]: ContractEnum.NEUTRINO,
             [this.RPD_INDEX_NUMBERS]: ContractEnum.RPD,
             [this.RPD_IS_CLAIMED]: ContractEnum.RPD,
+            [this.CONTROL_CONFIG]: ContractEnum.CONTROL,
         };
         return map[name] || null;
     }

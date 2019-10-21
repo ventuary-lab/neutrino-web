@@ -31,9 +31,9 @@ const bem = html.bem('BalanceTable');
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/neutrino-balances/${props.pairName}`,
-            key: 'neutrinoBalances',
-            collection: CollectionEnum.NEUTRINO_BALANCES,
+            url: `/api/v1/neutrino-config/${props.pairName}`,
+            key: 'neutrinoConfig',
+            collection: CollectionEnum.CONTROL_CONFIG,
         },
     ]
 )
@@ -44,16 +44,13 @@ export default class BalanceTable extends React.PureComponent {
         quoteCurrency: PropTypes.string,
         baseCurrency: PropTypes.string,
         sourceCurrency: PropTypes.string,
-        neutrinoBalances: PropTypes.shape({
-            totalIssued: PropTypes.number,
-            totalUsed: PropTypes.number,
-            contractBalance: PropTypes.number,
+        neutrinoConfig: PropTypes.shape({
             price: PropTypes.number,
         }),
     };
 
     render() {
-        if (!this.props.user || !this.props.user.balances || !this.props.neutrinoBalances) {
+        if (!this.props.user || !this.props.user.balances || !this.props.neutrinoConfig) {
             return null;
         };
         const assetLinks = [
@@ -110,7 +107,7 @@ export default class BalanceTable extends React.PureComponent {
                                             {CurrencyEnum.getSign(this.props.sourceCurrency)}
                                             &nbsp;
                                             {currency === CurrencyEnum.WAVES
-                                                ? _round(this.props.user.balances[currency] * this.props.neutrinoBalances.price, 2)
+                                                ? _round(this.props.user.balances[currency] * this.props.neutrinoConfig.price, 2)
                                                 : this.props.user.balances[currency]
                                             }
                                         </span>
