@@ -1,8 +1,10 @@
 import React from 'react';
-import './LeasingTableSlider.scss'
 import Slider from 'rc-slider';
 
 import {html} from 'components';
+
+import './LeasingTableSlider.scss';
+
 const bem = html.bem('LeasingSlider');
 
 
@@ -29,13 +31,13 @@ export default class LeasingSlider extends React.PureComponent {
                 max={100}
                 defaultValue={myLeasing}
             />
-        )
+        );
 
         return (
             <div className={bem.block()}>
                 {slider}
                 {counter}
             </div>
-        )
+        );
     }
 }

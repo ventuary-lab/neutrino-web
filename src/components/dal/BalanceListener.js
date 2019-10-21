@@ -60,9 +60,11 @@ export default class BalanceListener {
         }
 
         if (transactionId !== this._lastTransactionId) {
-            this._lastTransactionId = transactionId;*/
+            this._lastTransactionId = transactionId;
             await this._refreshBalance();
-        //}
+        }*/
+
+        await this._refreshBalance();
 
         this._timer = setTimeout(this._next, 5000);
     }
@@ -81,7 +83,7 @@ export default class BalanceListener {
         // Add assets
         for (let currency in this.dal.assets) {
             if (this.dal.assets.hasOwnProperty(currency)) {
-                balances[currency] = _get(await this._request(`assets/balance/${address}/${this.dal.assets[currency]}`), 'balance', null)
+                balances[currency] = _get(await this._request(`assets/balance/${address}/${this.dal.assets[currency]}`), 'balance', null);
             }
         }
 

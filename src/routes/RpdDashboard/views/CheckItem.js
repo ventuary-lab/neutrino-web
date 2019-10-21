@@ -62,7 +62,7 @@ export default class CheckItem extends React.PureComponent {
                                         _get(this.props, 'item.index'),
                                         _get(this.props, 'item.historyIndex')
                                     )
-                                        .then(() => console.log('success profit withdraw'))
+                                        .then(() => console.log('success profit withdraw')); // eslint-disable-line no-console
                                 }}
                             />
                         )}

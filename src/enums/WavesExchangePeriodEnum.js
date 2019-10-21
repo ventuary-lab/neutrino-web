@@ -13,7 +13,7 @@ export default class WavesExchangePeriodEnum extends Enum {
             this.PERIOD_1H,
             this.PERIOD_8H,
             this.PERIOD_1D,
-        ]
+        ];
     }
 
     static getLabels() {

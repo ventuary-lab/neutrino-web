@@ -77,22 +77,22 @@ export default class WavesExchangeChart extends React.PureComponent {
                 lineWidth: 1,
             },
             yAxis: {
-                    opposite: false,
-                    lineColor: '#CBCBDA',
-                    lineWidth: 1,
-                    gridLineWidth: 0.5,
-                    gridLineColor: '#DFDFE8',
-                    gridLineDashStyle: 'dash',
-                    minorGridLineWidth: 0,
-                    labels: {
-                            format: '$ {value}',
-                            style: {
-                                fontFamily: 'Roboto',
-                                color: '#DFDFE8',
-                                fontSize: '8px',
-                            },
-                        },
+                opposite: false,
+                lineColor: '#CBCBDA',
+                lineWidth: 1,
+                gridLineWidth: 0.5,
+                gridLineColor: '#DFDFE8',
+                gridLineDashStyle: 'dash',
+                minorGridLineWidth: 0,
+                labels: {
+                    format: '$ {value}',
+                    style: {
+                        fontFamily: 'Roboto',
+                        color: '#DFDFE8',
+                        fontSize: '8px',
+                    },
                 },
+            },
 
             series: [{
                 type: 'candlestick',
@@ -121,11 +121,11 @@ export default class WavesExchangeChart extends React.PureComponent {
                     <div className={bem.element('chart-interval-picker')}>
                         {WavesExchangePeriodEnum.getKeys().map((id) => {
                             return (
-                                <a
-                                    href='javascript:void(0)'
+                                <button
+                                    type={'button'}
                                     key={id}
                                     className={bem.element('chart-block-amount-picker', {
-                                        selected: this.props.period === id,
+                                        selected: (this.props.period || WavesExchangePeriodEnum.PERIOD_1H) === id,
                                     })}
                                     onClick={() => {
                                         this.props.updateApiConfig({
@@ -134,7 +134,7 @@ export default class WavesExchangeChart extends React.PureComponent {
                                     }}
                                 >
                                     {WavesExchangePeriodEnum.getLabels()[id]}
-                                </a>
+                                </button>
                             );
                         })}
                     </div>

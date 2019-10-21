@@ -15,6 +15,6 @@ export default class Favorites extends React.PureComponent {
             <div className={bem.block()}>
                 <InlineSVG className={bem.element('star')} src={require('!svg-inline-loader?classPrefix=star-!../../../static/icons/star.svg')} />
             </div>
-        )
+        );
     }
 }

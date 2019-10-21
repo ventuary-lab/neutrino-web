@@ -172,24 +172,24 @@ export default class BuyBoundsForm extends React.PureComponent {
             wavesToUsdPrice
         )
             .then(() => {
-                console.log('---swapAndSetBondOrder success');
+                console.log('---swapAndSetBondOrder success'); // eslint-disable-line no-console
             })
             .catch(err => {
-                console.log('---swapAndSetBondOrder error', err);
+                console.log('---swapAndSetBondOrder error', err); // eslint-disable-line no-console
 
                 //User denied message
                 if (err && err.code === '10') {
                     this.props.dispatch(openModal(MessageModal, {
                         text: __('You have canceled the order'),
-                    }))
+                    }));
                 } else if (err) {
                     this.props.dispatch(openModal(MessageModal, {
                         text: __('The order was canceled.\n Error: {err}', {
                             err: err.message,
                         }),
-                    }))
+                    }));
                 }
-            })
+            });
     }
 
     _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {

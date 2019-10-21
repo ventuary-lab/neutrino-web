@@ -1,6 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
-// import PropTypes from 'prop-types';
 import Slick from 'react-slick';
 
 import {html} from 'components';
@@ -12,7 +10,6 @@ import { openModal } from 'yii-steroids/actions/modal';
 import WarningMobileModal from '../../modals/WarningMobileModal';
 
 import {clientStorage} from 'components';
-import { STORAGE_AUTH_KEY } from '../RightSidebar/RightSidebar';
 
 const bem = html.bem('IndexSlider');
 

@@ -7,6 +7,8 @@ import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
 import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
 import {goToPage} from 'yii-steroids/actions/navigation';
+import Button from 'yii-steroids/ui/form/Button';
+import {getUserRole} from 'yii-steroids/reducers/auth';
 
 import {dal, html} from 'components';
 import {getQuoteCurrency} from 'reducers/currency';
@@ -16,9 +18,6 @@ import {ROUTE_ROOT} from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
 
 import './Header.scss';
-import {getUserRole} from 'yii-steroids/reducers/auth';
-import UserSchema from 'types/UserSchema';
-import Button from 'yii-steroids/ui/form/Button';
 
 const bem = html.bem('Header');
 const FORM_ID = 'SectionToggle';

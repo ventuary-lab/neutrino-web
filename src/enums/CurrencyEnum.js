@@ -16,7 +16,7 @@ export default class CurrencyEnum extends Enum {
     static getKeys() {
         return [
             this.USD_N,
-           // this.EUR_N,
+            //this.EUR_N,
             //this.BTC_N,
         ];
     }
@@ -36,7 +36,7 @@ export default class CurrencyEnum extends Enum {
         const map = {
             [this.USD_N]: this.USD_NB,
             [this.EUR_N]: this.EUR_NB,
-            // [this.BTC_N]: this.BTC_NB,
+            //[this.BTC_N]: this.BTC_NB,
         };
         return map[id] || null;
     }
@@ -47,8 +47,8 @@ export default class CurrencyEnum extends Enum {
             [this.USD_NB]: this.USD,
             [this.EUR_N]: this.EUR,
             [this.EUR_NB]: this.EUR,
-            // [this.BTC_N]: this.BTC,
-            // [this.BTC_NB]: this.BTC,
+            //[this.BTC_N]: this.BTC,
+            //[this.BTC_NB]: this.BTC,
         };
         return map[id] || null;
     }
@@ -68,8 +68,8 @@ export default class CurrencyEnum extends Enum {
             [this.USD_NB]: __('USD-NB'),
             [this.EUR_N]: __('EUR-N'),
             [this.EUR_NB]: __('EUR-NB'),
-            // [this.BTC_N]: __('BTC-N'),
-            // [this.BTC_NB]: __('BTC-NB'),
+            //[this.BTC_N]: __('BTC-N'),
+            //[this.BTC_NB]: __('BTC-NB'),
         };
     }
 

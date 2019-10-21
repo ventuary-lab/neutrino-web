@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactCharts from 'react-highcharts/ReactHighcharts.src';
 
+import {html} from 'components';
+
 import './LeasingChart.scss';
 
-import {html} from 'components';
 const bem = html.bem('LeasingChart');
 
 export default class LeasingChart extends React.PureComponent {
@@ -109,7 +110,7 @@ export default class LeasingChart extends React.PureComponent {
                     fontFamily: 'Montserrat'
                 }
             }
-        }
+        };
     }
 
     render() {
@@ -117,7 +118,7 @@ export default class LeasingChart extends React.PureComponent {
             <div className={bem.block()}>
                 <ReactCharts ref={this._chart} config={this._config}/>
             </div>
-        )
+        );
     }
 }
 

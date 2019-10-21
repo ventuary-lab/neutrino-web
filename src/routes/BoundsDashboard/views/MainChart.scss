@@ -16,6 +16,7 @@
   }
 
   &__chart-block-amount-picker {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,6 +30,11 @@
     font-family: Montserrat;
     background: linear-gradient(32.9deg, #00ADFF -44.26%, #3E3E79 50%);
     border-radius: 4px;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
 
     &_selected {
       border: solid #3e3e79 1px;

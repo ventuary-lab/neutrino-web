@@ -22,6 +22,6 @@ export default class MiningShare extends React.PureComponent {
                     <span className={bem.element('percent')}>{`${percent}%`}</span>
                 </div>
             </div>
-        )
+        );
     }
 }

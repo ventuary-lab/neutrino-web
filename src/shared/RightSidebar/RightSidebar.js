@@ -3,10 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from 'yii-steroids/ui/form/Button';
 import {getUser} from 'yii-steroids/reducers/auth';
-import {setUser} from 'yii-steroids/actions/auth';
 import _upperFirst from 'lodash-es/upperFirst';
 
-import {html, dal, clientStorage} from 'components';
+import {html, dal} from 'components';
 import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';

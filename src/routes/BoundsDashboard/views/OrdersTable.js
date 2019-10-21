@@ -191,7 +191,6 @@ export default class OrdersTable extends React.PureComponent {
                         asc: true,
                         active: this.state.sort[0] === column && this.state.sort[1] === 'asc',
                     })}
-                    href='#'
                     onClick={e => {
                         e.preventDefault();
                         this.setState({sort: [column, 'asc']});
@@ -202,7 +201,7 @@ export default class OrdersTable extends React.PureComponent {
                         desc: true,
                         active: this.state.sort[0] === column && this.state.sort[1] === 'desc',
                     })}
-                    href='javascript:void(0)'
+                    href='#'
                     onClick={e => {
                         e.preventDefault();
                         this.setState({sort: [column, 'desc']});

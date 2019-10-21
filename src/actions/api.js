@@ -1,7 +1,6 @@
 import _isArray from 'lodash-es/isArray';
 import _trim from 'lodash-es/trim';
 import {http} from 'components';
-import CollectionEnum from 'enums/CollectionEnum';
 import {getPairName} from 'reducers/currency';
 
 export const API_ADD_CONFIGS = 'API_ADD_CONFIGS';

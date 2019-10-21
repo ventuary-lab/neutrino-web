@@ -22,6 +22,6 @@ export default class LeasersPayouts extends React.PureComponent {
                     <span className={bem.element('percent')}>{`${percent}%`}</span>
                 </div>
             </div>
-        )
+        );
     }
 }

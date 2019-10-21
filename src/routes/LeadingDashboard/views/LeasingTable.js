@@ -1,9 +1,11 @@
 import React from 'react';
-import './LeasingTable.scss'
 import LeasingTableRow from './LeasingTableRow';
 import Button from 'yii-steroids/ui/form/Button';
 
 import {html} from 'components';
+
+import './LeasingTable.scss';
+
 const bem = html.bem('LeasingTable');
 
 
@@ -12,7 +14,7 @@ export default class LeasingTable extends React.PureComponent {
         super(props);
     }
 
-    renderSortButtons(column) {
+    renderSortButtons() {
         return (
             <div className={bem.element('sort-buttons')}>
                 <a className={bem.element('sort-button', {
@@ -31,7 +33,7 @@ export default class LeasingTable extends React.PureComponent {
 
         const { leasers } = this.props;
 
-        const rows = leasers.map((leaser, index) => <LeasingTableRow key={leaser.id} leaser={leaser} index={index} />)
+        const rows = leasers.map((leaser, index) => <LeasingTableRow key={leaser.id} leaser={leaser} index={index} />);
 
         return (
             <div className={bem.block()}>
@@ -93,6 +95,6 @@ export default class LeasingTable extends React.PureComponent {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }

@@ -38,9 +38,9 @@ export default class ModalView extends React.PureComponent {
                 >
                     <div className={bem.element('inner')}>
                         {!this.props.canNotClose && (
-                            <a
+                            <button
+                                type={'button'}
                                 className={bem.element('close')}
-                                href='javascript:void(0)'
                                 onClick={this.props.onClose}
                             />
                         )}

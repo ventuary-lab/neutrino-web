@@ -19,6 +19,6 @@ export default class OrderStatusEnum extends Enum {
             [this.NEW]: 'Opened',
             [this.FILLED]: 'Filled',
             [this.CANCELED]: 'Cancelled',
-        }
+        };
     }
 };

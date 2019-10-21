@@ -1,5 +1,4 @@
 const {waitForTx, broadcast} = require('@waves/waves-transactions');
-const _isArray = require('lodash/isArray');
 const _isString = require('lodash/isString');
 const _isInteger = require('lodash/isInteger');
 const _isObject = require('lodash/isObject');
@@ -60,7 +59,7 @@ export default class Keeper {
         const account = await this.getAccount();
 
         if (!account) {
-            return null
+            return null;
         }
 
         return account.address;

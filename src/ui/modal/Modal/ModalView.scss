@@ -22,7 +22,6 @@
   &__modal {
     max-width: 800px;
     min-height: 400px;
-    //height: 1px;
     display: flex;
     width: 90%;
     background: $color-brand-purple;
@@ -45,6 +44,13 @@
     display: block;
     width: 50px;
     height: 50px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
 
     &:hover::before,
     &:hover::after {

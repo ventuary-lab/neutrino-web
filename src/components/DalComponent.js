@@ -89,8 +89,6 @@ export default class DalComponent {
         this.balance.stop();
     }
 
-
-
     async swapWavesToNeutrino(pairName, amount) {
         await this.keeper.sendTransaction(
             pairName,
@@ -178,8 +176,8 @@ export default class DalComponent {
                     bondsAmount * price,
                 );
 
-                console.log(position)
-                console.log('Signed vote tx:', {txSwap, txSetOrder});
+                console.log(position); // eslint-disable-line no-console
+                console.log('Signed vote tx:', {txSwap, txSetOrder}); // eslint-disable-line no-console
 
                 await this.keeper.broadcastAndWait(txSwap);
                 await this.keeper.broadcastAndWait(txSetOrder);

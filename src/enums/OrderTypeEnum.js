@@ -16,6 +16,6 @@ export default class OrderTypeEnum extends Enum {
         return {
             [this.BUY]: 'Buy',
             [this.LIQUIDATE]: 'Liquidate',
-        }
+        };
     }
 };

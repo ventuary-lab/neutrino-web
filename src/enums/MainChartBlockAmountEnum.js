@@ -15,7 +15,7 @@ export default class MainChartBlockAmountEnum extends Enum {
             this.AMOUNT_1K,
             this.AMOUNT_5K,
             this.AMOUNT_10K,
-        ]
+        ];
     }
 
     static getLabels() {

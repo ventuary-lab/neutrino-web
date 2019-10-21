@@ -1,23 +1,15 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import List from 'yii-steroids/ui/list/List';
 
 import {html} from 'components';
 import CheckItem from './CheckItem';
 
-
 import './ChecksList.scss';
-
 
 const bem = html.bem('ChecksList');
 const LIST_ID = 'ChecksList';
 
-@connect(
-    state => ({
-
-    })
-)
 export default class ChecksList extends React.PureComponent {
 
     static propTypes = {

@@ -9,24 +9,24 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
+import {getUser} from 'yii-steroids/reducers/auth';
 
 import {html, dal} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from 'enums/CollectionEnum';
 import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
 import SwapLoader from 'shared/SwapLoader';
 
 import './NeutrinoDashboard.scss';
-import CollectionEnum from '../../enums/CollectionEnum';
-import {login} from 'yii-steroids/actions/auth';
-import {getUser} from 'yii-steroids/reducers/auth';
 
 const bem = html.bem('NeutrinoDashboard');
+
 const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
 @connect(
-    (state, props) => ({
+    (state) => ({
         sourceCurrency: getSourceCurrency(state),
         quoteCurrency: getQuoteCurrency(state),
         pairName: getPairName(state),
@@ -121,21 +121,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         //first loading component
         if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
-            this.setState({isSwapLoading: true})
+            this.setState({isSwapLoading: true});
         }
 
         //changing withdraw
         if (thisWithdraw && nextWithdraw) {
             if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-                this.setState({isSwapLoading: true})
+                this.setState({isSwapLoading: true});
             } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
-                this.setState({isSwapLoading: false})
+                this.setState({isSwapLoading: false});
             } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
                 //close delay
                 setTimeout(() => this.setState({isSwapLoading: false}), 3000);
             }
         } else if (this.state.isSwapLoading) {
-            this.setState({isSwapLoading: false})
+            this.setState({isSwapLoading: false});
         }
     }
 
@@ -223,12 +223,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? "0.1" : "100")  +' {currency}',
-                            {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            })}
+                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? '0.1' : '100')  +' {currency}',
+                                {
+                                    currency: this.state.isWavesLeft
+                                        ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                        : CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                }
+                            )}
                         </div>
                     </div>
 
@@ -281,7 +282,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 <span>{__('Smart contract')}</span>
                             </div>
                             <span>
-                                {/*round(this.props.priceFeed, 2)*/"3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo"}
+                                {/*round(this.props.priceFeed, 2)*/'3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo'}
                             </span>
                         </div>
                         <div className={bem.element('info-row')}>
@@ -487,18 +488,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
         this.setState({step: 'generation'});
         this.props.dispatch(reset(FORM_ID));
 
-
-        // if (this.state.isWavesLeft) {
-        //     this.setState({isSwapInProgress: true})
-        // }
-
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
-            : dal.swapNeutrinoToWaves(this.props.pairName, this.props.quoteCurrency, values.neutrino)
-                // .then(() => {
-                //     this.setState({step: 'generation'});
-                //     this.props.dispatch(reset(FORM_ID));
-                // });
+            : dal.swapNeutrinoToWaves(this.props.pairName, this.props.quoteCurrency, values.neutrino);
     }
 
     _withdraw() {

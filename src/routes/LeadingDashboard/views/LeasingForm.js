@@ -3,11 +3,13 @@ import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 
-import './LeasingForm.scss';
 
 import {html} from 'components';
-const bem = html.bem('LeasingForm');
 import CurrencyEnum from 'enums/CurrencyEnum';
+
+import './LeasingForm.scss';
+
+const bem = html.bem('LeasingForm');
 
 export default class LeasingForm extends React.PureComponent {
     constructor(props) {
@@ -49,6 +51,6 @@ export default class LeasingForm extends React.PureComponent {
                     </Form>
                 </div>
             </div>
-        )
+        );
     }
 }

@@ -2,9 +2,11 @@ import React from 'react';
 import LeasingTable from './views/LeasingTable';
 import LeasingChart from './views/LeasingChart';
 import LeasingForm from './views/LeasingForm';
-import './LeadingDashboard.scss';
 
 import {html} from 'components';
+
+import './LeadingDashboard.scss';
+
 const bem = html.bem('LeadingDashboard');
 
 const LEASERS = [
@@ -176,7 +178,7 @@ const LEASERS = [
         },
         myLeasing: 0,
     },
-]
+];
 
 export default class LeadingDashboard extends React.PureComponent {
 

@@ -161,11 +161,11 @@ export default class MainChart extends React.PureComponent {
                     <div className={bem.element('chart-interval-picker')}>
                         {MainChartBlockAmountEnum.getKeys().map((id) => {
                             return (
-                                <a
-                                    href='javascript:void(0)'
+                                <button
+                                    type={'button'}
                                     key={id}
                                     className={bem.element('chart-block-amount-picker', {
-                                        selected: this.props.blockAmount === id,
+                                        selected: (this.props.blockAmount || 100) === id,
                                     })}
                                     onClick={() => {
                                         this.props.updateApiConfig({
@@ -174,7 +174,7 @@ export default class MainChart extends React.PureComponent {
                                     }}
                                 >
                                     {MainChartBlockAmountEnum.getLabels()[id]}
-                                </a>
+                                </button>
                             );
                         })}
                     </div>
@@ -184,7 +184,7 @@ export default class MainChart extends React.PureComponent {
                     ref={this._chart}
                     config={this._config}
                     backgroundColor='#1d1d45'
-            />
+                />
             </div>
         );
     }

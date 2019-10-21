@@ -5,17 +5,16 @@ import {getUser} from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
 
 import {html, dal} from 'components';
-
-import './BalanceTable.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from 'enums/CollectionEnum';
 import {
-    getLastWavesExchange,
     getQuoteCurrency,
     getBaseCurrency,
     getPairName,
     getSourceCurrency
 } from 'reducers/currency';
-import CollectionEnum from '../../enums/CollectionEnum';
+
+import './BalanceTable.scss';
 
 const bem = html.bem('BalanceTable');
 
@@ -52,12 +51,12 @@ export default class BalanceTable extends React.PureComponent {
     render() {
         if (!this.props.user || !this.props.user.balances || !this.props.neutrinoConfig) {
             return null;
-        };
+        }
         const assetLinks = [
             '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
             '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
             '2c5Qbbx9satfqYvuqtAfNXAg7Q8FVjmvcpKwcafPbsgP',
-        ]
+        ];
 
         return (
             <table className={bem.block()}>
@@ -117,7 +116,8 @@ export default class BalanceTable extends React.PureComponent {
                                     {this.renderDexButtons(assetLinks[currencyIndex])}
                                 </td>
                             </tr>
-                    ))}
+                        ))
+                    }
                 </tbody>
             </table>
         );
@@ -146,6 +146,6 @@ export default class BalanceTable extends React.PureComponent {
                     ))
                 }
             </div>
-        )
+        );
     }
 }

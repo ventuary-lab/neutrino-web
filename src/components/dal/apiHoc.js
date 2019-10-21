@@ -9,7 +9,7 @@ const stateMap = state => ({
 });
 
 export default configsFunc => WrappedComponent => @connect(stateMap)
-class ApiHOC extends React.Component {
+    class ApiHOC extends React.Component {
 
     static WrappedComponent = WrappedComponent;
 

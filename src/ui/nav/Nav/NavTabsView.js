@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {html} from 'components';
-import Button from 'yii-steroids/ui/form/Button';
 
 const bem = html.bem('NavTabsView');
 

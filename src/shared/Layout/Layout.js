@@ -20,9 +20,9 @@ import RightSidebar from 'shared/RightSidebar';
 import BlockedApp from 'shared/BlockedApp';
 import MessageModal from 'modals/MessageModal';
 import {apiWsHandler} from 'actions/api';
-import {currencySetCurrent, currencyWsHandler} from 'actions/currency';
+import {currencySetCurrent} from 'actions/currency';
 import {ROUTE_ROOT} from 'routes';
-import {getPairName, getPrices} from 'reducers/currency';
+import {getPairName} from 'reducers/currency';
 
 import './Layout.scss';
 

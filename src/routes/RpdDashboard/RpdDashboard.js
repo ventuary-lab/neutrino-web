@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
-import _sumBy from 'lodash-es/sumBy';
-import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
@@ -56,7 +54,7 @@ export default class RpdDashboard extends React.PureComponent {
     static propTypes = {
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
-        rpdUserBalance: PropTypes.arrayOf(PropTypes.shape({
+        rpdUserBalance: PropTypes.shape({
             neutrino: PropTypes.shape({
                 balance: PropTypes.number,
                 id: PropTypes.string,
@@ -65,7 +63,7 @@ export default class RpdDashboard extends React.PureComponent {
                 balance: PropTypes.number,
                 id: PropTypes.string,
             })
-        })),
+        }),
         rpdBalance: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
             balance: PropTypes.number,
@@ -82,18 +80,18 @@ export default class RpdDashboard extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.quoteCurrency !== nextProps.quoteCurrency) {
-            this.props.dispatch(change(FORM_ID, 'currency', nextProps.quoteCurrency))
+            this.props.dispatch(change(FORM_ID, 'currency', nextProps.quoteCurrency));
         }
     }
 
     render() {
         const rpdNeutrinoBalance = _get(this.props, 'rpdUserBalance.neutrino.balance', 0);
-        const rpdBondsBalance = _get(this.props, 'rpdUserBalance.bond.balance', 0);
-        const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalance'), 'balance');
+        // const rpdBondsBalance = _get(this.props, 'rpdUserBalance.bond.balance', 0);
+        // const rpdTotalBalance = _sumBy(_get(this.props, 'rpdBalance'), 'balance');
 
-        const share = rpdTotalBalance
-            ? (rpdNeutrinoBalance + rpdBondsBalance) / rpdTotalBalance * 100
-            : 0;
+        // const share = rpdTotalBalance
+        //     ? (rpdNeutrinoBalance + rpdBondsBalance) / rpdTotalBalance * 100
+        //     : 0;
 
         return (
             <div className={bem.block()}>
@@ -117,7 +115,7 @@ export default class RpdDashboard extends React.PureComponent {
                             currency: this.props.quoteCurrency,
                         }}
                     >
-                        
+
                         <div className={bem.element('input-block')}>
                             <NumberField
                                 min={0}
@@ -138,7 +136,7 @@ export default class RpdDashboard extends React.PureComponent {
                                         _get(this.props, 'formValues.currency'),
                                         parseInt(_get(this.props, 'formValues.wrap'))
                                     )
-                                        .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')))
+                                        .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')));
                                 }}
                             />
                         </div>
@@ -164,7 +162,7 @@ export default class RpdDashboard extends React.PureComponent {
                                             ? _get(this.props, 'formValues.unwrap') * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
                                             : _get(this.props, 'formValues.unwrap'))
                                     )
-                                        .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')))
+                                        .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')));
                                 }}
                             />
                         </div>

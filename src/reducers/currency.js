@@ -3,7 +3,6 @@ import _orderBy from 'lodash-es/orderBy';
 
 import {CURRENCY_SET_CURRENT, CURRENCY_SET_PRICES} from 'actions/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import PairsEnum from 'enums/PairsEnum';
 
 const initialState = {
     base: CurrencyEnum.getBaseCurrency(CurrencyEnum.USD_N),

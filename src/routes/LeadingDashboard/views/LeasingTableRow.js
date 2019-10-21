@@ -42,6 +42,6 @@ export default class LeasingTableRow extends React.PureComponent {
                     <LeasingSlider myLeasing={myLeasing}/>
                 </div>
             </div>
-        )
+        );
     }
 }
