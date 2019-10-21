@@ -1,5 +1,6 @@
 module.exports = {
     BondsOrders: require('./BondsOrders'),
+    BondsOrdersHistory: require('./BondsOrdersHistory'),
     NeutrinoOrders: require('./NeutrinoOrders'),
     NeutrinoPrices: require('./NeutrinoPrices'),
     NeutrinoBalances: require('./NeutrinoBalances'),

@@ -2,21 +2,21 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Nav from 'yii-steroids/ui/nav/Nav';
+import {getUser} from 'yii-steroids/reducers/auth';
+import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 
-import {html} from 'components';
+import {html, dal} from 'components';
 import OrdersTable from './views/OrdersTable';
 import BuyBoundsForm from './views/BuyBoundsForm';
 import LiquidateBoundsForm from './views/LiquidateBoundsForm';
 import OrderBook from './views/OrderBook';
 import MainChart from './views/MainChart';
-
-import './BoundsDashboard.scss';
-import CollectionEnum from '../../enums/CollectionEnum';
-import {dal} from 'components';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
-import {getUser} from 'yii-steroids/reducers/auth';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import CollectionEnum from 'enums/CollectionEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
+
+import './BoundsDashboard.scss';
 
 const bem = html.bem('BoundsDashboard');
 
@@ -111,7 +111,9 @@ export default class BoundsDashboard extends React.PureComponent {
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('graph')}>
                         <span className={bem.element('graph-title')}>
-                            {__('Discount (%)')}
+                            {__('Price ({sign})', {
+                                sign: CurrencyEnum.getSign(CurrencyEnum.getSourceCurrency(this.props.quoteCurrency)),
+                            })}
                         </span>
                         <MainChart
                             pairName={this.props.pairName}

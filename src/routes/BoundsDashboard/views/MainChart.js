@@ -1,26 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactHighstock from 'react-highcharts/ReactHighstock.src';
+import {connect} from 'react-redux';
 import _orderBy from 'lodash/orderBy';
+import ReactHighstock from 'react-highcharts/ReactHighstock.src';
+import {getQuoteCurrency} from 'reducers/currency';
 
 import {dal, html} from 'components';
-import './MainChart.scss';
 import CollectionEnum from 'enums/CollectionEnum';
-import MainChartBlockAmountEnum from '../../../enums/MainChartBlockAmountEnum';
+import MainChartBlockAmountEnum from 'enums/MainChartBlockAmountEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
+
+import './MainChart.scss';
 
 const bem = html.bem('MainChart');
 
-@dal.hoc(
-    props => ({
-        url: `/api/v1/bonds/${props.pairName}/chart/${props.blockAmount || 100}`,
-        key: 'chartData',
-        collection: CollectionEnum.BONDS_ORDERS,
+@connect(
+    state => ({
+        quoteCurrency: getQuoteCurrency(state),
     })
+)
+@dal.hoc(
+    props => [
+        {
+            url: `/api/v1/bonds/${props.pairName}/chart/${props.blockAmount || 100}`,
+            key: 'chartData',
+            collection: CollectionEnum.BONDS_ORDERS_HISTORY,
+        },
+    ]
 )
 export default class MainChart extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
+        quoteCurrency: PropTypes.string,
         chartData: PropTypes.array,
         updateApiConfig: PropTypes.func,
     };
@@ -69,7 +81,7 @@ export default class MainChart extends React.PureComponent {
                 gridLineWidth: 0,
                 minorGridLineWidth: 0,
                 labels: {
-                    format: '{value}%',
+                    format: `{value}${CurrencyEnum.getSign(CurrencyEnum.getSourceCurrency(this.props.quoteCurrency))}`,
                     style: {
                         fontFamily: 'Roboto',
                         color: '#CBCBDA',
