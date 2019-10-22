@@ -12,6 +12,8 @@ const sentryDsn = {
 };
 
 //sentry
+console.log('---test', process.env, process.env.APP_ENV, sentryDsn[process.env.APP_ENV]);
+
 if (process.env.APP_ENV) {
     Sentry.init({ dsn: sentryDsn[process.env.APP_ENV] });
 } else {
