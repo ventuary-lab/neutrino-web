@@ -1,4 +1,6 @@
+const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 require('yii-steroids/webpack')
     .config({
@@ -36,9 +38,19 @@ require('yii-steroids/webpack')
                 },
             },
             plugins: [
+                new MiniCssExtractPlugin({
+                    filename: `bundle-[name].[hash].css`,
+                    chunkFilename: `bundle-[id].[hash].css`,
+                }),
                 new Dotenv({
                     path: './.env',
                 }),
+                new webpack.DefinePlugin(Object.keys(process.env).reduce((obj, key) => {
+                    if (key.indexOf('APP_') === 0) {
+                        obj['process.env.' + key] = JSON.stringify(process.env[key]);
+                    }
+                    return obj;
+                }, {})),
             ]
         },
     })
