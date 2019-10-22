@@ -2,18 +2,20 @@ const App = require('./App');
 const express = require('express');
 const expressApp = express();
 const Sentry = require('@sentry/node');
-const Raven = require('raven');
 
 require('dotenv').config();
 
 const sentryDsn = {
     dev: 'https://af513f82d6cb4b2b8a6812b3dc545c70@sentry.kozhindev.com/25',
     alpha: 'https://afa7b47becd14b2d98954a3d190edf48@sentry.kozhindev.com/26',
+    locale: 'https://564449fbc3c1478382e784e77aaf404c@sentry.kozhindev.com/31',
 };
 
 //sentry
 if (process.env.APP_ENV) {
-    Sentry.init({dsn: sentryDsn[process.env.APP_ENV]});
+    Sentry.init({ dsn: sentryDsn[process.env.APP_ENV] });
+} else {
+    Sentry.init({ dsn: sentryDsn['locale'] });
 }
 
 // Create app

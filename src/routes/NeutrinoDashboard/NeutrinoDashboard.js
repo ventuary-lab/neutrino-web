@@ -490,7 +490,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
-            : dal.swapNeutrinoToWaves(this.props.pairName, this.props.quoteCurrency, values.neutrino);
+            : dal.swapNeutrinoToWaves(this.props.pairName, this.props.quoteCurrency, values.neutrino)
+                .catch(err => {
+                    console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
+                    throw new Error(err.data);
+                });
     }
 
     _withdraw() {
