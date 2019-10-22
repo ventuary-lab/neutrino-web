@@ -160,7 +160,7 @@ module.exports = class Router {
                 const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
                 orders = _orderBy(orders, 'height', 'desc');
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
-                return orders.map(order => [timestamps[order.height], order.price])
+                return orders.map(order => [timestamps[order.height], order.discountPercent])
             },
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();

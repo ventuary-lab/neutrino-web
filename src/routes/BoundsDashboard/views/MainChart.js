@@ -1,24 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import _orderBy from 'lodash/orderBy';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
-import {getQuoteCurrency} from 'reducers/currency';
 
 import {dal, html} from 'components';
 import CollectionEnum from 'enums/CollectionEnum';
 import MainChartBlockAmountEnum from 'enums/MainChartBlockAmountEnum';
-import CurrencyEnum from 'enums/CurrencyEnum';
 
 import './MainChart.scss';
 
 const bem = html.bem('MainChart');
 
-@connect(
-    state => ({
-        quoteCurrency: getQuoteCurrency(state),
-    })
-)
 @dal.hoc(
     props => [
         {
@@ -32,7 +24,6 @@ export default class MainChart extends React.PureComponent {
 
     static propTypes = {
         pairName: PropTypes.string,
-        quoteCurrency: PropTypes.string,
         chartData: PropTypes.array,
         updateApiConfig: PropTypes.func,
     };
@@ -81,7 +72,7 @@ export default class MainChart extends React.PureComponent {
                 gridLineWidth: 0,
                 minorGridLineWidth: 0,
                 labels: {
-                    format: `{value}${CurrencyEnum.getSign(CurrencyEnum.getSourceCurrency(this.props.quoteCurrency))}`,
+                    format: '{value}%',
                     style: {
                         fontFamily: 'Roboto',
                         color: '#CBCBDA',
@@ -155,6 +146,9 @@ export default class MainChart extends React.PureComponent {
     }
 
     render() {
+
+        console.log('---111', this.props.chartData);
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('chart-controls-line')}>

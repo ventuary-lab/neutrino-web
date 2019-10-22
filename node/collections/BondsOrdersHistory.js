@@ -13,10 +13,11 @@ module.exports = class BondsOrdersHistory extends BaseCollection {
 
     async _prepareItem(height, item) {
 
-        const price = _round(item['order_history_' + height] / 100, 2);
+        const price = item['order_history_' + height] || 0;
 
         return {
-            price,
+            price: _round(price / 100, 2),
+            discountPercent: 100 - price,
             height,
         };
     }
