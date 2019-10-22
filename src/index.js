@@ -13,6 +13,7 @@ import './style/index.scss';
     };
 
     if (window.Raven) {
+        console.log('test', process.env, process.env.APP_ENV, sentryDsn[process.env.APP_ENV]);
         window.Raven.config(process.env.APP_ENV ? sentryDsn[process.env.APP_ENV] : sentryDsn['locale']).install();
         window.Raven.context(init);
     } else {

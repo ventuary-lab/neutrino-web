@@ -147,8 +147,6 @@ export default class MainChart extends React.PureComponent {
 
     render() {
 
-        console.log('---111', this.props.chartData);
-
         return (
             <div className={bem.block()}>
                 <div className={bem.element('chart-controls-line')}>
