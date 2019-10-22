@@ -1,3 +1,5 @@
+const Dotenv = require('dotenv-webpack');
+
 require('yii-steroids/webpack')
     .config({
         port: 8082,
@@ -33,6 +35,11 @@ require('yii-steroids/webpack')
                     },
                 },
             },
+            plugins: [
+                new Dotenv({
+                    path: './.env',
+                }),
+            ]
         },
     })
     .base('./src/index.js');
