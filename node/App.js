@@ -30,7 +30,7 @@ module.exports = class App {
         }
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
-            [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3N4Pj4MutKVgrmcuX7jgyVGWoBhDyKYFZBj', // testnet
+            [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
             //[PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
@@ -152,6 +152,7 @@ module.exports = class App {
         const transport = new WavesTransport({
             dApp,
             nodeUrl: this.nodeUrl,
+            logger: this.logger,
         });
 
         console.log('---createContract');
@@ -243,8 +244,8 @@ module.exports = class App {
                     await collection.updateAll(data[contractName]);
                 }
             }
-        } catch (ex) {
-            this.logger.error("Update All:" + ex.stack)
+        } catch (err) {
+            this.logger.error(`Update All Error: ${String(err.stack || err)}`)
         }
 
         this._isNowUpdated = false;
@@ -261,16 +262,14 @@ module.exports = class App {
     _onContractUpdate(pairName, contractName, keys) {
         try {
             if (!this._isSkipUpdates) {
-                console.log('---_onContractUpdate');
                 Object.keys(this._collections[pairName]).forEach(collectionName => {
                     if (CollectionEnum.getContractName(collectionName) === contractName) {
-                        console.log('---update');
                         this.getCollection(pairName, collectionName).updateByKeys(keys);
                     }
                 });
             }
-        } catch (ex) {
-            this.logger.error(ex)
+        } catch (err) {
+            this.logger.error(`Contract Update Error: ${String(err.stack || err)}`);
         }
     }
 

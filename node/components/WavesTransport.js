@@ -13,6 +13,7 @@ class WavesTransport {
     constructor(params) {
         this.dApp = params.dApp;
         this.nodeUrl = params.nodeUrl;
+        this.logger = params.logger;
     }
 
     async fetchAll() {
@@ -49,9 +50,9 @@ class WavesTransport {
     async _request(url) {
         try {
             return await axios.get(url);
-        } catch (e) {
-            console.error(`WavesTransport Error, url "${url}": ${String(e)}`);
-            throw e;
+        } catch (err) {
+            this.logger.error(`WavesTransport Error: url - ${String(url)}, ${String(err.stack || err)}`);
+            throw err;
         }
     }
 

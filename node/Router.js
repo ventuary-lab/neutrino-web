@@ -155,13 +155,6 @@ module.exports = class Router {
                 });
                 return {position};
             },
-            // '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-            //     let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOrdersHistory();
-            //     const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
-            //     orders = _orderBy(orders, 'height', 'desc');
-            //     orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
-            //     return orders.map(order => [timestamps[order.height], order.discountPercent])
-            // },
             '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
                 let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY).getItemsAll();
                 const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
@@ -207,10 +200,10 @@ module.exports = class Router {
                 let content = {};
                 try {
                     content = await this._routes[url](request);
-                } catch(e) {
-                    this.app.logger.error(e, e.stack);
+                } catch(err) {
+                    this.app.logger.error(`Router build Error: ${String(err.stack || err)}`);
                     content = {
-                        error: String(e),
+                        error: String(err),
                     };
                 }
 

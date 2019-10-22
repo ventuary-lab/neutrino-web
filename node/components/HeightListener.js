@@ -55,8 +55,8 @@ module.exports = class HeightListener {
                 this._lastHeight = height;
                 this.updateHandler(height);
             }
-        } catch(ex){
-            this.logger.error(`HeightListener Error: ${String(ex)}`);
+        } catch (err) {
+            this.logger.error(`HeightListener Error: ${String(err.stack || err)}`,);
         }
         // Next tick
         setTimeout(this._listenNext, this.intervalSec * 1000);
@@ -81,9 +81,9 @@ module.exports = class HeightListener {
         let result = null;
         try {
             result = await axios.get(`${this.nodeUrl}/${url}`);
-        } catch (e) {
-            this.logger.error(`HeightListener Requst Error: ${String(e)}`);
-            throw e;
+        } catch (err) {
+            this.logger.error(`HeightListener Request Error: url - ${String(url)}, ${String(err.stack || err)}`);
+            throw err;
         }
         return result.data;
     }
