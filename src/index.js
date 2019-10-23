@@ -13,8 +13,6 @@ import './style/index.scss';
     };
 
     if (window.Raven) {
-        console.log('test', process.env, process.env.APP_ENV, process.env.NODE_ENV);
-
         if (process.env.NODE_ENV === 'production' && !process.env.APP_ENV) {
             window.Raven.config(sentryDsn['alpha']).install();
         } else if (process.env.NODE_ENV === 'production' && process.env.APP_ENV) {
