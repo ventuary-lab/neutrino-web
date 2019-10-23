@@ -77,7 +77,7 @@ export default class BalanceTable extends React.PureComponent {
                         this.props.quoteCurrency,
                         this.props.baseCurrency
                     ]
-                        .map((currency, currencyIndex) => (
+                        .map((currency) => (
                             <tr key={currency}>
                                 <td>
                                     <div className={bem.element('labels-column')}>
@@ -113,7 +113,7 @@ export default class BalanceTable extends React.PureComponent {
                                     </div>
                                 </td>
                                 <td>
-                                    {this.renderDexButtons(assetLinks[currencyIndex])}
+                                    {this.renderDexButtons(currency)}
                                 </td>
                             </tr>
                         ))
@@ -124,12 +124,13 @@ export default class BalanceTable extends React.PureComponent {
     }
 
     renderDexButtons(currency) {
-        if (dal.assets[currency]) {
-            currency = dal.assets[currency];
-        }
 
-        // const assetUsdId = 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'; // TODO
-        const assetUsdId = 'WAVES'; // TODO
+        let assetId2 = dal.assets[currency] || 'WAVES';
+        let assetId1 = 'WAVES';
+
+        if (currency === CurrencyEnum.WAVES) {
+            assetId2 = dal.assets[this.props.quoteCurrency]
+        }
 
         return (
             <div className={bem.element('controls-column')}>
@@ -137,7 +138,7 @@ export default class BalanceTable extends React.PureComponent {
                     .map((item, index) => (
                         <a
                             key={index}
-                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${currency}&assetId1=${assetUsdId}`}
+                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${assetId2}&assetId1=${assetId1}`}
                             target={'_blank'}
                             className={bem.element('control')}
                         >
