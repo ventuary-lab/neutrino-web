@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFormValues, change} from 'redux-form';
 import _get from 'lodash-es/get';
+import _ from 'lodash';
 import _round from 'lodash-es/round';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
@@ -51,8 +52,13 @@ export default class BuyBoundsForm extends React.PureComponent {
     constructor() {
         super(...arguments);
 
+        this._onDiscountChange = this._onDiscountChange.bind(this);
         this._onSubmit = this._onSubmit.bind(this);
         this._isProgramChange = false;
+
+        this.state = {
+            isButtonDisabled: false
+        };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -60,10 +66,10 @@ export default class BuyBoundsForm extends React.PureComponent {
         const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
         const isChangeNeutrinoAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
 
-
         //discount validate
         if (_get(this.props.formValues, 'discount')) {
             const nextDiscount = _get(nextProps.formValues, 'discount');
+            this._onDiscountChange(nextDiscount);
 
             if (nextDiscount && nextDiscount < 0) {
                 this.props.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
@@ -82,7 +88,14 @@ export default class BuyBoundsForm extends React.PureComponent {
         }
     }
 
+    _onDiscountChange (value) {
+        const parsed = _.toNumber(value);
+        this.setState({ isButtonDisabled: parsed > 50 });
+    }
+
     render() {
+        const { isButtonDisabled } = this.state;
+
         return (
             <div className={bem.block()}>
                 <Form
@@ -136,7 +149,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         min={0}
                         step='any'
                         inputProps={{
-                            autoComplete: 'off'
+                            autoComplete: 'off',
                         }}
                         label={__('Total')}
                         layoutClassName={bem.element('input')}
@@ -149,6 +162,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     <Button
                         type={'submit'}
                         block
+                        disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
                         label={__('Buy {bounds}', {
                             bounds: CurrencyEnum.getLabel(this.props.baseCurrency),
