@@ -52,11 +52,6 @@ export default class BalanceTable extends React.PureComponent {
         if (!this.props.user || !this.props.user.balances || !this.props.neutrinoConfig) {
             return null;
         }
-        const assetLinks = [
-            '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
-            '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
-            '2c5Qbbx9satfqYvuqtAfNXAg7Q8FVjmvcpKwcafPbsgP',
-        ];
 
         return (
             <table className={bem.block()}>
@@ -125,11 +120,12 @@ export default class BalanceTable extends React.PureComponent {
 
     renderDexButtons(currency) {
 
-        let assetId2 = dal.assets[currency] || 'WAVES';
+        let assetId2 = dal.assets[currency];
         let assetId1 = 'WAVES';
 
         if (currency === CurrencyEnum.WAVES) {
-            assetId2 = dal.assets[this.props.quoteCurrency]
+            assetId1 = dal.assets[this.props.quoteCurrency];
+            assetId2 = 'WAVES'
         }
 
         return (
