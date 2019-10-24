@@ -125,7 +125,7 @@ export default class WavesExchangeChart extends React.PureComponent {
                                     type={'button'}
                                     key={id}
                                     className={bem.element('chart-block-amount-picker', {
-                                        selected: (this.props.period || WavesExchangePeriodEnum.PERIOD_1H) === id,
+                                        selected: (this.props.period || WavesExchangePeriodEnum.PERIOD_8H) === id,
                                     })}
                                     onClick={() => {
                                         this.props.updateApiConfig({
