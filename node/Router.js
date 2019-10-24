@@ -229,13 +229,14 @@ module.exports = class Router {
         const candlesLimit = 10;
         const seconds = WavesExchangePeriodEnum.getSeconds(period);
         // Получаем все данные с редиса и сортируем по времени по убыванию
-        let prices = _orderBy((await this._getPrices())[currency], 'timestamp', 'desc');;
+        let prices = _orderBy((await this._getPrices())[currency], 'timestamp', 'desc');
         //Первый лемент - это закрытие последней свечи. Получаем время закрытия предыдущей свечи
         let prevCandleTimestamp = prices[0].timestamp - seconds * 1000;
         // Начинаем с последней свечи
         let candleIndex = candlesLimit;
         let chartData = {};
         for (let item of prices) {
+            let currentCandleTimestamp = prevCandleTimestamp;
             // Если новый элемент относится к предыдущей свече, то начинаем новую свечу
             if (item.timestamp < prevCandleTimestamp) {
                 prevCandleTimestamp -= seconds * 1000;
@@ -248,7 +249,7 @@ module.exports = class Router {
 
             if (!chartData[candleIndex]) {
                 chartData[candleIndex] = {
-                    timestamp: item.timestamp,
+                    timestamp: candleIndex === candlesLimit ? item.timestamp : currentCandleTimestamp,
                     open: item.price,
                     max: item.price,
                     min: item.price,

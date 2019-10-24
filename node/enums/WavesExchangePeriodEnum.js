@@ -19,7 +19,7 @@ module.exports = class WavesExchangePeriodEnum {
             [this.PERIOD_15M]: 900,
             [this.PERIOD_1H]: 3600,
             [this.PERIOD_8H]: 28800,
-            [this.PERIOD_1D]: 100800,
+            [this.PERIOD_1D]: 86400,
         }
     }
 
