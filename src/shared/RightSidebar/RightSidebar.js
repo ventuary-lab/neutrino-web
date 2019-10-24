@@ -94,7 +94,7 @@ export default class RightSidebar extends React.PureComponent {
                 />
                 <p className={bem.element('auth-info')}>
                     <a
-                        href='#'
+                        href='https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit'
                         target={'_blank'}
                     >
                         Terms of Service
