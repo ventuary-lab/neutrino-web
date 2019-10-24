@@ -2,13 +2,12 @@
   width: 100%;
   padding-left: 32px;
   padding-right: 32px;
-  //position: relative;
 
   &__chart-controls-line {
     position: absolute;
     z-index: 10;
     right: 32px;
-    top: 48px;
+    top: 20px;
   }
 
   &__chart-interval-picker {
