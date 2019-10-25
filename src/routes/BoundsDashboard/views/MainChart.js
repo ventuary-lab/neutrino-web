@@ -14,7 +14,7 @@ const bem = html.bem('MainChart');
 @dal.hoc(
     props => [
         {
-            url: `/api/v1/bonds/${props.pairName}/chart/${props.blockAmount || 100}`,
+            url: `/api/v1/bonds/${props.pairName}/chart/${props.blockAmount || 500}`,
             key: 'chartData',
             collection: CollectionEnum.BONDS_ORDERS_HISTORY,
         },
