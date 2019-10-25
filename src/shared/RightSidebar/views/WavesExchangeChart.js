@@ -19,7 +19,7 @@ const bem = html.bem('WavesExchangeChart');
 )
 @dal.hoc(
     props => ({
-        url: `/api/v1/waves-exchange/${props.sourceCurrency}/${props.period || WavesExchangePeriodEnum.PERIOD_1H}`,
+        url: `/api/v1/waves-exchange/${props.sourceCurrency}/${props.period || WavesExchangePeriodEnum.PERIOD_8H}`,
         key: 'chartData',
         collection: CollectionEnum.NEUTRINO_PRICES,
     })
