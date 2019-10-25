@@ -1,20 +1,6 @@
 
-.TransferModal {
-
+.CreateInvoiceModal {
   $root: &;
-
-  &_is-success {
-    #{$root}__inner {
-      background-color: #353569;
-      padding: 84px 130px 105px;
-    }
-  }
-
-  &_is-success {
-    #{$root}__header {
-      top: 24px;
-    }
-  }
 
   &__header {
     display: flex;
@@ -40,13 +26,24 @@
     justify-content: center;
   }
 
-  &__form,
-  &__success {
+  &__form {
     width: 100%;
+    margin-bottom: 26px;
+  }
 
-    &_d-none {
-      display: none;
-    }
+  &__link-block {
+    width: 85%;
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+  }
+
+  &__link {
+    margin-right: 20px;
+    word-break: break-word;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 16px;
   }
 
   .ModalView__content {

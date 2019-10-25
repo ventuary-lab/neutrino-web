@@ -1,29 +1,18 @@
 
-.TransferModal {
-
+.TransferInvoiceModal {
   $root: &;
-
-  &_is-success {
-    #{$root}__inner {
-      background-color: #353569;
-      padding: 84px 130px 105px;
-    }
-  }
-
-  &_is-success {
-    #{$root}__header {
-      top: 24px;
-    }
-  }
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 60px;
+    max-width: 310px;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
     width: 100%;
     background-color: #353569;
     font-size: 16px;
@@ -33,20 +22,12 @@
 
   &__inner {
     width: 100%;
+    background-color: #353569;
     padding: 125px 130px 105px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-
-  &__form,
-  &__success {
-    width: 100%;
-
-    &_d-none {
-      display: none;
-    }
   }
 
   .ModalView__content {
