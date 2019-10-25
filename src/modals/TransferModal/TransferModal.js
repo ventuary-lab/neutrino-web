@@ -47,14 +47,16 @@ export default class TransferModal extends React.PureComponent {
         return (
             <Modal
                 {...this.props.modalProps}
-                header={this.state.isSuccess
-                    ? __('Transferring was successful!')
-                    : __('Transferring funds to a user')
-                }
                 className={bem.block({
                     'is-success': this.state.isSuccess,
                 })}
             >
+                <div className={bem.element('header')}>
+                    {this.state.isSuccess
+                        ? __('Transferring was successful!')
+                        : __('Transferring funds to a user')
+                    }
+                </div>
                 <div className={bem.element('inner')}>
                     <div className={bem.element('form', {
                         'd-none': this.state.isSuccess,

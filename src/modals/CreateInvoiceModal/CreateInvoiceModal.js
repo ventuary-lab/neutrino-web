@@ -44,9 +44,11 @@ export default class CreateInvoiceModal extends React.PureComponent {
         return (
             <Modal
                 {...this.props.modalProps}
-                header={__('Creating Invoice')}
                 className={bem.block()}
             >
+                <div className={bem.element('header')}>
+                    {__('Create Invoice')}
+                </div>
                 <div className={bem.element('inner')}>
                     <div className={bem.element('form')}>
                         <TransferForm
