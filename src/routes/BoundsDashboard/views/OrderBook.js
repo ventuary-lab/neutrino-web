@@ -103,7 +103,7 @@ export default class OrderBook extends React.PureComponent {
                                 })}
                             >
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(order.total)}
+                                    {_round(order.restTotal)}
                                 </div>
                                 <div className={bem.element('body-column', 'address')}>
                                     {order.owner}
