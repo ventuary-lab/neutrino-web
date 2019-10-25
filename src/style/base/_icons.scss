@@ -149,4 +149,10 @@ $icons-dir: '../static/icons';
     min-height: 66px;
     background-image: url('#{$icons-dir}/successful.svg');
   }
+
+  &__copy {
+    min-width: 18px;
+    min-height: 21px;
+    background-image: url('#{$icons-dir}/copy.svg');
+  }
 }

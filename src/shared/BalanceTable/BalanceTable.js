@@ -15,6 +15,7 @@ import {
     getSourceCurrency
 } from 'reducers/currency';
 import TransferModal from 'modals/TransferModal';
+import CreateInvoiceModal from 'modals/CreateInvoiceModal';
 
 import './BalanceTable.scss';
 
@@ -148,7 +149,7 @@ export default class BalanceTable extends React.PureComponent {
                                 <button
                                     key={item.id}
                                     type={'button'}
-                                    onClick={() => this.props.dispatch(openModal(TransferModal, {
+                                    onClick={() => this.props.dispatch(openModal(item.id === 'send' ? TransferModal : CreateInvoiceModal, {
                                         currency: currency,
                                     }))}
                                     className={bem.element('control')}

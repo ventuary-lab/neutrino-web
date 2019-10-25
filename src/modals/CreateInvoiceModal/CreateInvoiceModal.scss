@@ -17,6 +17,10 @@
     font-weight: 400;
   }
 
+  .ModalView__content {
+    padding: 0;
+  }
+
   &__inner {
     width: 100%;
     padding: 125px 130px 105px;
@@ -44,9 +48,5 @@
     font-weight: 300;
     font-size: 13px;
     line-height: 16px;
-  }
-
-  .ModalView__content {
-    padding: 0;
   }
 }

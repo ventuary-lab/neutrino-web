@@ -9,16 +9,21 @@ import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
 import { getPairName } from 'reducers/currency';
+import PairsEnum from 'enums/PairsEnum';
+// import {getPairName} from 'reducers/currency';
 
 import './TransferModal.scss';
 
 const bem = html.bem('TransferModal');
 const FORM_ID = 'TransferModalForm';
 
-@connect((state) => ({
-    pairName: getPairName(state),
-    formValues: getFormValues(FORM_ID)(state)
-}))
+
+@connect(
+    state => ({
+        // pairName: getPairName(state),
+        formValues: getFormValues(FORM_ID)(state),
+    })
+)
 export default class TransferModal extends React.PureComponent {
     static propTypes = {
         currency: PropTypes.string
@@ -96,7 +101,7 @@ export default class TransferModal extends React.PureComponent {
         ]);
 
         dal.transferFunds(
-            this.props.pairName,
+            PairsEnum.USDNB_USDN, //TODO
             this.props.currency,
             address,
             amount
