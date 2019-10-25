@@ -143,4 +143,10 @@ $icons-dir: '../static/icons';
     min-height: 20px;
     background-image: url('#{$icons-dir}/eur-nb.svg');
   }
+
+  &__successful {
+    min-width: 66px;
+    min-height: 66px;
+    background-image: url('#{$icons-dir}/successful.svg');
+  }
 }

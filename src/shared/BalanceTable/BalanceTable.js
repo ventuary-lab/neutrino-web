@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getUser} from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
+import {openModal} from 'yii-steroids/actions/modal';
 
 import {html, dal} from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -13,6 +14,7 @@ import {
     getPairName,
     getSourceCurrency
 } from 'reducers/currency';
+import TransferModal from 'modals/TransferModal';
 
 import './BalanceTable.scss';
 
@@ -130,16 +132,35 @@ export default class BalanceTable extends React.PureComponent {
 
         return (
             <div className={bem.element('controls-column')}>
-                {['Icon__double-arrow-up', 'Icon__double-arrow-down', 'Icon__trade']
-                    .map((item, index) => (
-                        <a
-                            key={index}
-                            href={`https://dex.wavesplatform.com/dex-demo?assetId2=${assetId2}&assetId1=${assetId1}`}
-                            target={'_blank'}
-                            className={bem.element('control')}
-                        >
-                            <span className={item}/>
-                        </a>
+                {[
+                    {id: 'send', icon: 'Icon__double-arrow-up'},
+                    {id: 'receive', icon: 'Icon__double-arrow-down'},
+                    {id: 'trade', icon: 'Icon__trade'}
+                ]
+                    .map(item => (
+                        <>
+                            {item.id !== 'trade' && (
+                                <button
+                                    key={item.id}
+                                    type={'button'}
+                                    onClick={() => this.props.dispatch(openModal(TransferModal, {
+                                        currency: currency,
+                                    }))}
+                                    className={bem.element('control')}
+                                >
+                                    <span className={item.icon}/>
+                                </button>
+                            ) || (
+                                <a
+                                    key={item.id}
+                                    href={`https://dex.wavesplatform.com/dex-demo?assetId2=${assetId2}&assetId1=${assetId1}`}
+                                    target={'_blank'}
+                                    className={bem.element('control')}
+                                >
+                                    <span className={item.icon}/>
+                                </a>
+                            )}
+                        </>
                     ))
                 }
             </div>

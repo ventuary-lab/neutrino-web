@@ -75,6 +75,15 @@
 
   &__control {
     display: flex;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+
+    &:focus {
+      outline: none;
+    }
 
     &:hover {
       opacity: 0.5;

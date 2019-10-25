@@ -269,4 +269,17 @@ export default class DalComponent {
         );
     }
 
+    async transferFunds(pairName, paymentCurrency, address, amount) {
+        await this.keeper.sendTransaction(
+            pairName,
+            ContractEnum.NEUTRINO,
+            'transfer',
+            [
+                address
+            ],
+            this.assets[paymentCurrency],
+            amount,
+        );
+    }
+
 }
