@@ -1,0 +1,34 @@
+
+.TransferModal {
+
+  .ModalView__content {
+    padding: 0;
+  }
+
+  $root: &;
+
+  &_is-success {
+    #{$root}__inner {
+      background-color: #353569;
+      padding: 84px 130px 105px;
+    }
+  }
+
+  &__inner {
+    width: 100%;
+    padding: 125px 130px 105px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__form,
+  &__success {
+    width: 100%;
+
+    &_d-none {
+      display: none;
+    }
+  }
+}

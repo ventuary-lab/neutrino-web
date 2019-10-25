@@ -1,0 +1,22 @@
+
+.TransferForm {
+  $root: &;
+
+  width: 100%;
+
+  label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #fff;
+  }
+
+  &__input {
+    margin-bottom: 38px;
+  }
+
+  &__submit-button {
+    width: 260px;
+  }
+
+}
