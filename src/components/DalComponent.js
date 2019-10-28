@@ -111,13 +111,14 @@ export default class DalComponent {
         );
     }
 
-    async withdraw(pairName, address) {
+    async withdraw(pairName, address, index) {
         await this.keeper.sendTransaction(
             pairName,
             ContractEnum.NEUTRINO,
             'withdraw',
             [
                 address,
+                index
             ],
             'WAVES',
             0,

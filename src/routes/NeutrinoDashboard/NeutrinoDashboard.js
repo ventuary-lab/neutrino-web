@@ -76,6 +76,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             wavesBlocked: PropTypes.number,
             unblockBlock: PropTypes.number,
             height: PropTypes.number,
+            index: PropTypes.number
         }),
     };
 
@@ -498,6 +499,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     _withdraw() {
-        return dal.withdraw(this.props.pairName, this.props.user.address);
+        return dal.withdraw(this.props.pairName, this.props.user.address, this.props.withdraw.index);
     }
 }

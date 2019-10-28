@@ -66,7 +66,7 @@ export default class OrderBook extends React.PureComponent {
                     {this.props.formTab === 'liquidate' && (
                         <>
                             <div className={bem.element('header-column', 'upper-case')}>
-                                {_round(_sum(this.props.orders.map(order => order.total)))}
+                                {_round(_sum(this.props.orders.map(order => order.restTotal)))}
                             </div>
                         </>
                     )}
@@ -103,7 +103,7 @@ export default class OrderBook extends React.PureComponent {
                                 })}
                             >
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(order.total)}
+                                    {_round(order.restTotal)}
                                 </div>
                                 <div className={bem.element('body-column', 'address')}>
                                     {order.owner}
