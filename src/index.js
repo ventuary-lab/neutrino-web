@@ -7,9 +7,9 @@ import './style/index.scss';
 
 (init => {
     const sentryDsn = {
-        dev: 'https://7588107dfdb24bdfba2cb864fdaa5dc2@sentry.kozhindev.com/28',
-        alpha: 'https://ecbff1e8fb6c46f6a083288b455a9d87@sentry.kozhindev.com/29',
-        locale: 'https://bff24cc83e57411d9ce98c7cd9d7d119@sentry.kozhindev.com/32',
+        dev: 'https://258769261d4f44cc8f7f9fdd8db16549@sentry.io/1798433',
+        alpha: 'https://0768277c4fd74cb388978b52b4176398@sentry.io/1798430',
+        locale: 'https://3bc32bbc059841ed839f0880f06e139d@sentry.io/1798437',
     };
 
     if (window.Raven) {
