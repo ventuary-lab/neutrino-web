@@ -22,10 +22,10 @@
     }
 
     &_right {
-      width: 100%;
       display: flex;
       flex-direction: column;
-      @include gradient-bg(222.77deg)
+      @include gradient-bg(222.77deg);
+      width: calc(100vw - 735px);
     }
   }
 
