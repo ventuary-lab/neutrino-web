@@ -45,6 +45,10 @@
 
   &__orders-nav {
     height: 100%;
+
+    & > :first-child {
+      overflow-x: auto;
+    }
   }
 
   &__graph {
