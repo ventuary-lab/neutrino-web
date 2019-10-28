@@ -1,4 +1,5 @@
 import React from 'react';
+import {replace} from 'react-router-redux';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Modal from 'yii-steroids/ui/modal/Modal';
@@ -79,6 +80,7 @@ export default class TransferInvoiceModal extends React.PureComponent {
                 this.setState({
                     isSuccess: true,
                 });
+                this.props.dispatch(replace('/'));
             })
             .catch(err => console.log('Transfer error: ', err));
     }
