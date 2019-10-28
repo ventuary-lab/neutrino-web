@@ -6,6 +6,8 @@ import Modal from 'yii-steroids/ui/modal/Modal';
 
 
 import {html, dal} from 'components';
+import PairsEnum from 'enums/PairsEnum';
+import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
 import {getPairName} from 'reducers/currency';
@@ -86,6 +88,14 @@ export default class TransferModal extends React.PureComponent {
     }
 
     _onSubmit(address, amount) {
+
+        validate(address, [
+            ['address', function (address) {
+                if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+                    return __('Recipient address is not valid');
+                }
+            }]
+        ]);
 
         dal.transferFunds(
             this.props.pairName,

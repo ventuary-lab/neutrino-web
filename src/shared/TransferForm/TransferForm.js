@@ -39,7 +39,7 @@ export default class TransferForm extends React.PureComponent {
                 onSubmit={() => this.props.onSubmit(address, amount)}
             >
                 <InputField
-                    className={bem.element('input')}
+                    layoutClassName={bem.element('input')}
                     attribute={'address'}
                     label={__('Transfer recipient')}
                     inputProps={{

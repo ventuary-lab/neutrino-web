@@ -9,6 +9,7 @@ import {html} from 'components';
 import CopyToClipboard from 'shared/CopyToClipboard';
 import TransferForm from 'shared/TransferForm';
 import {getPairName} from 'reducers/currency';
+import validate from 'shared/validate';
 
 import './CreateInvoiceModal.scss';
 
@@ -71,6 +72,14 @@ export default class CreateInvoiceModal extends React.PureComponent {
     }
 
     _onSubmit(address, amount) {
+        validate(address, [
+            ['address', function (address) {
+                if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+                    return __('Recipient address is not valid');
+                }
+            }]
+        ]);
+
         const link = `${location.origin}?invoiceAddress=${address}&invoiceAmount=${amount}&invoiceCurrency=${this.props.currency}`;
 
         this.setState({invoiceLink: link})
