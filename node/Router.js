@@ -5,7 +5,7 @@ const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
 const moment = require('moment');
-
+const Utils = require('./utils');
 
 module.exports = class Router {
 
@@ -69,22 +69,23 @@ module.exports = class Router {
                     let historySyncIndex = -1;
                     let historyElementIndex = -1;
                     for(let i = 0; i < balanceHistory.length; i++){
-                        if(balanceHistory[i] > index)
+                        if (balanceHistory[i] > index) {
                             break;
+                        };
 
                         historySyncIndex = balanceHistory[i]
                         historyElementIndex = i
 
-                        if(balanceHistory[i] == index)
+                        if (balanceHistory[i] == index) {
                             break;
+                        }
                     }
 
                     console.log('---historySyncIndex', historySyncIndex);
                     console.log('---historyElementIndex', historyElementIndex);
 
-
                     const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
-                  //  const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
+                    //  const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
                     console.log('---userHistoryBlanace', neutrinoHistoryBalance);
 
 
@@ -94,8 +95,9 @@ module.exports = class Router {
 
                     console.log('---profit', profit);
 
-                    if(neutrinoHistoryBalance <= 0 || profit == 0)
+                    if (neutrinoHistoryBalance <= 0 || profit == 0) {
                         continue;
+                    }
 
                     rpdChecks.push({
                         index: index,
@@ -163,9 +165,21 @@ module.exports = class Router {
             '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
                 let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY).getItemsAll();
                 const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
-                orders = _orderBy(orders, 'height', 'desc');
+
+
+                orders = Utils.orderBy(
+                    orders,
+                    'height',
+                    'desc',
+                    { toNumber: true }
+                );
+                
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
-                return orders.map(order => [timestamps[order.height], order.discountPercent])
+
+                return orders.map(order => [
+                    timestamps[order.height],
+                    order.discountPercent
+                ]);
             },
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
