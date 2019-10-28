@@ -325,9 +325,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             !_toNumber(_get(this.props.formValues, 'neutrino'))
                         }
                         className={bem.element('submit-button')}
-                        label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
+                        label={this.state.isWavesLeft ? __('Issue {currency}', {
                             currency: CurrencyEnum.getLabel(this.props.quoteCurrency)
-                        }) : __('Generate Waves')}
+                        }) : __('Redeem WAVES')}
                         onClick={() => this.setState({step: 'details'})}
                     />
                     {this.renderWithdraw()}
