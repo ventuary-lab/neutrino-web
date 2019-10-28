@@ -6,9 +6,9 @@ const Sentry = require('@sentry/node');
 require('dotenv').config();
 
 const sentryDsn = {
-    dev: 'https://af513f82d6cb4b2b8a6812b3dc545c70@sentry.kozhindev.com/25',
-    alpha: 'https://afa7b47becd14b2d98954a3d190edf48@sentry.kozhindev.com/26',
-    locale: 'https://564449fbc3c1478382e784e77aaf404c@sentry.kozhindev.com/31',
+    dev: 'https://258769261d4f44cc8f7f9fdd8db16549@sentry.io/1798433',
+    alpha: 'https://0768277c4fd74cb388978b52b4176398@sentry.io/1798430',
+    locale: 'https://3bc32bbc059841ed839f0880f06e139d@sentry.io/1798437',
 };
 
 //sentry
@@ -21,6 +21,11 @@ if (process.env.APP_ENV) {
 // Create app
 const port = process.env.PORT || 5000;
 const httpServer = expressApp.listen(port, () => {
+
+    setTimeout(() => {
+        throw new Error('Test for sentry');
+    }, 3000);
+
     console.log(__dirname); // eslint-disable-line no-console
     console.log('Listening Port ' + port); // eslint-disable-line no-console
 });
