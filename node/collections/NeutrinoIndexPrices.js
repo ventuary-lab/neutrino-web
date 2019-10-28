@@ -27,7 +27,7 @@ module.exports = class NeutrinoIndexPrices extends BaseCollection {
 
     async _prepareItem(id, item) {
         return {
-            index: id,
+            index: Number(id),
             height: item['price_index_' + id]
         };
     }
@@ -35,7 +35,7 @@ module.exports = class NeutrinoIndexPrices extends BaseCollection {
     async _postProcessItem(id, item) {
         return {
             ...item,
-            index: id
+            index: Number(id)
         };
     }
 
