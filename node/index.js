@@ -21,11 +21,6 @@ if (process.env.APP_ENV) {
 // Create app
 const port = process.env.PORT || 5000;
 const httpServer = expressApp.listen(port, () => {
-
-    setTimeout(() => {
-        throw new Error('Test for sentry');
-    }, 3000);
-
     console.log(__dirname); // eslint-disable-line no-console
     console.log('Listening Port ' + port); // eslint-disable-line no-console
 });
