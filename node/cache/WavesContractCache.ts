@@ -7,12 +7,12 @@ import TransactionListener from './listeners/TransactionListener';
 import HeightListener from './listeners/HeightListener';
 import winston, { Logger } from 'winston';
 
-class WavesContractCache implements Cache {
+class WavesContractCache {
     nodeUrl: string;
     dApp: string;
     updateHandler: () => void | null;
     logger: Logger;
-    storage: BaseStorage;
+    storage: RedisStorage;
     transactionListener: TransactionListener;
     heightListener: HeightListener;
 
@@ -38,15 +38,14 @@ class WavesContractCache implements Cache {
         });
 
         // Create storage
-        this.storage = params.storage instanceof BaseStorage
-            ? params.storage
-            : new RedisStorage(params.storage);
+        this.storage = new RedisStorage(params.storage);
 
         // Create transaction listener
         this.transactionListener = params.transactionListener instanceof TransactionListener
             ? params.transactionListener
             : new TransactionListener(params.transactionListener);
-        this.transactionListener.app = this;
+
+        // this.transactionListener.app = this;
         this.transactionListener.storage = this.storage;
         this.transactionListener.transactionsHandler = this._onTransactions.bind(this);
 
@@ -54,6 +53,7 @@ class WavesContractCache implements Cache {
         this.heightListener = params.heightListener instanceof HeightListener
             ? params.heightListener
             : new HeightListener(params.heightListener);
+
         this.heightListener.app = this;
         this.heightListener.storage = this.storage;
         this.heightListener.heightsHandler = this._onHeight.bind(this);

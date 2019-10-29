@@ -1,12 +1,33 @@
-const axios = require('axios');
+import axios from 'axios';
+import RedisStorage from '../storage/RedisStorage';
 
-module.exports = class HeightListener {
+import { ApplicationConfig } from './../types';
 
-    constructor(params = {}) {
-        this.app = null;
-        this.intervalSec = params.intervalSec || 1;
-        this.heightsHandler = params.heightsHandler || null;
+interface HeightListenerParams {
+    app: ApplicationConfig | null;
+    intervalSec: number;
+    _lastHeight: string | null;
+    heightsHandler: (height?: string) => void | null;
+}
 
+const defaultParams: HeightListenerParams = {
+    app: null,
+    intervalSec: 1,
+    heightsHandler: null,
+    _lastHeight: null
+}
+
+class HeightListener implements HeightListenerParams {
+    app: ApplicationConfig | null;
+    intervalSec: number;
+    _lastHeight: string | null;
+    heightsHandler: (height?: string) => void | null;
+    storage: RedisStorage | undefined;
+
+    constructor(params = defaultParams) {
+        this.app = params.app;
+        this.intervalSec = params.intervalSec;
+        this.heightsHandler = params.heightsHandler;
         this._lastHeight = null;
         this._next = this._next.bind(this);
     }
@@ -47,3 +68,5 @@ module.exports = class HeightListener {
     }
 
 };
+
+export default HeightListener;

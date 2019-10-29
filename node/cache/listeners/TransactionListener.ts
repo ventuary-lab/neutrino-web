@@ -1,4 +1,5 @@
 import axios from 'axios';
+import RedisStorage from '../storage/RedisStorage';
 
 import { ApplicationConfig } from './../types';
 
@@ -17,6 +18,7 @@ class TransactionListener implements TransactionListenerParams {
     intervalSec: number;
     transactionsHandler: (any) => void | null;
     _lastTransactionId: string | null;
+    storage: RedisStorage | undefined;
 
     constructor(params = defaultParams) {
         this.app = null;
