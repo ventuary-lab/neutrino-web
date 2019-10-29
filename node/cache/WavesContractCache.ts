@@ -1,7 +1,7 @@
 import {
     get as _get
 } from 'lodash';
-import BaseStorage from './storage/BaseStorage';
+// import BaseStorage from './storage/BaseStorage';
 import RedisStorage from './storage/RedisStorage';
 import TransactionListener from './listeners/TransactionListener';
 import HeightListener from './listeners/HeightListener';
@@ -10,7 +10,7 @@ import winston, { Logger } from 'winston';
 class WavesContractCache {
     nodeUrl: string;
     dApp: string;
-    updateHandler: () => void | null;
+    updateHandler: (...args: any[]) => void | null;
     logger: Logger;
     storage: RedisStorage;
     transactionListener: TransactionListener;
@@ -18,10 +18,11 @@ class WavesContractCache {
 
     constructor(params) {
         params = params || {};
+        const { nodeUrl, dApp, updateHandler } = params;
 
-        this.nodeUrl = params.nodeUrl;
-        this.dApp = params.dApp;
-        this.updateHandler = params.updateHandler || null;
+        this.nodeUrl = nodeUrl;
+        this.dApp = dApp;
+        this.updateHandler = updateHandler || null;
 
         // Create logger
         this.logger = winston.createLogger({
@@ -45,7 +46,7 @@ class WavesContractCache {
             ? params.transactionListener
             : new TransactionListener(params.transactionListener);
 
-        // this.transactionListener.app = this;
+        this.transactionListener.app = { nodeUrl, dApp };
         this.transactionListener.storage = this.storage;
         this.transactionListener.transactionsHandler = this._onTransactions.bind(this);
 
@@ -54,16 +55,16 @@ class WavesContractCache {
             ? params.heightListener
             : new HeightListener(params.heightListener);
 
-        this.heightListener.app = this;
+        // this.heightListener.app = this;
         this.heightListener.storage = this.storage;
         this.heightListener.heightsHandler = this._onHeight.bind(this);
     }
 
     async start() {
-        // this.logger.info('Start listen income transactions and height updates... Node ' + this.nodeUrl + ', DApp ' + this.dApp);
+        this.logger.info('Start listen income transactions and height updates... Node ' + this.nodeUrl + ', DApp ' + this.dApp);
 
-        // await this.heightListener.start();
-        // await this.transactionListener.start();
+        await this.heightListener.start();
+        await this.transactionListener.start();
     }
 
     _onTransactions(transactions) {
@@ -94,4 +95,4 @@ class WavesContractCache {
 
 };
 
-export default WavesContractCache;
+module.exports = WavesContractCache;

@@ -90,7 +90,7 @@ class RedisStorage {
         return new Promise((resolve, reject) => {
             const callback = this.getDefaultRedisCallback(resolve, reject);
 
-            this._redisClient[mutatedMethodName].apply(this._redisClient, [mutatedMethodName, ...restParams, callback]);
+            this._redisClient[methodName].apply(this._redisClient, [...restParams, callback]);
         });
     }
 };

@@ -53,7 +53,7 @@ class HeightListener implements HeightListenerParams {
             response = await axios.get(`${this.app.nodeUrl}/blocks/height`);
         } catch (e) {
             console.error(`HeightListener Error on fetch height: ${String(e)}`);
-            throw e;
+            // throw e;
         }
         const height = response.data.height;
 

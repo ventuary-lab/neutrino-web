@@ -1,6 +1,6 @@
 const redis = require('redis');
 const winston = require('winston');
-const WavesContractCache = require('./cache/WavesContractCache');
+const WavesContractCache = require('./cache/WavesContractCache.ts');
 const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
 const WebSocketServer = require('./components/WebSocketServer');
 const HeightListener = require('./components/HeightListener');
@@ -157,6 +157,7 @@ module.exports = class App {
         });
 
         console.log('---createContract');
+        console.log(WavesContractCache)
 
         const contract = new WavesContractCache({
             dApp,

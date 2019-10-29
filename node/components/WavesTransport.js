@@ -52,7 +52,7 @@ class WavesTransport {
             return await axios.get(url);
         } catch (err) {
             this.logger.error(`WavesTransport Error: url - ${String(url)}, ${String(err.stack || err)}`);
-            throw err;
+            // throw err;
         }
     }
 

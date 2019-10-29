@@ -83,7 +83,7 @@ module.exports = class HeightListener {
             result = await axios.get(`${this.nodeUrl}/${url}`);
         } catch (err) {
             this.logger.error(`HeightListener Request Error: url - ${String(url)}, ${String(err.stack || err)}`);
-            throw err;
+            // throw err;
         }
         return result.data;
     }

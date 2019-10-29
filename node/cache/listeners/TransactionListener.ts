@@ -14,7 +14,7 @@ const defaultParams: TransactionListenerParams = {
 };
 
 class TransactionListener implements TransactionListenerParams {
-    app: ApplicationConfig | null;
+    app: Partial<ApplicationConfig> | null;
     intervalSec: number;
     transactionsHandler: (any) => void | null;
     _lastTransactionId: string | null;
@@ -60,6 +60,7 @@ class TransactionListener implements TransactionListenerParams {
         // Trigger events with new transactions
         if (this.transactionsHandler) {
             const appTransactions = transactions.filter(item => item.dApp === this.app.dApp && item.call);
+
             if (appTransactions.length > 0) {
                 this.transactionsHandler(transactions.reverse());
             }
@@ -80,11 +81,14 @@ class TransactionListener implements TransactionListenerParams {
         // Remote request
         const query = afterId ? '?after=' + afterId : '';
         let response = null;
+        
+        // console.log(this.app)
+
         try {
             response = await axios.get(`${this.app.nodeUrl}/transactions/address/${this.app.dApp}/limit/${pageSize}${query}`);
         } catch (e) {
             console.error(`TransactionListener Error on fetch transactions: ${String(e)}, ${JSON.stringify(e.response.data)}`);
-            throw e;
+            // throw e;
         }
 
         // Get only new transactions
@@ -119,7 +123,7 @@ class TransactionListener implements TransactionListenerParams {
                         };
                     } else {
                         console.error(`TransactionListener Error on fetch transaction info: ${String(e)}, ${JSON.stringify(e.response.data)}`);
-                        throw e;
+                        // throw e;
                     }
                 }
 
