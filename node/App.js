@@ -1,6 +1,6 @@
 const redis = require('redis');
 const winston = require('winston');
-const WavesContractCache = require('waves-contract-cache');
+const WavesContractCache = require('./cache/WavesContractCache');
 const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
 const WebSocketServer = require('./components/WebSocketServer');
 const HeightListener = require('./components/HeightListener');
@@ -17,6 +17,7 @@ module.exports = class App {
     constructor(params = {}) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
         this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
+
         switch (this.network) {
             case 'mainnet':
                 this.nodeUrl = 'https://nodes.wavesplatform.com';

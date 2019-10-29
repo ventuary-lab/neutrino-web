@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "5.7.0",
+    "@types/lodash": "^4.14.144",
     "@waves/waves-crypto": "^3.0.17",
     "@waves/waves-transactions": "^3.16.3",
     "dotenv": "^8.1.0",
@@ -20,6 +21,8 @@
     "react-slick": "^0.25.2",
     "svg-inline-loader": "^0.8.0",
     "svg-inline-react": "^3.1.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4",
     "waves-contract-cache": "^0.2.0",
     "websocket": "^1.0.29",
     "yii-steroids": "^1.14.0"
