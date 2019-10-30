@@ -14,12 +14,12 @@ function main {
 function rewrite_require {
     local data=$(cat $1);
 
-    
+    IFS=$'\n'
     for line in $data 
     do
         local conforms=$(
             node -e "
-                \`$data\`.match(/^const (\w+) = require/g)
+                \`$line\`.match(/^const (\w+) = require/g)
             " -p
         );
 
@@ -28,7 +28,7 @@ function rewrite_require {
             local line=$(
                 node -e "
                     let d = \`
-                        $data
+                        $line
                     \`;
                     d = d.replace(/const/, 'import');
 
@@ -38,7 +38,7 @@ function rewrite_require {
                         return ' from ' + res + ';';
                     });
 
-                    console.log(d);
+                    console.log(d.trim());
                 "
             );
             echo $line;

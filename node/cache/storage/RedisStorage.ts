@@ -6,11 +6,14 @@ import {
 /**
  * redisClient is any due to absence of type declaration in 'redis' module
  */
-interface RedisStorageParams {
+export interface RedisStorageParams {
     namespace: string;
     redisClient: any;
     redis: string;
 };
+export interface RedisStorageConstructor {
+    new (params: RedisStorageParams): RedisStorage;
+}
 const defaultParams = {
     namespace: 'waves-contract-cache',
     redisClient: null

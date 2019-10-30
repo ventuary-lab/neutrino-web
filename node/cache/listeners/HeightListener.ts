@@ -32,23 +32,17 @@ class HeightListener implements HeightListenerParams {
         this._next = this._next.bind(this);
     }
 
-    /**
-     * @returns {Promise<void>}
-     */
-    async start() {
+    async start(): Promise<any> {
         return this._next();
     }
 
-    getHeight() {
+    getHeight(): string | undefined {
         return this._lastHeight;
     }
 
-    /**
-     * @returns {Promise<void>}
-     * @private
-     */
     async _next() {
         let response = null;
+
         try {
             response = await axios.get(`${this.app.nodeUrl}/blocks/height`);
         } catch (e) {
@@ -66,7 +60,6 @@ class HeightListener implements HeightListenerParams {
         // Next tick
         setTimeout(this._next, this.intervalSec * 1000);
     }
-
 };
 
 export default HeightListener;

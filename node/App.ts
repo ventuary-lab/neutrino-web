@@ -1,22 +1,34 @@
-const redis = require('redis');
-const winston = require('winston');
-const WavesContractCache = require('./cache/WavesContractCache.ts');
-const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
-const WebSocketServer = require('./components/WebSocketServer');
-const HeightListener = require('./components/HeightListener');
-const WavesTransport = require('./components/WavesTransport');
-const PairsEnum = require('./enums/PairsEnum');
-const ContractEnum = require('./enums/ContractEnum');
-const CurrencyEnum = require('./enums/CurrencyEnum');
-const CollectionEnum = require('./enums/CollectionEnum');
+import redis from 'redis';
+import winston, { Logger } from 'winston';
+import WavesContractCache from './cache/WavesContractCache';
+import RedisStorage from './cache/storage/RedisStorage';
+import WebSocketServer  from './components/WebSocketServer';
+import HeightListener  from './components/HeightListener';
+import WavesTransport  from './components/WavesTransport';
+import PairsEnum  from './enums/PairsEnum';
+import ContractEnum  from './enums/ContractEnum';
+import CurrencyEnum  from './enums/CurrencyEnum';
+import CollectionEnum  from './enums/CollectionEnum';
 
 const Router = require('./Router');
 
+interface DAppPairs {
+    [key: string]: string;
+}
+
 module.exports = class App {
+    network: string;
+    isCleaningRedis: string | boolean;
+    nodeUrl: string;
+    redisNamespace: string;
+    dApps: DAppPairs;
+    _redisClient: any;
+    storage: RedisStorage;
+    logger: Logger;
 
     constructor(params = {}) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
-        this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
+        this.isCleaningRedis = Boolean(process.env.IS_CLEANING_REDIS) || false;
 
         switch (this.network) {
             case 'mainnet':

@@ -95,4 +95,4 @@ class WavesContractCache {
 
 };
 
-module.exports = WavesContractCache;
+export default WavesContractCache;
