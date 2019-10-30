@@ -1,22 +1,29 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
+import { 
+    http as ExpressHttp,
+    core as ExpressCore
+} from 'express';
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
-import WebSocketServer  from './components/WebSocketServer';
-import HeightListener  from './components/HeightListener';
-import WavesTransport  from './components/WavesTransport';
-import PairsEnum  from './enums/PairsEnum';
-import ContractEnum  from './enums/ContractEnum';
-import CurrencyEnum  from './enums/CurrencyEnum';
+import WebSocketServer from './components/WebSocketServer';
+
+import HeightListener from './components/HeightListener';
+import WavesTransport from './components/WavesTransport';
+import PairsEnum from './enums/PairsEnum';
+import ContractEnum from './enums/ContractEnum';
+import CurrencyEnum from './enums/CurrencyEnum';
 import CollectionEnum  from './enums/CollectionEnum';
+import {
+    DAppPairs
+} from './types';
 
 const Router = require('./Router');
 
-interface DAppPairs {
-    [key: string]: string;
-}
-
-module.exports = class App {
+// interface DAppPairs {
+//     [key: string]: string;
+// }
+interface ApplicationParams {
     network: string;
     isCleaningRedis: string | boolean;
     nodeUrl: string;
@@ -25,8 +32,34 @@ module.exports = class App {
     _redisClient: any;
     storage: RedisStorage;
     logger: Logger;
+    heightListener: HeightListener;
+    httpServer: ExpressHttp.server;
+    expressApp: ExpressCore.Express;
+}
 
-    constructor(params = {}) {
+module.exports = class App implements ApplicationParams {
+    // Parameter types
+    network: string;
+    isCleaningRedis: string | boolean;
+    nodeUrl: string;
+    redisNamespace: string;
+    dApps: DAppPairs;
+    _redisClient: any;
+    storage: RedisStorage;
+    logger: Logger;
+    heightListener: HeightListener;
+
+    // Internal class props
+    _isSkipUpdates: boolean;
+    _isNowUpdated: boolean;
+    _isNeedUpdateAgain: boolean;
+    assets: DAppPairs | null;
+    _contracts: DAppPairs | null;
+    _collections: DAppPairs | null;
+    _router: any;
+    _websocket: WebSocketServer;
+
+    constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
         this.isCleaningRedis = Boolean(process.env.IS_CLEANING_REDIS) || false;
 
@@ -45,7 +78,7 @@ module.exports = class App {
         this.dApps = {
             [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
-            //[PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
+            // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
         // Create main redis client & storage
@@ -108,6 +141,7 @@ module.exports = class App {
 
         this._router.start();
         this._websocket.start();
+
         await this.heightListener.start();
 
         console.log('---before heightListener');
@@ -139,7 +173,9 @@ module.exports = class App {
 
         //add assets to collections
         for (const pairName of PairsEnum.getKeys()) {
+
             for (const collectionName of CollectionEnum.getKeys()) {
+
                 this._collections[pairName][collectionName].assets = this.assets;
             }
         }
@@ -216,8 +252,9 @@ module.exports = class App {
         return collection;
     }
 
-    async _loadAssetIds() {
-        const assets = {};
+    async _loadAssetIds (): Promise<Partial<DAppPairs>> {
+        const assets: Partial<DAppPairs> = {};
+
         for (let pairName of PairsEnum.getKeys()) {
             const currencies = [
                 PairsEnum.getBase(pairName),
@@ -232,10 +269,11 @@ module.exports = class App {
                 }
             }
         }
+
         return assets;
     }
 
-    async _updateAll(flush) {
+    async _updateAll(shouldFlush: boolean | undefined) {
         if (this._isNowUpdated) {
             return;
         }
@@ -247,12 +285,14 @@ module.exports = class App {
                 for (const collectionName of CollectionEnum.getKeys()) {
                     const collection = this.getCollection(pairName, collectionName);
                     const contractName = CollectionEnum.getContractName(collectionName);
+
                     if (!data[contractName]) {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
                     this.logger.info('Update all data in collection... ' + collectionName);
-                    if (flush) {
+
+                    if (shouldFlush) {
                         await collection.removeAll();
                     }
                     await collection.updateAll(data[contractName]);

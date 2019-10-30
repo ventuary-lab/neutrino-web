@@ -1,6 +1,7 @@
-const _isString = require('lodash/isString');
-const _trim = require('lodash/trim');
-const axios = require('axios');
+import { Logger } from 'winston';
+import _isString from 'lodash/isString';
+import _trim from 'lodash/trim';
+import axios from 'axios';
 
 const convertValueToJs = (value) => {
     return _isString(value) && ['{', '['].includes(value.substr(0, 1))
@@ -8,9 +9,18 @@ const convertValueToJs = (value) => {
         : value;
 };
 
-class WavesTransport {
+export interface WavesTransportParams {
+    dApp: string;
+    nodeUrl: string;
+    logger: Logger;
+}
 
-    constructor(params) {
+class WavesTransport implements WavesTransportParams {
+    dApp: string;
+    nodeUrl: string;
+    logger: Logger;
+
+    constructor(params: WavesTransportParams) {
         this.dApp = params.dApp;
         this.nodeUrl = params.nodeUrl;
         this.logger = params.logger;
@@ -58,4 +68,4 @@ class WavesTransport {
 
 }
 
-module.exports = WavesTransport;
+export default WavesTransport;

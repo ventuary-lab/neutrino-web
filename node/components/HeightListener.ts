@@ -3,15 +3,6 @@ import axios from 'axios';
 import { Logger } from 'winston';
 import RedisStorage from '../cache/storage/RedisStorage';
 
-const defaultParams = {
-    nodeUrl: '',
-    logger: null,
-    storage: null,
-    updateHandler: null,
-    intervalSec: 1,
-    _lastHeight: null
-}
-
 class HeightListener {
     nodeUrl: string;
     logger: Logger;
@@ -21,7 +12,7 @@ class HeightListener {
     _lastHeight: number | null;
     STORAGE_BLOCK_TIMESTAMPS_KEY: string;
     
-    constructor(params = defaultParams) {
+    constructor(params) {
         this.nodeUrl = params.nodeUrl;
         this.logger = params.logger;
         this.storage = params.storage;
