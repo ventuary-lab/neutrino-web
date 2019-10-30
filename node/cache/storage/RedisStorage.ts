@@ -13,7 +13,7 @@ interface RedisStorageParams {
 };
 const defaultParams = {
     namespace: 'waves-contract-cache',
-    redis: ''
+    redisClient: null
 }
 
 class RedisStorage {
@@ -24,7 +24,7 @@ class RedisStorage {
         // Create redis connection
         this._namespace = params.namespace || 'waves-contract-cache';
         // this._redisClient = params.redisClient || redis.createClient( || {});
-        this._redisClient = redis.createClient(params.redis);
+        this._redisClient = params.redisClient;
     }
 
     get(key) {
