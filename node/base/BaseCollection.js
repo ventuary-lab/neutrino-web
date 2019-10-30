@@ -1,3 +1,5 @@
+const Sentry = require('@sentry/node');
+
 module.exports = class BaseCollection {
 
     constructor(params = {}) {
@@ -33,6 +35,9 @@ module.exports = class BaseCollection {
 
     async getItem(id) {
         let item = await this.storage.hget(this.getStorageKey(), id);
+
+        console.log({ item, id });
+
         if (!item) {
             return null;
         }
@@ -40,6 +45,7 @@ module.exports = class BaseCollection {
         item = JSON.parse(item);
         item.id = id;
         item = await this._postProcessItem(id, item);
+
         return item;
     }
 
@@ -136,6 +142,15 @@ module.exports = class BaseCollection {
         }
         if (keys.includes('height')) {
             data.height = this.heightListener.getLast();
+        }
+
+        if (id === 'usd-nb_usd-n' && data.price === 1) {
+            try {
+                throw new Error(JSON.stringify({ id, data, colName: this.collectionName }));
+            } catch (err) {
+                console.log(err);
+                Sentry.captureException(err);
+            }
         }
 
         const item = await this._prepareItem(id, data);

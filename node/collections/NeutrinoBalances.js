@@ -26,7 +26,7 @@ module.exports = class NeutrinoBalances extends BaseCollection {
             }
 
             if (this.assetId) {
-                break;
+                continue;
             }
         }
 
