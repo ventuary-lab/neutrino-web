@@ -12,7 +12,7 @@ import {getData, getUser} from 'yii-steroids/reducers/auth';
 import {openModal} from 'yii-steroids/actions/modal';
 import {isPhone} from 'yii-steroids/reducers/screen';
 
-import {html, http, dal, ws, store} from 'components';
+import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';
 import Header from 'shared/Header';
@@ -89,7 +89,7 @@ export default class Layout extends React.PureComponent {
         if (this.props.data !== nextProps.data) {
             Promise.resolve(dal.isLogged() ? dal.login() : null)
                 .then(user => {
-                    this.props.dispatch([
+                    store.dispatch([
                         // currencySetPrices(nextProps.data.prices),
                         setUser(user),
                     ]);
@@ -97,7 +97,7 @@ export default class Layout extends React.PureComponent {
         }
 
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
-            this.props.dispatch(currencySetCurrent(nextProps.matchParams.currency));
+            store.dispatch(currencySetCurrent(nextProps.matchParams.currency));
         }
         if (nextProps.data && nextProps.status === STATUS_ACCESS_DENIED) {
             //this.props.dispatch(goToPage(ROUTE_ROOT));
@@ -113,7 +113,7 @@ export default class Layout extends React.PureComponent {
             }
 
             if (!this.wasWrongNetworkMessageShown && nextAppNetwork && nextUserNetwork && nextAppNetwork !== nextUserNetwork) {
-                this.props.dispatch(openModal(MessageModal, {
+                store.dispatch(openModal(MessageModal, {
                     text: __('Switch your Waves Keeper network to {name}', {
                         name: nextAppNetwork.toUpperCase(),
                     }),

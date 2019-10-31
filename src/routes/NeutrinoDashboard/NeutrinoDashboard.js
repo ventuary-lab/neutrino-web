@@ -11,7 +11,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import {getUser} from 'yii-steroids/reducers/auth';
 
-import {html, dal} from 'components';
+import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
@@ -458,7 +458,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             : _get(props.formValues, 'neutrino') / rate);
 
 
-        this.props.dispatch(change(
+        store.dispatch(change(
             FORM_ID,
             isRefreshToAmount ? 'neutrino' : 'waves',
             this._toFixedSpecial(amount, 2)
@@ -487,7 +487,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     _onSubmit(values) {
         this.setState({step: 'generation'});
-        this.props.dispatch(reset(FORM_ID));
+        store.dispatch(reset(FORM_ID));
 
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
