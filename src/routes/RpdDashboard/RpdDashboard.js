@@ -9,7 +9,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import Nav from 'yii-steroids/ui/nav/Nav';
 import {getUser} from 'yii-steroids/reducers/auth';
 
-import {html, dal} from 'components';
+import { html, dal, store } from 'components';
 import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import CollectionEnum from 'enums/CollectionEnum';
@@ -80,7 +80,7 @@ export default class RpdDashboard extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.quoteCurrency !== nextProps.quoteCurrency) {
-            this.props.dispatch(change(FORM_ID, 'currency', nextProps.quoteCurrency));
+            store.dispatch(change(FORM_ID, 'currency', nextProps.quoteCurrency));
         }
     }
 
@@ -136,7 +136,7 @@ export default class RpdDashboard extends React.PureComponent {
                                         _get(this.props, 'formValues.currency'),
                                         parseInt(_get(this.props, 'formValues.wrap'))
                                     )
-                                        .then(() => this.props.dispatch(change(FORM_ID, 'wrap', '')));
+                                        .then(() => store.dispatch(change(FORM_ID, 'wrap', '')));
                                 }}
                             />
                         </div>
@@ -162,7 +162,7 @@ export default class RpdDashboard extends React.PureComponent {
                                             ? _get(this.props, 'formValues.unwrap') * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
                                             : _get(this.props, 'formValues.unwrap'))
                                     )
-                                        .then(() => this.props.dispatch(change(FORM_ID, 'unwrap', '')));
+                                        .then(() => store.dispatch(change(FORM_ID, 'unwrap', '')));
                                 }}
                             />
                         </div>

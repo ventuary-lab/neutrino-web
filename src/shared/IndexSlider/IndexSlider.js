@@ -1,7 +1,7 @@
 import React from 'react';
 import Slick from 'react-slick';
 
-import {html} from 'components';
+import { html, store } from 'components';
 import slide1 from 'static/images/slide1.svg';
 import IndexSliderArrow from './views/IndexSliderArrow';
 
@@ -23,7 +23,7 @@ export default class IndexSlider extends React.Component {
         const warningModalState = clientStorage.get('warningModalState');
 
         if(warningModalState === 'open') {
-            this.props.dispatch(openModal(WarningMobileModal));
+            store.dispatch(openModal(WarningMobileModal));
         }
     }
 

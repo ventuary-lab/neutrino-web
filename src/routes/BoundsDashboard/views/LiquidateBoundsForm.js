@@ -7,7 +7,7 @@ import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 import _get from 'lodash/get';
 
-import {dal, html} from 'components';
+import { dal, html, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 
 import './LiquidateBoundsFrom.scss';
@@ -52,7 +52,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                             key={item}
                             className={bem.element('percent')}
                             onClick={() => {
-                                this.props.dispatch(change(FORM_ID, 'bonds', Math.round(this.props.bondBalance * item / 100)) || 0);
+                                store.dispatch(change(FORM_ID, 'bonds', Math.round(this.props.bondBalance * item / 100)) || 0);
                             }}
                         >
                             {item}%

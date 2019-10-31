@@ -13,7 +13,7 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import MessageModal from 'modals/MessageModal';
 
-import {dal, html} from 'components';
+import { dal, html, store } from 'components';
 
 import './BuyBoundsForm.scss';
 import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
@@ -72,11 +72,11 @@ export default class BuyBoundsForm extends React.PureComponent {
             this._onDiscountChange(nextDiscount);
 
             if (nextDiscount && nextDiscount < 0) {
-                this.props.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
+                store.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
             }
 
             if (nextDiscount && nextDiscount.length > 2) {
-                this.props.dispatch(change(FORM_ID, 'discount', nextDiscount.slice(0, -1)));
+                store.dispatch(change(FORM_ID, 'discount', nextDiscount.slice(0, -1)));
             }
         }
 
@@ -193,11 +193,11 @@ export default class BuyBoundsForm extends React.PureComponent {
 
                 //User denied message
                 if (err && err.code === '10') {
-                    this.props.dispatch(openModal(MessageModal, {
+                    store.dispatch(openModal(MessageModal, {
                         text: __('You have canceled the order'),
                     }));
                 } else if (err) {
-                    this.props.dispatch(openModal(MessageModal, {
+                    store.dispatch(openModal(MessageModal, {
                         text: __('The order was canceled.\n Error: {err}', {
                             err: err.message,
                         }),
@@ -224,7 +224,7 @@ export default class BuyBoundsForm extends React.PureComponent {
         if (isRefreshDiscount) {
             amount = this._parseAmount(((bounds - neutrino) * 100) / bounds);
 
-            this.props.dispatch(change(
+            store.dispatch(change(
                 FORM_ID,
                 'discount',
                 this._toFixedSpecial(amount, 2)
@@ -236,7 +236,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                 : (neutrino / (100 - discount)) * 100);
 
 
-            this.props.dispatch(change(
+            store.dispatch(change(
                 FORM_ID,
                 isRefreshNeutrino ? 'neutrino' : 'bounds',
                 this._toFixedSpecial(amount, 2)

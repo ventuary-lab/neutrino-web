@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {getFormValues, change} from 'redux-form';
+import { connect } from 'react-redux';
+import { getFormValues, change } from 'redux-form';
 import Link from 'yii-steroids/ui/nav/Link';
 import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
-import {getCurrentItem, getNavItems} from 'yii-steroids/reducers/navigation';
-import {goToPage} from 'yii-steroids/actions/navigation';
+import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
-import {getUserRole} from 'yii-steroids/reducers/auth';
+import { getUserRole } from 'yii-steroids/reducers/auth';
 
-import {dal, html} from 'components';
-import {getQuoteCurrency} from 'reducers/currency';
+import { dal, html, store } from 'components';
+import { getQuoteCurrency } from 'reducers/currency';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
-import {ROUTE_ROOT} from 'routes';
+import { ROUTE_ROOT } from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
 
 import './Header.scss';
@@ -42,7 +42,7 @@ export default class Header extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.currentItem.id !== ROUTE_ROOT  && nextProps.currentItem.id === ROUTE_ROOT) {
-            this.props.dispatch(change(FORM_ID, 'section', null));
+            store.dispatch(change(FORM_ID, 'section', null));
         }
     }
 
@@ -74,7 +74,7 @@ export default class Header extends React.PureComponent {
                             <DropDownField
                                 attribute={'section'}
                                 items={this.props.navItems}
-                                onItemChange={(item) => this.props.dispatch(goToPage(item.id, {
+                                onItemChange={(item) => store.dispatch(goToPage(item.id, {
                                     currency: this.props.quoteCurrency
                                 }))}
                                 defaultItemLabel={'Products'}
