@@ -35,7 +35,8 @@ body {
     width: calc(100% - #{$right-width} - #{$gap});
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
+    max-height: calc(100vh - 65px - 8px);
   }
 
   &__header {
@@ -48,9 +49,8 @@ body {
 
   &__content {
     width: 100%;
-    // height: calc(100vh - 65px - 8px);
-    min-height: 100vh;
-    height: 100%;
+    height: calc(100vh - 65px - 8px);
+    // min-height: 100vh;
   }
 
   &__left {
