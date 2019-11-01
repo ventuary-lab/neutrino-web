@@ -13,6 +13,7 @@ import {getUser} from 'yii-steroids/reducers/auth';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import ContractEnum from 'enums/ContractEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
@@ -269,13 +270,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <div className={bem.element('info-string')}>
                                 <div className={bem.element('info-hint')}>
                                     <Hint
-                                        text={__('3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo')}
+                                        text={__(process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F')}
                                     />
                                 </div>
                                 <span>{__('Smart contract')}</span>
                             </div>
                             <span>
-                                {/*round(this.props.priceFeed, 2)*/'3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo'}
+                                {/*round(this.props.priceFeed, 2)*/process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F'}
                             </span>
                         </div>
                         <div className={bem.element('info-row')}>
