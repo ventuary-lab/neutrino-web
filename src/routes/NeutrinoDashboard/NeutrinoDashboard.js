@@ -270,13 +270,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             <div className={bem.element('info-string')}>
                                 <div className={bem.element('info-hint')}>
                                     <Hint
-                                        text={__(ContractEnum.getAddress(ContractEnum.NEUTRINO))}
+                                        text={__(process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F')}
                                     />
                                 </div>
                                 <span>{__('Smart contract')}</span>
                             </div>
                             <span>
-                                {/*round(this.props.priceFeed, 2)*/ContractEnum.getAddress(ContractEnum.NEUTRINO)}
+                                {/*round(this.props.priceFeed, 2)*/process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F'}
                             </span>
                         </div>
                         <div className={bem.element('info-row')}>
