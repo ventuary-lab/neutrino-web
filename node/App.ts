@@ -1,9 +1,5 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
-import { 
-    http as ExpressHttp,
-    core as ExpressCore
-} from 'express';
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
@@ -15,32 +11,19 @@ import ContractEnum from './enums/ContractEnum';
 import CurrencyEnum from './enums/CurrencyEnum';
 import CollectionEnum  from './enums/CollectionEnum';
 import {
-    DAppPairs
+    DAppPairs,
+    ApplicationParams,
+    ContractDictionary,
+    ContractCache,
+    ContractTransport
 } from './types';
 
 const Router = require('./Router');
 
-// interface DAppPairs {
-//     [key: string]: string;
-// }
-interface ApplicationParams {
-    network: string;
-    isCleaningRedis: string | boolean;
-    nodeUrl: string;
-    redisNamespace: string;
-    dApps: DAppPairs;
-    _redisClient: any;
-    storage: RedisStorage;
-    logger: Logger;
-    heightListener: HeightListener;
-    httpServer: ExpressHttp.server;
-    expressApp: ExpressCore.Express;
-}
-
 module.exports = class App implements ApplicationParams {
     // Parameter types
     network: string;
-    isCleaningRedis: string | boolean;
+    isCleaningRedis: boolean;
     nodeUrl: string;
     redisNamespace: string;
     dApps: DAppPairs;
@@ -53,15 +36,15 @@ module.exports = class App implements ApplicationParams {
     _isSkipUpdates: boolean;
     _isNowUpdated: boolean;
     _isNeedUpdateAgain: boolean;
-    assets: DAppPairs | null;
-    _contracts: DAppPairs | null;
-    _collections: DAppPairs | null;
+    assets?: DAppPairs;
+    _contracts: ContractDictionary | null;
+    _collections: ContractDictionary | null; // Not type-checked
     _router: any;
     _websocket: WebSocketServer;
 
     constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
-        this.isCleaningRedis = Boolean(process.env.IS_CLEANING_REDIS) || false;
+        this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true' || false;
 
         switch (this.network) {
             case 'mainnet':
@@ -136,7 +119,6 @@ module.exports = class App implements ApplicationParams {
     }
 
     async start() {
-        console.log('---start');
         this._isSkipUpdates = true;
 
         this._router.start();
@@ -144,49 +126,43 @@ module.exports = class App implements ApplicationParams {
 
         await this.heightListener.start();
 
-        console.log('---before heightListener');
-
         // Try get timestamp
         this.heightListener.getTimestamps([this.heightListener.getLast()]);
 
-        console.log('---after heightListener');
-
         // Create contracts and collections
-        for (const pairName of PairsEnum.getKeys()) {
-            for (const contractName of ContractEnum.getKeys()) {
+        const pairKeys = PairsEnum.getKeys() as string[];
+        const contractKeys = ContractEnum.getKeys() as string[];
+        const collectionKeys = CollectionEnum.getKeys() as string[];
+
+        for (const pairName of pairKeys) {
+            for (const contractName of contractKeys) {
+
                 const contract = await this.createContract(pairName, contractName);
                 contract.transactionListener.start();
             }
 
-            for (const collectionName of CollectionEnum.getKeys()) {
+            for (const collectionName of collectionKeys) {
                 this.createCollection(pairName, collectionName);
             }
         }
 
-        console.log('---after create contracts and collections');
-
-
         // Load asset ids
         this.assets = await this._loadAssetIds();
 
-        console.log('---after loads assets');
-
         //add assets to collections
-        for (const pairName of PairsEnum.getKeys()) {
+        for (const pairName of pairKeys) {
 
-            for (const collectionName of CollectionEnum.getKeys()) {
+            for (const collectionName of collectionKeys) {
 
                 this._collections[pairName][collectionName].assets = this.assets;
             }
         }
 
-        console.log('---before update all');
-
         await this._updateAll(this.isCleaningRedis);
         this._isSkipUpdates = false;
     }
 
-    getContract(pairName, contractName) {
+    getContract(pairName: string, contractName: string): ContractCache {
         return this._contracts[pairName][contractName];
     }
 
@@ -194,11 +170,12 @@ module.exports = class App implements ApplicationParams {
         return this._contracts;
     }
 
-    async createContract(pairName, contractName) {
+    async createContract(pairName: string, contractName: string): Promise<ContractCache> {
         const dApp = contractName === ContractEnum.NEUTRINO
             ? this.dApps[pairName]
             : await this.getContract(pairName, ContractEnum.NEUTRINO).transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName));
-        const transport = new WavesTransport({
+
+        const transport: ContractTransport = new WavesTransport({
             dApp,
             nodeUrl: this.nodeUrl,
             logger: this.logger,
@@ -207,7 +184,7 @@ module.exports = class App implements ApplicationParams {
         console.log('---createContract');
         console.log(WavesContractCache)
 
-        const contract = new WavesContractCache({
+        const contract: ContractCache = new WavesContractCache({
             dApp,
             nodeUrl: this.nodeUrl,
             updateHandler: keys => this._onContractUpdate(pairName, contractName, keys),
@@ -219,15 +196,17 @@ module.exports = class App implements ApplicationParams {
                 level: this.logger.level,
             },
         });
+
         contract.transport = transport;
         contract.storage.set('address_' + contractName, dApp);
 
         this._contracts[pairName] = this._contracts[pairName] || {};
         this._contracts[pairName][contractName] = contract;
+
         return contract;
     }
 
-    getCollection(pairName, collectionName) {
+    getCollection(pairName: string, collectionName: string) {
         return this._collections[pairName][collectionName];
     }
 
@@ -273,7 +252,7 @@ module.exports = class App implements ApplicationParams {
         return assets;
     }
 
-    async _updateAll(shouldFlush: boolean | undefined) {
+    async _updateAll(shouldFlush?: boolean) {
         if (this._isNowUpdated) {
             return;
         }
@@ -282,6 +261,7 @@ module.exports = class App implements ApplicationParams {
         try {
             for (const pairName of PairsEnum.getKeys()) {
                 const data = {};
+
                 for (const collectionName of CollectionEnum.getKeys()) {
                     const collection = this.getCollection(pairName, collectionName);
                     const contractName = CollectionEnum.getContractName(collectionName);
@@ -329,6 +309,7 @@ module.exports = class App implements ApplicationParams {
 
     _onCollectionUpdate(id, item, collection) {
         if (!this._isSkipUpdates) {
+
             this._websocket.push(JSON.stringify({
                 stream: 'collections',
                 data: {
