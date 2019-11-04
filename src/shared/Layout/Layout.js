@@ -25,6 +25,7 @@ import {apiWsHandler} from 'actions/api';
 import {currencySetCurrent} from 'actions/currency';
 import {ROUTE_ROOT} from 'routes';
 import {getPairName} from 'reducers/currency';
+import { ConfigContext } from './context';
 
 import './Layout.scss';
 
@@ -42,7 +43,9 @@ const bem = html.bem('Layout');
         ws.open();
 
         // Load init data
-        return http.get('/api/v1/init');
+        const data = await http.get('/api/v1/init');
+
+        return data;
     }
 )
 @screenWatcherHoc()
@@ -136,31 +139,35 @@ export default class Layout extends React.PureComponent {
             return null;
         }
 
+        const configValue = {...this.props.config};
+
         return (
             <div className={bem.block({
                 'is-show-left-sidebar': this.props.isShowLeftSidebar
             })}>
-                <div className={bem.element('inner')}>
-                    {this.props.isShowLeftSidebar && (
-                        <aside className={bem.element('left')}>
-                            <LeftSidebar/>
-                        </aside>
-                    )}
-                    <div className={bem.element('center')}>
-                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                            <BlockedApp/>
+                <ConfigContext.Provider value={configValue}>
+                    <div className={bem.element('inner')}>
+                        {this.props.isShowLeftSidebar && (
+                            <aside className={bem.element('left')}>
+                                <LeftSidebar/>
+                            </aside>
                         )}
-                        <header className={bem.element('header')}>
-                            <Header/>
-                        </header>
-                        <main className={bem.element('content')}>
-                            {this.props.status !== STATUS_LOADING && this.props.children}
-                        </main>
+                        <div className={bem.element('center')}>
+                            {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                                <BlockedApp/>
+                            )}
+                            <header className={bem.element('header')}>
+                                <Header/>
+                            </header>
+                            <main className={bem.element('content')}>
+                                {this.props.status !== STATUS_LOADING && this.props.children}
+                            </main>
+                        </div>
+                        <aside className={bem.element('right')}>
+                            <RightSidebar/>
+                        </aside>
                     </div>
-                    <aside className={bem.element('right')}>
-                        <RightSidebar/>
-                    </aside>
-                </div>
+                </ConfigContext.Provider>
                 <ModalWrapper/>
             </div>
         );
