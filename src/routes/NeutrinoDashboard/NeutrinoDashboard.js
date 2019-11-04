@@ -10,10 +10,12 @@ import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import {getUser} from 'yii-steroids/reducers/auth';
+import { ConfigContext } from 'shared/Layout/context';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
+import PairsEnum from 'enums/PairsEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
 import Hint from 'shared/Hint';
@@ -201,6 +203,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     renderGenerationStep() {
+        const grabNeutrinoAddress = (config) => {
+            try {
+                return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
+            } catch (err) {
+                return '';
+            }
+        };
+
         return (
             <>
                 <div className={bem.element('inputs')}>
@@ -266,19 +276,25 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
                 <div className={bem.element('info')}>
                     <div className={bem.element('info-column')}>
-                        <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <div className={bem.element('info-hint')}>
-                                    <Hint
-                                        text={__(process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F')}
-                                    />
+                        <ConfigContext.Consumer>
+                            {environmentConfig => (
+                                <div className={bem.element('info-row')}>
+                                    <div className={bem.element('info-string')}>
+                                        <div className={bem.element('info-hint')}>
+                                            <Hint
+                                                text={
+                                                    __(grabNeutrinoAddress(environmentConfig))
+                                                }
+                                            />
+                                        </div>
+                                        <span>{__('Smart contract')}</span>
+                                    </div>
+                                    <span>
+                                        {grabNeutrinoAddress(environmentConfig)}
+                                    </span>
                                 </div>
-                                <span>{__('Smart contract')}</span>
-                            </div>
-                            <span>
-                                {/*round(this.props.priceFeed, 2)*/process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F'}
-                            </span>
-                        </div>
+                            )}
+                        </ConfigContext.Consumer>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string', 'without-hint')}>
                                 <span>{__('Number of oracles')}</span>
