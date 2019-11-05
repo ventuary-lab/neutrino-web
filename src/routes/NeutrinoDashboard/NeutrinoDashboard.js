@@ -205,7 +205,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     renderGenerationStep() {
         const grabNeutrinoAddress = (config) => {
             try {
-                return config.dal.contractss[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
+                return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
             } catch (err) {
                 return '';
             }
@@ -216,11 +216,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('inputs')}>
                     <div className={bem.element('input-container')}>
                         <div className={bem.element('input-label')}>
-                            {__('How much {currency} would you like to collateralize?', {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            })}
+                            {__('Send')}
                         </div>
                         <InputField
                             className={bem.element('input')}
@@ -254,11 +250,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
                     <div className={bem.element('input-container')}>
                         <div className={bem.element('input-label')}>
-                            {__('How much {currency} would you like to receive?', {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                    : 'WAVES'
-                            })}
+                            {__('Receive')}
                         </div>
                         <InputField
                             className={bem.element('input')}
@@ -342,9 +334,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             !_toNumber(_get(this.props.formValues, 'neutrino'))
                         }
                         className={bem.element('submit-button')}
-                        label={this.state.isWavesLeft ? __('Generate {currency} Neutrino', {
+                        label={this.state.isWavesLeft ? __('Issue {currency}', {
                             currency: CurrencyEnum.getLabel(this.props.quoteCurrency)
-                        }) : __('Generate Waves')}
+                        }) : __('Redeem WAVES')}
                         onClick={() => this.setState({step: 'details'})}
                     />
                     {this.renderWithdraw()}
@@ -390,12 +382,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('details')}>
                     <div className={bem.element('details-item')}>
                         <span className={bem.element('details-label')}>
-                            {__('Generate new asset')}
+                            {__('Please confirm the assets swap')}
                         </span>
                         <div className={bem.element('details-inner', 'generation')}>
                             <div className={bem.element('values')}>
                                 <span className={bem.element('value-title')}>
-                                    {__('Collateral')}:
+                                    {__('Send')}:
                                 </span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>
@@ -415,7 +407,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             </div>
                             <div className={bem.element('values')}>
                                 <span className={bem.element('value-title')}>
-                                    {__('Generate')}:
+                                    {__('Receive')}:
                                 </span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>

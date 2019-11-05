@@ -26,7 +26,6 @@ module.exports = class ControlConfig extends BaseCollection {
         return items;
     }
 
-
     async updateAll(nodeData) {
         this.logger.debug('Update all items of ' + this.collectionName + ' collection... ');
 
