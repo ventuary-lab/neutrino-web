@@ -75,5 +75,19 @@ body {
     &__center {
       width: 100%;
     }
+
+    &__content {
+      height: 100%;
+    }
+
+    &__center,
+    &__right {
+      max-height: unset;
+    }
+    &__right {
+      height: 100%;
+    }
   }
+
+
 }
