@@ -37,6 +37,7 @@ body {
     flex-direction: column;
     height: 100%;
     max-height: calc(100vh - 65px - 8px);
+    max-height: unset;
   }
 
   &__header {
@@ -49,8 +50,10 @@ body {
 
   &__content {
     width: 100%;
-    height: calc(100vh - 65px - 8px);
+    // height: calc(100vh - 65px - 8px);
     // min-height: 100vh;
+    max-height: unset;
+    height: 100%;
   }
 
   &__left {

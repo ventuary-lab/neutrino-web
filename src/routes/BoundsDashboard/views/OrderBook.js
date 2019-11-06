@@ -28,6 +28,30 @@ export default class OrderBook extends React.PureComponent {
             return null;
         }
 
+        const headerRow = (
+            <div className={bem.element('header-row', 'summary')}>
+                {this.props.formTab === 'buy' && (
+                    <>
+                        <div className={bem.element('header-column', 'upper-case')}>
+                            {_round(_sum(this.props.orders.map(order => order.restAmount)))}
+                        </div>
+                        <div className={bem.element('header-column')}>
+                            —
+                        </div>
+                        <div className={bem.element('header-column', 'upper-case')}>
+                            {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
+                        </div>
+                    </>
+                )}
+                {this.props.formTab === 'liquidate' && (
+                    <>
+                        <div className={bem.element('header-column', 'upper-case')}>
+                            {_round(_sum(this.props.orders.map(order => order.restTotal)))}
+                        </div>
+                    </>
+                )}
+            </div>
+        );
         const groupedOrders = _groupBy(this.props.orders, 'discountPercent');
         return (
             <div className={bem.block()}>
@@ -49,28 +73,7 @@ export default class OrderBook extends React.PureComponent {
                         </>
                     )}
                 </div>
-                <div className={bem.element('header-row', 'summary')}>
-                    {this.props.formTab === 'buy' && (
-                        <>
-                            <div className={bem.element('header-column', 'upper-case')}>
-                                {_round(_sum(this.props.orders.map(order => order.restAmount)))}
-                            </div>
-                            <div className={bem.element('header-column')}>
-                                —
-                            </div>
-                            <div className={bem.element('header-column', 'upper-case')}>
-                                {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
-                            </div>
-                        </>
-                    )}
-                    {this.props.formTab === 'liquidate' && (
-                        <>
-                            <div className={bem.element('header-column', 'upper-case')}>
-                                {_round(_sum(this.props.orders.map(order => order.restTotal)))}
-                            </div>
-                        </>
-                    )}
-                </div>
+                {Array(10).fill(headerRow)}
                 {this.props.formTab === 'buy' && (
                     <div className={bem.element('columns')}>
                         {Object.keys(groupedOrders).map(discountPercent => (
