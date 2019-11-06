@@ -2,9 +2,11 @@
 @import 'style/helpers/mixins';
 
 .IndexPage {
-  height: 100%;
   padding-top: 100px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   @include gradient-bg(264.83deg);
+
+  width: calc(100vw - 316px);
+  height: 100%;
 }
