@@ -73,7 +73,7 @@ export default class OrderBook extends React.PureComponent {
                         </>
                     )}
                 </div>
-                {Array(10).fill(headerRow)}
+                {headerRow}
                 {this.props.formTab === 'buy' && (
                     <div className={bem.element('columns')}>
                         {Object.keys(groupedOrders).map(discountPercent => (
