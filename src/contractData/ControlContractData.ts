@@ -1,9 +1,9 @@
-import { dictionaryKey } from "../decorators/ContractDataDecorator";
+import { key } from "../decorators/ContractDataDecorator";
 
-export class СontrolContractData {
-    @dictionaryKey("price")
-    price: Number;
+export class ControlContractData {
+    @key("price")
+    price: number = 0;
 
-    @dictionaryKey("is_blocked")
-    isBlocked: Number;
+    @key("is_blocked")
+    isBlocked: boolean = false;
 }

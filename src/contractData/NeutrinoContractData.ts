@@ -1,6 +1,6 @@
-import { dictionaryKey } from "../decorators/ContractDataDecorator";
+import { key } from "../decorators/ContractDataDecorator";
 
 export class NeutrinoContractData {
-    @dictionaryKey("control_contract")
-    controlContractAddress: String;
+    @key("control_contract")
+    controlContractAddress: string = "";
 }

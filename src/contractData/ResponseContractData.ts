@@ -1,5 +1,5 @@
 export class ResponseContractData{
-    key: String;
-    value: object;
-    type: String
+    key: string;
+    value: any;
+    type: string;
 }
