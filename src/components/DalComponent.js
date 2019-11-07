@@ -13,6 +13,7 @@ import OrderTypeEnum from 'enums/OrderTypeEnum';
 
 export const STORAGE_AUTH_KEY = 'isAuth';
 
+
 export default class DalComponent {
 
     constructor() {
@@ -32,6 +33,8 @@ export default class DalComponent {
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
+
+        Test.test();
     }
 
     /**
