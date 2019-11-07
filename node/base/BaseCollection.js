@@ -144,6 +144,8 @@ module.exports = class BaseCollection {
             data.height = this.heightListener.getLast();
         }
 
+        console.log({ data, id });
+
         if (id === 'usd-nb_usd-n' && data.price == 1) {
             try {
                 throw new Error('0.01 Price Error occured!' + JSON.stringify({ id, data, colName: this.collectionName }));
