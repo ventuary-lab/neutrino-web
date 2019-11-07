@@ -145,7 +145,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     render() {
 
-
         const steps = [
             {
                 id: 'generation',

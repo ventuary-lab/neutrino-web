@@ -13,7 +13,6 @@ import OrderTypeEnum from 'enums/OrderTypeEnum';
 
 export const STORAGE_AUTH_KEY = 'isAuth';
 
-
 export default class DalComponent {
 
     constructor() {
