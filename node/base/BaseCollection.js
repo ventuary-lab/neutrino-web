@@ -144,18 +144,18 @@ module.exports = class BaseCollection {
             data.height = this.heightListener.getLast();
         }
 
-        console.log({ data, id });
+        // console.log({ data, id });
 
-        if (id === 'usd-nb_usd-n' && data.price == 1) {
-            try {
-                throw new Error('0.01 Price Error occured!' + JSON.stringify({ id, data, colName: this.collectionName }));
-            } catch (err) {
-                console.log(err);
-                Sentry.captureException(err);
-            } finally {
-                return;
-            }
-        }
+        // if (id === 'usd-nb_usd-n' && data.price == 1) {
+        //     try {
+        //         throw new Error('0.01 Price Error occured!' + JSON.stringify({ id, data, colName: this.collectionName }));
+        //     } catch (err) {
+        //         console.log(err);
+        //         Sentry.captureException(err);
+        //     } finally {
+        //         return;
+        //     }
+        // }
 
         const item = await this._prepareItem(id, data);
 
