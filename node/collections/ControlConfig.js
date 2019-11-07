@@ -1,4 +1,5 @@
 const _round = require('lodash/round');
+const Sentry = require('@sentry/node');
 
 const BaseCollection = require('../base/BaseCollection');
 
@@ -31,16 +32,25 @@ module.exports = class ControlConfig extends BaseCollection {
 
         for (let nodeKey in nodeData) {
 
-            if (nodeKey.match(`${this.getKeys()[0]}$`)) {
+            const currentKeys = this.getKeys();
+            const [priceKey, isBlockedKey] = currentKeys;
+
+            if (!currentKeys.includes(nodeKey)) {
+                continue;
+            }
+
+            console.log({ nodeKey, val: nodeData[nodeKey] });
+
+            if (nodeKey.match(priceKey)) {
                 this.price = nodeData[nodeKey];
             }
 
-            if (nodeKey.match(this.getKeys()[1])) {
+            if (nodeKey.match(isBlockedKey)) {
                 this.isBlocked = nodeData[nodeKey];
             }
 
-            if (this.price && this.isBlocked !== undefined) {
-                break;
+            if (this.price == 1) {
+                Sentry.captureException(new Error(`Price 0.01 Error: ${JSON.stringify({ nodeData })}`))
             }
         }
 
