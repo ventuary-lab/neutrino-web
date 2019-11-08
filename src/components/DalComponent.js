@@ -31,7 +31,7 @@ export default class DalComponent {
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
-        }
+        };
     }
 
     /**
