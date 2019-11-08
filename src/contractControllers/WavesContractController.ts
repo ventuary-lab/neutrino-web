@@ -1,10 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { store } from '../components';
-import { UPDATE_CONTRACT_ADDRESS_INFO, SET_CONTROL_CONTRACT_PRICE } from '../actions/contract';
+import { UPDATE_CONTRACT_ADDRESS_INFO, SET_CONTRACT_PRICE, SET_TOTAL_ISSUED } from '../actions/contract';
 
 import {
     WavesAddressData,
-    WavesAddressKeyData
+    WavesAddressKeyData,
+    WavesAssetInfo,
+    WavesAssetBalanceInfo
 } from './types';
 
 enum ContractKeysEnum {
@@ -18,6 +20,7 @@ export class WavesContractDataController {
     nodeUrl: string;
     addressList: string[];
     dAppAddress: string;
+    neutrinoAssetId?: string;
 
     constructor ({ dAppAddress, nodeUrl }: { dAppAddress: string, nodeUrl: string }) {
         this.nodeUrl = nodeUrl ? nodeUrl : 'https://nodes.wavesplatform.com';
@@ -32,9 +35,9 @@ export class WavesContractDataController {
 
     async getAddressInfo (address: string) {
         const { nodeUrl } = this;
-
         const url = `${nodeUrl}/addresses/data/${address}`;
-        const response = await axios.get(url) as AxiosResponse<WavesAddressData[]>;
+
+        const response = await axios.get<WavesAddressData[]>(url);
 
         return response;
     }
@@ -43,7 +46,25 @@ export class WavesContractDataController {
         const { nodeUrl } = this;
         const url = `${nodeUrl}/addresses/data/${address}/${key}`;
 
-        const response = await axios.get(url) as AxiosResponse<WavesAddressKeyData>;
+        const response = await axios.get<WavesAddressKeyData>(url);
+
+        return response;
+    }
+
+    async getAssetDetails (assetId: string) {
+        const { nodeUrl } = this;
+        const url = `${nodeUrl}/assets/details/${assetId}`;
+
+        const response = await axios.get<WavesAssetInfo>(url);
+
+        return response;
+    }
+
+    async getAssetBalanceInfo (address: string, assetId: string) {
+        const { nodeUrl } = this;
+        const url = `${nodeUrl}/assets/balance/${address}/${assetId}`;
+
+        const response = await axios.get<WavesAssetBalanceInfo>(url);
 
         return response;
     }
@@ -60,10 +81,28 @@ export class WavesContractDataController {
         // store.dispatch({ type: UPDATE_CONTRACT_ADDRESS_INFO, address: '3P6LsCKZbvBj7PNFbV72AcMvqCoGaAkvMh8', data: res2.data  });
 
         const contractControlPrice = await this._getControlContractPrice();
+        store.dispatch({ type: SET_CONTRACT_PRICE, value: contractControlPrice, name: ContractKeysEnum.CONTROL_CONTRACT });
 
-        store.dispatch({ type: SET_CONTROL_CONTRACT_PRICE, value: contractControlPrice, name: ContractKeysEnum.CONTROL_CONTRACT });
+        const totalIssued = await this._getTotalIssuedAmount();
+        store.dispatch({ type: SET_TOTAL_ISSUED, value: totalIssued });
 
         // store.dispatch({ type: UPDATE_CONTRACT_ADDRESS_INFO, address: ContractKeysEnum.CONTROL_CONTRACT, data: res.data  });
+    }
+
+    async _getTotalIssuedAmount (): Promise<number> | undefined {
+        if (!this.neutrinoAssetId) {
+            return;
+        };
+
+        const { dAppAddress, neutrinoAssetId } = this;
+
+        const totalQtyRes = await this.getAssetDetails(neutrinoAssetId);
+        const neutrinoBalanceRes = await this.getAssetBalanceInfo(dAppAddress, neutrinoAssetId);
+
+        const { quantity } = totalQtyRes.data;
+        const { balance } = neutrinoBalanceRes.data;
+
+        return (quantity - balance);
     }
 
     async _getControlContractPrice (): Promise<number> {
@@ -83,7 +122,7 @@ export class WavesContractDataController {
     }
 
     async _checker () {
-        console.log('WavesContractDataController is updating...');
+        // console.log('WavesContractDataController is updating...');
 
         this._onUpdate();
     }

@@ -10,3 +10,23 @@ export interface WavesAddressKeyData {
     value: string | number;
     key: string;
 }
+
+export interface WavesAssetInfo {
+    assetId: string;
+    issueHeight: number;
+    issueTimestamp: number;
+    issuer: string;
+    name: string;
+    description: string;
+    decimals: number;
+    reissuable: boolean;
+    quantity: number;
+    scripted: boolean;
+    minSponsoredAssetFee: null;
+}
+
+export interface WavesAssetBalanceInfo {
+    address: string;
+    balance: number;
+    assetId: string;
+}

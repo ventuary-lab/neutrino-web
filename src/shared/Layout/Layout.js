@@ -14,6 +14,7 @@ import {isPhone} from 'yii-steroids/reducers/screen';
 import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
@@ -85,18 +86,25 @@ export default class Layout extends React.PureComponent {
         this.wcc = null;
     }
 
-    componentDidUpdate () {
+    _attachWavesDataController () {
         const { config, pairName } = this.props;
-        
+
         if (config && !this.controllerInitialized) {
             
             const dAppAddress = config.dal.contracts[pairName][ContractEnum.NEUTRINO];
+            const neutrinoAssetId = config.dal.assets[CurrencyEnum.USD_N];
 
             this.wcc = new WavesContractDataController({ dAppAddress, nodeUrl: dal.nodeUrl });
+            this.wcc.neutrinoAssetId = neutrinoAssetId;
             this.wcc.startUpdating();
             
             this.controllerInitialized = true;
         }
+    }
+
+    componentDidUpdate () {
+        
+        this._attachWavesDataController();
     }
 
     componentWillUnmount () {

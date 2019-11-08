@@ -30,6 +30,7 @@ const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
 const getControlPrice = state => state.contractPrices.contractPrices.control_contract;
+const getTotalIssued = state => state.contractPrices.contractPrices.totalIssued;
 
 @connect(
     (state) => ({
@@ -38,7 +39,8 @@ const getControlPrice = state => state.contractPrices.contractPrices.control_con
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
         user: getUser(state),
-        controlPrice: getControlPrice(state)
+        controlPrice: getControlPrice(state),
+        totalIssued: getTotalIssued(state)
     })
 )
 @dal.hoc(
@@ -153,6 +155,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
         return _.round(
             _get(this.props, 'controlPrice', 0) / 100, 2
         )
+    }
+
+    getTotalIssued () {
+        return this.props.totalIssued ? _.round(this.props.totalIssued / 100, 2) : '';
     }
 
     render() {
@@ -322,7 +328,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{this.props.neutrinoBalances && round(this.props.neutrinoBalances.totalUsed, 2)}</span>
+                            <span>{this.getTotalIssued()}</span>
                         </div>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string')}>
