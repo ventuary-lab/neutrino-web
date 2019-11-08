@@ -9,6 +9,9 @@ require('yii-steroids/webpack')
         sourcePath: __dirname + '/src',
         useHash: true,
         devServer: {
+  	    hot: false,
+            inline: false,
+            liveReload: false,
             proxy: [
                 {
                     '**': null,

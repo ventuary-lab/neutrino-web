@@ -3,8 +3,7 @@ import _ from 'lodash';
 import { 
     UPDATE_CONTRACT_ADDRESS_INFO,
     DROP_CONTRACT_ADDRESS_INFO,
-    CREATE_CONTRACT_ADDRESS_INFO,
-    SET_CONTROL_CONTRACT_PRICE
+    CREATE_CONTRACT_ADDRESS_INFO
 } from '../../actions/contract';
 import { InitialState, UpdateContractAction } from './types'; 
 
