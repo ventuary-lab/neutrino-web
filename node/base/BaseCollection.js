@@ -1,4 +1,3 @@
-const Sentry = require('@sentry/node');
 
 module.exports = class BaseCollection {
 

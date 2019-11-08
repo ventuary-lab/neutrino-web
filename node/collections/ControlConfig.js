@@ -37,9 +37,6 @@ module.exports = class ControlConfig extends BaseCollection {
             if (!currentKeys.includes(nodeKey)) {
                 continue;
             }
-            
-            // console.log(nodeData[priceKey], isBlockedKey);
-            // if (nodeKey.match(`${this.getKeys()[0]}$`)) {
 
             console.log({ nodeKey, val: nodeData[nodeKey] });
 
@@ -52,8 +49,8 @@ module.exports = class ControlConfig extends BaseCollection {
                 this.isBlocked = nodeData[nodeKey];
             }
 
-            if (this.price === 0.01) {
-                Sentry.captureException(new Error(`Price 0.01 Error`))
+            if (this.price == 1) {
+                Sentry.captureException(new Error(`Price 0.01 Error: ${JSON.stringify({ nodeData })}`))
             }
 
             // if (this.price && this.isBlocked !== undefined) {
