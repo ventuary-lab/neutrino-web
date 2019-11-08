@@ -46,8 +46,6 @@ export default (state = initialState, action: UpdateContractAction) => {
                     [action.address]: []
                 }
             }
-
-            break;
     }
     
 
