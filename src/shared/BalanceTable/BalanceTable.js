@@ -48,6 +48,16 @@ export default class BalanceTable extends React.PureComponent {
         }),
     };
 
+    componentDidMount () {
+        // pairName: getPairName(state),
+
+        console.log([
+            CurrencyEnum.WAVES,
+            this.props.quoteCurrency,
+            this.props.baseCurrency
+        ]);
+    }
+
     render() {
         if (!this.props.user || !this.props.user.balances || !this.props.neutrinoConfig) {
             return null;
