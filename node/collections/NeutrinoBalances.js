@@ -35,7 +35,6 @@ module.exports = class NeutrinoBalances extends BaseCollection {
         };
 
         const totalIssued = await this._request(`assets/details/${this.assetId}`);
-        
         data[this.pairName]['totalIssued'] = totalIssued.quantity;
 
         const contractBalance = await this._request(`assets/balance/${this.dApp[this.pairName]}/${this.assetId}`);

@@ -33,20 +33,13 @@ require('yii-steroids/webpack')
                             },
                         },
                     },
-                    typescript: {
-                        test: /\.tsx?$/, loader: 'ts-loader'
-                    }
                 },
             },
             plugins: [
                 new Dotenv({
                     path: './.env',
                 }),
-            ],
-            resolve: {
-                // Add `.ts` and `.tsx` as a resolvable extension.
-                extensions: ['.ts', '.tsx', '.js']
-            }
+            ]
         },
     })
     .base('./src/index.js');
