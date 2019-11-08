@@ -3,8 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 const NODE_URL = process.env.NODE_URL || 'https://nodes.wavesplatform.com';
 
 import {
-    WavesAddressData,
-    WavesAddress
+    WavesAddressData
 } from './types';
 
 export class WavesContractDataController {
@@ -17,7 +16,7 @@ export class WavesContractDataController {
         this._timeout = 2 * 1000;
     }
 
-    async getAddressInfo (address: WavesAddress) {
+    async getAddressInfo (address: string) {
         const { nodeUrl } = this;
 
         const url = `${nodeUrl}/addresses/data/${address}`;
