@@ -81,6 +81,8 @@ export default class Layout extends React.PureComponent {
 
         this.wasWrongNetworkMessageShown = false;
         this.controllerInitialized = false;
+
+        this.wcc = null;
     }
 
     componentDidUpdate () {
@@ -90,15 +92,16 @@ export default class Layout extends React.PureComponent {
             
             const dAppAddress = config.dal.contracts[pairName][ContractEnum.NEUTRINO];
 
-            // console.log({ dAppAddress, config, pairName, p: this.props });
-
-            const wcc = new WavesContractDataController({ dAppAddress });
-            wcc.startUpdating();
+            this.wcc = new WavesContractDataController({ dAppAddress, nodeUrl: dal.nodeUrl });
+            this.wcc.startUpdating();
             
             this.controllerInitialized = true;
         }
     }
 
+    componentWillUnmount () {
+        this.wcc.stopUpdating();
+    }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {

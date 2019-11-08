@@ -2,8 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import { store } from '../components';
 import { UPDATE_CONTRACT_ADDRESS_INFO, SET_CONTROL_CONTRACT_PRICE } from '../actions/contract';
 
-const NODE_URL = process.env.NODE_URL || 'https://nodes.wavesplatform.com';
-
 import {
     WavesAddressData,
     WavesAddressKeyData
@@ -21,9 +19,9 @@ export class WavesContractDataController {
     addressList: string[];
     dAppAddress: string;
 
-    constructor ({ dAppAddress }: { dAppAddress: string }) {
-        this.nodeUrl = NODE_URL;
-        this._timeout = 7 * 1000;
+    constructor ({ dAppAddress, nodeUrl }: { dAppAddress: string, nodeUrl: string }) {
+        this.nodeUrl = nodeUrl ? nodeUrl : 'https://nodes.wavesplatform.com';
+        this._timeout = 10 * 1000;
 
         this._checker = this._checker.bind(this);
 
