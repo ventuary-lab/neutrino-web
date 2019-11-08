@@ -4,3 +4,9 @@ export interface WavesAddressData extends ResponseContractData {
     key: string;
     value: string; // May be stringified JSON
 }
+
+export interface WavesAddressKeyData {
+    type: string;
+    value: string | number;
+    key: string;
+}

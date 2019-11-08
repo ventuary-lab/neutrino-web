@@ -38,8 +38,6 @@ module.exports = class ControlConfig extends BaseCollection {
                 continue;
             }
 
-            console.log({ nodeKey, val: nodeData[nodeKey] });
-
             if (nodeKey.match(priceKey)) {
                 this.price = nodeData[nodeKey];
             }

@@ -11,6 +11,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import {getUser} from 'yii-steroids/reducers/auth';
 import { ConfigContext } from 'shared/Layout/context';
+import _ from 'lodash';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -28,6 +29,8 @@ const bem = html.bem('NeutrinoDashboard');
 const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
+const getControlPrice = state => state.contractPrices.contractPrices.control_contract;
+
 @connect(
     (state) => ({
         sourceCurrency: getSourceCurrency(state),
@@ -35,6 +38,7 @@ const PRICE_FEED_PERIOD = 1000;
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
         user: getUser(state),
+        controlPrice: getControlPrice(state)
     })
 )
 @dal.hoc(
@@ -92,6 +96,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
             isSwapLoading: false,
         };
 
+        this.getControlPrice = this.getControlPrice.bind(this);
+
         this._onSubmit = this._onSubmit.bind(this);
         this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
@@ -141,6 +147,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
         } else if (this.state.isSwapLoading) {
             this.setState({isSwapLoading: false});
         }
+    }
+
+    getControlPrice () {
+        return _.round(
+            _get(this.props, 'controlPrice', 0) / 100, 2
+        )
     }
 
     render() {
@@ -320,7 +332,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{_get(this.props, 'neutrinoConfig.price')} {CurrencyEnum.getSign(this.props.sourceCurrency)}</span>
+                            <span>
+                                {this.getControlPrice()} {CurrencyEnum.getSign(this.props.sourceCurrency)}
+                            </span>
                         </div>
                     </div>
                 </div>

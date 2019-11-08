@@ -14,6 +14,7 @@ import {isPhone} from 'yii-steroids/reducers/screen';
 import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';
+import ContractEnum from 'enums/ContractEnum';
 import Header from 'shared/Header';
 import LeftSidebar from 'shared/LeftSidebar';
 import RightSidebar from 'shared/RightSidebar';
@@ -24,6 +25,7 @@ import {currencySetCurrent} from 'actions/currency';
 import {ROUTE_ROOT} from 'routes';
 import {getPairName} from 'reducers/currency';
 import { ConfigContext } from './context';
+import { WavesContractDataController } from 'contractControllers/WavesContractController';
 
 import './Layout.scss';
 
@@ -78,7 +80,25 @@ export default class Layout extends React.PureComponent {
         super(...arguments);
 
         this.wasWrongNetworkMessageShown = false;
+        this.controllerInitialized = false;
     }
+
+    componentDidUpdate () {
+        const { config, pairName } = this.props;
+        
+        if (config && !this.controllerInitialized) {
+            
+            const dAppAddress = config.dal.contracts[pairName][ContractEnum.NEUTRINO];
+
+            // console.log({ dAppAddress, config, pairName, p: this.props });
+
+            const wcc = new WavesContractDataController({ dAppAddress });
+            wcc.startUpdating();
+            
+            this.controllerInitialized = true;
+        }
+    }
+
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {

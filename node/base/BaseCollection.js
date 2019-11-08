@@ -35,7 +35,7 @@ module.exports = class BaseCollection {
     async getItem(id) {
         let item = await this.storage.hget(this.getStorageKey(), id);
 
-        console.log({ item, id });
+        // console.log({ item, id });
 
         if (!item) {
             return null;
