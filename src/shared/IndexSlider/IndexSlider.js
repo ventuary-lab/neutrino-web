@@ -1,12 +1,11 @@
 import React from 'react';
 import Slick from 'react-slick';
 
-import { html, store } from 'components';
+import { html } from 'components';
 import slide1 from 'static/images/slide1.svg';
 import IndexSliderArrow from './views/IndexSliderArrow';
 
 import './IndexSlider.scss';
-import { openModal } from 'yii-steroids/actions/modal';
 
 const bem = html.bem('IndexSlider');
 
@@ -14,7 +13,7 @@ export default class IndexSlider extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         const slides = this.renderSlides();
 

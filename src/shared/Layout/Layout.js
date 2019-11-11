@@ -99,14 +99,13 @@ export default class Layout extends React.PureComponent {
         this.openWarningModal();
     }
 
-    openWarningModal (width = document.body.width) {
+    openWarningModal(width = document.body.width) {
         if (width < 600) {
             store.dispatch(openModal(WarningMobileModal));
         }
     }
 
     onScreenResize(entry) {
-
         const width = _get(entry[0], 'contentRect.width', null);
 
         this.openWarningModal(width);
