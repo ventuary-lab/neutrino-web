@@ -7,32 +7,22 @@ import IndexSliderArrow from './views/IndexSliderArrow';
 
 import './IndexSlider.scss';
 import { openModal } from 'yii-steroids/actions/modal';
-import WarningMobileModal from '../../modals/WarningMobileModal';
-
-import {clientStorage} from 'components';
 
 const bem = html.bem('IndexSlider');
 
 export default class IndexSlider extends React.Component {
-
-    static propTypes = {
-
-    };
-
-    componentDidMount() {
-        const warningModalState = clientStorage.get('warningModalState');
-
-        if(warningModalState === 'open') {
-            store.dispatch(openModal(WarningMobileModal));
-        }
+    constructor(props) {
+        super(props);
     }
-
+    
     render() {
         const slides = this.renderSlides();
+
         return (
             <div className={bem.block()}>
                 <h1 className={bem.element('title')}>
-                    <span>{__('Welcome to the')}</span><br/>
+                    <span>{__('Welcome to the')}</span>
+                    <br />
                     <span>{__('Neutrino protocol dashboard!')}</span>
                 </h1>
 
@@ -43,23 +33,8 @@ export default class IndexSlider extends React.Component {
                         speed={500}
                         slidesToShow={1}
                         slidesToScroll={1}
-                        prevArrow={(
-                            <IndexSliderArrow direction='left'/>
-                        )}
-                        nextArrow={(
-                            <IndexSliderArrow direction='right'/>
-                        )}
-                        afterChange={index => {
-                            if(index === slides.length - 1) {
-                                if(clientStorage.get('warningModalState')) {
-                                    return;
-                                };
-
-                                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                                    clientStorage.set('warningModalState', 'open');
-                                }
-                            }
-                        }}
+                        prevArrow={<IndexSliderArrow direction="left" />}
+                        nextArrow={<IndexSliderArrow direction="right" />}
                     >
                         {slides.map((content, index) => (
                             <div key={index} className={bem.element('slide')}>
@@ -75,20 +50,21 @@ export default class IndexSlider extends React.Component {
     renderSlides() {
         return [
             <div className={bem.element('slide-inner', 'center')}>
-                <img
-                    src={slide1}
-                    alt='Neutrino concept'
-                />
+                <img src={slide1} alt="Neutrino concept" />
             </div>,
             <div className={bem.element('slide-inner')}>
                 <div className={bem.element('slide-sub-title')}>
                     {__('01. The concept')}
                 </div>
                 <h3 className={bem.element('slide-title')}>
-                    {__('What is a collateralised stable coin or synthetic asset?')}
+                    {__(
+                        'What is a collateralised stable coin or synthetic asset?'
+                    )}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('It is a token on the Waves platform whose capitalization and price stability is ensured by WAVES tokens reserved on the smart contract.')}
+                    {__(
+                        'It is a token on the Waves platform whose capitalization and price stability is ensured by WAVES tokens reserved on the smart contract.'
+                    )}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
@@ -96,10 +72,14 @@ export default class IndexSlider extends React.Component {
                     {__('02. The benefits')}
                 </div>
                 <h3 className={bem.element('slide-title')}>
-                    {__('What are the benefits of minting and staking neutrino based assets?')}
+                    {__(
+                        'What are the benefits of minting and staking neutrino based assets?'
+                    )}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('You can mitigate the volatility risk of the WAVES token and receive income in stable coins or synthetic assets through leasing.')}
+                    {__(
+                        'You can mitigate the volatility risk of the WAVES token and receive income in stable coins or synthetic assets through leasing.'
+                    )}
                 </p>
             </div>,
             <div className={bem.element('slide-inner')}>
@@ -110,7 +90,9 @@ export default class IndexSlider extends React.Component {
                     {__('How does one work with Neutrino?')}
                 </h3>
                 <p className={bem.element('slide-text')}>
-                    {__('Send WAVES to the smart contract using the Neutrino dashboard and receive a Neutrino-based asset back. Buy bonds in an open auction and make a profit from their liquidation in the Bonds dashboard.')}
+                    {__(
+                        'Send WAVES to the smart contract using the Neutrino dashboard and receive a Neutrino-based asset back. Buy bonds in an open auction and make a profit from their liquidation in the Bonds dashboard.'
+                    )}
                 </p>
             </div>
         ];
