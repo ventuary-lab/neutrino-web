@@ -18,7 +18,7 @@ export default class TransferInfo extends React.PureComponent {
     };
 
     render() {
-        const {address, amount, currency, buttonLabel, onSubmit} = this.props;
+        const { address, amount, currency, buttonLabel, onSubmit, onClose } = this.props;
 
         return (
             <div className={bem.block()}>
@@ -45,7 +45,7 @@ export default class TransferInfo extends React.PureComponent {
                     color={'success'}
                     className={bem.element('submit-button')}
                     label={buttonLabel || __('Ok')}
-                    onClick={onSubmit}
+                    onClick={onClose || onSubmit}
                 />
             </div>
         );
