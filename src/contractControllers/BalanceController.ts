@@ -10,7 +10,7 @@ interface BalanceDictionary {
     [key: string]: number | null;
 }
 
-export default class BalanceListener {
+export default class BalanceController {
     private dal: DalComponent | null;
     private _timer: NodeJS.Timeout | null;
     private _address: string | null;

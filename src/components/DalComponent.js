@@ -1,8 +1,8 @@
 import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
-import {setUser} from 'yii-steroids/actions/auth';
+import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
-import {clientStorage} from 'components';
+import { clientStorage } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
@@ -14,7 +14,6 @@ import OrderTypeEnum from 'enums/OrderTypeEnum';
 export const STORAGE_AUTH_KEY = 'isAuth';
 
 export default class DalComponent {
-
     constructor() {
         this.network = null;
         this.nodeUrl = null;
@@ -30,7 +29,7 @@ export default class DalComponent {
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
-        };
+        }
     }
 
     /**
@@ -49,7 +48,7 @@ export default class DalComponent {
                 role: UserRole.REGISTERED,
                 address: account.address,
                 network: account.network,
-                balances: this.balance.getBalances(),
+                balances: this.balance.getBalances()
             }
             : null;
 
@@ -95,7 +94,7 @@ export default class DalComponent {
             'swapWavesToNeutrino',
             [],
             'WAVES',
-            amount,
+            amount
         );
     }
 
@@ -106,7 +105,7 @@ export default class DalComponent {
             'swapNeutrinoToWaves',
             [],
             this.assets[paymentCurrency],
-            amount,
+            amount
         );
     }
 
@@ -115,12 +114,9 @@ export default class DalComponent {
             pairName,
             ContractEnum.NEUTRINO,
             'withdraw',
-            [
-                address,
-                index
-            ],
+            [address, index],
             'WAVES',
-            0,
+            0
         );
     }
 
@@ -130,29 +126,43 @@ export default class DalComponent {
         }
         price = Math.round(price * 100) / 100;
         const contractPrice = price * 100;
-        let position = _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');
+        let position = _get(
+            await axios.get(`/api/v1/bonds/${pairName}/position`, {
+                params: { price: contractPrice }
+            }),
+            'data.position'
+        );
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
                 'setOrder',
-                [
-                    contractPrice,
-                    position
-                ],
+                [contractPrice, position],
                 this.assets[paymentCurrency],
-                bondsAmount * price,
+                bondsAmount * price
             );
         }
     }
 
-    async swapAndSetBondOrder(pairName, price, paymentCurrency, bondsAmount, neutrinoAmount, wavesToUsdPrice) {
+    async swapAndSetBondOrder(
+        pairName,
+        price,
+        paymentCurrency,
+        bondsAmount,
+        neutrinoAmount,
+        wavesToUsdPrice
+    ) {
         if (price <= 0 || price >= 1) {
             return;
         }
         price = Math.round(price * 100) / 100;
         const contractPrice = price * 100;
-        let position = _get(await axios.get(`/api/v1/bonds/${pairName}/position`, {params: {price: contractPrice}}), 'data.position');
+        let position = _get(
+            await axios.get(`/api/v1/bonds/${pairName}/position`, {
+                params: { price: contractPrice }
+            }),
+            'data.position'
+        );
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             try {
                 const txSwap = await this.keeper.signTransaction(
@@ -161,27 +171,23 @@ export default class DalComponent {
                     'swapWavesToNeutrino',
                     [],
                     'WAVES',
-                    neutrinoAmount / wavesToUsdPrice,
+                    neutrinoAmount / wavesToUsdPrice
                 );
 
                 const txSetOrder = await this.keeper.signTransaction(
                     pairName,
                     ContractEnum.AUCTION,
                     'setOrder',
-                    [
-                        contractPrice,
-                        position
-                    ],
+                    [contractPrice, position],
                     this.assets[paymentCurrency],
-                    bondsAmount * price,
+                    bondsAmount * price
                 );
 
                 console.log(position); // eslint-disable-line no-console
-                console.log('Signed vote tx:', {txSwap, txSetOrder}); // eslint-disable-line no-console
+                console.log('Signed vote tx:', { txSwap, txSetOrder }); // eslint-disable-line no-console
 
                 await this.keeper.broadcastAndWait(txSwap);
                 await this.keeper.broadcastAndWait(txSetOrder);
-
             } catch (e) {
                 throw e;
             }
@@ -195,7 +201,7 @@ export default class DalComponent {
             'setOrder',
             [],
             this.assets[paymentCurrency],
-            total,
+            total
         );
     }
 
@@ -206,11 +212,9 @@ export default class DalComponent {
                     pairName,
                     ContractEnum.AUCTION,
                     'cancelOrder',
-                    [
-                        hash
-                    ],
+                    [hash],
                     'WAVES',
-                    0,
+                    0
                 );
                 break;
 
@@ -219,11 +223,9 @@ export default class DalComponent {
                     pairName,
                     ContractEnum.NEUTRINO,
                     'cancelOrder',
-                    [
-                        hash
-                    ],
+                    [hash],
                     'WAVES',
-                    0,
+                    0
                 );
                 break;
         }
@@ -237,7 +239,7 @@ export default class DalComponent {
             'lockNeutrino',
             [],
             this.assets[paymentCurrency],
-            amount,
+            amount
         );
     }
 
@@ -246,12 +248,9 @@ export default class DalComponent {
             pairName,
             ContractEnum.RPD,
             'unlockNeutrino',
-            [
-                amount,
-                this.assets[paymentCurrency]
-            ],
+            [amount, this.assets[paymentCurrency]],
             'WAVES',
-            0,
+            0
         );
     }
 
@@ -260,13 +259,9 @@ export default class DalComponent {
             pairName,
             ContractEnum.RPD,
             'withdraw',
-            [
-                index,
-                historyIndex
-            ],
+            [index, historyIndex],
             'WAVES',
-            0,
+            0
         );
     }
-
 }
