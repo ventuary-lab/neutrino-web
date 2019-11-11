@@ -1,4 +1,9 @@
 import { ResponseContractData } from './../contractData/ResponseContractData';
+
+export interface WavesErrorResponse {
+    error: number;
+    message: string;
+}
 export interface WavesAddressData extends ResponseContractData {
     type: string;
     key: string;
@@ -29,4 +34,10 @@ export interface WavesAssetBalanceInfo {
     address: string;
     balance: number;
     assetId: string;
+}
+
+export interface WavesAddressBalanceInfo {
+    address: string;
+    confirmations: number;
+    balance: number;
 }

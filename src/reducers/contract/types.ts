@@ -1,6 +1,5 @@
 import { WavesAddressData } from './../../contractControllers/types';
 
-
 export interface ContractData {
     [key: string]: WavesAddressData[]
 };
