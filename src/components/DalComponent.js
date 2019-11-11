@@ -4,7 +4,7 @@ import {setUser} from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
 import {clientStorage} from 'components';
 
-import BalanceListener from './dal/BalanceListener';
+import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
@@ -22,8 +22,7 @@ export default class DalComponent {
         this.contracts = null;
 
         this.hoc = apiHoc;
-
-        this.balance = new BalanceListener(this);
+        this.balance = new BalanceController({ dalRef: this });
         this.balance.onUpdate = this.login.bind(this);
 
         this.keeper = new Keeper(this);

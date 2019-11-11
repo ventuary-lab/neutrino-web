@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {getFormValues, change, reset} from 'redux-form';
+import { connect } from 'react-redux';
+import { getFormValues, change, reset } from 'redux-form';
 import _get from 'lodash-es/get';
 import _toNumber from 'lodash-es/toNumber';
 import round from 'lodash-es/round';
@@ -9,7 +9,7 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
-import {getUser} from 'yii-steroids/reducers/auth';
+import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext } from 'shared/Layout/context';
 import _ from 'lodash';
 
@@ -18,9 +18,10 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
 import PairsEnum from 'enums/PairsEnum';
 import CollectionEnum from 'enums/CollectionEnum';
-import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
+import { getPairName, getQuoteCurrency, getSourceCurrency } from 'reducers/currency';
 import Hint from 'shared/Hint';
 import SwapLoader from 'shared/SwapLoader';
+import { getControlPrice, getTotalIssued } from 'reducers/contract/selectors';
 
 import './NeutrinoDashboard.scss';
 
@@ -28,9 +29,6 @@ const bem = html.bem('NeutrinoDashboard');
 
 const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
-
-const getControlPrice = state => state.contractPrices.contractPrices.control_contract;
-const getTotalIssued = state => state.contractPrices.contractPrices.totalIssued;
 
 @connect(
     (state) => ({
