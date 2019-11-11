@@ -24,7 +24,7 @@ export const getAddressDefaultBalance = async (
     axiosConfig?: AxiosRequestConfig
 ) => {
     const { nodeUrl, address } = params;
-    const url = `${nodeUrl}/addresses/data/${address}`;
+    const url = `${nodeUrl}/addresses/balance/${address}`;
 
     const response = await axios.get<WavesAddressBalanceInfo>(
         url,

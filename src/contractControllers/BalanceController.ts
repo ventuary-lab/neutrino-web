@@ -78,6 +78,7 @@ export default class BalanceListener {
 
         await this._refreshBalance();
 
+        // @ts-ignore
         this._timer = setTimeout(this._next, 5000);
     }
 
@@ -90,28 +91,18 @@ export default class BalanceListener {
 
         const balanceDict: BalanceDictionary = {};
 
-        const wavesBalance = await getAddressDefaultBalance({
+        const wavesBalanceRes = await getAddressDefaultBalance({
             nodeUrl: this.dal.nodeUrl,
             address
         });
 
         balanceDict[CurrencyEnum.WAVES] = _get(
-            wavesBalance.data,
+            wavesBalanceRes.data,
             'balance',
             null
         );
 
-        // Fetch waves
-        // const balances = {
-        //     [CurrencyEnum.WAVES]: _get(
-        //         await this._request(`addresses/balance/${address}`),
-        //         'balance',
-        //         null
-        //     )
-        // };
-
-        // Add assets
-        for (let currency in this.dal.assets) {
+        for (const currency in this.dal.assets) {
             if (this.dal.assets.hasOwnProperty(currency)) {
                 const assetId = this.dal.assets[currency];
                 const newBalanceRes = await getAssetBalanceInfo({
@@ -132,7 +123,7 @@ export default class BalanceListener {
             );
         });
 
-        if (address === this._address && !_isEqual(this._balances, balanceDict)) {
+        if (address === this._address) {
             this._balances = balanceDict;
 
             if (this.onUpdate) {
