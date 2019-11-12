@@ -1,58 +1,22 @@
-import redis from 'redis';
-import winston, { Logger } from 'winston';
-import { 
-    http as ExpressHttp,
-    core as ExpressCore
-} from 'express';
-import WavesContractCache from './cache/WavesContractCache';
-import RedisStorage from './cache/storage/RedisStorage';
-import WebSocketServer from './components/WebSocketServer';
-
-import HeightListener from './components/HeightListener';
-import WavesTransport from './components/WavesTransport';
-import PairsEnum from './enums/PairsEnum';
-import ContractEnum from './enums/ContractEnum';
-import CurrencyEnum from './enums/CurrencyEnum';
-import CollectionEnum  from './enums/CollectionEnum';
-import {
-    DAppPairs,
-    ApplicationParams,
-    ContractDictionary,
-    ContractCache,
-    ContractTransport,
-    ContractNodeData
-} from './types';
+const redis = require('redis');
+const winston = require('winston');
+const WavesContractCache = require('waves-contract-cache');
+const RedisStorage = require('waves-contract-cache/storage/RedisStorage');
+const WebSocketServer = require('./components/WebSocketServer');
+const HeightListener = require('./components/HeightListener');
+const WavesTransport = require('./components/WavesTransport');
+const PairsEnum = require('./enums/PairsEnum');
+const ContractEnum = require('./enums/ContractEnum');
+const CurrencyEnum = require('./enums/CurrencyEnum');
+const CollectionEnum = require('./enums/CollectionEnum');
 
 const Router = require('./Router');
 
-module.exports = class App implements ApplicationParams {
-    // Parameter types
-    network: string;
-    isCleaningRedis: boolean;
-    nodeUrl: string;
-    redisNamespace: string;
-    dApps: DAppPairs;
-    _redisClient: any;
-    storage: RedisStorage;
-    logger: Logger;
-    heightListener: HeightListener;
-    httpServer: ExpressHttp.server;
-    expressApp: ExpressCore.Express;
+module.exports = class App {
 
-    // Internal class props
-    _isSkipUpdates: boolean;
-    _isNowUpdated: boolean;
-    _isNeedUpdateAgain: boolean;
-    assets?: DAppPairs;
-    _contracts: ContractDictionary<ContractDictionary<ContractCache>> | null;
-    _collections: ContractDictionary<ContractDictionary<ContractCache>> | null; // Not type-checked
-    _router: any;
-    _websocket: WebSocketServer;
-
-    constructor(params: ApplicationParams) {
+    constructor(params = {}) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
-        this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true' || false;
-
+        this.isCleaningRedis = process.env.IS_CLEANING_REDIS || false;
         switch (this.network) {
             case 'mainnet':
                 this.nodeUrl = 'https://nodes.wavesplatform.com';
@@ -68,7 +32,7 @@ module.exports = class App implements ApplicationParams {
         this.dApps = {
             [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
-            // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
+            //[PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
         // Create main redis client & storage
@@ -126,50 +90,54 @@ module.exports = class App implements ApplicationParams {
     }
 
     async start() {
+        console.log('---start');
         this._isSkipUpdates = true;
 
         this._router.start();
         this._websocket.start();
-
         await this.heightListener.start();
+
+        console.log('---before heightListener');
 
         // Try get timestamp
         this.heightListener.getTimestamps([this.heightListener.getLast()]);
 
+        console.log('---after heightListener');
+
         // Create contracts and collections
-        const pairKeys = PairsEnum.getKeys() as string[];
-        const contractKeys = ContractEnum.getKeys() as string[];
-        const collectionKeys = CollectionEnum.getKeys() as string[];
-
-        for (const pairName of pairKeys) {
-            for (const contractName of contractKeys) {
-
+        for (const pairName of PairsEnum.getKeys()) {
+            for (const contractName of ContractEnum.getKeys()) {
                 const contract = await this.createContract(pairName, contractName);
                 contract.transactionListener.start();
             }
 
-            for (const collectionName of collectionKeys) {
+            for (const collectionName of CollectionEnum.getKeys()) {
                 this.createCollection(pairName, collectionName);
             }
         }
 
+        console.log('---after create contracts and collections');
+
+
         // Load asset ids
         this.assets = await this._loadAssetIds();
 
+        console.log('---after loads assets');
+
         //add assets to collections
-        for (const pairName of pairKeys) {
-
-            for (const collectionName of collectionKeys) {
-
+        for (const pairName of PairsEnum.getKeys()) {
+            for (const collectionName of CollectionEnum.getKeys()) {
                 this._collections[pairName][collectionName].assets = this.assets;
             }
         }
+
+        console.log('---before update all');
 
         await this._updateAll(this.isCleaningRedis);
         this._isSkipUpdates = false;
     }
 
-    getContract(pairName: string, contractName: string): ContractCache {
+    getContract(pairName, contractName) {
         return this._contracts[pairName][contractName];
     }
 
@@ -177,15 +145,11 @@ module.exports = class App implements ApplicationParams {
         return this._contracts;
     }
 
-    async createContract(pairName: string, contractName: string): Promise<ContractCache> {
-        const dApp = contractName === ContractEnum.NEUTRINO ? (
-            this.dApps[pairName]
-        ) : (
-            await this.getContract(pairName, ContractEnum.NEUTRINO)
-                .transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName)) as string
-        );
-
-        const transport: ContractTransport = new WavesTransport({
+    async createContract(pairName, contractName) {
+        const dApp = contractName === ContractEnum.NEUTRINO
+            ? this.dApps[pairName]
+            : await this.getContract(pairName, ContractEnum.NEUTRINO).transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName));
+        const transport = new WavesTransport({
             dApp,
             nodeUrl: this.nodeUrl,
             logger: this.logger,
@@ -193,7 +157,7 @@ module.exports = class App implements ApplicationParams {
 
         console.log('---createContract');
 
-        const contract: ContractCache = new WavesContractCache({
+        const contract = new WavesContractCache({
             dApp,
             nodeUrl: this.nodeUrl,
             updateHandler: keys => this._onContractUpdate(pairName, contractName, keys),
@@ -205,17 +169,15 @@ module.exports = class App implements ApplicationParams {
                 level: this.logger.level,
             },
         });
-
         contract.transport = transport;
         contract.storage.set('address_' + contractName, dApp);
 
         this._contracts[pairName] = this._contracts[pairName] || {};
         this._contracts[pairName][contractName] = contract;
-
         return contract;
     }
 
-    getCollection(pairName: string, collectionName: string) {
+    getCollection(pairName, collectionName) {
         return this._collections[pairName][collectionName];
     }
 
@@ -240,32 +202,26 @@ module.exports = class App implements ApplicationParams {
         return collection;
     }
 
-    async _loadAssetIds (): Promise<Partial<DAppPairs>> {
-        const assets: Partial<DAppPairs> = {};
-
+    async _loadAssetIds() {
+        const assets = {};
         for (let pairName of PairsEnum.getKeys()) {
             const currencies = [
                 PairsEnum.getBase(pairName),
                 PairsEnum.getQuote(pairName),
-            ] as string[];
-
+            ];
             for (let currency of currencies) {
                 if (!assets[currency]) {
                     const key = CurrencyEnum.getAssetContractKey(currency);
                     const transport = this.getContract(pairName, ContractEnum.NEUTRINO).transport;
 
-                    const assetCurrencyValue = await transport.nodeFetchKey(key);
-                    console.log({ key, assetCurrencyValue });
-
-                    assets[currency] = assetCurrencyValue as string;
+                    assets[currency] = await transport.nodeFetchKey(key);
                 }
             }
         }
-
         return assets;
     }
 
-    async _updateAll(shouldFlush?: boolean) {
+    async _updateAll(flush) {
         if (this._isNowUpdated) {
             return;
         }
@@ -273,25 +229,19 @@ module.exports = class App implements ApplicationParams {
 
         try {
             for (const pairName of PairsEnum.getKeys()) {
-                const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
-
-                for (const collectionName of CollectionEnum.getKeys() as string[]) {
+                const data = {};
+                for (const collectionName of CollectionEnum.getKeys()) {
                     const collection = this.getCollection(pairName, collectionName);
-                    const contractName = CollectionEnum.getContractName(collectionName) as string;
-
+                    const contractName = CollectionEnum.getContractName(collectionName);
                     if (!data[contractName]) {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
                     this.logger.info('Update all data in collection... ' + collectionName);
-
-                    if (shouldFlush) {
+                    if (flush) {
                         await collection.removeAll();
-                    };
-
-                    const nodeNewData = data[contractName];
-
-                    await collection.updateAll(nodeNewData);
+                    }
+                    await collection.updateAll(data[contractName]);
                 }
             }
         } catch (err) {
@@ -325,7 +275,6 @@ module.exports = class App implements ApplicationParams {
 
     _onCollectionUpdate(id, item, collection) {
         if (!this._isSkipUpdates) {
-
             this._websocket.push(JSON.stringify({
                 stream: 'collections',
                 data: {

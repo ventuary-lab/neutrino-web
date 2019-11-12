@@ -1,18 +1,6 @@
-// const webSocketServer = require('websocket').server;
-import { server as WebSocketModule } from 'websocket';
-import { http } from 'express';
-import { Logger } from 'winston';
+const webSocketServer = require('websocket').server;
 
-export interface WebSocketParams {
-    httpServer: http.Server;
-    logger: Logger;
-    _wsServer: WebSocketModule;
-}
-
-class WebSocketServer implements WebSocketParams {
-    httpServer: http.Server;
-    logger: Logger;
-    _wsServer: WebSocketModule;
+module.exports = class WebSocketServer {
 
     constructor(params) {
         params = params || {};
@@ -26,10 +14,10 @@ class WebSocketServer implements WebSocketParams {
     }
 
     start() {
-        this.logger.info(`WebSocketServer started...`);
+        this.logger.info(`${this.constructor.name} started...`);
 
         // Create WS server
-        this._wsServer = new WebSocketModule({
+        this._wsServer = new webSocketServer({
             httpServer: this.httpServer,
         });
 
@@ -43,7 +31,11 @@ class WebSocketServer implements WebSocketParams {
         }
     }
 
-    push(message: string) {
+    /**
+     * @param {string} message
+     * @private
+     */
+    push(message) {
         // Skip pushes when ws server is not started
         if (!this._wsServer) {
             return;
@@ -56,13 +48,15 @@ class WebSocketServer implements WebSocketParams {
         });
     }
 
-    _onRequest(request: any) {
+    /**
+     * @param {object} request
+     * @private
+     */
+    _onRequest(request) {
         const connection = request.accept(null, request.origin);
 
         // Log client connected
-        this.logger.debug(`WebSocketServer user '${connection.remoteAddresses.join(', ')}' connected.`);
+        this.logger.debug(`${this.constructor.name} user '${connection.remoteAddresses.join(', ')}' connected.`);
     }
 
 };
-
-export default WebSocketServer;

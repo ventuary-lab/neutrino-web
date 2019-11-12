@@ -9,7 +9,7 @@ COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 
 RUN yarn install
-RUN npm install ts-node -g
+RUN npm install nodemon -g
 RUN npm run build
 
-ENTRYPOINT [ "ts-node", "--log-error", "server.js" ]
+ENTRYPOINT [ "nodemon", "server.js" ]
