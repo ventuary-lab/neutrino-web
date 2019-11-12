@@ -7,7 +7,7 @@ import _size from 'lodash/size';
 import _isFunction from 'lodash/isFunction';
 import moment from 'moment';
 import {SubmissionError} from 'redux-form';
-import SocialEnum from 'enums/SocialEnum';
+// import SocialEnum from 'enums/SocialEnum';
 
 const validate = function (data, rules) {
     const errors = {};
@@ -50,14 +50,14 @@ const validate = function (data, rules) {
                     }
                     break;
 
-                case 'social':
-                    if (value) {
-                        const match = (new RegExp('(' + SocialEnum.getKeys().join('|') + ')')).exec(attribute);
-                        if (match) {
-                            value = SocialEnum.formatLink(value, match[0]);
-                        }
-                    }
-                    break;
+                // case 'social':
+                //     if (value) {
+                //         const match = (new RegExp('(' + SocialEnum.getKeys().join('|') + ')')).exec(attribute);
+                //         if (match) {
+                //             value = SocialEnum.formatLink(value, match[0]);
+                //         }
+                //     }
+                //     break;
 
                 case 'string':
                     params.max = params.max || 1000;

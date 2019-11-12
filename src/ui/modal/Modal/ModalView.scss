@@ -2,6 +2,15 @@
 
 .ModalView {
 
+  $root: &;
+  $header-height: 60px;
+
+  &_has-header {
+    #{$root}__inner {
+      padding-top: $header-height;
+    }
+  }
+
   &__overlay {
     position: fixed;
     top: 0;
@@ -37,13 +46,28 @@
     align-items: center;
   }
 
+  &__header {
+    background-color: #353569;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $header-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 28px;
+  }
+
   &__close {
+    z-index: 1;
     position: absolute;
     top: 0;
     right: 0;
     display: block;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border: none;
     background-color: transparent;
     cursor: pointer;
