@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {getFormValues, change, reset} from 'redux-form';
+import { connect } from 'react-redux';
+import { getFormValues, change, reset } from 'redux-form';
 import _get from 'lodash-es/get';
 import _toNumber from 'lodash-es/toNumber';
 import round from 'lodash-es/round';
@@ -9,14 +9,19 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
-import {getUser} from 'yii-steroids/reducers/auth';
+import { getUser } from 'yii-steroids/reducers/auth';
+import { ConfigContext } from 'shared/Layout/context';
+import _ from 'lodash';
 
-import {html, dal} from 'components';
+import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import ContractEnum from 'enums/ContractEnum';
+import PairsEnum from 'enums/PairsEnum';
 import CollectionEnum from 'enums/CollectionEnum';
-import {getPairName, getQuoteCurrency, getSourceCurrency} from 'reducers/currency';
+import { getPairName, getQuoteCurrency, getSourceCurrency } from 'reducers/currency';
 import Hint from 'shared/Hint';
 import SwapLoader from 'shared/SwapLoader';
+import { getControlPrice, getTotalIssued } from 'reducers/contract/selectors';
 
 import './NeutrinoDashboard.scss';
 
@@ -32,6 +37,8 @@ const PRICE_FEED_PERIOD = 1000;
         pairName: getPairName(state),
         formValues: getFormValues(FORM_ID)(state),
         user: getUser(state),
+        controlPrice: getControlPrice(state),
+        totalIssued: getTotalIssued(state)
     })
 )
 @dal.hoc(
@@ -89,6 +96,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
             isSwapLoading: false,
         };
 
+        this.getControlPrice = this.getControlPrice.bind(this);
+
         this._onSubmit = this._onSubmit.bind(this);
         this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
@@ -140,8 +149,17 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
     }
 
-    render() {
+    getControlPrice () {
+        return _.round(
+            _get(this.props, 'controlPrice', 0) / 100, 2
+        )
+    }
 
+    getTotalIssued () {
+        return this.props.totalIssued ? _.round(this.props.totalIssued / 100, 2) : '';
+    }
+
+    render() {
 
         const steps = [
             {
@@ -200,16 +218,20 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     renderGenerationStep() {
+        const grabNeutrinoAddress = (config) => {
+            try {
+                return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
+            } catch (err) {
+                return '';
+            }
+        };
+
         return (
             <>
                 <div className={bem.element('inputs')}>
                     <div className={bem.element('input-container')}>
                         <div className={bem.element('input-label')}>
-                            {__('How much {currency} would you like to collateralize?', {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            })}
+                            {__('Send')}
                         </div>
                         <InputField
                             className={bem.element('input')}
@@ -243,11 +265,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
                     <div className={bem.element('input-container')}>
                         <div className={bem.element('input-label')}>
-                            {__('How much {currency} would you like to receive?', {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                    : 'WAVES'
-                            })}
+                            {__('Receive')}
                         </div>
                         <InputField
                             className={bem.element('input')}
@@ -273,19 +291,25 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
                 <div className={bem.element('info')}>
                     <div className={bem.element('info-column')}>
-                        <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <div className={bem.element('info-hint')}>
-                                    <Hint
-                                        text={__('3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo')}
-                                    />
+                        <ConfigContext.Consumer>
+                            {environmentConfig => (
+                                <div className={bem.element('info-row')}>
+                                    <div className={bem.element('info-string')}>
+                                        <div className={bem.element('info-hint')}>
+                                            <Hint
+                                                text={
+                                                    __(grabNeutrinoAddress(environmentConfig))
+                                                }
+                                            />
+                                        </div>
+                                        <span>{__('Smart contract')}</span>
+                                    </div>
+                                    <span>
+                                        {grabNeutrinoAddress(environmentConfig)}
+                                    </span>
                                 </div>
-                                <span>{__('Smart contract')}</span>
-                            </div>
-                            <span>
-                                {/*round(this.props.priceFeed, 2)*/'3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo'}
-                            </span>
-                        </div>
+                            )}
+                        </ConfigContext.Consumer>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string', 'without-hint')}>
                                 <span>{__('Number of oracles')}</span>
@@ -302,7 +326,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{this.props.neutrinoBalances && round(this.props.neutrinoBalances.totalUsed, 2)}</span>
+                            <span>{this.getTotalIssued()}</span>
                         </div>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string')}>
@@ -312,7 +336,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{_get(this.props, 'neutrinoConfig.price')} {CurrencyEnum.getSign(this.props.sourceCurrency)}</span>
+                            <span>
+                                {this.getControlPrice()} {CurrencyEnum.getSign(this.props.sourceCurrency)}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -373,12 +399,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('details')}>
                     <div className={bem.element('details-item')}>
                         <span className={bem.element('details-label')}>
-                            {__('Generate new asset')}
+                            {__('Please confirm the assets swap')}
                         </span>
                         <div className={bem.element('details-inner', 'generation')}>
                             <div className={bem.element('values')}>
                                 <span className={bem.element('value-title')}>
-                                    {__('Collateral')}:
+                                    {__('Send')}:
                                 </span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>
@@ -398,7 +424,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             </div>
                             <div className={bem.element('values')}>
                                 <span className={bem.element('value-title')}>
-                                    {__('Generate')}:
+                                    {__('Receive')}:
                                 </span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>
@@ -458,7 +484,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             : _get(props.formValues, 'neutrino') / rate);
 
 
-        this.props.dispatch(change(
+        store.dispatch(change(
             FORM_ID,
             isRefreshToAmount ? 'neutrino' : 'waves',
             this._toFixedSpecial(amount, 2)
@@ -487,7 +513,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     _onSubmit(values) {
         this.setState({step: 'generation'});
-        this.props.dispatch(reset(FORM_ID));
+        store.dispatch(reset(FORM_ID));
 
         return this.state.isWavesLeft
             ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)

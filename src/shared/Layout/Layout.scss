@@ -16,6 +16,7 @@ body {
 
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   height: 100%;
 
   &_is-show-left-sidebar {
@@ -34,6 +35,10 @@ body {
     width: calc(100% - #{$right-width} - #{$gap});
     display: flex;
     flex-direction: column;
+    // height: 100%;
+    // max-height: calc(100vh - 65px - 8px);
+    // max-height: unset;
+    height: auto;
   }
 
   &__header {
@@ -46,8 +51,10 @@ body {
 
   &__content {
     width: 100%;
-    height: calc(100vh - 65px - 8px);
-    min-height: 650px;
+    // height: calc(100vh - 65px - 8px);
+    // min-height: 100vh;
+    max-height: unset;
+    height: 100%;
   }
 
   &__left {
@@ -65,9 +72,9 @@ body {
   }
 
   @media screen and (max-width: 1024px) {
-    &__right {
-      display: none;
-    }
+    // &__right {
+    //   display: none;
+    // }
 
     &__center {
       width: 100%;

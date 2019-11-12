@@ -28,6 +28,7 @@ class WavesTransport implements WavesTransportParams {
 
     async fetchAll() {
         const response = await this._request(`${this.nodeUrl}/addresses/data/${this.dApp}`);
+
         const nodeData = {};
         response.data.forEach(item => {
             nodeData[item.key] = convertValueToJs(item.value);

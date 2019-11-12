@@ -56,10 +56,10 @@ export default class SwapLoader extends React.PureComponent {
                         })}>
                             <div className={bem.element('currency')}>
                                 <div className={bem.element('currency-icon')}>
-                                    <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
+                                    <span className={`Icon ${CurrencyEnum.getIconClass(CurrencyEnum.WAVES)}`}/>
                                 </div>
                                 <span className={bem.element('currency-name')}>
-                                    {CurrencyEnum.getLabel(this.props.quoteCurrency)}
+                                    {CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
                                 </span>
                             </div>
                             <span className={bem.element('direction-union')}>
@@ -67,10 +67,10 @@ export default class SwapLoader extends React.PureComponent {
                             </span>
                             <div className={bem.element('currency')}>
                                 <div className={bem.element('currency-icon')}>
-                                    <span className={`Icon ${CurrencyEnum.getIconClass(CurrencyEnum.WAVES)}`}/>
+                                    <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
                                 </div>
                                 <span className={bem.element('currency-name')}>
-                                    {CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
+                                    {CurrencyEnum.getLabel(this.props.quoteCurrency)}
                                 </span>
                             </div>
                         </div>
