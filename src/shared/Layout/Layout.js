@@ -153,18 +153,16 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(nextProps) {
+        if (nextProps.user) {
+            this._checkForInvoice();
+        }
+
         this._attachWavesDataController();
     }
 
     componentWillUnmount() {
         this.wcc.stopUpdating();
-    }
-
-    componentDidUpdate(nextProps) {
-        if (nextProps.user) {
-            this._checkForInvoice();
-        }
     }
 
     componentWillReceiveProps(nextProps) {
