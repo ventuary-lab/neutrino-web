@@ -1,0 +1,21 @@
+@import 'style/helpers/vars';
+
+.CopyToClipboard {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+
+  &__message {
+    min-width: 120px;
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 15px);
+    border-left: 4px solid $color-brand-blue;
+    transform: translateY(-50%);
+    background: #353569;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 8px 15px;
+  }
+}

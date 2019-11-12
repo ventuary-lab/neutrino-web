@@ -23,7 +23,9 @@ export default class ModalView extends React.PureComponent {
 
     render() {
         return (
-            <div className={bem.block()}>
+            <div className={bem.block({
+                'has-header': !!this.props.header,
+            })}>
                 <Modal
                     isOpen={true}
                     overlayClassName={bem.element('overlay', {
@@ -37,6 +39,11 @@ export default class ModalView extends React.PureComponent {
                     )}
                 >
                     <div className={bem.element('inner')}>
+                        {this.props.header && (
+                            <div className={bem.element('header')}>
+                                {this.props.header}
+                            </div>
+                        )}
                         {!this.props.canNotClose && (
                             <button
                                 type={'button'}

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
+import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
 import { setUser } from 'yii-steroids/actions/auth';
 import layoutHoc, {
@@ -35,6 +36,7 @@ import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
 import { ConfigContext } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
+import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 
 import './Layout.scss';
 
@@ -159,6 +161,12 @@ export default class Layout extends React.PureComponent {
         this.wcc.stopUpdating();
     }
 
+    componentDidUpdate(nextProps) {
+        if (nextProps.user) {
+            this._checkForInvoice();
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             Promise.resolve(dal.isLogged() ? dal.login() : null).then(
@@ -261,5 +269,17 @@ export default class Layout extends React.PureComponent {
                 <ModalWrapper />
             </div>
         );
+    }
+
+    _checkForInvoice() {
+        const params = queryString.parse(location.search);
+
+        if (params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency) {
+            this.props.dispatch(openModal(TransferInvoiceModal, {
+                amount: params.invoiceAmount,
+                address: params.invoiceAddress,
+                currency: params.invoiceCurrency,
+            }))
+        }
     }
 }
