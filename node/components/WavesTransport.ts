@@ -1,13 +1,15 @@
 import { Logger } from 'winston';
-import _isString from 'lodash/isString';
-import _trim from 'lodash/trim';
+import { 
+    isString as _isString,
+    trim as _trim
+} from 'lodash';
 import axios from 'axios';
 
-const convertValueToJs = (value) => {
-    return _isString(value) && ['{', '['].includes(value.substr(0, 1))
-        ? JSON.parse(value)
-        : value;
-};
+import { 
+    ContractDictionary,
+    ContractDataRecord,
+    ContractNodeData
+} from '../types';
 
 export interface WavesTransportParams {
     dApp: string;
@@ -20,47 +22,50 @@ class WavesTransport implements WavesTransportParams {
     nodeUrl: string;
     logger: Logger;
 
-    constructor(params: WavesTransportParams) {
-        this.dApp = params.dApp;
-        this.nodeUrl = params.nodeUrl;
-        this.logger = params.logger;
+    constructor({ dApp, nodeUrl, logger }: WavesTransportParams) {
+        this.dApp = dApp;
+        this.nodeUrl = nodeUrl;
+        this.logger = logger;
     }
 
-    async fetchAll() {
-        const response = await this._request(`${this.nodeUrl}/addresses/data/${this.dApp}`);
+    convertValueToJs (value: string): number | string | boolean {
+        return _isString(value) && ['{', '['].includes(value.substr(0, 1)) ? JSON.parse(value) : value;
+    };
 
-        const nodeData = {};
+    async fetchAll() {
+        const response = await this._request<ContractDataRecord[]>(`${this.nodeUrl}/addresses/data/${this.dApp}`);
+
+        const nodeData: ContractDictionary<ContractNodeData> = {};
+
         response.data.forEach(item => {
-            nodeData[item.key] = convertValueToJs(item.value);
+            nodeData[item.key] = this.convertValueToJs(`${item.value}`);
         });
+
         return nodeData;
     }
 
-    /**
-     * Get node data by key
-     * @param {string} key
-     * @returns {Promise<null|string | number | boolean>}
-     */
-    async nodeFetchKey(key) {
-        const response = await this._request(`${this.nodeUrl}/addresses/data/${this.dApp}/${key}`);
-        return convertValueToJs(response.data.value);
+    async nodeFetchKey<T extends ContractDataRecord>(key: string) {
+        const response = await this._request<T>(`${this.nodeUrl}/addresses/data/${this.dApp}/${key}`);
+        return this.convertValueToJs(`${response.data.value}`);
     }
 
-    async fetchKeys(keys) {
+    async fetchKeys(keys: string[]) {
         const regexp = new RegExp('^(' + keys.join('|') + ')$');
         const matches = encodeURIComponent(_trim(String(regexp), '/'));
-        const response = await this._request(`${this.nodeUrl}/addresses/data/${this.dApp}?matches=${matches}`);
+        const response = await this._request<ContractDataRecord[]>(`${this.nodeUrl}/addresses/data/${this.dApp}?matches=${matches}`);
 
-        const data = {};
+        const data: ContractDictionary<ContractNodeData> = {};
+
         response.data.forEach(item => {
-            data[item.key] = convertValueToJs(item.value);
+            data[item.key] = this.convertValueToJs(`${item.value}`);
         });
+
         return data;
     }
 
-    async _request(url) {
+    async _request<T>(url: string) {
         try {
-            return await axios.get(url);
+            return await axios.get<T>(url);
         } catch (err) {
             this.logger.error(`WavesTransport Error: url - ${String(url)}, ${String(err.stack || err)}`);
             // throw err;

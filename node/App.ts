@@ -1,5 +1,9 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
+import { 
+    http as ExpressHttp,
+    core as ExpressCore
+} from 'express';
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
@@ -15,7 +19,8 @@ import {
     ApplicationParams,
     ContractDictionary,
     ContractCache,
-    ContractTransport
+    ContractTransport,
+    ContractNodeData
 } from './types';
 
 const Router = require('./Router');
@@ -31,14 +36,16 @@ module.exports = class App implements ApplicationParams {
     storage: RedisStorage;
     logger: Logger;
     heightListener: HeightListener;
+    httpServer: ExpressHttp.server;
+    expressApp: ExpressCore.Express;
 
     // Internal class props
     _isSkipUpdates: boolean;
     _isNowUpdated: boolean;
     _isNeedUpdateAgain: boolean;
     assets?: DAppPairs;
-    _contracts: ContractDictionary | null;
-    _collections: ContractDictionary | null; // Not type-checked
+    _contracts: ContractDictionary<ContractDictionary<ContractCache>> | null;
+    _collections: ContractDictionary<ContractDictionary<ContractCache>> | null; // Not type-checked
     _router: any;
     _websocket: WebSocketServer;
 
@@ -171,9 +178,12 @@ module.exports = class App implements ApplicationParams {
     }
 
     async createContract(pairName: string, contractName: string): Promise<ContractCache> {
-        const dApp = contractName === ContractEnum.NEUTRINO
-            ? this.dApps[pairName]
-            : await this.getContract(pairName, ContractEnum.NEUTRINO).transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName));
+        const dApp = contractName === ContractEnum.NEUTRINO ? (
+            this.dApps[pairName]
+        ) : (
+            await this.getContract(pairName, ContractEnum.NEUTRINO)
+                .transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName)) as string
+        );
 
         const transport: ContractTransport = new WavesTransport({
             dApp,
@@ -182,7 +192,6 @@ module.exports = class App implements ApplicationParams {
         });
 
         console.log('---createContract');
-        console.log(WavesContractCache)
 
         const contract: ContractCache = new WavesContractCache({
             dApp,
@@ -238,13 +247,17 @@ module.exports = class App implements ApplicationParams {
             const currencies = [
                 PairsEnum.getBase(pairName),
                 PairsEnum.getQuote(pairName),
-            ];
+            ] as string[];
+
             for (let currency of currencies) {
                 if (!assets[currency]) {
                     const key = CurrencyEnum.getAssetContractKey(currency);
                     const transport = this.getContract(pairName, ContractEnum.NEUTRINO).transport;
 
-                    assets[currency] = await transport.nodeFetchKey(key);
+                    const assetCurrencyValue = await transport.nodeFetchKey(key);
+                    console.log({ key, assetCurrencyValue });
+
+                    assets[currency] = assetCurrencyValue as string;
                 }
             }
         }
@@ -260,11 +273,11 @@ module.exports = class App implements ApplicationParams {
 
         try {
             for (const pairName of PairsEnum.getKeys()) {
-                const data = {};
+                const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
 
-                for (const collectionName of CollectionEnum.getKeys()) {
+                for (const collectionName of CollectionEnum.getKeys() as string[]) {
                     const collection = this.getCollection(pairName, collectionName);
-                    const contractName = CollectionEnum.getContractName(collectionName);
+                    const contractName = CollectionEnum.getContractName(collectionName) as string;
 
                     if (!data[contractName]) {
                         data[contractName] = await collection.transport.fetchAll();
@@ -274,8 +287,11 @@ module.exports = class App implements ApplicationParams {
 
                     if (shouldFlush) {
                         await collection.removeAll();
-                    }
-                    await collection.updateAll(data[contractName]);
+                    };
+
+                    const nodeNewData = data[contractName];
+
+                    await collection.updateAll(nodeNewData);
                 }
             }
         } catch (err) {
