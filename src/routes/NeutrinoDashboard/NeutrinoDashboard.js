@@ -164,9 +164,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const steps = [
             {
                 id: 'generation',
-                label: __('Generate {currency}', {
-                    currency: CurrencyEnum.getLabel(this.props.quoteCurrency)
-                }),
+                label: __('Tokens swap'),
             },
             {
                 id: 'details',
