@@ -28,6 +28,7 @@ enum ContractKeysEnum {
 export class WavesContractDataController {
     private _interval: NodeJS.Timeout;
     private _timeout: number;
+    private _updateFrequency: number;
     nodeUrl: string;
     addressList: string[];
     dAppAddress: string;
@@ -41,7 +42,8 @@ export class WavesContractDataController {
         nodeUrl: string;
     }) {
         this.nodeUrl = nodeUrl ? nodeUrl : "https://nodes.wavesplatform.com";
-        this._timeout = 10 * 1000;
+        this._updateFrequency = 3;
+        this._timeout = this._updateFrequency * 1000;
 
         this._checker = this._checker.bind(this);
 
