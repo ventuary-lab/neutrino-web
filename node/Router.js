@@ -130,7 +130,6 @@ module.exports = class Router {
                 let result = await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address) //TODO crutch
                 let index = await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES).findIndexByHeight(result != undefined ? result.unblockBlock : 0) //TODO crutch
 
-                console.log({ result });
                 return {
                     ...result,
                     index: Number(index != undefined ? index : 0) 
