@@ -57,7 +57,7 @@ module.exports = class Router {
                     const allProfit = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT).getProfit(index);
                     console.log('---allProfit', allProfit);
                     const neutrinoBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${index}`);
-                   // const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
+                    // const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
 
                     console.log('---balances', neutrinoBalance);
 
@@ -248,8 +248,15 @@ module.exports = class Router {
         const candlesLimit = 10;
         const seconds = WavesExchangePeriodEnum.getSeconds(period);
         // Получаем все данные с редиса и сортируем по времени по убыванию
-        let prices = _orderBy((await this._getPrices())[currency], 'timestamp', 'desc');
+        const unorderedPrices = await this._getPrices();
+
+        let prices = _orderBy(unorderedPrices[currency], 'timestamp', 'desc');
         //Первый лемент - это закрытие последней свечи. Получаем время закрытия предыдущей свечи
+
+        if (prices.length === 0) {
+            return prices;
+        };
+
         let prevCandleTimestamp = prices[0].timestamp - seconds * 1000;
         // Начинаем с последней свечи
         let candleIndex = candlesLimit;

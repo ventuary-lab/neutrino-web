@@ -1,18 +1,9 @@
-import axios, { AxiosResponse } from "axios";
 import { store } from "../components";
 import {
-    UPDATE_CONTRACT_ADDRESS_INFO,
     SET_CONTRACT_PRICE,
     SET_TOTAL_ISSUED
 } from "../actions/contract";
 
-import {
-    WavesAddressData,
-    WavesAddressKeyData,
-    WavesAssetInfo,
-    WavesAssetBalanceInfo,
-    WavesErrorResponse
-} from "./types";
 import {
     getAddressInfo,
     getAddressDataByKey,
