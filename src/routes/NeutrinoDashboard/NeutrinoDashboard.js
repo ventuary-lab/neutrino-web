@@ -126,8 +126,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         const thisWithdraw = _get(this.props, 'withdraw');
         const nextWithdraw = _get(nextProps, 'withdraw');
-        const nextUnblockBlock = _get(nextProps, 'withdraw.unblockBlock');
-        const nextHeight = _get(nextProps, 'withdraw.height');
+        const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
+        const nextHeight = Number(_get(nextProps, 'withdraw.height'));
 
         //first loading component
         if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
@@ -137,7 +137,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         //changing withdraw
         if (thisWithdraw && nextWithdraw) {
             if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-                this.setState({isSwapLoading: true});
+                this.setState({ isSwapLoading: true });
             } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
                 this.setState({isSwapLoading: false});
             } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
@@ -366,15 +366,18 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const height = _get(this.props, 'withdraw.height');
         const unblockBlock = _get(this.props, 'withdraw.unblockBlock');
         const countBlock = (unblockBlock - height) > 0 ? unblockBlock - height : 0;
+        const withdrawHint = (
+            __('Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)', {
+                'count-blocks': countBlock,
+                'count-minutes': countBlock, // 1block = 1min
+            })
+        );
 
         return (
             <div className={bem.element('withdraw')}>
                 <div className={bem.element('withdraw-info')}>
                     <div className={bem.element('withdraw-hint')}>
-                        <Hint text={__('Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)', {
-                            'count-blocks': countBlock,
-                            'count-minutes': countBlock, // 1block = 1min
-                        })}/>
+                        <Hint text={withdrawHint}/>
                     </div>
                     {/*__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
                         neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,

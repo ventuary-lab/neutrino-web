@@ -158,6 +158,7 @@ module.exports = class Router {
                 let index = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES)
                     .findIndexByHeight(result != undefined ? result.unblockBlock : 0); //TODO crutch
+
                 return {
                     ...result,
                     index: Number(index != undefined ? index : 0),

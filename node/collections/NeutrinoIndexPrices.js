@@ -16,12 +16,17 @@ module.exports = class NeutrinoIndexPrices extends BaseCollection {
     async findIndexByHeight(height) {
         let items = await this.getItemsAll();
         items = _orderBy(items, 'index', 'asc');
-        let index = 0;
-        let min = 0;
+
+        const inputHeight = Number(height);
+
+        let index = -Infinity;
+        let min = -Infinity;
         for(let i = 0;i < items.length; i++){
-            if(items[i].height < height && items[i].height > min){
+            const currentHeight = Number(items[i].height);
+
+            if (currentHeight < inputHeight && currentHeight > min) {
+                min = currentHeight;
                 index = items[i].index;
-                min = items[i].height;
             }
         }
         return index;
