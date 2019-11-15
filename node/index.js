@@ -6,7 +6,7 @@ const Sentry = require('@sentry/node');
 require('dotenv').config();
 
 const sentryDsn = {
-    dev: 'https://258769261d4f44cc8f7f9fdd8db16549@sentry.io/1798433',
+    demo: 'https://258769261d4f44cc8f7f9fdd8db16549@sentry.io/1798433',
     alpha: 'https://0768277c4fd74cb388978b52b4176398@sentry.io/1798430',
     locale: 'https://3bc32bbc059841ed839f0880f06e139d@sentry.io/1798437',
 };
