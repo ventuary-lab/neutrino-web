@@ -1,8 +1,5 @@
 import { Logger } from 'winston';
-import { 
-    http as ExpressHttp,
-    core as ExpressCore
-} from 'express';
+import { http as ExpressHttp, core as ExpressCore } from 'express';
 
 import RedisStorage from './cache/storage/RedisStorage';
 import WavesContractCache from './cache/WavesContractCache';
@@ -12,7 +9,6 @@ import WavesTransport from './components/WavesTransport';
 export interface DAppPairs {
     [key: string]: string;
 }
-
 
 export interface ApplicationParams {
     network: string;
@@ -47,7 +43,7 @@ export interface ContractDictionary<T> {
 export type ContractNodeData = number | string | boolean;
 
 export interface ContractDataRecord {
-    type: string | "integer";
+    type: string | 'integer';
     value: number;
     key: string;
-};
+}

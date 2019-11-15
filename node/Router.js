@@ -8,7 +8,6 @@ const moment = require('moment');
 const Utils = require('./utils');
 
 module.exports = class Router {
-
     constructor(contractApp, expressApp) {
         this.app = contractApp;
         this.expressApp = expressApp;
@@ -20,7 +19,8 @@ module.exports = class Router {
                 Object.keys(contractInstances).map(pairName => {
                     contracts[pairName] = {};
                     Object.keys(contractInstances[pairName]).map(contractName => {
-                        contracts[pairName][contractName] = contractInstances[pairName][contractName].transport.dApp;
+                        contracts[pairName][contractName] =
+                            contractInstances[pairName][contractName].transport.dApp;
                     });
                 });
 
@@ -33,30 +33,39 @@ module.exports = class Router {
                             nodeUrl: this.app.nodeUrl,
                             assets: this.app.assets,
                             contracts,
-                        }
+                        },
                     },
                     // prices: await this._getPrices(),
                 };
             },
             '/api/v1/rpd-checks/:pairName/:address': async request => {
-
-                const nextIndex = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX).getNextIndex();
+                const nextIndex = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX)
+                    .getNextIndex();
 
                 if (!nextIndex) {
                     return null;
                 }
 
-                const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];
+                const neutrinoAssetId = this.app.assets[
+                    PairsEnum.getQuote(request.params.pairName)
+                ];
                 const bondAssetId = this.app.assets[PairsEnum.getBase(request.params.pairName)];
-                const balanceHistory = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS).getArray(request.params.address);
+                const balanceHistory = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.RPD_INDEX_NUMBERS)
+                    .getArray(request.params.address);
 
                 let rpdChecks = [];
 
                 for (let index = 0; index < nextIndex; index++) {
                     console.log('---index', index);
-                    const allProfit = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT).getProfit(index);
+                    const allProfit = await this.app
+                        .getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT)
+                        .getProfit(index);
                     console.log('---allProfit', allProfit);
-                    const neutrinoBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${index}`);
+                    const neutrinoBalance = await this.app
+                        .getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES)
+                        .getBalance(`${neutrinoAssetId}_${index}`);
                     // const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
 
                     console.log('---balances', neutrinoBalance);
@@ -68,13 +77,13 @@ module.exports = class Router {
                     //find closest
                     let historySyncIndex = -1;
                     let historyElementIndex = -1;
-                    for(let i = 0; i < balanceHistory.length; i++){
+                    for (let i = 0; i < balanceHistory.length; i++) {
                         if (balanceHistory[i] > index) {
                             break;
-                        };
+                        }
 
-                        historySyncIndex = balanceHistory[i]
-                        historyElementIndex = i
+                        historySyncIndex = balanceHistory[i];
+                        historyElementIndex = i;
 
                         if (balanceHistory[i] == index) {
                             break;
@@ -84,14 +93,25 @@ module.exports = class Router {
                     console.log('---historySyncIndex', historySyncIndex);
                     console.log('---historyElementIndex', historyElementIndex);
 
-                    const neutrinoHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`);
+                    const neutrinoHistoryBalance = await this.app
+                        .getCollection(
+                            request.params.pairName,
+                            CollectionEnum.RPD_USER_HISTORY_BALANCES
+                        )
+                        .getBalance(
+                            `${neutrinoAssetId}_${request.params.address}_${historySyncIndex}`
+                        );
                     //  const bondHistoryBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_HISTORY_BALANCES).getBalance(`${bondAssetId}_${request.params.address}_${historySyncIndex}`);
                     console.log('---userHistoryBlanace', neutrinoHistoryBalance);
 
-
                     const totalUserHistoryBalance = neutrinoHistoryBalance;
-                    const profit =  Math.floor((allProfit * totalUserHistoryBalance / contractHistoryBalance)*100)/100;
-                    const isClaimed = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED).getClaimed(`${request.params.address}_${index}`);
+                    const profit =
+                        Math.floor(
+                            ((allProfit * totalUserHistoryBalance) / contractHistoryBalance) * 100
+                        ) / 100;
+                    const isClaimed = await this.app
+                        .getCollection(request.params.pairName, CollectionEnum.RPD_IS_CLAIMED)
+                        .getClaimed(`${request.params.address}_${index}`);
 
                     console.log('---profit', profit);
 
@@ -104,44 +124,57 @@ module.exports = class Router {
                         profit: profit,
                         historyIndex: historyElementIndex,
                         isClaimed: isClaimed,
-                    })
+                    });
                 }
 
                 // console.log('---checks', rpdChecks);
 
-
-
                 return rpdChecks;
-
             },
             '/api/v1/rpd-balance/:pairName': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_BALANCES).getBalances();
+                return await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.RPD_BALANCES)
+                    .getBalances();
             },
             '/api/v1/rpd-user-balance/:pairName/:address': async request => {
-                const neutrinoAssetId = this.app.assets[PairsEnum.getQuote(request.params.pairName)];
+                const neutrinoAssetId = this.app.assets[
+                    PairsEnum.getQuote(request.params.pairName)
+                ];
                 const bondAssetId = this.app.assets[PairsEnum.getBase(request.params.pairName)];
 
                 return {
-                    'neutrino': await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES).getItem(`${neutrinoAssetId}_${request.params.address}`),
-                    'bond': await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES).getItem(`${bondAssetId}_${request.params.address}`),
+                    neutrino: await this.app
+                        .getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES)
+                        .getItem(`${neutrinoAssetId}_${request.params.address}`),
+                    bond: await this.app
+                        .getCollection(request.params.pairName, CollectionEnum.RPD_USER_BALANCES)
+                        .getItem(`${bondAssetId}_${request.params.address}`),
                 };
             },
             '/api/v1/withdraw/:pairName/:address': async request => {
-                let result = await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW).getItem(request.params.address) //TODO crutch
-                let index = await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES).findIndexByHeight(result != undefined ? result.unblockBlock : 0) //TODO crutch
+                let result = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW)
+                    .getItem(request.params.address); //TODO crutch
+                let index = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES)
+                    .findIndexByHeight(result != undefined ? result.unblockBlock : 0); //TODO crutch
                 return {
                     ...result,
-                    index: Number(index != undefined ? index : 0) 
+                    index: Number(index != undefined ? index : 0),
                 };
             },
             '/api/v1/prices': async request => {
                 return await this._getPrices();
             },
             '/api/v1/neutrino-balances/:pairName': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_BALANCES).getBalances();
+                return await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_BALANCES)
+                    .getBalances();
             },
             '/api/v1/neutrino-config/:pairName': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.CONTROL_CONFIG).getConfig();
+                return await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.CONTROL_CONFIG)
+                    .getConfig();
             },
             '/api/v1/waves-exchange/:currency/:period': async request => {
                 return this._getWavesExchanges(request.params.currency, request.params.period);
@@ -153,39 +186,42 @@ module.exports = class Router {
             },
             '/api/v1/bonds/:pairName/position': async request => {
                 const price = request.query.price;
-                const orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+                const orders = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
+                    .getOpenedOrders();
                 let position = 0;
-                orders.forEach((order) => {
+                orders.forEach(order => {
                     if (order.price >= price) {
                         position++;
                     }
                 });
-                return {position};
+                return { position };
             },
             '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-                let orders = await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY).getItemsAll();
-                const timestamps = await this.app.heightListener.getTimestamps(orders.map(order => order.height));
-
-
-                orders = Utils.orderBy(
-                    orders,
-                    'height',
-                    'desc',
-                    { toNumber: true }
+                let orders = await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
+                    .getItemsAll();
+                const timestamps = await this.app.heightListener.getTimestamps(
+                    orders.map(order => order.height)
                 );
-                
+
+                orders = Utils.orderBy(orders, 'height', 'desc', {
+                    toNumber: true,
+                });
+
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
-                return orders.map(order => [
-                    timestamps[order.height],
-                    order.discountPercent
-                ]);
+                return orders.map(order => [timestamps[order.height], order.discountPercent]);
             },
             '/api/v1/bonds/:pairName/orders': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS).getOpenedOrders();
+                return await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
+                    .getOpenedOrders();
             },
             '/api/v1/liquidate/:pairName/orders': async request => {
-                return await this.app.getCollection(request.params.pairName, CollectionEnum.NEUTRINO_ORDERS).getOpenedOrders();
+                return await this.app
+                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_ORDERS)
+                    .getOpenedOrders();
             },
             '/api/v1/bonds/user/:address': async request => {
                 const result = {
@@ -193,10 +229,17 @@ module.exports = class Router {
                     history: [],
                 };
                 for (let pairName of PairsEnum.getKeys()) {
-                    for (let collectionName of [CollectionEnum.BONDS_ORDERS, CollectionEnum.NEUTRINO_ORDERS]) {
+                    for (let collectionName of [
+                        CollectionEnum.BONDS_ORDERS,
+                        CollectionEnum.NEUTRINO_ORDERS,
+                    ]) {
                         const collection = this.app.getCollection(pairName, collectionName);
-                        result.opened = result.opened.concat(await collection.getUserOpenedOrders(request.params.address));
-                        result.history = result.history.concat(await collection.getUserHistoryOrders(request.params.address));
+                        result.opened = result.opened.concat(
+                            await collection.getUserOpenedOrders(request.params.address)
+                        );
+                        result.history = result.history.concat(
+                            await collection.getUserHistoryOrders(request.params.address)
+                        );
                     }
                 }
 
@@ -219,14 +262,16 @@ module.exports = class Router {
                 let content = {};
                 try {
                     content = await this._routes[url](request);
-                } catch(err) {
+                } catch (err) {
                     this.app.logger.error(`Router build Error: ${String(err.stack || err)}`);
                     content = {
                         error: String(err),
                     };
                 }
 
-                response.writeHead(content && content.error ? 500 : 200, {'Content-Type': 'text/html'});
+                response.writeHead(content && content.error ? 500 : 200, {
+                    'Content-Type': 'text/html',
+                });
                 response.end(JSON.stringify(content));
             });
         });
@@ -255,7 +300,7 @@ module.exports = class Router {
 
         if (prices.length === 0) {
             return prices;
-        };
+        }
 
         let prevCandleTimestamp = prices[0].timestamp - seconds * 1000;
         // Начинаем с последней свечи
@@ -275,7 +320,8 @@ module.exports = class Router {
 
             if (!chartData[candleIndex]) {
                 chartData[candleIndex] = {
-                    timestamp: candleIndex === candlesLimit ? item.timestamp : currentCandleTimestamp,
+                    timestamp:
+                        candleIndex === candlesLimit ? item.timestamp : currentCandleTimestamp,
                     open: item.price,
                     max: item.price,
                     min: item.price,
@@ -296,5 +342,4 @@ module.exports = class Router {
         }
         return data;
     }
-
 };
