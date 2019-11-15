@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node-dev --log-error server.js",
     "dev": "node webpack",
     "build": "node webpack production"
   },
