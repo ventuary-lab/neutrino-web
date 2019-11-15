@@ -25,7 +25,7 @@ module.exports = class NeutrinoIndexPrices extends BaseCollection {
             const currentHeight = Number(items[i].height);
 
             if (currentHeight < inputHeight && currentHeight > min) {
-                min = height;
+                min = currentHeight;
                 index = items[i].index;
             }
         }
