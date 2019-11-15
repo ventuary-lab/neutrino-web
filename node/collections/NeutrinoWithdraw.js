@@ -17,7 +17,7 @@ module.exports = class NeutrinoWithdraw extends BaseCollection {
         return {
             'neutrinoBlocked': item['neutrino_' + id] / CurrencyEnum.getContractPow(CurrencyEnum.USD_N),
             'wavesBlocked': item['waves_' + id] / CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
-            'unblockBlock': item['balance_block_' + id] + 2,
+            'unblockBlock': Number(item['balance_block_' + id]) + 2,
             height: item['height']
         }
     }

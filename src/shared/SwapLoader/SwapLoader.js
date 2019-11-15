@@ -29,9 +29,8 @@ export default class SwapLoader extends React.PureComponent {
         height: PropTypes.number,
     };
 
-    constructor() {
-        super(...arguments);
-        this.startBlock = this.props.height;
+    constructor(props) {
+        super(props);
     }
 
     render() {
@@ -98,7 +97,7 @@ export default class SwapLoader extends React.PureComponent {
                             <div className={bem.element('progress-hints')}>
                                 <span>
                                     {__('{value} blocks', {
-                                        value: this.startBlock,
+                                        value: this.props.height
                                     })}
                                 </span>
                                 <span>
