@@ -12,4 +12,5 @@ RUN yarn install
 RUN npm install ts-node -g
 RUN npm run build
 
-ENTRYPOINT [ "ts-node", '--log-error', 'server.js' ]
+ENTRYPOINT [ "ts-node", "--log-error", "server.js" ]
+s

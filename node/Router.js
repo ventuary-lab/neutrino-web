@@ -57,7 +57,7 @@ module.exports = class Router {
                     const allProfit = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_PROFIT).getProfit(index);
                     console.log('---allProfit', allProfit);
                     const neutrinoBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${neutrinoAssetId}_${index}`);
-                   // const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
+                    // const bondBalance = await this.app.getCollection(request.params.pairName, CollectionEnum.RPD_HISTORY_BALANCES).getBalance(`${bondAssetId}_${index}`);
 
                     console.log('---balances', neutrinoBalance);
 

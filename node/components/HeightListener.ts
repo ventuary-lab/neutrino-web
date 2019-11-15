@@ -1,8 +1,18 @@
-const axios = require('axios');
+// const axios = require('axios');
+import axios from 'axios';
+import { Logger } from 'winston';
+import RedisStorage from '../cache/storage/RedisStorage';
 
-module.exports = class HeightListener {
-
-    constructor(params = {}) {
+class HeightListener {
+    nodeUrl: string;
+    logger: Logger;
+    storage: RedisStorage | null;
+    updateHandler: (height: number) => void | null;
+    intervalSec: number;
+    _lastHeight: number | null;
+    STORAGE_BLOCK_TIMESTAMPS_KEY: string;
+    
+    constructor(params) {
         this.nodeUrl = params.nodeUrl;
         this.logger = params.logger;
         this.storage = params.storage;
@@ -15,26 +25,15 @@ module.exports = class HeightListener {
         this.STORAGE_BLOCK_TIMESTAMPS_KEY = 'block_timestamps';
     }
 
-    /**
-     * @returns {Promise<void>}
-     */
-    async start() {
+    async start(): Promise<void> {
         return this._listenNext();
     }
 
-    /**
-     *
-     * @returns {number}
-     */
-    getLast() {
+    getLast(): number | null {
         return this._lastHeight;
     }
 
-    /**
-     * @param {number[]} heights
-     * @returns {Promise<object>}
-     */
-    async getTimestamps(heights) {
+    async getTimestamps(heights: number[]): Promise<any> {
         const result = {};
         for (const height of heights) {
             result[height] = parseInt(await this._getTimestamp(height));
@@ -42,11 +41,7 @@ module.exports = class HeightListener {
         return result;
     }
 
-    /**
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _listenNext() {
+    async _listenNext(): Promise<void> {
         try {
             const response = await this._request('blocks/height');
             const height = response.height;
@@ -62,12 +57,9 @@ module.exports = class HeightListener {
         setTimeout(this._listenNext, this.intervalSec * 1000);
     }
 
-    /**
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _getTimestamp(height) {
-        let timestamp = await this.storage.hget(this.STORAGE_BLOCK_TIMESTAMPS_KEY, height);
+    async _getTimestamp(height: number): Promise<string> {
+        let timestamp = await this.storage.hget(this.STORAGE_BLOCK_TIMESTAMPS_KEY, height) as string; // Temporary approach
+
         if (!timestamp) {
             const response = await this._request(`blocks/headers/at/${height}`);
             timestamp = response.timestamp;
@@ -83,9 +75,11 @@ module.exports = class HeightListener {
             result = await axios.get(`${this.nodeUrl}/${url}`);
         } catch (err) {
             this.logger.error(`HeightListener Request Error: url - ${String(url)}, ${String(err.stack || err)}`);
-            throw err;
+            // throw err;
         }
         return result.data;
     }
 
 };
+
+export default HeightListener;

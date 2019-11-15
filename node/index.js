@@ -15,7 +15,7 @@ const sentryDsn = {
 if (process.env.APP_ENV) {
     Sentry.init({ dsn: sentryDsn[process.env.APP_ENV] });
 } else {
-    Sentry.init({ dsn: sentryDsn['locale'] });
+    // Sentry.init({ dsn: sentryDsn['locale'] });
 }
 
 // Create app
