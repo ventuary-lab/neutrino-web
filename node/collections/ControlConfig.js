@@ -44,16 +44,8 @@ module.exports = class ControlConfig extends BaseCollection {
             // if (nodeKey.match(this.getKeys()[1])) {
 
             if (nodeKey.match(isBlockedKey)) {
-                this.isBlocked = nodeData[nodeKey];
+                this.isBlocked = Boolean(this.isBlocked);
             }
-
-            if (this.price == 1) {
-                Sentry.captureException(new Error(`Price 0.01 Error: ${JSON.stringify({ nodeData })}`))
-            }
-
-            // if (this.price && this.isBlocked !== undefined) {
-            //     break;
-            // }
         }
 
         const data = {
@@ -61,7 +53,7 @@ module.exports = class ControlConfig extends BaseCollection {
         };
 
         data[this.pairName]['price'] = this.price;
-        data[this.pairName]['isBlocked'] = this.isBlocked === undefined ? false : this.isBlocked;
+        data[this.pairName]['isBlocked'] = Boolean(this.isBlocked);
 
         await this._updateNext(Object.keys(data), data);
     }
