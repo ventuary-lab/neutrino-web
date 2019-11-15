@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash-es/get';
-import { getFormValues } from 'redux-form';
+import { getFormValues, change } from 'redux-form';
 import Form from 'yii-steroids/ui/form/Form';
 import InputField from 'yii-steroids/ui/form/InputField';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
+import CurrencyEnum from 'enums/CurrencyEnum';
 // import { onlyDecimalRegex } from 'ui/global/helpers';
 
-import { html } from 'components';
+import { html, store, dal } from 'components';
 import './TransferForm.scss';
 
 const bem = html.bem('TransferForm');
@@ -26,6 +27,27 @@ export default class TransferForm extends React.PureComponent {
 
     constructor(props) {
         super(props);
+
+        this._setInitialAddress = this._setInitialAddress.bind(this);
+    }
+
+    componentDidMount () {
+        this._setInitialAddress();
+    }
+
+    _setInitialAddress () {
+        const { formId, currency } = this.props;
+
+        if (formId !== 'CreateInvoiceModalForm') {
+            return;
+        }
+
+        const address = this.props.currency === CurrencyEnum.WAVES ? (
+            dal.balance._address
+        ) : (
+            dal.assets[currency]
+        )
+        store.dispatch(change(formId, 'address', address));
     }
 
     render() {
