@@ -49,10 +49,11 @@ export default class TransferForm extends React.PureComponent {
     render() {
         const address = _get(this.props, 'formValues.address');
         const amount = _get(this.props, 'formValues.amount');
+        const transeftAmountLabel = `Transfer amount (${_get(this.props, 'currency', '').toUpperCase()})`;
 
         return (
             <Form
-                className={bem.block()}
+                className={bem.block()} 
                 formId={this.props.formId}
                 onSubmit={() => this.props.onSubmit(address, amount)}
             >
@@ -70,7 +71,7 @@ export default class TransferForm extends React.PureComponent {
                     inputProps={{
                         autoComplete: 'off'
                     }}
-                    label={__('Transfer amount')}
+                    label={__(transeftAmountLabel)}
                     layoutClassName={bem.element('input')}
                     attribute={'amount'}
                 />
