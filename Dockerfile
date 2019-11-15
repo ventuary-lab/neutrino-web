@@ -1,6 +1,6 @@
 FROM node:12-alpine
 
-COPY package.json yarn.lock .babelrc .env.dev .env.example tsconfig.json /app/
+COPY package.json yarn.lock .babelrc .env .env.dev .env.example tsconfig.json /app/
 WORKDIR /app
 
 COPY node /app/node
