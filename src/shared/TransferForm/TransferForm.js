@@ -36,17 +36,13 @@ export default class TransferForm extends React.PureComponent {
     }
 
     _setInitialAddress () {
-        const { formId, currency } = this.props;
+        const { formId } = this.props;
 
         if (formId !== 'CreateInvoiceModalForm') {
             return;
         }
 
-        const address = this.props.currency === CurrencyEnum.WAVES ? (
-            dal.balance._address
-        ) : (
-            dal.assets[currency]
-        )
+        const address = dal.balance._address;
         store.dispatch(change(formId, 'address', address));
     }
 
