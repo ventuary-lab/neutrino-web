@@ -1,9 +1,6 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
-import { 
-    http as ExpressHttp,
-    core as ExpressCore
-} from 'express';
+import { http as ExpressHttp, core as ExpressCore } from 'express';
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
@@ -13,14 +10,14 @@ import WavesTransport from './components/WavesTransport';
 import PairsEnum from './enums/PairsEnum';
 import ContractEnum from './enums/ContractEnum';
 import CurrencyEnum from './enums/CurrencyEnum';
-import CollectionEnum  from './enums/CollectionEnum';
+import CollectionEnum from './enums/CollectionEnum';
 import {
     DAppPairs,
     ApplicationParams,
     ContractDictionary,
     ContractCache,
     ContractTransport,
-    ContractNodeData
+    ContractNodeData,
 } from './types';
 
 const Router = require('./Router');
@@ -62,20 +59,23 @@ module.exports = class App implements ApplicationParams {
                 break;
             case 'custom':
                 this.nodeUrl = process.env.NODE_URL;
-                break
+                break;
         }
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
-            [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
+            [PairsEnum.USDNB_USDN]:
+                process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
             // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
         // Create main redis client & storage
-        this._redisClient = redis.createClient(process.env.REDIS_URL || {
-            host: process.env.REDIS_HOST || '127.0.0.1',
-            port: process.env.REDIS_PORT || 6379,
-        });
+        this._redisClient = redis.createClient(
+            process.env.REDIS_URL || {
+                host: process.env.REDIS_HOST || '127.0.0.1',
+                port: process.env.REDIS_PORT || 6379,
+            }
+        );
         this.storage = new RedisStorage({
             namespace: this.redisNamespace + '_' + this.network,
             redisClient: this._redisClient,
@@ -88,9 +88,7 @@ module.exports = class App implements ApplicationParams {
                 winston.format.colorize(),
                 winston.format.printf(info => `${info.timestamp} ${info.level} ${info.message}`)
             ),
-            transports: [
-                new winston.transports.Console(),
-            ],
+            transports: [new winston.transports.Console()],
             level: 'info',
         });
 
@@ -143,7 +141,6 @@ module.exports = class App implements ApplicationParams {
 
         for (const pairName of pairKeys) {
             for (const contractName of contractKeys) {
-
                 const contract = await this.createContract(pairName, contractName);
                 contract.transactionListener.start();
             }
@@ -158,9 +155,7 @@ module.exports = class App implements ApplicationParams {
 
         //add assets to collections
         for (const pairName of pairKeys) {
-
             for (const collectionName of collectionKeys) {
-
                 this._collections[pairName][collectionName].assets = this.assets;
             }
         }
@@ -178,12 +173,12 @@ module.exports = class App implements ApplicationParams {
     }
 
     async createContract(pairName: string, contractName: string): Promise<ContractCache> {
-        const dApp = contractName === ContractEnum.NEUTRINO ? (
-            this.dApps[pairName]
-        ) : (
-            await this.getContract(pairName, ContractEnum.NEUTRINO)
-                .transport.nodeFetchKey(ContractEnum.getAddressKeyInNeutrinoContract(contractName)) as string
-        );
+        const dApp =
+            contractName === ContractEnum.NEUTRINO
+                ? this.dApps[pairName]
+                : ((await this.getContract(pairName, ContractEnum.NEUTRINO).transport.nodeFetchKey(
+                      ContractEnum.getAddressKeyInNeutrinoContract(contractName)
+                  )) as string);
 
         const transport: ContractTransport = new WavesTransport({
             dApp,
@@ -240,7 +235,7 @@ module.exports = class App implements ApplicationParams {
         return collection;
     }
 
-    async _loadAssetIds (): Promise<Partial<DAppPairs>> {
+    async _loadAssetIds(): Promise<Partial<DAppPairs>> {
         const assets: Partial<DAppPairs> = {};
 
         for (let pairName of PairsEnum.getKeys()) {
@@ -287,7 +282,7 @@ module.exports = class App implements ApplicationParams {
 
                     if (shouldFlush) {
                         await collection.removeAll();
-                    };
+                    }
 
                     const nodeNewData = data[contractName];
 
@@ -295,7 +290,7 @@ module.exports = class App implements ApplicationParams {
                 }
             }
         } catch (err) {
-            this.logger.error(`Update All Error: ${String(err.stack || err)}`)
+            this.logger.error(`Update All Error: ${String(err.stack || err)}`);
         }
 
         this._isNowUpdated = false;
@@ -325,17 +320,17 @@ module.exports = class App implements ApplicationParams {
 
     _onCollectionUpdate(id, item, collection) {
         if (!this._isSkipUpdates) {
-
-            this._websocket.push(JSON.stringify({
-                stream: 'collections',
-                data: {
-                    id,
-                    pairName: collection.pairName,
-                    collectionName: collection.collectionName,
-                    item,
-                },
-            }));
+            this._websocket.push(
+                JSON.stringify({
+                    stream: 'collections',
+                    data: {
+                        id,
+                        pairName: collection.pairName,
+                        collectionName: collection.collectionName,
+                        item,
+                    },
+                })
+            );
         }
     }
-
 };

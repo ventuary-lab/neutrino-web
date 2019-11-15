@@ -24,7 +24,7 @@ const httpServer = expressApp.listen(port, () => {
     console.log(__dirname); // eslint-disable-line no-console
     console.log('Listening Port ' + port); // eslint-disable-line no-console
 });
-const mainApp = new App({expressApp, httpServer});
+const mainApp = new App({ expressApp, httpServer });
 
 expressApp.use(function(req, res, next) {
     if (req.header('x-forwarded-proto') === 'http') {
@@ -38,5 +38,5 @@ mainApp.start();
 
 expressApp.use(express.static(__dirname + '/../dist'));
 expressApp.get('/*', (req, res) => {
-    res.sendFile('index.html', { root : __dirname + '/../dist'});
+    res.sendFile('index.html', { root: __dirname + '/../dist' });
 });
