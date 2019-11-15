@@ -48,8 +48,7 @@ module.exports = class App implements ApplicationParams {
 
     constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
-        this.isCleaningRedis =
-            process.env.IS_CLEANING_REDIS === 'true' || false;
+        this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true' || false;
 
         switch (this.network) {
             case 'mainnet':
@@ -65,8 +64,7 @@ module.exports = class App implements ApplicationParams {
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
             [PairsEnum.USDNB_USDN]:
-                process.env.APP_ADDRESS_USDNB_USDN ||
-                '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
+                process.env.APP_ADDRESS_USDNB_USDN || '3MyDtNTkCNyRCw3o2qv5BPPS7vvUosiQe6F', // testnet
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
             // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
@@ -88,9 +86,7 @@ module.exports = class App implements ApplicationParams {
             format: winston.format.combine(
                 winston.format.timestamp(),
                 winston.format.colorize(),
-                winston.format.printf(
-                    info => `${info.timestamp} ${info.level} ${info.message}`
-                )
+                winston.format.printf(info => `${info.timestamp} ${info.level} ${info.message}`)
             ),
             transports: [new winston.transports.Console()],
             level: 'info',
@@ -145,10 +141,7 @@ module.exports = class App implements ApplicationParams {
 
         for (const pairName of pairKeys) {
             for (const contractName of contractKeys) {
-                const contract = await this.createContract(
-                    pairName,
-                    contractName
-                );
+                const contract = await this.createContract(pairName, contractName);
                 contract.transactionListener.start();
             }
 
@@ -163,9 +156,7 @@ module.exports = class App implements ApplicationParams {
         //add assets to collections
         for (const pairName of pairKeys) {
             for (const collectionName of collectionKeys) {
-                this._collections[pairName][
-                    collectionName
-                ].assets = this.assets;
+                this._collections[pairName][collectionName].assets = this.assets;
             }
         }
 
@@ -181,17 +172,11 @@ module.exports = class App implements ApplicationParams {
         return this._contracts;
     }
 
-    async createContract(
-        pairName: string,
-        contractName: string
-    ): Promise<ContractCache> {
+    async createContract(pairName: string, contractName: string): Promise<ContractCache> {
         const dApp =
             contractName === ContractEnum.NEUTRINO
                 ? this.dApps[pairName]
-                : ((await this.getContract(
-                      pairName,
-                      ContractEnum.NEUTRINO
-                  ).transport.nodeFetchKey(
+                : ((await this.getContract(pairName, ContractEnum.NEUTRINO).transport.nodeFetchKey(
                       ContractEnum.getAddressKeyInNeutrinoContract(contractName)
                   )) as string);
 
@@ -206,11 +191,9 @@ module.exports = class App implements ApplicationParams {
         const contract: ContractCache = new WavesContractCache({
             dApp,
             nodeUrl: this.nodeUrl,
-            updateHandler: keys =>
-                this._onContractUpdate(pairName, contractName, keys),
+            updateHandler: keys => this._onContractUpdate(pairName, contractName, keys),
             storage: {
-                namespace:
-                    this.redisNamespace + '_' + this.network + ':' + pairName,
+                namespace: this.redisNamespace + '_' + this.network + ':' + pairName,
                 redisClient: this._redisClient,
             },
             logger: {
@@ -233,10 +216,7 @@ module.exports = class App implements ApplicationParams {
 
     createCollection(pairName, collectionName) {
         const CollectionClass = CollectionEnum.getClass(collectionName);
-        const contract = this.getContract(
-            pairName,
-            CollectionEnum.getContractName(collectionName)
-        );
+        const contract = this.getContract(pairName, CollectionEnum.getContractName(collectionName));
 
         const collection = new CollectionClass({
             pairName: pairName,
@@ -267,14 +247,9 @@ module.exports = class App implements ApplicationParams {
             for (let currency of currencies) {
                 if (!assets[currency]) {
                     const key = CurrencyEnum.getAssetContractKey(currency);
-                    const transport = this.getContract(
-                        pairName,
-                        ContractEnum.NEUTRINO
-                    ).transport;
+                    const transport = this.getContract(pairName, ContractEnum.NEUTRINO).transport;
 
-                    const assetCurrencyValue = await transport.nodeFetchKey(
-                        key
-                    );
+                    const assetCurrencyValue = await transport.nodeFetchKey(key);
                     console.log({ key, assetCurrencyValue });
 
                     assets[currency] = assetCurrencyValue as string;
@@ -293,28 +268,17 @@ module.exports = class App implements ApplicationParams {
 
         try {
             for (const pairName of PairsEnum.getKeys()) {
-                const data: ContractDictionary<ContractDictionary<
-                    ContractNodeData
-                >> = {};
+                const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
 
                 for (const collectionName of CollectionEnum.getKeys() as string[]) {
-                    const collection = this.getCollection(
-                        pairName,
-                        collectionName
-                    );
-                    const contractName = CollectionEnum.getContractName(
-                        collectionName
-                    ) as string;
+                    const collection = this.getCollection(pairName, collectionName);
+                    const contractName = CollectionEnum.getContractName(collectionName) as string;
 
                     if (!data[contractName]) {
-                        data[
-                            contractName
-                        ] = await collection.transport.fetchAll();
+                        data[contractName] = await collection.transport.fetchAll();
                     }
 
-                    this.logger.info(
-                        'Update all data in collection... ' + collectionName
-                    );
+                    this.logger.info('Update all data in collection... ' + collectionName);
 
                     if (shouldFlush) {
                         await collection.removeAll();
@@ -343,24 +307,14 @@ module.exports = class App implements ApplicationParams {
     _onContractUpdate(pairName, contractName, keys) {
         try {
             if (!this._isSkipUpdates) {
-                Object.keys(this._collections[pairName]).forEach(
-                    collectionName => {
-                        if (
-                            CollectionEnum.getContractName(collectionName) ===
-                            contractName
-                        ) {
-                            this.getCollection(
-                                pairName,
-                                collectionName
-                            ).updateByKeys(keys);
-                        }
+                Object.keys(this._collections[pairName]).forEach(collectionName => {
+                    if (CollectionEnum.getContractName(collectionName) === contractName) {
+                        this.getCollection(pairName, collectionName).updateByKeys(keys);
                     }
-                );
+                });
             }
         } catch (err) {
-            this.logger.error(
-                `Contract Update Error: ${String(err.stack || err)}`
-            );
+            this.logger.error(`Contract Update Error: ${String(err.stack || err)}`);
         }
     }
 
