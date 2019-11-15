@@ -63,6 +63,7 @@ export default class TransferModal extends React.PureComponent {
                         <TransferForm
                             formId={FORM_ID}
                             onSubmit={this._onSubmit}
+                            currency={this.props.currency}
                         />
                     </div>
                     <div

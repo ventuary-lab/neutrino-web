@@ -5,7 +5,7 @@ import { getUser } from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
 import {openModal} from 'yii-steroids/actions/modal';
 
-import { html, dal } from 'components';
+import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import {
@@ -149,7 +149,7 @@ export default class BalanceTable extends React.PureComponent {
                                 <button
                                     key={item.id}
                                     type={'button'}
-                                    onClick={() => this.props.dispatch(openModal(item.id === 'send' ? TransferModal : CreateInvoiceModal, {
+                                    onClick={() => store.dispatch(openModal(item.id === 'send' ? TransferModal : CreateInvoiceModal, {
                                         currency: currency,
                                     }))}
                                     className={bem.element('control')}

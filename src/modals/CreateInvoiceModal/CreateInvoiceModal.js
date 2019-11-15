@@ -30,8 +30,8 @@ export default class CreateInvoiceModal extends React.PureComponent {
         currency: PropTypes.string,
     };
 
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
 
         this.state = {
             invoiceLink: '',
@@ -54,6 +54,7 @@ export default class CreateInvoiceModal extends React.PureComponent {
                             formId={FORM_ID}
                             onSubmit={this._onSubmit}
                             buttonLabel={__('Get shareable link')}
+                            currency={this.props.currency}
                         />
                     </div>
                     {this.state.invoiceLink && (
@@ -80,6 +81,6 @@ export default class CreateInvoiceModal extends React.PureComponent {
 
         const link = `${location.origin}?invoiceAddress=${address}&invoiceAmount=${amount}&invoiceCurrency=${this.props.currency}`;
 
-        this.setState({invoiceLink: link})
+        this.setState({invoiceLink: link});
     }
 }
