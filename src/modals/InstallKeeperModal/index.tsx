@@ -25,13 +25,17 @@ const customStyles: { [key: string]: string } = {
 Modal.defaultStyles.overlay.backgroundColor = 'unset';
 Modal.defaultStyles.overlay.zIndex = '11';
 
-function HelpLink () {
+function HelpLink() {
     return (
-        <a href='https://t.me/neutrino_protocol_group' target='_blank' className={bem.element('tg-link')}>
-            <img src={helpIcon}/>
+        <a
+            href="https://t.me/neutrino_protocol_group"
+            target="_blank"
+            className={bem.element('tg-link')}
+        >
+            <img src={helpIcon} />
             <span>Ask for help in Telegram group</span>
         </a>
-    )
+    );
 }
 
 class InstallKeeperModal extends React.Component {
@@ -167,8 +171,13 @@ class InstallKeeperModal extends React.Component {
         const views = [this.getMainView(), this.getSecondView(), this.getThirdView()];
 
         return (
-            <div>
-                <Modal className={bem.block()} isOpen={this.props.isOpened} style={customStyles}>
+            <div> 
+                <Modal
+                    className={bem.block()}
+                    isOpen={this.props.isOpened}
+                    style={customStyles}
+                    onRequestClose={this.props.onClose}
+                >
                     <h1>Welcome to the Neutrino!</h1>
                     <div className={bem.element('cont')}>
                         <Slider {...this.sliderConfig} ref={this.sliderRef}>

@@ -98,7 +98,10 @@ require('yii-steroids/webpack')
                 // Add `.ts` and `.tsx` as a resolvable extension.
                 extensions: ['.ts', '.tsx', '.js'],
                 modules: [srcPath, 'node_modules'],
-                enforceExtension: false
+                enforceExtension: false,
+                alias: {
+                    '@': srcPath
+                },
             }
         },
     })
