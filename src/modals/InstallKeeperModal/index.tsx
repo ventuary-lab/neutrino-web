@@ -3,16 +3,12 @@ import Modal from 'react-modal';
 import Slider from 'react-slick';
 import Button from 'yii-steroids/ui/form/Button';
 import { html } from 'components';
-// @ts-ignore
 import browsersImage from 'static/images/guide/browsers.svg';
-// @ts-ignore
 import imageOne from 'static/images/guide/img1.jpg';
-// @ts-ignore
 import imageTwo from 'static/images/guide/img2.jpg';
-// @ts-ignore
 import helpIcon from 'static/images/guide/help.svg';
-// @ts-ignore
 import playIcon from 'static/images/guide/playbutton.svg';
+import * as companyImages from 'static/images/guide/companies';
 
 import './InstallKeeperModal.scss';
 
@@ -50,12 +46,20 @@ function HelpLink() {
     );
 }
 
+interface ImageLink {
+    [key: string]: any;
+    link: string;
+    img: string;
+    title: string;
+}
+
 class InstallKeeperModal extends React.Component {
     readonly state: State;
     readonly props: Props;
     readonly sliderConfig: { [key: string]: any };
     sliderRef: React.RefObject<any>;
     views: React.ReactNode[];
+    links: ImageLink[];
 
     constructor(props: Props) {
         super(props);
@@ -63,6 +67,7 @@ class InstallKeeperModal extends React.Component {
         this.getPrevView = this.getPrevView.bind(this);
         this.getNextView = this.getNextView.bind(this);
         this.getMainView = this.getMainView.bind(this);
+        this.getCompaniesView = this.getCompaniesView.bind(this);
         this.isFirstActive = this.isFirstActive.bind(this);
         this.onChangeIndex = this.onChangeIndex.bind(this);
 
@@ -81,7 +86,51 @@ class InstallKeeperModal extends React.Component {
 
         this.sliderRef = React.createRef();
 
-        this.views = [this.getMainView(), this.getSecondView(), this.getThirdView()];
+        this.links = [
+            {
+                link: 'https://www.binance.com/en/trade/WAVES_BTC',
+                img: companyImages.binance,
+                title: 'Binance',
+            },
+            {
+                link: 'https://www.kraken.com/prices',
+                img: companyImages.kraken,
+                title: 'Kraken',
+            },
+            {
+                link:
+                    'https://dex.wavesplatform.com/dex-demo?assetId2=WAVES&assetId1=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS',
+                img: companyImages.wavesDex,
+                title: 'DEX',
+            },
+            {
+                link: 'https://www.huobi.co/en-us/exchange/waves_btc/',
+                img: companyImages.huobi,
+                title: 'Huobi',
+            },
+            {
+                link: 'https://global.bittrex.com/Market/Index?MarketName=btc-WAVES',
+                img: companyImages.bittrex,
+                title: 'Bittrex',
+            },
+            {
+                link: 'https://changelly.com/',
+                img: companyImages.changelly,
+                title: 'Changelly',
+            },
+            {
+                link: 'https://shapeshift.io/#/coins',
+                img: companyImages.shapeshift,
+                title: 'Shapeshift',
+            },
+        ];
+
+        this.views = [
+            this.getMainView(),
+            this.getSecondView(),
+            this.getThirdView(),
+            this.getCompaniesView(),
+        ];
     }
 
     onChangeIndex(index: number) {
@@ -147,6 +196,27 @@ class InstallKeeperModal extends React.Component {
                     <HelpLink />
                 </div>
             </>
+        );
+    }
+
+    getCompaniesView() {
+        const mapIcon = (item: ImageLink) => (
+            <a href={item.link} target="_blank">
+                <img src={item.img} />
+                <span>Buy WAVES on {item.title}</span>
+            </a>
+        );
+
+        const images = this.links.map(mapIcon);
+
+        return (
+            <div className={bem.element('companies-view')}>
+                <h3>Finally, deposit waves to your wallet</h3>
+                <div className={bem.element('companies-flex')}>
+                    <div>{images.slice(0, -2)}</div>
+                    <div>{images.slice(-2)}</div>
+                </div>
+            </div>
         );
     }
 
