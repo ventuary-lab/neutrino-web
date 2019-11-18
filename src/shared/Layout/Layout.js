@@ -32,7 +32,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext } from './context';
+import { ConfigContext, InviteUserModalContext } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 
@@ -225,7 +225,6 @@ export default class Layout extends React.PureComponent {
                 })}
             >
                 <ConfigContext.Provider value={configValue}>
-                    <InstallKeeperModal />
                     <div className={bem.element('inner')}>
                         {this.props.isShowLeftSidebar && (
                             <aside className={bem.element('left')}>
