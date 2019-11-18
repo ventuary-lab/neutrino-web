@@ -32,7 +32,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext, InviteUserModalContext } from './context';
+import { ConfigContext, InstallKeeperModalContext } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 
@@ -87,9 +87,14 @@ export default class Layout extends React.PureComponent {
 
         this.onScreenResize = this.onScreenResize.bind(this);
         this.openWarningModal = this.openWarningModal.bind(this);
-        this.resizeObserver = null;
+        this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
 
+        this.resizeObserver = null;
         this.wcc = null;
+
+        this.state = {
+            shouldShowInviteModal: false,
+        };
     }
 
     componentDidMount() {
@@ -147,6 +152,14 @@ export default class Layout extends React.PureComponent {
         }
     }
 
+    async onWavesKeeperLogin() {
+        try {
+            await dal.login();
+        } catch (err) {
+            this.setState({ shouldShowInviteModal: true });
+        }
+    }
+
     componentDidUpdate(nextProps) {
         if (nextProps.user) {
             this._checkForInvoice();
@@ -157,6 +170,10 @@ export default class Layout extends React.PureComponent {
 
     componentWillUnmount() {
         this.wcc.stopUpdating();
+    }
+
+    triggerInstallKeeperModalVisibility(isVisible) {
+        this.setState({ shouldShowInviteModal: isVisible });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -217,6 +234,7 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
+        const { shouldShowInviteModal } = this.state;
 
         return (
             <div
@@ -224,30 +242,40 @@ export default class Layout extends React.PureComponent {
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
                 })}
             >
-                <ConfigContext.Provider value={configValue}>
-                    <div className={bem.element('inner')}>
-                        {this.props.isShowLeftSidebar && (
-                            <aside className={bem.element('left')}>
-                                <LeftSidebar />
-                            </aside>
-                        )}
-                        <div className={bem.element('center')}>
-                            {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                                <BlockedApp />
+                <InstallKeeperModal
+                    isOpened={shouldShowInviteModal}
+                    onClose={() => this.triggerInstallKeeperModalVisibility(false)}
+                />
+                <InstallKeeperModalContext.Provider
+                    value={{
+                        onLogin: this.onWavesKeeperLogin,
+                    }}
+                >
+                    <ConfigContext.Provider value={configValue}>
+                        <div className={bem.element('inner')}>
+                            {this.props.isShowLeftSidebar && (
+                                <aside className={bem.element('left')}>
+                                    <LeftSidebar />
+                                </aside>
                             )}
-                            <header className={bem.element('header')}>
-                                <Header />
-                            </header>
-                            <main className={bem.element('content')}>
-                                {this.props.status !== STATUS_LOADING && this.props.children}
-                            </main>
+                            <div className={bem.element('center')}>
+                                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                                    <BlockedApp />
+                                )}
+                                <header className={bem.element('header')}>
+                                    <Header />
+                                </header>
+                                <main className={bem.element('content')}>
+                                    {this.props.status !== STATUS_LOADING && this.props.children}
+                                </main>
+                            </div>
+                            <aside className={bem.element('right')}>
+                                <RightSidebar />
+                            </aside>
                         </div>
-                        <aside className={bem.element('right')}>
-                            <RightSidebar />
-                        </aside>
-                    </div>
-                </ConfigContext.Provider>
-                <ModalWrapper />
+                    </ConfigContext.Provider>
+                    <ModalWrapper />
+                </InstallKeeperModalContext.Provider>
             </div>
         );
     }

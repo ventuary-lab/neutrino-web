@@ -9,9 +9,9 @@ import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
-import InstallKeeperModal from 'modals/InstallKeeperModal';
+import { InstallKeeperModalContext } from 'shared/Layout/context';
 
-import { dal, html, store } from 'components';
+import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
@@ -37,20 +37,10 @@ export default class Header extends React.PureComponent {
         quoteCurrency: PropTypes.string,
         userRole: PropTypes.string,
     };
+    static contextType = InstallKeeperModalContext;
 
     constructor(props) {
         super(props);
-
-        this.onLoginWithKeeper = this.onLoginWithKeeper.bind(this);
-        this.closeInstallKeeperModal = this.closeInstallKeeperModal.bind(this);
-
-        this.state = {
-            shouldShowInviteModal: false,
-        };
-    }
-
-    componentDidMount() {
-        // <InstallKeeperModal />
     }
 
     componentDidUpdate(nextProps) {
@@ -59,34 +49,16 @@ export default class Header extends React.PureComponent {
         }
     }
 
-    async onLoginWithKeeper() {
-        try {
-            await dal.login();
-        } catch (err) {
-            this.setState({ shouldShowInviteModal: true });
-        }
-    }
-
-    closeInstallKeeperModal() {
-        this.setState({ shouldShowInviteModal: false });
-    }
-
     render() {
         const showNav = !!this.props.navItems.find(item =>
             item.roles.includes(this.props.userRole)
         );
-        const { shouldShowInviteModal } = this.state;
 
         return (
             <header className={bem.block()}>
-                <InstallKeeperModal
-                    isOpened={shouldShowInviteModal}
-                    onClose={() => this.closeInstallKeeperModal()}
-                />
                 <Link className={bem.element('logo')} noStyles toRoute={ROUTE_ROOT}>
                     <img className={bem.element('logo-image')} src={logo} alt="Neutrino" />
                 </Link>
-                {}
                 {(showNav && (
                     <div className={bem.element('section-toggle')}>
                         <Form
@@ -118,7 +90,7 @@ export default class Header extends React.PureComponent {
                         className={bem.element('auth-button')}
                         label={__('Login with Keeper')}
                         color="secondary"
-                        onClick={this.onLoginWithKeeper}
+                        onClick={this.context.onLogin}
                     />
                 )}
                 <div className={'info-dropdown'}>

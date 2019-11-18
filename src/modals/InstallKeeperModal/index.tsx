@@ -11,6 +11,8 @@ import imageOne from 'static/images/guide/img1.jpg';
 import imageTwo from 'static/images/guide/img2.jpg';
 // @ts-ignore
 import helpIcon from 'static/images/guide/help.svg';
+// @ts-ignore
+import playIcon from 'static/images/guide/playbutton.svg';
 
 import './InstallKeeperModal.scss';
 
@@ -27,14 +29,24 @@ Modal.defaultStyles.overlay.zIndex = '11';
 
 function HelpLink() {
     return (
-        <a
-            href="https://t.me/neutrino_protocol_group"
-            target="_blank"
-            className={bem.element('tg-link')}
-        >
-            <img src={helpIcon} />
-            <span>Ask for help in Telegram group</span>
-        </a>
+        <>
+            <a
+                href="https://youtu.be/8Hs0jEe8E3c"
+                target="_blank"
+                className={bem.element('tg-link')}
+            >
+                <img src={playIcon} />
+                <span>Watch video instructions</span>
+            </a>
+            <a
+                href="https://t.me/neutrino_protocol_group"
+                target="_blank"
+                className={bem.element('tg-link')}
+            >
+                <img src={helpIcon} />
+                <span>Ask for help in Telegram group</span>
+            </a>
+        </>
     );
 }
 
@@ -43,6 +55,7 @@ class InstallKeeperModal extends React.Component {
     readonly props: Props;
     readonly sliderConfig: { [key: string]: any };
     sliderRef: React.RefObject<any>;
+    views: React.ReactNode[];
 
     constructor(props: Props) {
         super(props);
@@ -67,6 +80,8 @@ class InstallKeeperModal extends React.Component {
         };
 
         this.sliderRef = React.createRef();
+
+        this.views = [this.getMainView(), this.getSecondView(), this.getThirdView()];
     }
 
     onChangeIndex(index: number) {
@@ -168,10 +183,10 @@ class InstallKeeperModal extends React.Component {
     }
 
     render() {
-        const views = [this.getMainView(), this.getSecondView(), this.getThirdView()];
+        const { views } = this;
 
         return (
-            <div> 
+            <div>
                 <Modal
                     className={bem.block()}
                     isOpen={this.props.isOpened}
