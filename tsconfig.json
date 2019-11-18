@@ -11,16 +11,14 @@
         "webworker",
         "es2017"
         ],
+        "esModuleInterop": true,
         "sourceMap": true,
         "typeRoots": [
         "./node_modules/@types"
         ],
-        "esModuleInterop": true,
         "baseUrl": "./src",
-        "allowSyntheticDefaultImports": true,
     },
     "exclude": [
         "node_modules",
-        "static",
     ]
 }
