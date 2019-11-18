@@ -8,17 +8,15 @@ import { setUser } from 'yii-steroids/actions/auth';
 import layoutHoc, {
     STATUS_ACCESS_DENIED,
     STATUS_LOADING,
-    STATUS_RENDER_ERROR
+    STATUS_RENDER_ERROR,
 } from 'yii-steroids/ui/layoutHoc';
 import screenWatcherHoc from 'yii-steroids/ui/screenWatcherHoc';
-import {
-    getCurrentItem,
-    getCurrentItemParam
-} from 'yii-steroids/reducers/navigation';
+import { getCurrentItem, getCurrentItemParam } from 'yii-steroids/reducers/navigation';
 import { getData, getUser } from 'yii-steroids/reducers/auth';
 import { openModal } from 'yii-steroids/actions/modal';
 import { isPhone } from 'yii-steroids/reducers/screen';
 import WarningMobileModal from 'modals/WarningMobileModal';
+import InstallKeeperModal from 'modals/InstallKeeperModal';
 
 import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
@@ -34,7 +32,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext } from './context';
+import { ConfigContext, InviteUserModalContext } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 
@@ -45,12 +43,10 @@ const bem = html.bem('Layout');
 @layoutHoc(async () => {
     // Initialize websocket
     // TODO ws.wsUrl = process.env.APP_WS_URL || 'ws://localhost:5000';
-    ws.wsUrl = location.port
-        ? 'ws://localhost:5000'
-        : location.origin.replace('http', 'ws');
-    ws.onMessage = (event) =>
+    ws.wsUrl = location.port ? 'ws://localhost:5000' : location.origin.replace('http', 'ws');
+    ws.onMessage = event =>
         store.dispatch([
-            apiWsHandler(event)
+            apiWsHandler(event),
             // currencyWsHandler(event),
         ]);
     ws.open();
@@ -61,26 +57,26 @@ const bem = html.bem('Layout');
     return data;
 })
 @screenWatcherHoc()
-@connect((state) => ({
+@connect(state => ({
     isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
     matchParams: state.navigation.params,
     data: getData(state),
     currentItem: getCurrentItem(state),
     pairName: getPairName(state),
     user: getUser(state),
-    isPhone: isPhone(state)
+    isPhone: isPhone(state),
     // prices: getPrices(state),
 }))
-@dal.hoc((props) => [
+@dal.hoc(props => [
     {
         url: `/api/v1/neutrino-config/${props.pairName}`,
         key: 'neutrinoConfig',
-        collection: CollectionEnum.CONTROL_CONFIG
-    }
+        collection: CollectionEnum.CONTROL_CONFIG,
+    },
 ])
 export default class Layout extends React.PureComponent {
     static propTypes = {
-        status: PropTypes.string
+        status: PropTypes.string,
     };
 
     constructor(props) {
@@ -137,13 +133,12 @@ export default class Layout extends React.PureComponent {
         const { config, pairName } = this.props;
 
         if (config && !this.controllerInitialized) {
-            const dAppAddress =
-                config.dal.contracts[pairName][ContractEnum.NEUTRINO];
+            const dAppAddress = config.dal.contracts[pairName][ContractEnum.NEUTRINO];
             const neutrinoAssetId = config.dal.assets[CurrencyEnum.USD_N];
 
             this.wcc = new WavesContractDataController({
                 dAppAddress,
-                nodeUrl: dal.nodeUrl
+                nodeUrl: dal.nodeUrl,
             });
             this.wcc.neutrinoAssetId = neutrinoAssetId;
             this.wcc.startUpdating();
@@ -166,20 +161,15 @@ export default class Layout extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
-            Promise.resolve(dal.isLogged() ? dal.login() : null).then(
-                (user) => {
-                    store.dispatch([
-                        // currencySetPrices(nextProps.data.prices),
-                        setUser(user)
-                    ]);
-                }
-            );
+            Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
+                store.dispatch([
+                    // currencySetPrices(nextProps.data.prices),
+                    setUser(user),
+                ]);
+            });
         }
 
-        if (
-            _get(this.props, 'matchParams.currency') !==
-            _get(nextProps, 'matchParams.currency')
-        ) {
+        if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
             store.dispatch(currencySetCurrent(nextProps.matchParams.currency));
         }
         if (nextProps.data && nextProps.status === STATUS_ACCESS_DENIED) {
@@ -191,11 +181,7 @@ export default class Layout extends React.PureComponent {
         const thisUserNetwork = _get(this.props, 'user.network');
 
         if (!this.props.isPhone) {
-            if (
-                thisUserNetwork &&
-                nextUserNetwork &&
-                thisUserNetwork !== nextUserNetwork
-            ) {
+            if (thisUserNetwork && nextUserNetwork && thisUserNetwork !== nextUserNetwork) {
                 this.wasWrongNetworkMessageShown = false;
             }
 
@@ -208,12 +194,12 @@ export default class Layout extends React.PureComponent {
                 store.dispatch(
                     openModal(MessageModal, {
                         text: __('Switch your Waves Keeper network to {name}', {
-                            name: nextAppNetwork.toUpperCase()
+                            name: nextAppNetwork.toUpperCase(),
                         }),
                         image: {
                             src: wrongNetworkImage,
-                            alt: 'Switch Waves Keeper network'
-                        }
+                            alt: 'Switch Waves Keeper network',
+                        },
                     })
                 );
 
@@ -235,7 +221,7 @@ export default class Layout extends React.PureComponent {
         return (
             <div
                 className={bem.block({
-                    'is-show-left-sidebar': this.props.isShowLeftSidebar
+                    'is-show-left-sidebar': this.props.isShowLeftSidebar,
                 })}
             >
                 <ConfigContext.Provider value={configValue}>
@@ -246,16 +232,14 @@ export default class Layout extends React.PureComponent {
                             </aside>
                         )}
                         <div className={bem.element('center')}>
-                            {isBlocked &&
-                                this.props.currentItem.id !== ROUTE_ROOT && (
-                                    <BlockedApp />
-                                )}
+                            {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                                <BlockedApp />
+                            )}
                             <header className={bem.element('header')}>
                                 <Header />
                             </header>
                             <main className={bem.element('content')}>
-                                {this.props.status !== STATUS_LOADING &&
-                                    this.props.children}
+                                {this.props.status !== STATUS_LOADING && this.props.children}
                             </main>
                         </div>
                         <aside className={bem.element('right')}>
@@ -272,11 +256,13 @@ export default class Layout extends React.PureComponent {
         const params = queryString.parse(location.search);
 
         if (params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency) {
-            this.props.dispatch(openModal(TransferInvoiceModal, {
-                amount: params.invoiceAmount,
-                address: params.invoiceAddress,
-                currency: params.invoiceCurrency,
-            }))
+            this.props.dispatch(
+                openModal(TransferInvoiceModal, {
+                    amount: params.invoiceAmount,
+                    address: params.invoiceAddress,
+                    currency: params.invoiceCurrency,
+                })
+            );
         }
     }
 }

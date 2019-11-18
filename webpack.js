@@ -3,13 +3,15 @@ const path = require('path');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const srcPath = path.join(__dirname, 'src');
+
 require('yii-steroids/webpack')
     .config({
         port: 8082,
         baseUrl: '',
         staticPath: '',
         outputPath: __dirname + '/dist',
-        sourcePath: __dirname + '/src',
+        sourcePath: srcPath,
         useHash: true,
         devServer: {
   	    hot: false,
@@ -82,7 +84,8 @@ require('yii-steroids/webpack')
                         },
                     },
                     typescript: {
-                        test: /\.tsx?$/, loader: 'ts-loader'
+                        test: /\.tsx?$/,
+                        loader: 'ts-loader'
                     }
                 },
             },
@@ -93,7 +96,12 @@ require('yii-steroids/webpack')
             ],
             resolve: {
                 // Add `.ts` and `.tsx` as a resolvable extension.
-                extensions: ['.ts', '.tsx', '.js']
+                extensions: ['.ts', '.tsx', '.js'],
+                modules: [srcPath, 'node_modules'],
+                enforceExtension: false,
+                alias: {
+                    '@': srcPath
+                },
             }
         },
     })

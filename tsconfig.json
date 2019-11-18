@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "target": "esnext",
         "experimentalDecorators": true,
         "skipLibCheck": true,
+        "jsx": "react",
+        "moduleResolution": "node",
         "lib": [
         "dom",
         "webworker",
@@ -13,9 +15,12 @@
         "typeRoots": [
         "./node_modules/@types"
         ],
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": "./src",
+        "allowSyntheticDefaultImports": true,
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "static",
     ]
 }

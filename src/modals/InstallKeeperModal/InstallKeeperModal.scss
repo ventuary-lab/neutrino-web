@@ -1,0 +1,94 @@
+
+.InstallKeeperModal {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: #fff;
+    color: black;
+    text-align: center;
+    max-width: 765px;
+    height: 595px;
+    margin: auto;
+
+    & button {
+        max-width: 500px;
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 10px 30px;
+    border-radius: 0;
+
+    @media (min-width: 768px) {
+        padding: 42px 126px 37px;
+    }
+
+    @media (min-width: 576px) {
+        padding: 40px 50px 35px;
+    }
+
+    &__cont {
+        width: 396px;
+        margin: auto;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+        & > * {
+            position: relative !important;
+            width: 190px !important;
+            margin: 0 !important;
+        }
+    }
+
+    &__link {
+        margin: 15px 0;
+        display: block;
+    }
+
+    &__main-view {
+        margin-top: 50px;
+
+        & > img {
+            margin: auto;
+        }
+    }
+
+    &__second-view,
+    &__third-view {
+        & > :nth-child(2) {
+            display: flex;
+            flex-direction: row;
+
+            @media (max-width: 768px) {
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &__tg-link {
+        display: flex;
+        color: grey;
+        flex-direction: row;
+        text-align: center;
+        justify-content: center;
+
+        & > span {
+            display: block;
+            margin-top: 12px;
+        }
+
+        &:hover {
+            color: black;
+        }
+    }
+}
