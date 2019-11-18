@@ -46,22 +46,23 @@ require('yii-steroids/webpack')
                 })
             ],
             splitChunks: {
-                chunks: 'all',
-                maxInitialRequests: Infinity,
-                minSize: 0,
+                chunks: 'async',
+                minSize: 30000,
+                maxSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                automaticNameMaxLength: 30,
                 cacheGroups: {
-                    vendor: {
+                    vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        name (module) {
-                            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                            return `npm.${packageName.replace('@', '')}`;
-                        }
+                        priority: -10
                     },
-                    styles: {
-                        test: /\.css$/,
-                        name: 'styles',
-                        chunks: 'all',
-                        enforce: true
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
                     }
                 }
             }
