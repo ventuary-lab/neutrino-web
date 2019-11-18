@@ -20,6 +20,7 @@
     "dotenv": "^8.1.0",
     "dotenv-webpack": "^1.7.0",
     "lodash": "^4.17.15",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "raven": "^2.6.4",
     "react-copy-to-clipboard": "^5.0.1",
     "react-highcharts": "^16.0.2",
@@ -31,6 +32,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.4.1",
     "typescript": "^3.7.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "waves-contract-cache": "^0.2.0",
     "websocket": "^1.0.29",
     "yii-steroids": "^1.14.0"

@@ -1,4 +1,7 @@
 const Dotenv = require('dotenv-webpack');
+const path = require('path');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 require('yii-steroids/webpack')
     .config({
@@ -21,6 +24,48 @@ require('yii-steroids/webpack')
                     target: 'http://localhost:5000',
                 },
             ]
+        },
+        output: {
+            path: path.join(__dirname, 'dist'),
+            publicPath: '/',
+            filename: 'js/[hash].js',
+            chunkFilename: 'js/[id].[hash].chunk.js'
+        },
+        optimization: {
+            runtimeChunk: 'single',
+            minimizer: [
+                new OptimizeCSSAssetsPlugin({
+                    cssProcessorPluginOptions: {
+                        preset: [ 'default', { discardComments: { removeAll: true } } ],
+                    }
+                }),
+                new UglifyJSPlugin({
+                    cache: true,
+                    parallel: true,
+                    sourceMap: true
+                })
+            ],
+            splitChunks: {
+                chunks: 'async',
+                minSize: 30000,
+                maxSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                automaticNameMaxLength: 30,
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
+                    }
+                }
+            }
         },
         webpack: {
             module: {
