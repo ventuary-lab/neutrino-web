@@ -9,6 +9,7 @@ import browsersImage from 'static/images/guide/browsers.svg';
 import imageOne from 'static/images/guide/img1.jpg';
 // @ts-ignore
 import imageTwo from 'static/images/guide/img2.jpg';
+// @ts-ignore
 import helpIcon from 'static/images/guide/help.svg';
 
 import './InstallKeeperModal.scss';

@@ -5,6 +5,7 @@
         "experimentalDecorators": true,
         "skipLibCheck": true,
         "jsx": "react",
+        "moduleResolution": "node",
         "lib": [
         "dom",
         "webworker",
@@ -15,9 +16,11 @@
         "./node_modules/@types"
         ],
         "esModuleInterop": true,
-        "baseUrl": "./src"
+        "baseUrl": "./src",
+        "allowSyntheticDefaultImports": true,
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "static",
     ]
 }
