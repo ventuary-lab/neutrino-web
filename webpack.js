@@ -37,7 +37,8 @@ require('yii-steroids/webpack')
                         },
                     },
                     typescript: {
-                        test: /\.tsx?$/, loader: 'ts-loader'
+                        test: /\.tsx?$/,
+                        loader: 'ts-loader'
                     }
                 },
             },

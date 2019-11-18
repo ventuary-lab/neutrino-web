@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "target": "esnext",
         "experimentalDecorators": true,
         "skipLibCheck": true,
+        "jsx": "react",
         "lib": [
         "dom",
         "webworker",
