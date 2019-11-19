@@ -19,7 +19,6 @@ export default class DalComponent {
         this.nodeUrl = null;
         this.assets = null;
         this.contracts = null;
-
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
         this.balance.onUpdate = this.login.bind(this);
@@ -128,77 +127,27 @@ export default class DalComponent {
         const contractPrice = price * 100;
         let position = _get(
             await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice }
+                params: { price: price }
             }),
             'data.position'
         );
+
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
-                'setOrder',
+                'addBuyBondOrder',
                 [contractPrice, position],
                 this.assets[paymentCurrency],
                 bondsAmount * price
             );
         }
     }
-
-    async swapAndSetBondOrder(
-        pairName,
-        price,
-        paymentCurrency,
-        bondsAmount,
-        neutrinoAmount,
-        wavesToUsdPrice
-    ) {
-        if (price <= 0 || price >= 1) {
-            return;
-        }
-        price = Math.round(price * 100) / 100;
-        const contractPrice = price * 100;
-        let position = _get(
-            await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice }
-            }),
-            'data.position'
-        );
-        if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
-            try {
-                const txSwap = await this.keeper.signTransaction(
-                    pairName,
-                    ContractEnum.NEUTRINO,
-                    'swapWavesToNeutrino',
-                    [],
-                    'WAVES',
-                    neutrinoAmount / wavesToUsdPrice
-                );
-
-                const txSetOrder = await this.keeper.signTransaction(
-                    pairName,
-                    ContractEnum.AUCTION,
-                    'setOrder',
-                    [contractPrice, position],
-                    this.assets[paymentCurrency],
-                    bondsAmount * price
-                );
-
-                console.log(position); // eslint-disable-line no-console
-                console.log('Signed vote tx:', { txSwap, txSetOrder }); // eslint-disable-line no-console
-
-                await this.keeper.broadcastAndWait(txSwap);
-                await this.keeper.broadcastAndWait(txSetOrder);
-            } catch (e) {
-                throw e;
-            }
-        }
-    }
-
     async setLiquidateOrder(pairName, paymentCurrency, total) {
         await this.keeper.sendTransaction(
             pairName,
-            ContractEnum.NEUTRINO,
-            'setOrder',
+            ContractEnum.LIQUIDATION,
+            'addLiquidationOrder',
             [],
             this.assets[paymentCurrency],
             total
@@ -221,7 +170,7 @@ export default class DalComponent {
             case OrderTypeEnum.LIQUIDATE:
                 await this.keeper.sendTransaction(
                     pairName,
-                    ContractEnum.NEUTRINO,
+                    ContractEnum.LIQUIDATION,
                     'cancelOrder',
                     [hash],
                     'WAVES',
