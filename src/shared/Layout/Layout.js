@@ -98,6 +98,7 @@ export default class Layout extends React.PureComponent {
     }
 
     componentDidMount() {
+        this.attachResizeObserver();
         this.openWarningModal();
     }
 
@@ -114,16 +115,16 @@ export default class Layout extends React.PureComponent {
     }
 
     attachResizeObserver() {
-        if (!ResizeObserver) {
-            return;
+        try {
+            this.resizeObserver = new ResizeObserver(this.onScreenResize);
+            this.resizeObserver.observe(document.body);
+        } catch (err) {
+            console.warn({ err }, 'ResizeObserver is not supported');
         }
-
-        this.resizeObserver = new ResizeObserver(this.onScreenResize);
-        this.resizeObserver.observe(document.body);
     }
 
     detachResizeObserver() {
-        if (!ResizeObserver || !this.resizeObserver) {
+        if (!this.resizeObserver) {
             return;
         }
 

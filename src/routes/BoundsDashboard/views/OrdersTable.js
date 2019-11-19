@@ -127,7 +127,7 @@ export default class OrdersTable extends React.PureComponent {
                                             {(OrderTypeEnum.getLabel(item.type)) || '--'}
                                         </td>
                                         <td>
-                                            {moment(item.timestamp).format('DD MMM YYYY hh:mm:ss') || '--'}
+                                            {moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--'}
                                         </td>
                                         <td>
                                             {item.restAmount || '--'}

@@ -140,6 +140,10 @@
             flex-wrap: nowrap;
             height: 100px;
             padding: 8px;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
         & span {
             display: block;

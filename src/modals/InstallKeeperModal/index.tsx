@@ -1,8 +1,11 @@
 import React from 'react';
+import _ from 'lodash';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
 import Button from 'yii-steroids/ui/form/Button';
-import { html } from 'components';
+import { openModal } from 'yii-steroids/actions/modal';
+import WarningMobileModal from 'modals/WarningMobileModal';
+import { html, store } from 'components';
 import browsersImage from 'static/images/guide/browsers.svg';
 import imageOne from 'static/images/guide/img1.jpg';
 import imageTwo from 'static/images/guide/img2.jpg';
@@ -70,6 +73,7 @@ class InstallKeeperModal extends React.Component {
         this.getCompaniesView = this.getCompaniesView.bind(this);
         this.isFirstActive = this.isFirstActive.bind(this);
         this.onChangeIndex = this.onChangeIndex.bind(this);
+        this.getNextButtonLabel = this.getNextButtonLabel.bind(this);
 
         this.state = {
             isOpened: props.isOpened,
@@ -98,10 +102,9 @@ class InstallKeeperModal extends React.Component {
                 title: 'Kraken',
             },
             {
-                link:
-                    'https://dex.wavesplatform.com/dex-demo?assetId2=WAVES&assetId1=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS',
-                img: companyImages.wavesDex,
-                title: 'DEX',
+                link: 'https://global.bittrex.com/Market/Index?MarketName=btc-WAVES',
+                img: companyImages.bittrex,
+                title: 'Bittrex',
             },
             {
                 link: 'https://www.huobi.co/en-us/exchange/waves_btc/',
@@ -109,9 +112,10 @@ class InstallKeeperModal extends React.Component {
                 title: 'Huobi',
             },
             {
-                link: 'https://global.bittrex.com/Market/Index?MarketName=btc-WAVES',
-                img: companyImages.bittrex,
-                title: 'Bittrex',
+                link:
+                    'https://dex.wavesplatform.com/dex-demo?assetId2=WAVES&assetId1=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS',
+                img: companyImages.wavesDex,
+                title: 'DEX',
             },
             {
                 link: 'https://changelly.com/',
@@ -177,6 +181,10 @@ class InstallKeeperModal extends React.Component {
         );
     }
 
+    getNextButtonLabel() {
+        return this.views.length - 1 === this.state.currentViewIndex ? 'Got It' : 'Next';
+    }
+
     getSecondView() {
         return (
             <>
@@ -191,7 +199,7 @@ class InstallKeeperModal extends React.Component {
                             Don’t forget to make sure that the extension is in "Mainnet" mode
                             <span>If you’ve done this, click on “Got it” to proceed!</span>
                         </div>
-                        <img src={imageOne} className={bem.element('img-keeper')}/>
+                        <img src={imageOne} className={bem.element('img-keeper')} />
                     </div>
                     <HelpLink />
                 </div>
@@ -232,7 +240,7 @@ class InstallKeeperModal extends React.Component {
                             (in the right upper corner) Open Permissions Control menu Give access to
                             beta.ventuary.space by clicking a power button icon on the left
                         </div>
-                        <img src={imageTwo} className={bem.element('img-keeper')}/>
+                        <img src={imageTwo} className={bem.element('img-keeper')} />
                     </div>
                     <HelpLink />
                 </div>
@@ -241,13 +249,26 @@ class InstallKeeperModal extends React.Component {
     }
 
     getPrevView() {
-        if (!this.sliderRef.current) return;
+        if (!this.sliderRef.current) {
+            return;
+        }
 
         this.sliderRef.current.slickPrev();
     }
 
     getNextView() {
-        if (!this.sliderRef.current) return;
+        if (!this.sliderRef.current) {
+            return;
+        }
+
+        if (this.views.length - 1 === this.state.currentViewIndex) {
+            if (document.body.offsetWidth < 650) {
+                store.dispatch(openModal(WarningMobileModal));
+            } else {
+                window.open('https://wavesplatform.com/technology/keeper');
+            }
+            return;
+        }
 
         this.sliderRef.current.slickNext();
     }
@@ -284,7 +305,7 @@ class InstallKeeperModal extends React.Component {
                             block
                             onClick={this.getNextView}
                             className={bem.element('next-button')}
-                            label={'Next'}
+                            label={this.getNextButtonLabel()}
                         />
                         <div></div>
                     </div>
