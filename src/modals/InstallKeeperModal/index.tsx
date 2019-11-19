@@ -191,7 +191,7 @@ class InstallKeeperModal extends React.Component {
                             Don’t forget to make sure that the extension is in "Mainnet" mode
                             <span>If you’ve done this, click on “Got it” to proceed!</span>
                         </div>
-                        <img src={imageOne} />
+                        <img src={imageOne} className={bem.element('img-keeper')}/>
                     </div>
                     <HelpLink />
                 </div>
@@ -232,7 +232,7 @@ class InstallKeeperModal extends React.Component {
                             (in the right upper corner) Open Permissions Control menu Give access to
                             beta.ventuary.space by clicking a power button icon on the left
                         </div>
-                        <img src={imageTwo} />
+                        <img src={imageTwo} className={bem.element('img-keeper')}/>
                     </div>
                     <HelpLink />
                 </div>
