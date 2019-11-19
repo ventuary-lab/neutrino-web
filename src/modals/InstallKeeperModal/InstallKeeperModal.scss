@@ -35,8 +35,10 @@
     }
 
     &__cont {
-        width: 665px;
+        max-width: 665px;
+        width: 100%;
         margin: auto;
+        padding: 15px;
     }
 
     &__buttons {
