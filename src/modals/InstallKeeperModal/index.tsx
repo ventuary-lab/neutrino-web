@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import WarningMobileModal from 'modals/WarningMobileModal';
-import { html } from 'components';
+import { html, store } from 'components';
 import browsersImage from 'static/images/guide/browsers.svg';
 import imageOne from 'static/images/guide/img1.jpg';
 import imageTwo from 'static/images/guide/img2.jpg';
@@ -261,8 +261,8 @@ class InstallKeeperModal extends React.Component {
             return;
         }
 
-        if (this.views.length - 1 === this.state.currentViewIndex && _.get(document.body, 'width', null) < 650) {
-            openModal(WarningMobileModal);
+        if (this.views.length - 1 === this.state.currentViewIndex && document.body.offsetWidth < 650) {
+            store.dispatch(openModal(WarningMobileModal));
             return;
         }
 
