@@ -186,7 +186,7 @@ module.exports = class App implements ApplicationParams {
             logger: this.logger,
         });
 
-        console.log('---createContract');
+        console.log('---createContract ' + contractName + ":" + dApp);
 
         const contract: ContractCache = new WavesContractCache({
             dApp,

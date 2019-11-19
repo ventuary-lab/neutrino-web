@@ -100,6 +100,7 @@ export default class Keeper {
     async sendTransaction(pairName, contractName, method, args, paymentCurrency, paymentAmount, waitTx = true) {
         const keeper = await this.getPlugin();
         const dApp = this.dal.contracts[pairName][contractName];
+        console.log(this.dal.contracts)
         const result = await keeper.signAndPublishTransaction(this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount));
         if (result) {
             if (!waitTx) {

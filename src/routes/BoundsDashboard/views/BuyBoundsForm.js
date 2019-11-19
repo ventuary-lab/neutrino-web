@@ -177,19 +177,17 @@ export default class BuyBoundsForm extends React.PureComponent {
         const price = 1 - values.discount / 100;
         const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
 
-        return dal.swapAndSetBondOrder(
+        return dal.setBondOrder(
             this.props.pairName,
             price,
             this.props.quoteCurrency,
-            values.bounds,
-            values.neutrino,
-            wavesToUsdPrice
+            values.bounds
         )
             .then(() => {
-                console.log('---swapAndSetBondOrder success'); // eslint-disable-line no-console
+                console.log('---setBondOrder success'); // eslint-disable-line no-console
             })
             .catch(err => {
-                console.log('---swapAndSetBondOrder error', err); // eslint-disable-line no-console
+                console.log('---setBondOrder error', err); // eslint-disable-line no-console
 
                 //User denied message
                 if (err && err.code === '10') {
