@@ -261,8 +261,12 @@ class InstallKeeperModal extends React.Component {
             return;
         }
 
-        if (this.views.length - 1 === this.state.currentViewIndex && document.body.offsetWidth < 650) {
-            store.dispatch(openModal(WarningMobileModal));
+        if (this.views.length - 1 === this.state.currentViewIndex) {
+            if (document.body.offsetWidth < 650) {
+                store.dispatch(openModal(WarningMobileModal));
+            } else {
+                window.open('https://wavesplatform.com/technology/keeper');
+            }
             return;
         }
 
