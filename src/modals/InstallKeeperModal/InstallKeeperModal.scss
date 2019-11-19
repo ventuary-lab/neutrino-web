@@ -12,6 +12,14 @@
     max-height: 595px;
     height: 100%;
     margin: auto;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+    }
 
     & > h1 {
         margin: 0;
@@ -80,6 +88,12 @@
         }
     }
 
+    &__img-keeper {
+        height: 100%;
+        margin: auto;
+        max-height: 200px;
+    }
+
     &__second-view,
     &__third-view {
         & > :nth-child(2) {
@@ -110,7 +124,7 @@
     }
 
     &__companies-flex {
-        font-size: .75rem;
+        font-size: .75em;
         display: flex;
         flex-direction: column;
 
