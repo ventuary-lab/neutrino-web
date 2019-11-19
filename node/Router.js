@@ -192,7 +192,7 @@ module.exports = class Router {
                     .getOpenedOrders();
                 let position = 0;
                 orders.forEach(order => {
-                    if (order.price >= price) {
+                    if (price <= order.price) {
                         position++;
                     }
                 });
