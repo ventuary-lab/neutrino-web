@@ -9,15 +9,24 @@
     color: black;
     text-align: center;
     max-width: 765px;
-    max-height: 695px;
+    max-height: 595px;
     height: 100%;
     margin: auto;
+
+    & > h1 {
+        margin: 0;
+    }
 
     & button {
         max-width: 500px;
         width: 100%;
         margin-right: auto;
         margin-left: auto;
+    }
+    & a {
+        &:hover {
+            background: unset;
+        }
     }
 
     display: flex;
@@ -48,7 +57,7 @@
 
         & > * {
             position: relative !important;
-            width: 190px !important;
+            width: 180px !important;
             margin: 0 !important;
         }
 
@@ -102,6 +111,8 @@
 
     &__companies-flex {
         font-size: .75rem;
+        display: flex;
+        flex-direction: column;
 
         & img {
             max-width: 100px;
@@ -127,7 +138,6 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-evenly;
-            margin-top: 45px;
         }
     }
 }
