@@ -38,6 +38,18 @@ module.exports = class Router {
                     // prices: await this._getPrices(),
                 };
             },
+            '/api/v1/staking/mass-payment/:address/:assetId': async ({ params: { address, assetId } }) => {
+                if (!assetId || !address) {
+                    return [];
+                }
+
+                const transactions = await this.app.massPaymentService.getRecipientMassPaymentsByAssetId(
+                    address,
+                    assetId
+                );
+
+                return transactions || [];
+            },
             '/api/v1/rpd-checks/:pairName/:address': async request => {
                 const nextIndex = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX)

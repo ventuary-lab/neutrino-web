@@ -5,6 +5,7 @@ import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
 
+import MassPaymentService from './services/MassPaymentService';
 import HeightListener from './components/HeightListener';
 import WavesTransport from './components/WavesTransport';
 import PairsEnum from './enums/PairsEnum';
@@ -35,6 +36,7 @@ module.exports = class App implements ApplicationParams {
     heightListener: HeightListener;
     httpServer: ExpressHttp.server;
     expressApp: ExpressCore.Express;
+    massPaymentService: MassPaymentService;
 
     // Internal class props
     _isSkipUpdates: boolean;
@@ -68,6 +70,8 @@ module.exports = class App implements ApplicationParams {
             // [PairsEnum.USDNB_USDN]: process.env.APP_ADDRESS_USDNB_USDN || '3NAXNEjQCDj9ivPGcdjkRhVMBkkvyGRUWKm', // testnet for rpd
             // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
+
+        this.massPaymentService = new MassPaymentService({ nodeUrl: this.nodeUrl });
 
         // Create main redis client & storage
         this._redisClient = redis.createClient(
