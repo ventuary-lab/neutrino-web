@@ -1,0 +1,29 @@
+
+
+.StakingBalance {
+
+    &__balance {
+        color: rgb(113, 251, 253);
+        margin: 28px 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+
+        & > :nth-child(1) {
+            font-size: 2.8em;
+            font-weight: 600;
+            margin-right: 2px;
+        }
+        & > :nth-child(2) {
+            font-size: 2.3em;
+            margin-left: 2px;
+        }
+    }
+
+    &__action-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}

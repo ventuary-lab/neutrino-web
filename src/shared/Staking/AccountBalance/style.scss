@@ -1,5 +1,24 @@
 
 
-.AccountBalance {
+.StakingAccountBalance {
     
+
+    &__balance {
+        color: rgb(113, 251, 253);
+        margin: 28px 0;
+
+        & > :nth-child(1) {
+            font-size: 2.8em;
+            font-weight: 600;
+        }
+        & > :nth-child(2) {
+            font-size: 2.3em;
+        }
+    }
+
+    &__buy-btn {
+        & > * {
+            margin-left: auto;
+        }
+    }
 }

@@ -6,11 +6,6 @@
     }
 
     &__main {
-        display: grid;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        text-align: center;
-
         & > :nth-child(1),
         & > :nth-child(2) {
             margin-top: 8px;

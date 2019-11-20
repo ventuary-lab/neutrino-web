@@ -1,6 +1,7 @@
 import React from 'react';
 import { html } from 'components';
 import AccountBalance from './../AccountBalance';
+import StakingBalance from './../StakingBalance';
 import AnnualYieldInfo from './../AnnualYieldInfo';
 
 const bem = html.bem('StakingLeftPanel');
@@ -27,6 +28,9 @@ class StakingLeftPanel extends React.Component {
                 </ListItem>
                 <ListItem>
                     <AccountBalance />
+                </ListItem>
+                <ListItem>
+                    <StakingBalance />
                 </ListItem>
             </div>
         );
