@@ -43,13 +43,9 @@ class StakingRightPanel extends React.Component {
 
         if (user) {
             (async () => {
-                // const massPaymentTxs = await this.getMassTransactionsList(
-                //     user.address,
-                //     '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8'
-                // );
                 const massPaymentTxs = await this.getMassTransactionsList(
-                    '3PNZqxd9zabQWwoo58jF9931xa2ui8gSiuu',
-                    'AbunLGErT5ctzVN8MVjb4Ad9YgjpubB8Hqb17VxzfAck'
+                    user.address,
+                    '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8'
                 );
 
                 this.setState({ mappedTransactions: massPaymentTxs });
