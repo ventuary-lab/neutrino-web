@@ -12,29 +12,28 @@ interface Props {
     checkNumber: number;
     date: Date;
     profit: number;
-    onSeeTransaction: () => void;
+    transactionUrl: string;
 }
 
 const PayoutCheck = (props: Props) => {
-    const { checkNumber, date, profit, onSeeTransaction } = {
-        checkNumber: 14,
-        date: new Date(),
-        profit: 0.55,
-        onSeeTransaction: () => {},
-    };
+    const { checkNumber, date, profit, transactionUrl } = props;
 
     return (
         <div className={bem.block()}>
             <div className={bem.element('body')}>
-                <div>
+                <div className={bem.element('date')}>
                     <span>Check № {checkNumber}</span>
                     <span>
-                        {moment(date).format('dd.mm.yy')} | {moment(date).format('hh:mm')}
+                        {moment(date).format('DD.MM.YY')} | {moment(date).format('hh:mm')}
                     </span>
                 </div>
-                <div>Profit: {profit}</div>
-                <div>
-                    <Button label="See transaction" />
+                <div className={bem.element('profit')}>Profit: {profit}</div>
+                <div className={bem.element('see-tx')}>
+                    <img src={logo} />
+                    {/* <Button label="See transaction" onClick={onSeeTransaction}/> */}
+                    <a href={`https://wavesexplorer.com/tx/${transactionUrl}`} target="_blank">
+                        See transaction
+                    </a>
                 </div>
             </div>
         </div>

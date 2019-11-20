@@ -2,4 +2,14 @@
 
 .StakingRightPanel {
     
+    &__list {
+        overflow: auto;
+        max-height: calc(100vh - 130px);
+
+        & > * {
+            &:not(:first-child) {
+                margin-top: 14px;
+            }
+        }
+    }
 }

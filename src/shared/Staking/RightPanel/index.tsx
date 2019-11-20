@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { html } from 'components';
-
+import { connect } from 'react-redux';
+import { html, dal, store } from 'components';
+import PayoutCheck from '../PayoutCheck';
 import { WavesTransactionInfo } from 'contractControllers/types';
 
 import './style.scss';
@@ -15,33 +16,48 @@ interface MappedWavesTransactionInfo extends Omit<WavesTransactionInfo, 'transfe
     transferAmount?: number;
 }
 
-interface Props {}
+interface Props {
+    user: any;
+}
 interface State {
     mappedTransactions: MappedWavesTransactionInfo[];
 }
 
-class RightPanel extends React.Component {
+class StakingRightPanel extends React.Component {
     state: State;
 
     constructor(props: Props) {
         super(props);
 
         this.getMassTransactionsList = this.getMassTransactionsList.bind(this);
+        this.mapPayoutCheck = this.mapPayoutCheck.bind(this);
 
         this.state = {
             mappedTransactions: [],
         };
     }
 
-    async componentDidMount() {
-        // http://localhost:5000/api/v1/staking/mass-payment/3PNZqxd9zabQWwoo58jF9931xa2ui8gSiuu/AbunLGErT5ctzVN8MVjb4Ad9YgjpubB8Hqb17VxzfAck
+    componentDidUpdate() {
+        // @ts-ignore
+        const { user } = this.props;
 
-        const massPaymentTxs = await this.getMassTransactionsList('3PNZqxd9zabQWwoo58jF9931xa2ui8gSiuu', 'AbunLGErT5ctzVN8MVjb4Ad9YgjpubB8Hqb17VxzfAck');
-        this.setState({ mappedTransactions: massPaymentTxs });
+        if (user) {
+            (async () => {
+                // const massPaymentTxs = await this.getMassTransactionsList(
+                //     user.address,
+                //     '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8'
+                // );
+                const massPaymentTxs = await this.getMassTransactionsList(
+                    '3PNZqxd9zabQWwoo58jF9931xa2ui8gSiuu',
+                    'AbunLGErT5ctzVN8MVjb4Ad9YgjpubB8Hqb17VxzfAck'
+                );
+
+                this.setState({ mappedTransactions: massPaymentTxs });
+            })();
+        }
     }
 
     async getMassTransactionsList(address: string, assetId: string) {
-        // return null;
         const response = await axios.get<WavesTransactionInfo[]>(
             `/api/v1/staking/mass-payment/${address}/${assetId}`
         );
@@ -59,9 +75,36 @@ class RightPanel extends React.Component {
         return mappedTransactions;
     }
 
+    mapPayoutCheck(
+        tx: MappedWavesTransactionInfo,
+        itemIndex: number,
+        txList: MappedWavesTransactionInfo[]
+    ) {
+        return (
+            <PayoutCheck
+                checkNumber={txList.length - itemIndex}
+                date={new Date()}
+                profit={1.5}
+                transactionUrl={tx.id}
+            />
+        );
+    }
+
     render() {
-        return <div className={bem.block()}>{/* {this.getPaymentsList()} */}</div>;
+        const { mappedTransactions } = this.state;
+
+        const payoutChecks = mappedTransactions.map(this.mapPayoutCheck);
+
+        return (
+            <div className={bem.block()}>
+                <div className={bem.element('list')}>
+                    {payoutChecks.length > 0 ? payoutChecks : 'No Payout checks'}
+                </div>
+            </div>
+        );
     }
 }
 
-export default RightPanel;
+export default connect(state => ({
+    user: state.auth.user,
+}))(StakingRightPanel);

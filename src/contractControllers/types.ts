@@ -48,6 +48,7 @@ export interface WavesTransfer {
 }
 
 export interface WavesTransactionInfo {
+    id: string;
     senderPublicKey: string;
     fee: number;
     type: number;
