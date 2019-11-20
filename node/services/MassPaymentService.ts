@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { WavesTransactionInfo, WavesTransfer } from './types';
+import { WavesTransactionInfo, WavesTransfer } from '../../src/contractControllers/types';
 
 class MassPaymentService {
     transactionsCountLimit!: number;
@@ -12,7 +12,9 @@ class MassPaymentService {
     }
 
     // 3P4EUdeD22MrnAiWNZqjmV2x3bfnGFU2E45 just as an example
-    async getAddressMassPayments(address: string): Promise<AxiosResponse<WavesTransactionInfo[][]> | void> {
+    async getAddressMassPayments(
+        address: string
+    ): Promise<AxiosResponse<WavesTransactionInfo[][]> | void> {
         const { transactionsCountLimit, nodeUrl } = this;
 
         const response = await axios.get(
@@ -24,20 +26,19 @@ class MassPaymentService {
         }
     }
 
-    async getRecipientMassPaymentsByAssetId (address: string, assetId: string) {
+    async getRecipientMassPaymentsByAssetId(address: string, assetId: string) {
         const transactionsResponse = await this.getAddressMassPayments(address);
 
         if (!transactionsResponse) {
             return;
         }
 
-        const [ transactions ] = transactionsResponse.data;
+        const [transactions] = transactionsResponse.data;
 
         // Filter by Recipient
-        const filtered = transactions.filter((item) => item.assetId === assetId);
+        const filtered = transactions.filter(item => item.assetId === assetId);
         return filtered;
     }
-
 }
 
 export default MassPaymentService;
