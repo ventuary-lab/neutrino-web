@@ -4,7 +4,10 @@ import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
+
+// Temporary approach
 import RpdDashboard from './RpdDashboard';
+// import StakingDashboard from 'shared/Staking/Dashboard';
 import UserRole from 'enums/UserRole';
 
 export const ROUTE_ROOT = 'root';

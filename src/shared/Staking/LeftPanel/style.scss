@@ -1,0 +1,20 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.StakingLeftPanel {
+    font-size: 16px;
+
+    &__list-item {
+        background-color: $color-layout-bg;
+        padding: 20px;
+        padding-bottom: 4px;
+        border-radius: 4px;
+        & h3 {
+            margin: 0;
+        }
+
+        &:not(:nth-child(1)) {
+            margin-top: 8px;
+        }
+    }
+}

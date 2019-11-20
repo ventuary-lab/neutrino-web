@@ -1,4 +1,9 @@
 import React from 'react';
+import { html } from 'components';
+
+const bem = html.bem('AnnualYieldInfo');
+
+import './style.scss';
 
 interface Props {}
 interface State {}
@@ -10,15 +15,15 @@ class AnnualYieldInfo extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Info</h1>
-                <div>
-                    <div>
+            <div className={bem.block()}>
+                <h3>Info</h3>
+                <div className={bem.element('main')}>
+                    <div className={bem.element('yield-percent')}>
                         <span>6.85</span>
                         <span>%</span>
                     </div>
-                    <span>Average Estimated Annual Yield</span>
-                    <span>
+                    <span className={bem.element('title')}>Average Estimated Annual Yield</span>
+                    <span className={bem.element('body')}>
                         Estimated Annual Yield is depending on waves token price, can be 1%-20%
                         based on market situation
                     </span>
