@@ -1,23 +1,22 @@
-
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 .StakingAccountBalance {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #343869;
 
-    // &__balance {
-    //     color: $color-brand-azure;
-    //     margin: 28px 0;
+    &__buy-btn {
+        width: 100%;
+        padding-top: 10px;
+                
+        & > * {
+            background-image: $green-button-gradient !important;
+            width: 100%;
+            max-width: unset !important;
+        }
+    }
 
-    //     & > :nth-child(1) {
-    //         font-size: 2.8em;
-    //         font-weight: 600;
-    //     }
-    //     & > :nth-child(2) {
-    //         font-size: 2.3em;
-    //     }
-    // }
-
-    // &__buy-btn {
-    //     & > * {
-    //         margin-left: auto;
-    //     }
-    // }
 }

@@ -1,6 +1,12 @@
 
 
 .StakingBalance {
+    &__info {
+        margin: 0;
+        font-weight: 300;
+        line-height: 18px;
+        font-size: .8em;
+    }
 
     &__balance {
         color: rgb(113, 251, 253);
@@ -25,5 +31,18 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        padding: 18px 0;
+
+        & > button {
+            max-width: unset !important;
+        }
+        & > :nth-child(1) {
+            background-color: #35356F;
+            background-image: unset;
+            margin-right: 15px;
+        }
+        & > :nth-child(2) {
+            margin-left: 15px;
+        }
     }
 }

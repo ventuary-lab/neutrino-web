@@ -1,6 +1,7 @@
 import React from 'react';
 import { html } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
+import AccountBalanceTitle from './../AccountBalanceTitle';
 
 import './style.scss';
 
@@ -17,19 +18,15 @@ class AccountBalance extends React.Component {
     render() {
         return (
             <div className={bem.block()}>
-                <span>Account balance</span>
-                <div className={bem.element('main')}>
-                    <div className={bem.element('balance')}>
-                        <span>100</span>
-                        <span>USD-N</span>
-                    </div>
-                    <div className={bem.element('buy-btn')}>
-                        <Button
-                            type={'submit'}
-                            block
-                            label={'Buy'}
-                        />
-                    </div>
+                {/* <span>Account balance</span>
+                <div className={bem.element('balance')}>
+                    <span><img src={usdnLogo}/></span>
+                    <span>100</span>
+                    <span>USD-N</span>
+                </div> */}
+                <AccountBalanceTitle title="Account balance" amount={100}/>
+                <div className={bem.element('buy-btn')}>
+                    <Button type={'submit'} className="base-green-button" block label={'Buy'} />
                 </div>
             </div>
         );
