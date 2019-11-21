@@ -13,9 +13,16 @@
         padding-top: 10px;
                 
         & > * {
-            background-image: $green-button-gradient !important;
             width: 100%;
             max-width: unset !important;
+
+            &:not(:hover) {
+                background-image: $green-button-gradient !important;
+            }
+
+            &:hover {
+                background-color: #00BC78 !important;
+            }
         }
     }
 

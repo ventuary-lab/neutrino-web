@@ -51,4 +51,32 @@
             line-height: 17px;
         }
     }
+
+    &__actions {
+
+    }
+
+    &__percents {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        max-width: 49%;
+        padding: 48px 0 18px 0;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        &_decrease button {
+            background-color:  $color-brand-purple-lt-alt !important;
+            background-image: none;
+        }
+
+        & > * {
+            width: 49%;
+        }
+    }
 }

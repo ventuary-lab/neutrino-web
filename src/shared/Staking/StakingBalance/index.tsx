@@ -11,6 +11,7 @@ const bem = html.bem('StakingBalance');
 interface Props {}
 interface State {
     isStakingShareModalOpened: boolean;
+    isStakingShareDecreaseSelected: boolean;
 }
 
 class StakingBalance extends React.Component<Props, State> {
@@ -18,9 +19,12 @@ class StakingBalance extends React.Component<Props, State> {
         super(props);
 
         this.triggerStakingShareModal = this.triggerStakingShareModal.bind(this);
+        this.onStakingCancel = this.onStakingCancel.bind(this);
+        this.onStakingIncrease = this.onStakingIncrease.bind(this);
 
         this.state = {
             isStakingShareModalOpened: false,
+            isStakingShareDecreaseSelected: false,
         };
     }
 
@@ -33,10 +37,19 @@ class StakingBalance extends React.Component<Props, State> {
         this.setState({ isStakingShareModalOpened: isVisible });
     }
 
+    onStakingCancel() {
+        this.setState({ isStakingShareModalOpened: true, isStakingShareDecreaseSelected: true });
+    }
+    onStakingIncrease() {
+        this.setState({ isStakingShareModalOpened: true, isStakingShareDecreaseSelected: false });
+    }
+
     render() {
-        const { isStakingShareModalOpened } = this.state;
-        const { title, accountBalance, stakingBalance } = {
-            title: 'Increase neutrino (USD-N) staking share',
+        const { isStakingShareModalOpened, isStakingShareDecreaseSelected } = this.state;
+        const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
+        const { title, accountBalance, stakingBalance, buttonLabel } = {
+            buttonLabel: actionLabel,
+            title: `${actionLabel} neutrino (USD-N) staking share`,
             accountBalance: 100,
             stakingBalance: 80,
         };
@@ -45,16 +58,28 @@ class StakingBalance extends React.Component<Props, State> {
             <div>
                 <MutateStakingShareModal
                     title={title}
+                    buttonLabel={buttonLabel}
                     accountBalance={accountBalance}
                     stakingBalance={stakingBalance}
                     isOpened={isStakingShareModalOpened}
                     onClose={() => this.triggerStakingShareModal(false)}
+                    isDecrease={isStakingShareDecreaseSelected}
                 />
                 <AccountBalanceTitle title="Staking balance" amount={80} />
                 <div className={bem.element('main')}>
                     <div className={bem.element('action-buttons')}>
-                        <Button type={'submit'} block label={'Cancel'} />
-                        <Button type={'submit'} block label={'Increase'} onClick={() => this.triggerStakingShareModal(true)}/>
+                        <Button
+                            type={'submit'}
+                            block
+                            label={'Cancel'}
+                            onClick={this.onStakingCancel}
+                        />
+                        <Button
+                            type={'submit'}
+                            block
+                            label={'Increase'}
+                            onClick={this.onStakingIncrease}
+                        />
                     </div>
                 </div>
                 <p className={bem.element('info')}>

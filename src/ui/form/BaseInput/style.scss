@@ -1,0 +1,107 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+// <div class="BaseInput__main" style="
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: nowrap;
+//     width: 300px;
+//     position: relative;
+//     margin-top: 14px;
+// "><input style="
+//     background-color: transparent;
+//     border: 1px solid #4A4A7F;
+//     height: 37px;
+//     border-radius: 100px;
+//     width: 100%;
+//     font-weight: 800;
+//     font-size: 14px;
+//     line-height: 17px;
+//     color: #fff;
+//     padding: 0 20px;
+// "><div style="
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: nowrap;
+//     width: 84px;
+//     margin: auto;
+//     position: absolute;
+//     right: 1px;
+//     height: 35px;
+//     top: 1px;
+//     background: #35356F;
+//     border-bottom-right-radius: 17.5px;
+//     border-top-right-radius: 17.5px;
+// "><img src="http://127.0.0.1:8082/images/7eb17ababbd788c43f09bb5ec1377d4c.svg" style="
+//     max-height: 20px;
+//     max-width: 20px;
+//     margin: auto;
+// "><span style="
+//     font-weight: 800;
+//     font-size: 10px;
+//     line-height: 12px;
+//     text-align: center;
+//     display: block;
+//     margin: auto;
+//     margin-left: 0;
+// ">USD-N</span></div></div>
+
+.BaseInput {
+
+    &__main {
+        // $color-brand-purple-light
+        background-color: transparent;
+        height: 37px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 300px;
+        position: relative;
+        // margin-top: 14px;
+
+        & > :nth-child(1) {
+            background-color: transparent;
+            border: 1px solid #4A4A7F;
+            height: 37px;
+            border-radius: 100px;
+            width: 100%;
+            font-weight: 800;
+            font-size: 14px;
+            line-height: 17px;
+            color: #fff;
+            padding: 0 20px;
+        }
+    }
+
+    &__icon {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 84px;
+        margin: auto;
+        position: absolute;
+        right: 1px;
+        height: 35px;
+        top: 1px;
+        background: #35356F;
+        border-bottom-right-radius: 17.5px;
+        border-top-right-radius: 17.5px;
+
+        & > img {
+            max-height: 20px;
+            max-width: 20px;
+            margin: auto;
+        }
+        & > span {
+            font-weight: 800;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: center;
+            display: block;
+            margin: auto;
+            margin-left: 0;
+        }
+    }
+}
+

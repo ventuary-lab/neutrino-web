@@ -1,8 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { html } from 'components';
+import Button from 'yii-steroids/ui/form/Button';
+import BaseInput from 'ui/form/BaseInput';
 import AccountBalanceTitle from 'shared/Staking/AccountBalanceTitle';
+import PercentButton from 'ui/form/PercentButton';
 import { BlurContext } from 'shared/Layout/context';
+import usdnLogo from 'static/icons/usd-n.svg';
 
 import './style.scss';
 
@@ -13,9 +17,13 @@ interface Props {
     stakingBalance: number;
     title: string;
     isOpened: boolean;
+    buttonLabel: string;
     onClose: () => void;
+    isDecrease: boolean;
 }
-interface State {}
+interface State {
+    usdnValue: string;
+}
 
 class MutateStakingShareModal extends React.Component<Props, State> {
     percentage: number[];
@@ -25,11 +33,17 @@ class MutateStakingShareModal extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
+        this.getPercentButtons = this.getPercentButtons.bind(this);
         this.getParentSelector = this.getParentSelector.bind(this);
+        this.setPercentOfBalance = this.setPercentOfBalance.bind(this);
+        this.onChangeUsdn = this.onChangeUsdn.bind(this);
+        this.mapPercentage = this.mapPercentage.bind(this);
 
         this.percentage = [25, 50, 75, 100];
 
-        this.state = {};
+        this.state = {
+            usdnValue: '',
+        };
     }
 
     componentWillMount() {}
@@ -39,6 +53,10 @@ class MutateStakingShareModal extends React.Component<Props, State> {
             this.context.blur();
         } else {
             this.context.unblur();
+
+            if (this.state.usdnValue !== '') {
+                this.setState({ usdnValue: '' });
+            }
         }
     }
 
@@ -50,8 +68,37 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         return document.body;
     }
 
+    onChangeUsdn(event: React.FormEvent<HTMLInputElement>) {
+        const { value } = event.target as HTMLInputElement;
+
+        if (!value) {
+            return;
+        }
+
+        this.setState({ usdnValue: value });
+    }
+
+    setPercentOfBalance(percent: number) {
+        const { isDecrease, accountBalance, stakingBalance } = this.props;
+        const balance = !isDecrease ? accountBalance : stakingBalance;
+        const value = `${(percent / 100) * balance}`;
+
+        this.setState({ usdnValue: value });
+    }
+
+    mapPercentage(label: number) {
+        return (
+            <PercentButton label={`${label}%`} onClick={() => this.setPercentOfBalance(label)} />
+        );
+    }
+
+    getPercentButtons() {
+        return this.percentage.map(this.mapPercentage);
+    }
+
     render() {
-        const { title, accountBalance, stakingBalance } = this.props;
+        const { title, accountBalance, stakingBalance, buttonLabel } = this.props;
+        const { usdnValue } = this.state;
 
         return (
             <Modal
@@ -67,8 +114,24 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                             <AccountBalanceTitle title="Account balance:" amount={accountBalance} />
                             <AccountBalanceTitle title="Staking balance:" amount={stakingBalance} />
                         </div>
-                        <div>
-                            
+                        <div className={bem.element('actions')}>
+                            <div className={bem.element('percents')}>
+                                {this.getPercentButtons()}
+                            </div>
+                            <div
+                                className={bem.element(
+                                    'buttons',
+                                    this.props.isDecrease && 'decrease'
+                                )}
+                            >
+                                <BaseInput
+                                    iconLabel="USD-N"
+                                    icon={usdnLogo}
+                                    value={usdnValue}
+                                    onChange={this.onChangeUsdn}
+                                />
+                                <Button label={buttonLabel} />
+                            </div>
                         </div>
                     </div>
                 </div>

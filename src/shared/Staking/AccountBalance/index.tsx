@@ -20,7 +20,7 @@ class AccountBalance extends React.Component<Props> {
             <div className={bem.block()}>
                 <AccountBalanceTitle title="Account balance" amount={100}/>
                 <div className={bem.element('buy-btn')}>
-                    <Button type={'submit'} className="base-green-button" block label={'Buy'} />
+                    <Button type={'submit'} block label={'Buy'} />
                 </div>
             </div>
         );
