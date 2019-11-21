@@ -1,6 +1,7 @@
 import React from 'react';
-import { html } from 'components';
+import { html, store } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import AccountBalanceTitle from './../AccountBalanceTitle';
 
 import './style.scss';
@@ -16,11 +17,13 @@ class AccountBalance extends React.Component<Props> {
     }
 
     render() {
+        const onClick = () => store.dispatch(goToPage('neutrino'));
+
         return (
             <div className={bem.block()}>
                 <AccountBalanceTitle title="Account balance" amount={100}/>
                 <div className={bem.element('buy-btn')}>
-                    <Button type={'submit'} block label={'Buy'} />
+                    <Button type={'submit'} block label={'Buy'} onClick={onClick}/>
                 </div>
             </div>
         );
