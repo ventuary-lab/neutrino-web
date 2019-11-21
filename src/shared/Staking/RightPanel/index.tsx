@@ -21,6 +21,7 @@ interface Props {
 }
 interface State {
     mappedTransactions: MappedWavesTransactionInfo[];
+    isLoaded: boolean;
 }
 
 class StakingRightPanel extends React.Component {
@@ -34,21 +35,23 @@ class StakingRightPanel extends React.Component {
 
         this.state = {
             mappedTransactions: [],
+            isLoaded: false
         };
     }
 
     componentDidUpdate() {
         // @ts-ignore
         const { user } = this.props;
+        const { isLoaded } = this.state;
 
-        if (user) {
+        if (user && !isLoaded) {
             (async () => {
                 const massPaymentTxs = await this.getMassTransactionsList(
                     user.address,
                     '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8'
                 );
 
-                this.setState({ mappedTransactions: massPaymentTxs });
+                this.setState({ mappedTransactions: massPaymentTxs, isLoaded: true });
             })();
         }
     }
