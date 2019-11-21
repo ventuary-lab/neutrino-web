@@ -41,10 +41,10 @@ class StakingRightPanel extends React.Component<Props> {
         };
     }
 
-    componentDidUpdate(newProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         const { user } = this.props;
 
-        if (newProps.user && newProps.user.address !== user.address) {
+        if (!prevProps.user && user || user && prevProps.user.address !== user.address) {
             this.updateMassPaymentsList(user);
         }
     }
