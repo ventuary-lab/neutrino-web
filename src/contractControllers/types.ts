@@ -73,7 +73,7 @@ export interface User {
     address: string;
     network: 'mainnet' | 'testnet';
     balances: {
-        [key: string]: string;
+        [key: string]: number;
     }
     // waves
     // usd-nb

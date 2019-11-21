@@ -1,10 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { html } from 'components';
+import { html, dal } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
 import BaseInput from 'ui/form/BaseInput';
 import AccountBalanceTitle from 'shared/Staking/AccountBalanceTitle';
 import PercentButton from 'ui/form/PercentButton';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
 
@@ -20,6 +21,7 @@ interface Props {
     buttonLabel: string;
     onClose: () => void;
     isDecrease: boolean;
+    pairName: string;
 }
 interface State {
     usdnValue: string;
@@ -38,6 +40,10 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         this.setPercentOfBalance = this.setPercentOfBalance.bind(this);
         this.onChangeUsdn = this.onChangeUsdn.bind(this);
         this.mapPercentage = this.mapPercentage.bind(this);
+        this.onMutateStaking = this.onMutateStaking.bind(this);
+        this.decreaseStaking = this.decreaseStaking.bind(this);
+        this.increaseStaking = this.increaseStaking.bind(this);
+        this.emptyField = this.emptyField.bind(this);
 
         this.percentage = [25, 50, 75, 100];
 
@@ -54,9 +60,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         } else {
             this.context.unblur();
 
-            if (this.state.usdnValue !== '') {
-                this.setState({ usdnValue: '' });
-            }
+            this.emptyField();
         }
     }
 
@@ -66,6 +70,44 @@ class MutateStakingShareModal extends React.Component<Props, State> {
 
     getParentSelector() {
         return document.body;
+    }
+
+    onMutateStaking() {
+        if (this.props.isDecrease) {
+            this.decreaseStaking();
+        } else {
+            this.increaseStaking();
+        }
+    }
+
+    emptyField() {
+        if (this.state.usdnValue !== '') {
+            this.setState({ usdnValue: '' });
+        }
+    }
+
+    async decreaseStaking() {
+        // #1 Start staking
+        const { pairName } = this.props;
+        const { usdnValue } = this.state;
+
+        console.log({ pairName, usdnValue });
+
+        await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
+        this.emptyField();
+    }
+    async increaseStaking() {
+        // # Cancel staking
+        const { usdnValue } = this.state;
+
+        await dal.unlockNeutrino(
+            this.props.pairName,
+            CurrencyEnum.USD_N,
+            Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
+        );
+
+
+        this.emptyField();
     }
 
     onChangeUsdn(event: React.FormEvent<HTMLInputElement>) {
@@ -130,7 +172,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                                     value={usdnValue}
                                     onChange={this.onChangeUsdn}
                                 />
-                                <Button label={buttonLabel} />
+                                <Button label={buttonLabel} onClick={this.onMutateStaking} />
                             </div>
                         </div>
                     </div>

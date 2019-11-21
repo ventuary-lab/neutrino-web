@@ -45,15 +45,24 @@ class StakingRightPanel extends React.Component<Props, State> {
 
         if (!prevProps.user && user || user && prevProps.user.address !== user.address) {
             this.updateMassPaymentsList(user);
+        };
+    }
+
+    componentDidMount () {
+        const { user } = this.props;
+
+        if (user && user.address) {
+            this.updateMassPaymentsList(user);
         }
     }
 
     async updateMassPaymentsList (user: User) {
+        
         const massPaymentTxs = await this.getMassTransactionsList(
             user.address,
             dal.assets['usd-n']
         );
-
+        console.log({ massPaymentTxs });
         this.setState({ mappedTransactions: massPaymentTxs });
     }
 

@@ -97,7 +97,10 @@ export default class RpdDashboard extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    <StakingLeftPanel />
+                    <StakingLeftPanel
+                        stakingBalance={rpdNeutrinoBalance.toFixed(2)}
+                        pairName={this.props.pairName}
+                    />
                     {/* <div className={bem.element('balances')}>
                         <div className={bem.element('balance-item')}>
                             <div className={bem.element('balance-icon')}>

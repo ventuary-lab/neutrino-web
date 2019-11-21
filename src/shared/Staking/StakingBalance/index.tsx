@@ -8,7 +8,11 @@ import './style.scss';
 
 const bem = html.bem('StakingBalance');
 
-interface Props {}
+interface Props {
+    accountBalance: number;
+    stakingBalance: number;
+    pairName: string;
+}
 interface State {
     isStakingShareModalOpened: boolean;
     isStakingShareDecreaseSelected: boolean;
@@ -46,17 +50,17 @@ class StakingBalance extends React.Component<Props, State> {
 
     render() {
         const { isStakingShareModalOpened, isStakingShareDecreaseSelected } = this.state;
+        const { stakingBalance, accountBalance, pairName } = this.props;
         const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
-        const { title, accountBalance, stakingBalance, buttonLabel } = {
+        const { title, buttonLabel } = {
             buttonLabel: actionLabel,
             title: `${actionLabel} neutrino (USD-N) staking share`,
-            accountBalance: 100,
-            stakingBalance: 80,
         };
 
         return (
             <div>
                 <MutateStakingShareModal
+                    pairName={pairName}
                     title={title}
                     buttonLabel={buttonLabel}
                     accountBalance={accountBalance}
@@ -65,7 +69,7 @@ class StakingBalance extends React.Component<Props, State> {
                     onClose={() => this.triggerStakingShareModal(false)}
                     isDecrease={isStakingShareDecreaseSelected}
                 />
-                <AccountBalanceTitle title="Staking balance" amount={80} />
+                <AccountBalanceTitle title="Staking balance" amount={stakingBalance} />
                 <div className={bem.element('main')}>
                     <div className={bem.element('action-buttons')}>
                         <Button
