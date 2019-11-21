@@ -7,7 +7,7 @@ import './style.scss';
 const bem = html.bem('StakingAccountBalance');
 
 interface Props {}
-interface State {}
+// interface State {}
 
 class AccountBalance extends React.Component {
     constructor(props: Props) {
@@ -17,7 +17,7 @@ class AccountBalance extends React.Component {
     render() {
         return (
             <div className={bem.block()}>
-                <h3>Account balance</h3>
+                <span>Account balance</span>
                 <div className={bem.element('main')}>
                     <div className={bem.element('balance')}>
                         <span>100</span>

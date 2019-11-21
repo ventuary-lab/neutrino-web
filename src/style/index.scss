@@ -45,3 +45,12 @@ code {
     /* Support for IE. */
     font-feature-settings: 'liga';
 }
+
+
+.base-green-button {
+    background-image: $green-button-gradient;
+}
+.base-dark-button {
+    // background-image: unset;
+    background-color: $color-dark-button;
+}

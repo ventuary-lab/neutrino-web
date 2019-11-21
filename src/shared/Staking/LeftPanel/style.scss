@@ -5,8 +5,7 @@
     font-size: 16px;
 
     &__list-item {
-        background-color: $color-layout-bg;
-        padding: 20px;
+        padding: 20px 26px;
         padding-bottom: 4px;
         border-radius: 4px;
 
@@ -19,6 +18,14 @@
 
         &:not(:nth-child(1)) {
             margin-top: 8px;
+        }
+
+        & > * > :nth-child(1) {
+            font-size: 14px;
+            line-height: 17px;
+            font-weight: normal;
+            display: block;
+            padding-bottom: 10px;
         }
 
         & > * > :nth-child(2) {

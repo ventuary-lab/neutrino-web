@@ -16,7 +16,7 @@ class AnnualYieldInfo extends React.Component {
     render() {
         return (
             <div className={bem.block()}>
-                <h3>Info</h3>
+                <span>Info</span>
                 <div className={bem.element('main')}>
                     <div className={bem.element('yield-percent')}>
                         <span>6.85</span>
