@@ -46,10 +46,9 @@ class StakingRightPanel extends React.Component {
 
         if (user && !isLoaded) {
             (async () => {
-                console.log(dal);
                 const massPaymentTxs = await this.getMassTransactionsList(
                     user.address,
-                    '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8'
+                    dal.assets['usd-n']
                 );
 
                 this.setState({ mappedTransactions: massPaymentTxs, isLoaded: true });
