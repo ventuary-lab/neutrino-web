@@ -4,6 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { html, dal, store } from 'components';
 import PayoutCheck from '../PayoutCheck';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import { WavesTransactionInfo, WavesTransfer, User } from 'contractControllers/types';
 
 import './style.scss';
@@ -27,9 +28,7 @@ interface State {
     mappedTransactions: MappedWavesTransactionInfo[];
 }
 
-class StakingRightPanel extends React.Component<Props> {
-    state: State;
-
+class StakingRightPanel extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
@@ -55,7 +54,7 @@ class StakingRightPanel extends React.Component<Props> {
             dal.assets['usd-n']
         );
 
-        this.setState({ mappedTransactions: massPaymentTxs, isLoaded: true });
+        this.setState({ mappedTransactions: massPaymentTxs });
     }
 
     async getMassTransactionsList(address: string, assetId: string) {
@@ -85,7 +84,7 @@ class StakingRightPanel extends React.Component<Props> {
             <PayoutCheck
                 checkNumber={txList.length - itemIndex}
                 date={moment(tx.timestamp).toDate()}
-                profit={tx.transferAmount}
+                profit={tx.transferAmount / (CurrencyEnum.getContractPow(CurrencyEnum.USD_N) || 1)}
                 transactionUrl={tx.id}
             />
         );

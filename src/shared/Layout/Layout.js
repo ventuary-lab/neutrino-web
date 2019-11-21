@@ -32,9 +32,10 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext, InstallKeeperModalContext } from './context';
+import { ConfigContext, InstallKeeperModalContext, BlurContext } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
+
 
 import './Layout.scss';
 
@@ -91,9 +92,15 @@ export default class Layout extends React.PureComponent {
 
         this.resizeObserver = null;
         this.wcc = null;
+        this.blurContextValue = {
+            blur: () => this.setState({ isBlurred: true }),
+            unblur: () => this.setState({ isBlurred: false }),
+            checkIsBlurred: () => this.state.isBlurred
+        };
 
         this.state = {
             shouldShowInviteModal: false,
+            isBlurred: false,
         };
     }
 
@@ -235,7 +242,7 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal } = this.state;
+        const { shouldShowInviteModal, isBlurred } = this.state;
 
         return (
             <div
@@ -247,36 +254,44 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <InstallKeeperModalContext.Provider
-                    value={{
-                        onLogin: this.onWavesKeeperLogin,
-                    }}
-                >
-                    <ConfigContext.Provider value={configValue}>
-                        <div className={bem.element('inner')}>
-                            {this.props.isShowLeftSidebar && (
-                                <aside className={bem.element('left')}>
-                                    <LeftSidebar />
-                                </aside>
-                            )}
-                            <div className={bem.element('center')}>
-                                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                                    <BlockedApp />
+                <BlurContext.Provider value={this.blurContextValue}>
+                    <InstallKeeperModalContext.Provider
+                        value={{
+                            onLogin: this.onWavesKeeperLogin,
+                        }}
+                    >
+                        <ConfigContext.Provider value={configValue}>
+                            <div className={bem.element('inner')}>
+                                {this.props.isShowLeftSidebar && (
+                                    <aside className={bem.element('left')}>
+                                        <LeftSidebar />
+                                    </aside>
                                 )}
-                                <header className={bem.element('header')}>
-                                    <Header />
-                                </header>
-                                <main className={bem.element('content')}>
-                                    {this.props.status !== STATUS_LOADING && this.props.children}
-                                </main>
+                                <div className={bem.element('center')}>
+                                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                                        <BlockedApp />
+                                    )}
+                                    <header className={bem.element('header')}>
+                                        <Header />
+                                    </header>
+                                    <main
+                                        className={bem.element(
+                                            'content',
+                                            isBlurred ? 'blurred' : ''
+                                        )}
+                                    >
+                                        {this.props.status !== STATUS_LOADING &&
+                                            this.props.children}
+                                    </main>
+                                </div>
+                                <aside className={bem.element('right')}>
+                                    <RightSidebar />
+                                </aside>
                             </div>
-                            <aside className={bem.element('right')}>
-                                <RightSidebar />
-                            </aside>
-                        </div>
-                    </ConfigContext.Provider>
-                    <ModalWrapper />
-                </InstallKeeperModalContext.Provider>
+                        </ConfigContext.Provider>
+                        <ModalWrapper />
+                    </InstallKeeperModalContext.Provider>
+                </BlurContext.Provider>
             </div>
         );
     }

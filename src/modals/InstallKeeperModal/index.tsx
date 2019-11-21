@@ -56,9 +56,7 @@ interface ImageLink {
     title: string;
 }
 
-class InstallKeeperModal extends React.Component {
-    readonly state: State;
-    readonly props: Props;
+class InstallKeeperModal extends React.Component<Props, State> {
     readonly sliderConfig: { [key: string]: any };
     sliderRef: React.RefObject<any>;
     views: React.ReactNode[];

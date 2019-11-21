@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { html, dal } from 'components';
-import Button from 'yii-steroids/ui/form/Button';
+// import Button from 'yii-steroids/ui/form/Button';
 import logo from 'static/images/logo.svg';
 
 import './style.scss';

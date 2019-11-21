@@ -1,0 +1,54 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.MutateStakingShareModal {
+    max-width: 803px;
+    width: 100%;
+    max-height: 558px;
+    height: 100vh;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 120px);
+    transform: translate(-50%, -50%);
+    background-color: $color-brand-purple;
+    border: 1px solid $color-brand-purple-light;
+
+    &__title {
+        font-size: 1em;
+        padding-bottom: 48px;
+        display: block;
+        text-align: center;
+    }
+
+    &__body {
+        width: 100%;
+        max-width: 600px;
+        height: 100%;
+        margin: auto;
+        padding-top: 66px;
+    }
+
+    &__balances {
+        background-color: $color-brand-purple-lt-alt;
+        padding: 51px 115px;
+        margin: 0px -100px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        & > * {
+            width: 250px;
+            height: 28px;
+        }
+
+        & > span {
+            font-style: normal;
+            font-weight: normal;
+            font-size: .77em;
+            line-height: 17px;
+        }
+    }
+}
