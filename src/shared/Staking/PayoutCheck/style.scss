@@ -48,9 +48,10 @@
         padding: 11px 82px;
         border-radius: 50px;
         top: 29px;
+        color: #fff;
 
-        &:visited {
-            color: #fff;
+        &:hover {
+            text-decoration: underline;
         }
     }
 

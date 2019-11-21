@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { html } from 'components';
+import { html, dal } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
 import logo from 'static/images/logo.svg';
 
@@ -17,6 +17,7 @@ interface Props {
 
 const PayoutCheck = (props: Props) => {
     const { checkNumber, date, profit, transactionUrl } = props;
+    const prefix = dal && dal.network === 'testnet' ? 'testnet/' : '';
 
     return (
         <div className={bem.block()}>
@@ -31,7 +32,7 @@ const PayoutCheck = (props: Props) => {
                 <div className={bem.element('see-tx')}>
                     <img src={logo} />
                     {/* <Button label="See transaction" onClick={onSeeTransaction}/> */}
-                    <a href={`https://wavesexplorer.com/tx/${transactionUrl}`} target="_blank">
+                    <a href={`https://wavesexplorer.com/tx/${prefix}${transactionUrl}`} target="_blank">
                         See transaction
                     </a>
                 </div>

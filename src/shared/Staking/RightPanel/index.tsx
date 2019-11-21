@@ -1,33 +1,36 @@
 import React from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { html, dal, store } from 'components';
 import PayoutCheck from '../PayoutCheck';
-import { WavesTransactionInfo } from 'contractControllers/types';
+import { WavesTransactionInfo, WavesTransfer, User } from 'contractControllers/types';
 
 import './style.scss';
 
 const bem = html.bem('StakingRightPanel');
 
-const grabTransactionTransferAmount = (transaction: WavesTransactionInfo) => {
-    return transaction.transfers[0].amount;
+const grabTransactionTransferByRecipient = (
+    transaction: WavesTransactionInfo,
+    recipientAddress: string
+) => {
+    return transaction.transfers.find((tf: WavesTransfer) => tf.recipient === recipientAddress);
 };
 interface MappedWavesTransactionInfo extends Omit<WavesTransactionInfo, 'transfers'> {
     transferAmount?: number;
 }
 
 interface Props {
-    user: any;
+    user: User | null;
 }
 interface State {
     mappedTransactions: MappedWavesTransactionInfo[];
-    isLoaded: boolean;
 }
 
-class StakingRightPanel extends React.Component {
+class StakingRightPanel extends React.Component<Props> {
     state: State;
 
-    constructor(props: Props) {
+    constructor(props) {
         super(props);
 
         this.getMassTransactionsList = this.getMassTransactionsList.bind(this);
@@ -35,25 +38,24 @@ class StakingRightPanel extends React.Component {
 
         this.state = {
             mappedTransactions: [],
-            isLoaded: false
         };
     }
 
-    componentDidUpdate() {
-        // @ts-ignore
+    componentDidUpdate(newProps: Props) {
         const { user } = this.props;
-        const { isLoaded } = this.state;
 
-        if (user && !isLoaded) {
-            (async () => {
-                const massPaymentTxs = await this.getMassTransactionsList(
-                    user.address,
-                    dal.assets['usd-n']
-                );
-
-                this.setState({ mappedTransactions: massPaymentTxs, isLoaded: true });
-            })();
+        if (newProps.user && newProps.user.address !== user.address) {
+            this.updateMassPaymentsList(user);
         }
+    }
+
+    async updateMassPaymentsList (user: User) {
+        const massPaymentTxs = await this.getMassTransactionsList(
+            user.address,
+            dal.assets['usd-n']
+        );
+
+        this.setState({ mappedTransactions: massPaymentTxs, isLoaded: true });
     }
 
     async getMassTransactionsList(address: string, assetId: string) {
@@ -67,7 +69,7 @@ class StakingRightPanel extends React.Component {
         const mappedTransactions: MappedWavesTransactionInfo[] = response.data.map(
             (tx: WavesTransactionInfo) => ({
                 ...tx,
-                transferAmount: grabTransactionTransferAmount(tx),
+                transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
             })
         );
 
@@ -82,8 +84,8 @@ class StakingRightPanel extends React.Component {
         return (
             <PayoutCheck
                 checkNumber={txList.length - itemIndex}
-                date={new Date()}
-                profit={1.5}
+                date={moment(tx.timestamp).toDate()}
+                profit={tx.transferAmount}
                 transactionUrl={tx.id}
             />
         );

@@ -67,3 +67,15 @@ export interface WavesTransactionInfo {
     order1?: WavesTransactionInfo;
     order2?: WavesTransactionInfo;
 }
+
+export interface User {
+    role: 'registered' | 'admin' | null;
+    address: string;
+    network: 'mainnet' | 'testnet';
+    balances: {
+        [key: string]: string;
+    }
+    // waves
+    // usd-nb
+    // usd-n
+}

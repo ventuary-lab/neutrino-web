@@ -8,10 +8,10 @@ import './style.scss';
 const bem = html.bem('StakingBalance');
 
 interface Props {}
-interface State {}
+// interface State {}
 
-class StakingBalance extends React.Component {
-    constructor(props: Props) {
+class StakingBalance extends React.Component<Props> {
+    constructor(props) {
         super(props);
     }
 
