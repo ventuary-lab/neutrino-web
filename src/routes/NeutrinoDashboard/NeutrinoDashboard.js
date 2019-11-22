@@ -384,12 +384,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
                     })*/}
                 </div>
-                <Button
+                {/* <Button
                     disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
                     className={bem.element('withdraw-button')}
                     label={__('Withdraw')}
                     onClick={this._withdraw}
-                />
+                /> */}
             </div>
         );
     }
