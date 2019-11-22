@@ -24,7 +24,7 @@ export default class CurrencyEnum extends Enum {
     static getContractPow(name) {
         const map = {
             [this.WAVES]: Math.pow(10, 8),
-            [this.USD_N]: Math.pow(10, 2),
+            [this.USD_N]: Math.pow(10, 6),
             [this.USD_NB]: 1,
             [this.EUR_N]: Math.pow(10, 2),
             [this.EUR_NB]: 1,
