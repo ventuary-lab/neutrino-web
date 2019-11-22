@@ -3,6 +3,7 @@ import { html } from 'components';
 import backgroundImage from 'static/images/landing/background.png';
 import usdnLogo from 'static/icons/usd-n.svg';
 import boxesImage from 'static/images/landing/boxes.svg';
+import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
 
 import './style.scss';
 
@@ -17,6 +18,9 @@ class LandingPage extends React.Component<Props> {
     }
 
     render() {
+        const boxes = Array(2).fill(<img src={boxesImage} />);
+        const coloredBoxes = Array(2).fill(<img src={coloredBoxesImage} />);
+
         return (
             <div className={bem.element('main')}>
                 <div
@@ -34,11 +38,14 @@ class LandingPage extends React.Component<Props> {
                     </div>
                 </div>
                 <div className={bem.element('second-part')}>
+                    <div className={bem.element('abs-boxes', 'top')}>{boxes}</div>
+                    <div className={bem.element('abs-boxes', 'bottom')}>{coloredBoxes}</div>
                     <div className={bem.element('romb')}>
                         <div className={bem.element('inner-romb')}>
                             <div className={bem.element('romb-text')}>
                                 <span>
-                                    <img src={usdnLogo}/>1
+                                    <img src={usdnLogo} className={bem.element('usdn-logo')} />
+                                    <span>1</span>
                                 </span>
                                 <span>=</span>
                                 <span>$1</span>
