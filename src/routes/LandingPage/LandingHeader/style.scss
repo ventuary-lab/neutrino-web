@@ -3,7 +3,6 @@
 @import 'style/helpers/mixins';
 
 .LandingHeader {
-
     &__main {
         font-size: .38em;
         height: 77px;
@@ -11,17 +10,49 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
+        border-bottom: 1px solid #1F1D31;
+
+
+        & li {
+            list-style-type: none;
+            font-weight: 600;
+        }
+    }
+
+    &__products-dp {
+        background: #11122f;
+        position: absolute;
+        top: 60px;
+        left: -60px;
+        border: 1px solid #25233C;
+        border-radius: 7px;
+
+        & > ul:nth-child(1) {
+            padding: 22px 20px;
+            margin: 0;
+
+            & > li:not(:first-child) {
+                padding-top: 16px;
+            }
+        }
     }
 
     &__logo {
         margin: auto;
         margin-left: 120px;
         margin-right: 0;
+
+        & > :nth-child(2) {
+            margin: 12px 5px;
+            display: block;
+            float: right;
+        }
     }
 
     &__actions {
         margin: auto;
         margin-right: 120px;
+        position: relative;
     }
 
     &__links {
@@ -29,10 +60,6 @@
         flex-direction: row;
         width: 300px;
         justify-content: space-between;
-
-        & > * {
-            list-style-type: none;
-        }
     }
 }
 
