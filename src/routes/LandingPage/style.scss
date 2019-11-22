@@ -6,10 +6,25 @@
 // Breakpoints 1440 1024 768 320
 
 .LandingPage {
-
     &__main {
         font-size: 36px;
-        
+
+        .base-button {
+            font-style: normal;
+            font-weight: bold;
+            font-size: 17px;
+            line-height: 21px;
+            border: none;
+            width: 220px;
+            border-radius: 30px;
+            padding: 18px 0;
+            background-color: #00FFB4;
+
+            &.alt {
+                background-color: #fff;
+                border: 1px solid rgba(97, 33, 161, 1);
+            }
+        }
     }
 
     &__header {
@@ -25,6 +40,7 @@
     &__second-part {
         background-color: #F2F2F2;
         position: relative;
+        height: 420px;
     }
 
     &__usdn-logo {
@@ -35,7 +51,6 @@
     &__txt-body {
         padding-top: 78px;
         text-align: center;
-        max-width: 903px;
         width: 100%;
         margin: auto;
         
@@ -52,26 +67,34 @@
         }
     }
 
-//     <div class="LandingPage__romb" style="
-//     width: 244px;
-//     height: 244px;
-//     background-color: #fff;
-//     left: 50%;
-//     transform: translate(-50%, -50%) rotate(45deg);
-// "><div class="LandingPage__inner-romb" style="
-//     width: 184px;
-//     height: 184px;
-//     left: 12%;
-//     top: 12%;
-//     position: absolute;
-//     box-shadow: 4px 16px 29px #E3DBF3;
-// "><div class="LandingPage__romb-text" style="
-//     color: black;
-//     position: absolute;
-//     transform: rotate(-45deg);
-//     top: 39%;
-//     left: 12%;
-// "><span><img src="http://127.0.0.1:8082/images/7eb17ababbd788c43f09bb5ec1377d4c.svg" class="LandingPage__usdn-logo"><span>1</span></span><span>=</span><span>$1</span></div></div></div>
+    @media screen and (min-width: 1024px) {
+        &__txt-body {
+            max-width: 903px;
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        &__txt-body {
+            font-size: .9em;
+            max-width: 608px;
+
+            & > :nth-child(2) {
+                margin-top: 35px;
+                line-height: 28px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        &__txt-body {
+            font-size: .9em;
+            max-width: 608px;
+        }
+    }
+
+    @media screen and (max-width: 320px) {
+    
+    }
 
     &__romb {
         position: absolute;
@@ -117,10 +140,11 @@
         }
     }
 
-
     &__abs-boxes {
         position: absolute;
         left: 50%;
+        margin: auto;
+        width: max-content;
 
         & > img {
             position: relative;
@@ -147,6 +171,47 @@
             & > :nth-child(2) {
                 right: 42px;
             }
+        }
+    }
+
+    &__action-buttons {
+        text-align: center;
+        padding-top: 194px;
+        width: 488px;
+        margin: auto;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__tos {
+        padding-top: 28px;
+        padding-bottom: 48px;
+        font-style: normal;
+        font-weight: 300;
+        font-size: .41em;
+        line-height: 18px;
+        text-align: center;
+    
+        & a {
+            color: #000000;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__soc-links {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        width: 250px;
+        justify-content: space-between;
+
+        & a:hover {
+            opacity: .9;
         }
     }
 }

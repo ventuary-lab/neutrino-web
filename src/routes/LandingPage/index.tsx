@@ -4,6 +4,10 @@ import backgroundImage from 'static/images/landing/background.png';
 import usdnLogo from 'static/icons/usd-n.svg';
 import boxesImage from 'static/images/landing/boxes.svg';
 import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
+import fbIcon from 'static/images/landing/socials/fb-icon.svg';
+import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
+import tgIcon from 'static/images/landing/socials/tg-icon.svg';
+import twitterIcon from 'static/images/landing/socials/twitter.svg';
 
 import './style.scss';
 
@@ -11,6 +15,8 @@ const bem = html.bem('LandingPage');
 
 interface Props {}
 interface State {}
+
+type SocLink = { icon: string; route: string };
 
 class LandingPage extends React.Component<Props> {
     constructor(props) {
@@ -20,6 +26,16 @@ class LandingPage extends React.Component<Props> {
     render() {
         const boxes = Array(2).fill(<img src={boxesImage} />);
         const coloredBoxes = Array(2).fill(<img src={coloredBoxesImage} />);
+        const socLinks = [
+            { icon: fbIcon, route: '#' },
+            { icon: mediumIcon, route: '#' },
+            { icon: tgIcon, route: '#' },
+            { icon: twitterIcon, route: '#' },
+        ].map((item: SocLink) => (
+            <a href={item.route}>
+                <img src={item.icon} />
+            </a>
+        ));
 
         return (
             <div className={bem.element('main')}>
@@ -52,6 +68,14 @@ class LandingPage extends React.Component<Props> {
                             </div>
                         </div>
                     </div>
+                    <div className={bem.element('action-buttons')}>
+                        <button className="base-button">Buy USD-N</button>
+                        <button className="base-button alt">How it works</button>
+                    </div>
+                    <div className={bem.element('tos')}>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                    <div className={bem.element('soc-links')}>{socLinks}</div>
                 </div>
             </div>
         );
