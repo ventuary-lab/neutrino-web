@@ -8,6 +8,7 @@ import fbIcon from 'static/images/landing/socials/fb-icon.svg';
 import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
 import tgIcon from 'static/images/landing/socials/tg-icon.svg';
 import twitterIcon from 'static/images/landing/socials/twitter.svg';
+import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
 
 import './style.scss';
 
@@ -37,6 +38,19 @@ class LandingPage extends React.Component<Props> {
             </a>
         ));
 
+        const paragraph = (
+            <p>
+                <span>
+                    Dollars neutrino (USD-N) is a crypto-collateralized token pegged to the one US
+                    dollar. 
+                </span>
+                <span>
+                    The first stablecoin protocol which let neutrino holders an ability of staking
+                    with rewards from the waves platform’s economy.
+                </span>
+            </p>
+        );
+
         return (
             <div className={bem.element('main')}>
                 <div
@@ -46,11 +60,7 @@ class LandingPage extends React.Component<Props> {
                     <div className={bem.element('header')}>Neutrino</div>
                     <div className={bem.element('txt-body')}>
                         <span>Decentralized price stable currency</span>
-                        <p>
-                            Dollars neutrino (USD-N) is a crypto-collateralized token pegged to the
-                            one US dollar. The first stablecoin protocol which let neutrino holders
-                            an ability of staking with rewards from the waves platform’s economy.
-                        </p>
+                        {paragraph}
                     </div>
                 </div>
                 <div className={bem.element('second-part')}>
@@ -72,10 +82,14 @@ class LandingPage extends React.Component<Props> {
                         <button className="base-button">Buy USD-N</button>
                         <button className="base-button alt">How it works</button>
                     </div>
+                    <div className={bem.element('mobile-info')}>{paragraph}</div>
                     <div className={bem.element('tos')}>
                         <a href="#">Terms of Service</a>
                     </div>
                     <div className={bem.element('soc-links')}>{socLinks}</div>
+                    <div className={bem.element('powered-by-waves')}>
+                        <img src={poweredByWavesLogo} alt="powered by waves" />
+                    </div>
                 </div>
             </div>
         );

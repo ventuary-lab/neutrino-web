@@ -9,6 +9,10 @@
     &__main {
         font-size: 36px;
 
+        & button {
+            cursor: pointer;
+        }
+
         .base-button {
             font-style: normal;
             font-weight: bold;
@@ -35,12 +39,17 @@
 
     &__first-part {
         height: 521px;
+
+        @media screen and (max-width: 768px) {
+            height: 330px;
+        }
     }
 
     &__second-part {
         background-color: #F2F2F2;
         position: relative;
-        height: 420px;
+        min-height: 420px;
+        height: 100%;
     }
 
     &__usdn-logo {
@@ -89,6 +98,19 @@
         &__txt-body {
             font-size: .9em;
             max-width: 608px;
+            padding-top: 22px;
+
+            & > :nth-child(1) {
+                text-align: left;
+                display: block;
+                width: 217px;
+                padding-left: 20px;
+                font-size: 28px;
+            }
+
+            & > :nth-child(2) {
+                display: none;
+            }
         }
     }
 
@@ -103,6 +125,10 @@
         background-color: #fff;
         left: 50%;
         transform: translate(-50%, -50%) rotate(45deg);
+
+        @media screen and (max-width: 768px) {
+            transform: translate(-50%, -50%) rotate(45deg) scale(.7);
+        }
     }
 
     &__inner-romb {
@@ -172,17 +198,60 @@
                 right: 42px;
             }
         }
+
+        @media screen and (max-width: 768px) {
+            &_top {
+                transform: translate(-50%, -84%) scale(.7);
+            }
+            &_bottom {
+                transform: translate(-50%, -15%) scale(.7);
+            }
+        }
     }
 
     &__action-buttons {
         text-align: center;
         padding-top: 194px;
-        width: 488px;
+        max-width: 488px;
+        width: 100%;
         margin: auto;
         justify-content: space-between;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+
+        & > * {
+            margin: auto;
+        }
+
+        @media screen and (max-width: 768px) {
+            & > :not(:first-child) {
+                margin-top: 12px;
+            }
+        }
+    }
+
+    &__mobile-info {
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 25px;
+        display: none;
+
+        @media screen and (max-width: 768px) {
+           
+            display: block;
+
+            & > p {
+                color: black;
+                margin: 28px 20px;
+                text-align: left;
+            
+                & > :nth-child(2) {
+                    margin-top: 32px;
+                    display: block;
+                }
+            }
+        }
     }
 
     &__tos {
@@ -201,6 +270,16 @@
                 text-decoration: underline;
             }
         }
+
+        @media screen and (max-width: 768px) {
+            margin: auto;
+            margin-left: 20px;
+            
+            & > :nth-child(1) {
+                display: block;
+                width: max-content;
+            }
+        }
     }
 
     &__soc-links {
@@ -210,9 +289,21 @@
         width: 250px;
         justify-content: space-between;
 
-        & a:hover {
-            opacity: .9;
+        & > * {
+            &:hover {
+                opacity: .8;
+            }
         }
+
+        @media screen and (max-width: 768px) {
+            margin-left: 20px;
+        }
+    }
+
+    &__powered-by-waves {
+        width: 150px;
+        margin: auto;
+        padding: 34px 0;
     }
 }
 
