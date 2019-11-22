@@ -41,10 +41,9 @@ module.exports = class ControlConfig extends BaseCollection {
             if (nodeKey.match(priceKey)) {
                 this.price = nodeData[nodeKey];
             }
-            // if (nodeKey.match(this.getKeys()[1])) {
 
             if (nodeKey.match(isBlockedKey)) {
-                this.isBlocked = Boolean(this.isBlocked);
+                this.isBlocked = nodeData[nodeKey] === 'true';
             }
         }
 
