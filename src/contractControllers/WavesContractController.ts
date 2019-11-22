@@ -1,5 +1,4 @@
 import { store } from "../components";
-import CurrencyEnum from 'enums/CurrencyEnum';
 import {
     SET_CONTRACT_PRICE,
     SET_TOTAL_ISSUED
@@ -69,7 +68,7 @@ export class WavesContractDataController {
             name: ContractKeysEnum.CONTROL_CONTRACT
         });
 
-        const totalIssued = await this._getTotalIssuedAmount() / CurrencyEnum.getContractPow(CurrencyEnum.USD_N);
+        const totalIssued = await this._getTotalIssuedAmount();
 
         store.dispatch({ type: SET_TOTAL_ISSUED, value: totalIssued });
     }
