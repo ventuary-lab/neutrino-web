@@ -8,6 +8,7 @@ import PercentButton from 'ui/form/PercentButton';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
+import { onlyDecimalRegex2 } from 'ui/global/helpers';
 
 import './style.scss';
 
@@ -113,7 +114,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
     onChangeUsdn(event: React.FormEvent<HTMLInputElement>) {
         const { value } = event.target as HTMLInputElement;
 
-        if (!value) {
+        if (!onlyDecimalRegex2.test(value)) {
             return;
         }
 
