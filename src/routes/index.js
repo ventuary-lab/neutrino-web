@@ -4,6 +4,7 @@ import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
+import LandingPage from './LandingPage';
 
 // Temporary approach
 import RpdDashboard from './RpdDashboard';
@@ -11,8 +12,9 @@ import RpdDashboard from './RpdDashboard';
 import UserRole from 'enums/UserRole';
 
 export const ROUTE_ROOT = 'root';
-export const ROUTE_NUETRINO = 'neutrino';
-export const ROUTE_NUETRINO_REDIRECT = 'neutrino_redirect';
+export const ROUTE_LANDING_PAGE = 'landing';
+export const ROUTE_NEUTRINO = 'neutrino';
+export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
 export const ROUTE_BOUNDS = 'bounds';
 export const ROUTE_BOUNDS_REDIRECT = 'bounds_redirect';
 export const ROUTE_LEASING = 'leasing';
@@ -32,7 +34,13 @@ export default {
     label: __('Main'),
     isShowLeftSidebar: false,
     items: {
-        [ROUTE_NUETRINO_REDIRECT]: {
+        [ROUTE_LANDING_PAGE]: {
+            exact: true,
+            path: '/landing',
+            component: LandingPage,
+            roles: UserRole.getAuth(),
+        },
+        [ROUTE_NEUTRINO_REDIRECT]: {
             exact: true,
             path: '/neutrino',
             component: Route,
@@ -44,7 +52,7 @@ export default {
             isVisible: false,
             roles: UserRole.getAuth(),
         },
-        [ROUTE_NUETRINO]: {
+        [ROUTE_NEUTRINO]: {
             exact: true,
             path: '/neutrino/:currency',
             component: NeutrinoDashboard,

@@ -1,0 +1,61 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+// @import 'static/images/landing/background.png';
+
+// Breakpoints 1440 1024 768 320
+
+.LandingPage {
+
+    &__main {
+        font-size: 36px;
+        
+    }
+
+    &__header {
+        font-size: .38em;
+        height: 77px;
+        background-color: black;
+    }
+
+    &__first-part {
+        height: 521px;
+    }
+
+    &__second-part {
+        background-color: #F2F2F2;
+    }
+
+    &__txt-body {
+        padding-top: 78px;
+        text-align: center;
+        max-width: 903px;
+        width: 100%;
+        margin: auto;
+        
+        & > span:first-child {
+            font-style: normal;
+            font-weight: 800;
+            line-height: 32px;
+        }
+
+        & > :nth-child(2) {
+            font-size: .58em;
+            line-height: 31px;
+            margin-top: 42px;
+        }
+
+        &__romb {
+
+        }
+
+        &__inner-romb {
+
+        }
+
+        &__romb-text {
+
+        }
+    }
+}
+
