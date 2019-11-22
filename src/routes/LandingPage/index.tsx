@@ -1,5 +1,6 @@
 import React from 'react';
 import { html } from 'components';
+import LandingHeader from './LandingHeader';
 import backgroundImage from 'static/images/landing/background.png';
 import usdnLogo from 'static/icons/usd-n.svg';
 import boxesImage from 'static/images/landing/boxes.svg';
@@ -14,8 +15,11 @@ import './style.scss';
 
 const bem = html.bem('LandingPage');
 
+// function Header() {
+//     return <div className={bem.element('header')}>Neutrino</div>;
+// }
+
 interface Props {}
-interface State {}
 
 type SocLink = { icon: string; route: string };
 
@@ -42,7 +46,7 @@ class LandingPage extends React.Component<Props> {
             <p>
                 <span>
                     Dollars neutrino (USD-N) is a crypto-collateralized token pegged to the one US
-                    dollar. 
+                    dollar.
                 </span>
                 <span>
                     The first stablecoin protocol which let neutrino holders an ability of staking
@@ -57,7 +61,7 @@ class LandingPage extends React.Component<Props> {
                     className={bem.element('first-part')}
                     style={{ backgroundImage: `url('${backgroundImage}')` }}
                 >
-                    <div className={bem.element('header')}>Neutrino</div>
+                    <LandingHeader />
                     <div className={bem.element('txt-body')}>
                         <span>Decentralized price stable currency</span>
                         {paragraph}

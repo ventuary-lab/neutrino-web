@@ -1,0 +1,38 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.LandingHeader {
+
+    &__main {
+        font-size: .38em;
+        height: 77px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+    &__logo {
+        margin: auto;
+        margin-left: 120px;
+        margin-right: 0;
+    }
+
+    &__actions {
+        margin: auto;
+        margin-right: 120px;
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: row;
+        width: 300px;
+        justify-content: space-between;
+
+        & > * {
+            list-style-type: none;
+        }
+    }
+}
+

@@ -31,12 +31,6 @@
         }
     }
 
-    &__header {
-        font-size: .38em;
-        height: 77px;
-        background-color: black;
-    }
-
     &__first-part {
         height: 521px;
 
@@ -224,7 +218,7 @@
             margin: auto;
         }
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 438px) {
             & > :not(:first-child) {
                 margin-top: 12px;
             }
