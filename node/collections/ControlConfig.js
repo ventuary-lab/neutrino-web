@@ -43,7 +43,7 @@ module.exports = class ControlConfig extends BaseCollection {
             }
 
             if (nodeKey.match(isBlockedKey)) {
-                this.isBlocked = Boolean(nodeData[nodeKey]);
+                this.isBlocked = nodeData[nodeKey] === 'true';
             }
         }
 
