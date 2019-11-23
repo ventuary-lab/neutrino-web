@@ -151,7 +151,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     getControlPrice () {
         return _.round(
-            _get(this.props, 'controlPrice', 0) / CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2
+            _get(this.props, 'controlPrice', 0) / 100, 2
         )
     }
 
