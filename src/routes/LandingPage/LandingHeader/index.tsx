@@ -1,9 +1,8 @@
 import React from 'react';
-import { html, dal, store } from 'components';
+import { html, store } from 'components';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
-import { LearnLinksContext } from 'shared/Layout/context';
-import CurrencyEnum from 'enums/CurrencyEnum';
+import { LearnLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 
 import { Link } from 'ui/global/types';
 import mainLogo from 'static/images/logo.svg';
@@ -27,8 +26,6 @@ class LandingHeader extends React.Component<Props, State> {
     learnLinks!: Link[];
     links!: Link[];
 
-    // static contextType = LearnLinksContext;
-
     constructor(props) {
         super(props);
 
@@ -38,6 +35,8 @@ class LandingHeader extends React.Component<Props, State> {
         this.triggerProductsList = this.triggerProductsList.bind(this);
         this.hideMobileMenu = this.hideMobileMenu.bind(this);
         this.openMobileMenu = this.openMobileMenu.bind(this);
+        this.onErrorLogin = this.onErrorLogin.bind(this);
+        this.onSuccessLogin = this.onSuccessLogin.bind(this);
 
         this.productLinks = [
             {
@@ -79,13 +78,6 @@ class LandingHeader extends React.Component<Props, State> {
             },
             {
                 label: 'Login',
-                onClick: async () => {
-                    try {
-                        await dal.login();
-                    } finally {
-                        store.dispatch(goToPage('bonds', { currency: CurrencyEnum.USD_N }));
-                    }
-                },
             },
         ];
 
@@ -141,6 +133,12 @@ class LandingHeader extends React.Component<Props, State> {
         );
     }
 
+    onSuccessLogin () {
+        store.dispatch(goToPage('neutrino'));
+    }
+
+    onErrorLogin () {}
+
     outsideHandler() {
         this.setState({
             isProductsListVisible: false,
@@ -149,7 +147,6 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     render() {
-        const links = this.links.map(this.mapLink);
         const productLinks = this.productLinks.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
@@ -157,45 +154,67 @@ class LandingHeader extends React.Component<Props, State> {
             <div className={bem.element('main')}>
                 <LearnLinksContext.Consumer>
                     {context => (
-                        <>
-                            <div className={bem.element('burger')} onClick={this.openMobileMenu}>
-                                <img src={burgerIcon} />
-                            </div>
-                            <div className={bem.element('logo')}>
-                                <a href="/">
-                                    <img src={mainLogo} alt="neutrino" />
-                                </a>
-                                <span>beta</span>
-                            </div>
-                            {isMobileMenuVisible && (
-                                <div className={bem.element('mobile-menu')}>
-                                    <div>
-                                        <img src={crossIcon} alt="" onClick={this.hideMobileMenu} />
-                                    </div>
-                                    <ul>
-                                        {links[links.length - 1]}
-                                        {productLinks}
-                                        {context.links.map(this.mapLink)}
-                                    </ul>
-                                </div>
-                            )}
-                            <OutsideAlerter
-                                handler={this.outsideHandler}
-                                className={bem.element('actions')}
-                            >
-                                {isProductsListVisible && (
-                                    <div className={bem.element('sub-dp', 'products')}>
-                                        <ul>{productLinks}</ul>
-                                    </div>
-                                )}
-                                {isLearnListVisible && (
-                                    <div className={bem.element('sub-dp', 'learn')}>
-                                        <ul>{context.links.map(this.mapLink)}</ul>
-                                    </div>
-                                )}
-                                <ul className={bem.element('links')}>{links}</ul>
-                            </OutsideAlerter>
-                        </>
+                        <InstallKeeperModalContext.Consumer>
+                            {installKeeperContext => {
+                                const { links: currentLinks } = this;
+                                currentLinks[currentLinks.length - 1] = {
+                                    ...currentLinks[currentLinks.length - 1],
+                                    onClick: async () => {
+                                        await installKeeperContext.onLogin(this.onSuccessLogin, this.onErrorLogin);
+                                    }
+                                };
+                                const links = currentLinks.map(this.mapLink);
+
+                                return (
+                                    <>
+                                        <div
+                                            className={bem.element('burger')}
+                                            onClick={this.openMobileMenu}
+                                        >
+                                            <img src={burgerIcon} />
+                                        </div>
+                                        <div className={bem.element('logo')}>
+                                            <a href="/">
+                                                <img src={mainLogo} alt="neutrino" />
+                                            </a>
+                                            <span>beta</span>
+                                        </div>
+                                        {isMobileMenuVisible && (
+                                            <div className={bem.element('mobile-menu')}>
+                                                <div>
+                                                    <img
+                                                        src={crossIcon}
+                                                        alt=""
+                                                        onClick={this.hideMobileMenu}
+                                                    />
+                                                </div>
+                                                <ul>
+                                                    {links[links.length - 1]}
+                                                    {productLinks}
+                                                    {context.links.map(this.mapLink)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        <OutsideAlerter
+                                            handler={this.outsideHandler}
+                                            className={bem.element('actions')}
+                                        >
+                                            {isProductsListVisible && (
+                                                <div className={bem.element('sub-dp', 'products')}>
+                                                    <ul>{productLinks}</ul>
+                                                </div>
+                                            )}
+                                            {isLearnListVisible && (
+                                                <div className={bem.element('sub-dp', 'learn')}>
+                                                    <ul>{context.links.map(this.mapLink)}</ul>
+                                                </div>
+                                            )}
+                                            <ul className={bem.element('links')}>{links}</ul>
+                                        </OutsideAlerter>
+                                    </>
+                                );
+                            }}
+                        </InstallKeeperModalContext.Consumer>
                     )}
                 </LearnLinksContext.Consumer>
             </div>

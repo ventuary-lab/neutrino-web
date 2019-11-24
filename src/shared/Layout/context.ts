@@ -3,7 +3,13 @@ import { Link } from 'ui/global/types';
 
 export const ConfigContext = createContext({ config: null });
 
-export const InstallKeeperModalContext = createContext({ triggerVisibility: () => {} });
+export const InstallKeeperModalContext = createContext<{
+    onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
+    isVisible: boolean;
+}>({
+    onLogin: () => {},
+    isVisible: false,
+});
 
 export const BlurContext = createContext({ blur: null, unblur: null, checkIsBlurred: null });
 

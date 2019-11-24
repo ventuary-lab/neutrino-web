@@ -1,6 +1,7 @@
 import React from 'react';
 import { html } from 'components';
 import LandingHeader from './LandingHeader';
+// import { InstallKeeperModalContext } from 'shared/Layout/context';
 import backgroundImage from 'static/images/landing/background.png';
 import usdnLogo from 'static/icons/usd-n.svg';
 import boxesImage from 'static/images/landing/boxes.svg';

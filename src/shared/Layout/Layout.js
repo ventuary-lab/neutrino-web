@@ -37,7 +37,7 @@ import {
     InstallKeeperModalContext,
     BlurContext,
     LearnLinksContext,
-    defaultLearnLinks as links
+    defaultLearnLinks as links,
 } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
@@ -166,11 +166,13 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    async onWavesKeeperLogin() {
+    async onWavesKeeperLogin(onSuccess = () => {}, onError = () => {}) {
         try {
             await dal.login();
+            onSuccess();
         } catch (err) {
             this.setState({ shouldShowInviteModal: true });
+            onError();
         }
     }
 
@@ -250,9 +252,30 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const { shouldShowInviteModal, isBlurred } = this.state;
 
-        if (this.props.currentItem.id === 'root') {
-            return this.props.children;
-        }
+        const children =
+            this.props.currentItem.id !== 'root' ? (
+                <div className={bem.element('inner')}>
+                    {this.props.isShowLeftSidebar && (
+                        <aside className={bem.element('left')}>
+                            <LeftSidebar />
+                        </aside>
+                    )}
+                    <div className={bem.element('center')}>
+                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                        <header className={bem.element('header')}>
+                            <Header />
+                        </header>
+                        <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                            {this.props.status !== STATUS_LOADING && this.props.children}
+                        </main>
+                    </div>
+                    <aside className={bem.element('right')}>
+                        <RightSidebar />
+                    </aside>
+                </div>
+            ) : (
+                this.props.children
+            );
 
         return (
             <div
@@ -269,36 +292,11 @@ export default class Layout extends React.PureComponent {
                         <InstallKeeperModalContext.Provider
                             value={{
                                 onLogin: this.onWavesKeeperLogin,
+                                isVisible: shouldShowInviteModal,
                             }}
                         >
                             <ConfigContext.Provider value={configValue}>
-                                <div className={bem.element('inner')}>
-                                    {this.props.isShowLeftSidebar && (
-                                        <aside className={bem.element('left')}>
-                                            <LeftSidebar />
-                                        </aside>
-                                    )}
-                                    <div className={bem.element('center')}>
-                                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                                            <BlockedApp />
-                                        )}
-                                        <header className={bem.element('header')}>
-                                            <Header />
-                                        </header>
-                                        <main
-                                            className={bem.element(
-                                                'content',
-                                                isBlurred ? 'blurred' : ''
-                                            )}
-                                        >
-                                            {this.props.status !== STATUS_LOADING &&
-                                                this.props.children}
-                                        </main>
-                                    </div>
-                                    <aside className={bem.element('right')}>
-                                        <RightSidebar />
-                                    </aside>
-                                </div>
+                                {children}
                             </ConfigContext.Provider>
                             <ModalWrapper />
                         </InstallKeeperModalContext.Provider>
