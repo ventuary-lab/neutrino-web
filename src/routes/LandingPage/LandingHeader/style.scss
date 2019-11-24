@@ -28,11 +28,10 @@
         }
     }
 
-    &__products-dp {
+    &__sub-dp {
         background: #11122f;
         position: absolute;
         top: 60px;
-        left: -60px;
         border: 1px solid #25233C;
         border-radius: 7px;
 
@@ -43,6 +42,13 @@
             & > li:not(:first-child) {
                 padding-top: 16px;
             }
+        }
+
+        &_products {
+            left: -60px;
+        }
+        &_learn {
+            left: 100px;
         }
     }
 

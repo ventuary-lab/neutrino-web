@@ -28,12 +28,12 @@ class LandingPage extends React.Component<Props> {
         const boxes = Array(2).fill(<img src={boxesImage} />);
         const coloredBoxes = Array(2).fill(<img src={coloredBoxesImage} />);
         const socLinks = [
-            { icon: fbIcon, route: '#' },
-            { icon: mediumIcon, route: '#' },
-            { icon: tgIcon, route: '#' },
-            { icon: twitterIcon, route: '#' },
+            { icon: fbIcon, route: 'https://www.facebook.com/Neutrino-Protocol-106351204088941/' },
+            { icon: mediumIcon, route: 'https://medium.com/@neutrinoteam' },
+            { icon: tgIcon, route: 'https://t.me/neutrino_protocol_group' },
+            { icon: twitterIcon, route: 'https://twitter.com/neutrino_proto' },
         ].map((item: SocLink) => (
-            <a href={item.route}>
+            <a href={item.route} target="_blank">
                 <img src={item.icon} />
             </a>
         ));

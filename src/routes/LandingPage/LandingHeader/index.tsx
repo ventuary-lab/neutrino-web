@@ -20,10 +20,12 @@ interface Link {
     label: string;
     onClick?: () => void;
     icon?: string;
+    url?: string;
 }
 
 class LandingHeader extends React.Component<Props, State> {
     productLinks!: Link[];
+    learnLinks!: Link[];
     links!: Link[];
 
     constructor(props) {
@@ -47,6 +49,18 @@ class LandingHeader extends React.Component<Props, State> {
                 label: 'Staking dashboard',
             },
         ];
+        this.learnLinks = [
+            {
+                label: 'White paper',
+                url: 'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view'
+            },
+            {
+                label: 'Q&A',
+            },
+            {
+                label: 'Blog',
+            },
+        ];
         this.links = [
             {
                 label: 'Products',
@@ -55,6 +69,8 @@ class LandingHeader extends React.Component<Props, State> {
             },
             {
                 label: 'Learn',
+                onClick: this.triggerLearnList,
+                icon: arrowDown,
             },
             {
                 label: 'Login',
@@ -77,14 +93,20 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     triggerLearnList() {
-        this.setState(prevState => ({ isLearnListVisible: !prevState.isLearnListVisible }));
+        this.setState(prevState => ({
+            isProductsListVisible: false,
+            isLearnListVisible: !prevState.isLearnListVisible,
+        }));
     }
 
     triggerProductsList() {
-        this.setState(prevState => ({ isProductsListVisible: !prevState.isProductsListVisible }));
+        this.setState(prevState => ({
+            isLearnListVisible: false,
+            isProductsListVisible: !prevState.isProductsListVisible,
+        }));
     }
 
-    mapLink({ onClick = () => {}, label, icon }: Link) {
+    mapLink({ onClick = () => {}, label, icon, url }: Link) {
         const { isProductsListVisible, isLearnListVisible } = this.state;
         const isChecked =
             (label === 'Products' && isProductsListVisible) ||
@@ -94,7 +116,7 @@ class LandingHeader extends React.Component<Props, State> {
 
         return (
             <li>
-                <a href="#" onClick={onClick} className={bem.element('h-link', isChecked)}>
+                <a href={url || '#'} onClick={onClick} className={bem.element('h-link', isChecked)}>
                     <span>{label}</span>
                     {icon && <img src={icon} alt="" />}
                 </a>
@@ -112,6 +134,7 @@ class LandingHeader extends React.Component<Props, State> {
     render() {
         const links = this.links.map(this.mapLink);
         const productLinks = this.productLinks.map(this.mapLink);
+        const learnLinks = this.learnLinks.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
         return (
@@ -129,15 +152,21 @@ class LandingHeader extends React.Component<Props, State> {
                             <img src={crossIcon} alt="" onClick={this.hideMobileMenu} />
                         </div>
                         <ul>
-                            {links}
+                            {links[links.length - 1]}
                             {productLinks}
+                            {learnLinks}
                         </ul>
                     </div>
                 )}
                 <OutsideAlerter handler={this.outsideHandler} className={bem.element('actions')}>
                     {isProductsListVisible && (
-                        <div className={bem.element('products-dp')}>
+                        <div className={bem.element('sub-dp', 'products')}>
                             <ul>{productLinks}</ul>
+                        </div>
+                    )}
+                    {isLearnListVisible && (
+                        <div className={bem.element('sub-dp', 'learn')}>
+                            <ul>{learnLinks}</ul>
                         </div>
                     )}
                     <ul className={bem.element('links')}>{links}</ul>
