@@ -1,6 +1,8 @@
 import React from 'react';
-import { html } from 'components';
+import { html, dal, store } from 'components';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import mainLogo from 'static/images/logo.svg';
 import arrowDown from 'static/images/landing/arrow-down.svg';
 import burgerIcon from 'static/images/landing/burger.svg';
@@ -41,12 +43,15 @@ class LandingHeader extends React.Component<Props, State> {
         this.productLinks = [
             {
                 label: 'Neutrino dashboard',
+                url: '/neutrino/usd-n'
             },
             {
                 label: 'Bonds dashboard',
+                url: '/bonds/usd-n'
             },
             {
                 label: 'Staking dashboard',
+                url: 'rpd/usd-n'
             },
         ];
         this.learnLinks = [
@@ -74,6 +79,13 @@ class LandingHeader extends React.Component<Props, State> {
             },
             {
                 label: 'Login',
+                onClick: async () => {
+                    try {
+                        await dal.login();
+                    } finally {
+                        store.dispatch(goToPage('bonds', { currency: CurrencyEnum.USD_N }));
+                    }
+                }
             },
         ];
 

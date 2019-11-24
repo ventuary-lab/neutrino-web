@@ -15,8 +15,8 @@ export const ROUTE_ROOT = 'root';
 export const ROUTE_LANDING_PAGE = 'landing';
 export const ROUTE_NEUTRINO = 'neutrino';
 export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
-export const ROUTE_BOUNDS = 'bounds';
-export const ROUTE_BOUNDS_REDIRECT = 'bounds_redirect';
+export const ROUTE_BONDS = 'bonds';
+export const ROUTE_BONDS_REDIRECT = 'bounds_redirect';
 export const ROUTE_LEASING = 'leasing';
 export const ROUTE_LEASING_REDIRECT = 'leasing_redirect';
 export const ROUTE_RPD = 'rpd';
@@ -60,21 +60,21 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
-        [ROUTE_BOUNDS_REDIRECT]: {
+        [ROUTE_BONDS_REDIRECT]: {
             exact: true,
-            path: '/bounds',
+            path: '/bonds',
             component: Route,
             componentProps: {
                 render: () => (
-                    <Redirect to={`/bounds/${activeCurrency}`}/>
+                    <Redirect to={`/bonds/${activeCurrency}`}/>
                 )
             },
             isVisible: false,
             roles: UserRole.getAuth(),
         },
-        [ROUTE_BOUNDS]: {
+        [ROUTE_BONDS]: {
             exact: true,
-            path: '/bounds/:currency',
+            path: '/bonds/:currency',
             component: BoundsDashboard,
             label: __('Bonds dashboard'),
             roles: UserRole.getAuth(),
