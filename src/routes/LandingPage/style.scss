@@ -7,7 +7,7 @@
 
 .LandingPage {
     &__main {
-        font-size: 36px;
+        font-size: 28.8px;
 
         & button {
             cursor: pointer;
@@ -32,7 +32,7 @@
     }
 
     &__first-part {
-        height: 521px;
+        height: 380px;
 
         @media screen and (max-width: 768px) {
             height: 330px;
@@ -52,7 +52,7 @@
     }
 
     &__txt-body {
-        padding-top: 78px;
+        padding-top: 28px;
         text-align: center;
         width: 100%;
         margin: auto;
@@ -66,7 +66,7 @@
         & > :nth-child(2) {
             font-size: .58em;
             line-height: 31px;
-            margin-top: 42px;
+            margin-top: 12px;
         }
     }
 
@@ -118,7 +118,7 @@
         height: 244px;
         background-color: #fff;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
+        transform: translate(-50%, -50%) rotate(45deg) scale(0.89);
 
         @media screen and (max-width: 768px) {
             transform: translate(-50%, -50%) rotate(45deg) scale(.7);
@@ -165,6 +165,7 @@
         left: 50%;
         margin: auto;
         width: max-content;
+        transform: scale(0.89);
 
         & > img {
             position: relative;
@@ -205,7 +206,7 @@
 
     &__action-buttons {
         text-align: center;
-        padding-top: 194px;
+        padding-top: 154px;
         max-width: 488px;
         width: 100%;
         margin: auto;
@@ -262,12 +263,13 @@
     }
 
     &__tos {
-        padding-top: 28px;
-        padding-bottom: 48px;
+        // padding-top: 28px;
+        // padding-bottom: 48px;
+        padding: 12px 0;
         font-style: normal;
         font-weight: 300;
         font-size: .41em;
-        line-height: 18px;
+        line-height: 24px;
         text-align: center;
     
         & a {

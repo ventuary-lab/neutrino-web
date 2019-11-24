@@ -244,7 +244,7 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const { shouldShowInviteModal, isBlurred } = this.state;
 
-        if (this.props.currentItem.id === 'landing') {
+        if (this.props.currentItem.id === 'root') {
             return this.props.children;
         }
 

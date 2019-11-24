@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route} from 'react-router';
+import { Redirect, Route } from 'react-router';
 import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
@@ -29,25 +29,17 @@ export default {
     id: ROUTE_ROOT,
     exact: true,
     path: '/',
-    component: IndexPage,
+    component: LandingPage,
     roles: UserRole.getKeys(),
     label: __('Main'),
     isShowLeftSidebar: false,
     items: {
-        [ROUTE_LANDING_PAGE]: {
-            exact: true,
-            path: '/landing',
-            component: LandingPage,
-            roles: UserRole.getAuth(),
-        },
         [ROUTE_NEUTRINO_REDIRECT]: {
             exact: true,
             path: '/neutrino',
             component: Route,
             componentProps: {
-                render: () => (
-                    <Redirect to={`/neutrino/${activeCurrency}`}/>
-                )
+                render: () => <Redirect to={`/neutrino/${activeCurrency}`} />,
             },
             isVisible: false,
             roles: UserRole.getAuth(),
@@ -65,9 +57,7 @@ export default {
             path: '/bonds',
             component: Route,
             componentProps: {
-                render: () => (
-                    <Redirect to={`/bonds/${activeCurrency}`}/>
-                )
+                render: () => <Redirect to={`/bonds/${activeCurrency}`} />,
             },
             isVisible: false,
             roles: UserRole.getAuth(),
@@ -85,9 +75,7 @@ export default {
             path: '/leasing',
             component: Route,
             componentProps: {
-                render: () => (
-                    <Redirect to={`/leasing/${activeCurrency}`}/>
-                )
+                render: () => <Redirect to={`/leasing/${activeCurrency}`} />,
             },
             isVisible: false,
             roles: UserRole.getAuth(),
@@ -106,9 +94,7 @@ export default {
             path: '/rpd',
             component: Route,
             componentProps: {
-                render: () => (
-                    <Redirect to={`/rpd/${activeCurrency}`}/>
-                )
+                render: () => <Redirect to={`/rpd/${activeCurrency}`} />,
             },
             isVisible: false,
             roles: UserRole.getAuth(),
