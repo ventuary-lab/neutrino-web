@@ -4,7 +4,7 @@
 
 .LandingHeader {
     &__main {
-        font-size: .38em;
+        font-size: .58em;
         height: 77px;
         background-color: transparent;
         display: flex;
@@ -56,6 +56,7 @@
         margin: auto;
         margin-left: 120px;
         margin-right: 0;
+        font-size: .78em;
 
         & > :nth-child(2) {
             margin: 12px 5px;
@@ -89,6 +90,7 @@
     &__h-link {
         & > :nth-child(2) {
             padding: 0 8px;
+            transition: transform .15s linear;
         }
 
         &_opened > :nth-child(2) {
