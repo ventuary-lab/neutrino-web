@@ -5,7 +5,7 @@ export default class CollectionEnum extends Enum {
     static BONDS_ORDERS = 'bonds_orders';
     static BONDS_ORDERS_HISTORY = 'bonds_orders_history';
     static NEUTRINO_ORDERS = 'neutrino_orders';
-    static NEUTRINO_PRICES = 'neutrino_prices';
+    // static NEUTRINO_PRICES = 'neutrino_prices';
     static NEUTRINO_BALANCES = 'neutrino_balances';
     static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
     static RPD_BALANCES = 'rpd_balances';
@@ -22,7 +22,7 @@ export default class CollectionEnum extends Enum {
         return [
             this.BONDS_ORDERS,
             this.BONDS_ORDERS_HISTORY,
-            this.NEUTRINO_PRICES,
+            // this.NEUTRINO_PRICES,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
             this.RPD_HISTORY_BALANCES,

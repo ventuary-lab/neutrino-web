@@ -18,7 +18,7 @@ interface State {
     isLearnListVisible: boolean;
     isMobileMenuVisible: boolean;
 }
-interface Link {
+interface Link extends React.HTMLProps<HTMLAnchorElement> {
     label: string;
     onClick?: () => void;
     icon?: string;
@@ -43,27 +43,31 @@ class LandingHeader extends React.Component<Props, State> {
         this.productLinks = [
             {
                 label: 'Neutrino dashboard',
-                url: '/neutrino/usd-n'
+                url: '/neutrino/usd-n',
             },
             {
                 label: 'Bonds dashboard',
-                url: '/bonds/usd-n'
+                url: '/bonds/usd-n',
             },
             {
                 label: 'Staking dashboard',
-                url: 'rpd/usd-n'
+                url: 'rpd/usd-n',
             },
         ];
         this.learnLinks = [
             {
                 label: 'White paper',
-                url: 'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view'
+                url: 'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view',
+                target: '_blank',
             },
             {
                 label: 'Q&A',
+                url: 'https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354',
+                target: '_blank',
             },
             {
                 label: 'Blog',
+                target: '_blank',
             },
         ];
         this.links = [
@@ -85,7 +89,7 @@ class LandingHeader extends React.Component<Props, State> {
                     } finally {
                         store.dispatch(goToPage('bonds', { currency: CurrencyEnum.USD_N }));
                     }
-                }
+                },
             },
         ];
 
@@ -118,7 +122,7 @@ class LandingHeader extends React.Component<Props, State> {
         }));
     }
 
-    mapLink({ onClick = () => {}, label, icon, url }: Link) {
+    mapLink({ onClick = () => {}, label, icon, url, ...restProps }: Link) {
         const { isProductsListVisible, isLearnListVisible } = this.state;
         const isChecked =
             (label === 'Products' && isProductsListVisible) ||
@@ -128,7 +132,12 @@ class LandingHeader extends React.Component<Props, State> {
 
         return (
             <li>
-                <a href={url || '#'} onClick={onClick} className={bem.element('h-link', isChecked)}>
+                <a
+                    {...restProps}
+                    href={url || '#'}
+                    onClick={onClick}
+                    className={bem.element('h-link', isChecked)}
+                >
                     <span>{label}</span>
                     {icon && <img src={icon} alt="" />}
                 </a>

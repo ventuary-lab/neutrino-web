@@ -79,8 +79,15 @@ class LandingPage extends React.Component<Props> {
                         </div>
                     </div>
                     <div className={bem.element('action-buttons')}>
-                        <button className="base-button">Buy USD-N</button>
-                        <button className="base-button alt">How it works</button>
+                        <a className="base-button" href="/neutrino/usd-n">
+                            Buy USD-N
+                        </a>
+                        <a
+                            className="base-button alt"
+                            href="https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354"
+                        >
+                            How it works
+                        </a>
                     </div>
                     <div className={bem.element('mobile-info')}>{paragraph}</div>
                     <div className={bem.element('tos')}>

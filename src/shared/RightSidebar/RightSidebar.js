@@ -10,7 +10,7 @@ import { html, dal } from 'components';
 import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';
-import WavesExchangeChart from 'shared/RightSidebar/views/WavesExchangeChart';
+// import WavesExchangeChart from 'shared/RightSidebar/views/WavesExchangeChart';
 
 const bem = html.bem('RightSidebar');
 
@@ -72,7 +72,7 @@ export default class RightSidebar extends React.PureComponent {
                         </div>
                     </>
                 )) || <>{this.renderAuthBlock()}</>}
-                <WavesExchangeChart />
+                {/* <WavesExchangeChart /> */}
             </div>
         );
     }

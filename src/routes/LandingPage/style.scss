@@ -216,11 +216,24 @@
 
         & > * {
             margin: auto;
+            color: black !important;
         }
 
         @media screen and (max-width: 438px) {
             & > :not(:first-child) {
                 margin-top: 12px;
+            }
+        }
+
+        & > :nth-child(1) {
+            &:hover {
+                color: #fff !important;
+            }
+        }
+        & > :nth-child(2) {
+            &:hover {
+                background-color: #D0DBFF !important;
+                border: 1px solid #D0DBFF !important;
             }
         }
     }

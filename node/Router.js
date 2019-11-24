@@ -189,9 +189,9 @@ module.exports = class Router {
                     .getCollection(request.params.pairName, CollectionEnum.CONTROL_CONFIG)
                     .getConfig();
             },
-            '/api/v1/waves-exchange/:currency/:period': async request => {
-                return this._getWavesExchanges(request.params.currency, request.params.period);
-            },
+            // '/api/v1/waves-exchange/:currency/:period': async request => {
+            //     return this._getWavesExchanges(request.params.currency, request.params.period);
+            // },
             '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
