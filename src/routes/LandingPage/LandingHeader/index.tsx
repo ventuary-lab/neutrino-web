@@ -27,7 +27,7 @@ class LandingHeader extends React.Component<Props, State> {
     learnLinks!: Link[];
     links!: Link[];
 
-    static contextType = LearnLinksContext;
+    // static contextType = LearnLinksContext;
 
     constructor(props) {
         super(props);
@@ -51,6 +51,19 @@ class LandingHeader extends React.Component<Props, State> {
             {
                 label: 'Bonds dashboard',
                 url: '/bonds/usd-n',
+            },
+            {
+                label: 'Exchange',
+                url:
+                    'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
+            },
+            {
+                label: 'Transfers',
+                url: '#',
+            },
+            {
+                label: 'Invoice Generator',
+                url: '#',
             },
         ];
         this.links = [
@@ -138,45 +151,53 @@ class LandingHeader extends React.Component<Props, State> {
     render() {
         const links = this.links.map(this.mapLink);
         const productLinks = this.productLinks.map(this.mapLink);
-        const learnLinks = this.context.links.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
         return (
             <div className={bem.element('main')}>
-                <div className={bem.element('burger')} onClick={this.openMobileMenu}>
-                    <img src={burgerIcon} />
-                </div>
-                <div className={bem.element('logo')}>
-                    <a href="/">
-                        <img src={mainLogo} alt="neutrino" />
-                    </a>
-                    <span>beta</span>
-                </div>
-                {isMobileMenuVisible && (
-                    <div className={bem.element('mobile-menu')}>
-                        <div>
-                            <img src={crossIcon} alt="" onClick={this.hideMobileMenu} />
-                        </div>
-                        <ul>
-                            {links[links.length - 1]}
-                            {productLinks}
-                            {learnLinks}
-                        </ul>
-                    </div>
-                )}
-                <OutsideAlerter handler={this.outsideHandler} className={bem.element('actions')}>
-                    {isProductsListVisible && (
-                        <div className={bem.element('sub-dp', 'products')}>
-                            <ul>{productLinks}</ul>
-                        </div>
+                <LearnLinksContext.Consumer>
+                    {context => (
+                        <>
+                            <div className={bem.element('burger')} onClick={this.openMobileMenu}>
+                                <img src={burgerIcon} />
+                            </div>
+                            <div className={bem.element('logo')}>
+                                <a href="/">
+                                    <img src={mainLogo} alt="neutrino" />
+                                </a>
+                                <span>beta</span>
+                            </div>
+                            {isMobileMenuVisible && (
+                                <div className={bem.element('mobile-menu')}>
+                                    <div>
+                                        <img src={crossIcon} alt="" onClick={this.hideMobileMenu} />
+                                    </div>
+                                    <ul>
+                                        {links[links.length - 1]}
+                                        {productLinks}
+                                        {context.links.map(this.mapLink)}
+                                    </ul>
+                                </div>
+                            )}
+                            <OutsideAlerter
+                                handler={this.outsideHandler}
+                                className={bem.element('actions')}
+                            >
+                                {isProductsListVisible && (
+                                    <div className={bem.element('sub-dp', 'products')}>
+                                        <ul>{productLinks}</ul>
+                                    </div>
+                                )}
+                                {isLearnListVisible && (
+                                    <div className={bem.element('sub-dp', 'learn')}>
+                                        <ul>{context.links.map(this.mapLink)}</ul>
+                                    </div>
+                                )}
+                                <ul className={bem.element('links')}>{links}</ul>
+                            </OutsideAlerter>
+                        </>
                     )}
-                    {isLearnListVisible && (
-                        <div className={bem.element('sub-dp', 'learn')}>
-                            <ul>{learnLinks}</ul>
-                        </div>
-                    )}
-                    <ul className={bem.element('links')}>{links}</ul>
-                </OutsideAlerter>
+                </LearnLinksContext.Consumer>
             </div>
         );
     }
