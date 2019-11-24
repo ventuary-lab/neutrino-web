@@ -15,10 +15,6 @@ import './style.scss';
 
 const bem = html.bem('LandingPage');
 
-// function Header() {
-//     return <div className={bem.element('header')}>Neutrino</div>;
-// }
-
 interface Props {}
 
 type SocLink = { icon: string; route: string };

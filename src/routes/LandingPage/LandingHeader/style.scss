@@ -19,6 +19,15 @@
         }
     }
 
+    &__burger {
+        display: none;
+        margin: 46px 20px;
+
+        @media screen and (max-width: 768px) {
+            display: block;
+        }
+    }
+
     &__products-dp {
         background: #11122f;
         position: absolute;
@@ -47,12 +56,21 @@
             display: block;
             float: right;
         }
+
+        @media screen and (max-width: 768px) {
+            margin-left: 25px;
+            margin-top: 35px;
+        }
     }
 
     &__actions {
         margin: auto;
         margin-right: 120px;
         position: relative;
+
+        @media screen and (max-width: 768px) {
+            display: none;
+        }
     }
 
     &__links {
@@ -60,6 +78,37 @@
         flex-direction: row;
         width: 300px;
         justify-content: space-between;
+    }
+
+    &__h-link {
+        & > :nth-child(2) {
+            padding: 0 8px;
+        }
+
+        &_opened > :nth-child(2) {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__mobile-menu {
+        position: absolute;
+        background: #fff;
+        color: black;
+        padding: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        min-height: 616px;
+        width: 260px;
+        z-index: 2;
+
+        & ul {
+            padding: 0;
+
+            & > li {
+                margin-top: 36px;
+            }
+        }
     }
 }
 
