@@ -87,18 +87,18 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         }
     }
 
-    async decreaseStaking() {
-        // #1 Start staking
+    async increaseStaking() {
         const { pairName } = this.props;
         const { usdnValue } = this.state;
 
         console.log({ pairName, usdnValue });
 
         await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
-        this.emptyField();
+
+        this.props.onClose();
     }
-    async increaseStaking() {
-        // # Cancel staking
+
+    async decreaseStaking() {
         const { usdnValue } = this.state;
 
         await dal.unlockNeutrino(
@@ -107,8 +107,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
             Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
         );
 
-
-        this.emptyField();
+        this.props.onClose();
     }
 
     onChangeUsdn(event: React.FormEvent<HTMLInputElement>) {

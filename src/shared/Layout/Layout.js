@@ -32,14 +32,58 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import { ROUTE_ROOT } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext, InstallKeeperModalContext, BlurContext } from './context';
+import {
+    ConfigContext,
+    InstallKeeperModalContext,
+    BlurContext,
+    LearnLinksContext,
+} from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
-
 
 import './Layout.scss';
 
 const bem = html.bem('Layout');
+
+const links = [
+    {
+        label: 'White paper',
+        url: 'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view',
+        target: '_blank',
+    },
+    {
+        label: 'FAQ',
+        url: 'https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354',
+        target: '_blank',
+    },
+    {
+        label: 'Blog',
+        url: 'https://twitter.com/neutrino_proto',
+        target: '_blank',
+    },
+    {
+        label: 'Discussions',
+        url: 'https://t.me/neutrino_protocol_group',
+        target: '_blank',
+    },
+    {
+        label: 'GitHub',
+        url: 'https://github.com/ventuary-lab',
+        target: '_blank',
+    },
+    {
+        label: 'Smart Contract',
+        url:
+            'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
+        target: '_blank',
+    },
+    {
+        label: 'Terms of Service',
+        url:
+            'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
+        target: '_blank',
+    },
+]
 
 @layoutHoc(async () => {
     // Initialize websocket
@@ -95,8 +139,9 @@ export default class Layout extends React.PureComponent {
         this.blurContextValue = {
             blur: () => this.setState({ isBlurred: true }),
             unblur: () => this.setState({ isBlurred: false }),
-            checkIsBlurred: () => this.state.isBlurred
+            checkIsBlurred: () => this.state.isBlurred,
         };
+        this.learnLinksContextValue = { links };
 
         this.state = {
             shouldShowInviteModal: false,
@@ -258,44 +303,46 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <BlurContext.Provider value={this.blurContextValue}>
-                    <InstallKeeperModalContext.Provider
-                        value={{
-                            onLogin: this.onWavesKeeperLogin,
-                        }}
-                    >
-                        <ConfigContext.Provider value={configValue}>
-                            <div className={bem.element('inner')}>
-                                {this.props.isShowLeftSidebar && (
-                                    <aside className={bem.element('left')}>
-                                        <LeftSidebar />
-                                    </aside>
-                                )}
-                                <div className={bem.element('center')}>
-                                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                                        <BlockedApp />
+                <LearnLinksContext.Provider value={this.learnLinksContextValue}>
+                    <BlurContext.Provider value={this.blurContextValue}>
+                        <InstallKeeperModalContext.Provider
+                            value={{
+                                onLogin: this.onWavesKeeperLogin,
+                            }}
+                        >
+                            <ConfigContext.Provider value={configValue}>
+                                <div className={bem.element('inner')}>
+                                    {this.props.isShowLeftSidebar && (
+                                        <aside className={bem.element('left')}>
+                                            <LeftSidebar />
+                                        </aside>
                                     )}
-                                    <header className={bem.element('header')}>
-                                        <Header />
-                                    </header>
-                                    <main
-                                        className={bem.element(
-                                            'content',
-                                            isBlurred ? 'blurred' : ''
+                                    <div className={bem.element('center')}>
+                                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
+                                            <BlockedApp />
                                         )}
-                                    >
-                                        {this.props.status !== STATUS_LOADING &&
-                                            this.props.children}
-                                    </main>
+                                        <header className={bem.element('header')}>
+                                            <Header />
+                                        </header>
+                                        <main
+                                            className={bem.element(
+                                                'content',
+                                                isBlurred ? 'blurred' : ''
+                                            )}
+                                        >
+                                            {this.props.status !== STATUS_LOADING &&
+                                                this.props.children}
+                                        </main>
+                                    </div>
+                                    <aside className={bem.element('right')}>
+                                        <RightSidebar />
+                                    </aside>
                                 </div>
-                                <aside className={bem.element('right')}>
-                                    <RightSidebar />
-                                </aside>
-                            </div>
-                        </ConfigContext.Provider>
-                        <ModalWrapper />
-                    </InstallKeeperModalContext.Provider>
-                </BlurContext.Provider>
+                            </ConfigContext.Provider>
+                            <ModalWrapper />
+                        </InstallKeeperModalContext.Provider>
+                    </BlurContext.Provider>
+                </LearnLinksContext.Provider>
             </div>
         );
     }

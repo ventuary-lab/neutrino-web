@@ -2,7 +2,10 @@ import React from 'react';
 import { html, dal, store } from 'components';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
+import { LearnLinksContext } from 'shared/Layout/context';
 import CurrencyEnum from 'enums/CurrencyEnum';
+
+import { Link } from 'ui/global/types';
 import mainLogo from 'static/images/logo.svg';
 import arrowDown from 'static/images/landing/arrow-down.svg';
 import burgerIcon from 'static/images/landing/burger.svg';
@@ -18,17 +21,13 @@ interface State {
     isLearnListVisible: boolean;
     isMobileMenuVisible: boolean;
 }
-interface Link extends React.HTMLProps<HTMLAnchorElement> {
-    label: string;
-    onClick?: () => void;
-    icon?: string;
-    url?: string;
-}
 
 class LandingHeader extends React.Component<Props, State> {
     productLinks!: Link[];
     learnLinks!: Link[];
     links!: Link[];
+
+    static contextType = LearnLinksContext;
 
     constructor(props) {
         super(props);
@@ -46,28 +45,12 @@ class LandingHeader extends React.Component<Props, State> {
                 url: '/neutrino/usd-n',
             },
             {
-                label: 'Bonds dashboard',
-                url: '/bonds/usd-n',
-            },
-            {
                 label: 'Staking dashboard',
                 url: 'rpd/usd-n',
             },
-        ];
-        this.learnLinks = [
             {
-                label: 'White paper',
-                url: 'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view',
-                target: '_blank',
-            },
-            {
-                label: 'Q&A',
-                url: 'https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354',
-                target: '_blank',
-            },
-            {
-                label: 'Blog',
-                target: '_blank',
+                label: 'Bonds dashboard',
+                url: '/bonds/usd-n',
             },
         ];
         this.links = [
@@ -155,7 +138,7 @@ class LandingHeader extends React.Component<Props, State> {
     render() {
         const links = this.links.map(this.mapLink);
         const productLinks = this.productLinks.map(this.mapLink);
-        const learnLinks = this.learnLinks.map(this.mapLink);
+        const learnLinks = this.context.links.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
         return (

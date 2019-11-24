@@ -52,10 +52,6 @@
         }
     }
 
-    &__actions {
-
-    }
-
     &__percents {
         display: flex;
         flex-direction: row;
@@ -71,8 +67,11 @@
         justify-content: space-between;
 
         &_decrease button {
-            background-color:  $color-brand-purple-lt-alt !important;
             background-image: none;
+
+            &:not(:hover) {
+                background-color:  $color-brand-purple-lt-alt !important;
+            }
         }
 
         & > * {
