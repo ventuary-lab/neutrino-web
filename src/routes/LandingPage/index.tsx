@@ -91,7 +91,9 @@ class LandingPage extends React.Component<Props> {
                     </div>
                     <div className={bem.element('mobile-info')}>{paragraph}</div>
                     <div className={bem.element('tos')}>
-                        <a href="#">Terms of Service</a>
+                        <a href="https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit?usp=sharing">
+                            Terms of Service
+                        </a>
                     </div>
                     <div className={bem.element('soc-links')}>{socLinks}</div>
                     <div className={bem.element('powered-by-waves')}>

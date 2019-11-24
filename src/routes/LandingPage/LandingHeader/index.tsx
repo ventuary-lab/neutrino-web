@@ -164,7 +164,9 @@ class LandingHeader extends React.Component<Props, State> {
                     <img src={burgerIcon} />
                 </div>
                 <div className={bem.element('logo')}>
-                    <img src={mainLogo} alt="neutrino" />
+                    <a href="/">
+                        <img src={mainLogo} alt="neutrino" />
+                    </a>
                     <span>beta</span>
                 </div>
                 {isMobileMenuVisible && (
