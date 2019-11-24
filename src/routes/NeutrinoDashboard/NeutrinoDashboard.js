@@ -156,7 +156,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     getTotalIssued () {
-        return this.props.totalIssued ? _.round(this.props.totalIssued / 100, 2) : '';
+        return this.props.totalIssued ? _.round(this.props.totalIssued / CurrencyEnum.getContractPow(CurrencyEnum.USD_N), 2) : '';
     }
 
     render() {
