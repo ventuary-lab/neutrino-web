@@ -64,14 +64,6 @@ export default {
             isVisible: false,
             roles: UserRole.getAuth(),
         },
-        [ROUTE_BONDS]: {
-            exact: true,
-            path: '/bonds/:currency',
-            component: BoundsDashboard,
-            label: __('Bonds dashboard'),
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-        },
         [ROUTE_LEASING_REDIRECT]: {
             exact: true,
             path: '/leasing',
@@ -122,6 +114,14 @@ export default {
             path: '/invoices/:currency',
             component: NeutrinoDashboard,
             label: __('Invoice generator'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        [ROUTE_BONDS]: {
+            exact: true,
+            path: '/bonds/:currency',
+            component: BoundsDashboard,
+            label: __('Bonds dashboard'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         }

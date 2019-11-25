@@ -244,7 +244,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: ' + (this.state.isWavesLeft ? '0.1' : '100')  +' {currency}',
+                            {__('Min. {currency} required: 1 {currency}',
                                 {
                                     currency: this.state.isWavesLeft
                                         ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)

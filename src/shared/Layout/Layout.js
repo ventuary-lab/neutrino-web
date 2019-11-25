@@ -102,7 +102,6 @@ export default class Layout extends React.PureComponent {
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
-        this.transferOrInvoiceWasShown = false;
         this.resizeObserver = null;
         this.wcc = null;
         this.blurContextValue = {
@@ -140,11 +139,9 @@ export default class Layout extends React.PureComponent {
     checkCurrentRoute() {
         const { page, user } = this.props;
 
-        if (document.body.offsetWidth < 600 || !user || this.transferOrInvoiceWasShown) {
+        if (document.body.offsetWidth < 600 || !user) {
             return;
         }
-
-        this.transferOrInvoiceWasShown = true;
 
         switch (page.id) {
             case ROUTE_NEUTRINO_SHOW_TRANSFERS:
@@ -152,9 +149,6 @@ export default class Layout extends React.PureComponent {
                 break;
             case ROUTE_NEUTRINO_SHOW_INVOICE_GEN:
                 store.dispatch(openModal(CreateInvoiceModal, { currency: CurrencyEnum.USD_N }));
-                break;
-            default:
-                this.transferOrInvoiceWasShown = false;
                 break;
         }
     }
@@ -235,11 +229,11 @@ export default class Layout extends React.PureComponent {
         store.dispatch(goToPage(ROUTE_ROOT));
     }
 
-    componentDidUpdate(nextProps) {
-        if (nextProps.user) {
+    componentDidUpdate(prevProps) {        
+        if (prevProps.user) {
             const invoiceProvided = this._checkForInvoice();
 
-            if (!invoiceProvided) {
+            if (!invoiceProvided && prevProps.page.id !== this.props.page.id) {
                 this.checkCurrentRoute();
             }
         }
