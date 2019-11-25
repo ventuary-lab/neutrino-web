@@ -38,7 +38,9 @@ module.exports = class Router {
                     // prices: await this._getPrices(),
                 };
             },
-            '/api/v1/staking/mass-payment/:address/:assetId': async ({ params: { address, assetId } }) => {
+            '/api/v1/staking/mass-payment/:address/:assetId': async ({
+                params: { address, assetId },
+            }) => {
                 if (!assetId || !address) {
                     return [];
                 }
@@ -267,8 +269,10 @@ module.exports = class Router {
                 };
             },
             '/whitepaper': async (req, res) => {
-                res.redirect('https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view');
-            }
+                res.redirect(
+                    'https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view'
+                );
+            },
         };
     }
 
@@ -299,7 +303,12 @@ module.exports = class Router {
             const currency = PairsEnum.getSource(pairName);
             if (!result[currency]) {
                 const collection = this.app.getCollection(pairName, CollectionEnum.NEUTRINO_PRICES);
-                result[currency] = await collection.getPrices();
+                
+                try {
+                    result[currency] = await collection.getPrices();
+                } catch (err) {
+                    console.log('Error occured on getPrices call')
+                }
             }
         }
         return result;

@@ -135,7 +135,7 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     onSuccessLogin () {
-        store.dispatch(goToPage('neutrino'), { currency: CurrencyEnum.USD_N });
+        store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
     }
 
     onErrorLogin () {}
@@ -164,7 +164,7 @@ class LandingHeader extends React.Component<Props, State> {
 
                                         try {
                                             await dal.login();
-                                            store.dispatch(goToPage('neutrino'), { currency: CurrencyEnum.USD_N });
+                                            store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
                                         } finally {
                                             installKeeperContext.openModal();
                                         }

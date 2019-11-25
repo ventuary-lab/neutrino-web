@@ -120,8 +120,8 @@ export default class Layout extends React.PureComponent {
 
             const { page } = this.props;
 
-            if (!isKeeperInstalled && page.id !== 'root') {
-                store.dispatch(goToPage('root'));
+            if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
+                store.dispatch(goToPage(ROUTE_ROOT));
                 this.setState({ shouldShowInviteModal: true });
             }
         };
@@ -202,7 +202,7 @@ export default class Layout extends React.PureComponent {
 
     async onWavesKeeperLogout () {
         await dal.logout();
-        store.dispatch(goToPage('root'));
+        store.dispatch(goToPage(ROUTE_ROOT));
     }
 
     componentDidUpdate(nextProps) {
@@ -282,7 +282,7 @@ export default class Layout extends React.PureComponent {
         const { shouldShowInviteModal, isBlurred } = this.state;
 
         const children =
-            this.props.currentItem.id !== 'root' ? (
+            this.props.currentItem.id !== ROUTE_ROOT ? (
                 <div className={bem.element('inner')}>
                     {this.props.isShowLeftSidebar && (
                         <aside className={bem.element('left')}>

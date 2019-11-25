@@ -14,6 +14,8 @@ import UserRole from 'enums/UserRole';
 export const ROUTE_ROOT = 'root';
 export const ROUTE_LANDING_PAGE = 'landing';
 export const ROUTE_NEUTRINO = 'neutrino';
+export const ROUTE_NEUTRINO_SHOW_TRANSFERS = 'neutrino_show_transfers';
+export const ROUTE_NEUTRINO_SHOW_INVOICE_GEN = 'neutrino_show_invoice_gen';
 export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
 export const ROUTE_BONDS = 'bonds';
 export const ROUTE_BONDS_REDIRECT = 'bounds_redirect';
@@ -107,5 +109,11 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
+        // [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
+        //     exact: true,
+        // },
+        // [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
+
+        // }
     },
 };
