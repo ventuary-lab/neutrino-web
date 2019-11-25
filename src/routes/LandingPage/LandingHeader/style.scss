@@ -110,11 +110,15 @@
         width: 260px;
         z-index: 2;
 
+        & a {
+            color: black !important;
+        }
+
         & ul {
             padding: 0;
 
             & > li {
-                margin-top: 36px;
+                margin-top: 24px;
             }
         }
     }
