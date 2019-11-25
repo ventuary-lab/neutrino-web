@@ -5,9 +5,11 @@ export const ConfigContext = createContext({ config: null });
 
 export const InstallKeeperModalContext = createContext<{
     onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
+    onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
     isVisible: boolean;
 }>({
     onLogin: () => {},
+    onLogout: () => {},
     isVisible: false,
 });
 

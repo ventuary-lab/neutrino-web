@@ -54,7 +54,7 @@ export default class RightSidebar extends React.PureComponent {
                             <button
                                 className={bem.element('logout')}
                                 type={'button'}
-                                onClick={() => dal.logout()}
+                                onClick={this.context.onLogout}
                             >
                                 <span className={'Icon Icon__logout'} />
                             </button>

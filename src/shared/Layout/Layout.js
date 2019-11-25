@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import { setUser } from 'yii-steroids/actions/auth';
 import layoutHoc, {
     STATUS_ACCESS_DENIED,
@@ -94,6 +95,9 @@ export default class Layout extends React.PureComponent {
         this.onScreenResize = this.onScreenResize.bind(this);
         this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
+        this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
+        this.checkIsKeeperInstalled = this.checkIsKeeperInstalled.bind(this);
+        this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
         this.resizeObserver = null;
         this.wcc = null;
@@ -110,7 +114,26 @@ export default class Layout extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
+    handleUserWithNoKeeper () {
+        const fn = () => {
+            const isKeeperInstalled = this.checkIsKeeperInstalled();
+
+            const { page } = this.props;
+
+            if (!isKeeperInstalled && page.id !== 'root') {
+                store.dispatch(goToPage('root'));
+                this.setState({ shouldShowInviteModal: true });
+            }
+        };
+
+        setTimeout(() => fn(), 1500);
+    }
+
+    componentWillMount () {
+        this.handleUserWithNoKeeper();
+    }
+
+    async componentDidMount() {
         this.attachResizeObserver();
         this.openWarningModal();
     }
@@ -176,12 +199,21 @@ export default class Layout extends React.PureComponent {
         }
     }
 
+    async onWavesKeeperLogout () {
+        await dal.logout();
+        store.dispatch(goToPage('root'));
+    }
+
     componentDidUpdate(nextProps) {
         if (nextProps.user) {
             this._checkForInvoice();
         }
 
         this._attachWavesDataController();
+    }
+
+    checkIsKeeperInstalled () {
+        return window.WavesKeeper && window.WavesKeeper.publicState;
     }
 
     componentWillUnmount() {
@@ -292,6 +324,7 @@ export default class Layout extends React.PureComponent {
                         <InstallKeeperModalContext.Provider
                             value={{
                                 onLogin: this.onWavesKeeperLogin,
+                                onLogout: this.onWavesKeeperLogout,
                                 isVisible: shouldShowInviteModal,
                             }}
                         >
