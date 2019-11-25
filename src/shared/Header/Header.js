@@ -90,8 +90,8 @@ export default class Header extends React.PureComponent {
                             <Button
                                 className={bem.element('auth-button')}
                                 label={__('Login with Keeper')}
-                                color="secondary"
-                                onClick={context.onLogin}
+                                color='secondary'
+                                onClick={() => context.onLogin()}
                             />
                         )}
                     </InstallKeeperModalContext.Consumer>

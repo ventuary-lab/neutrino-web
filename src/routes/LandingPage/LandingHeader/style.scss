@@ -19,7 +19,9 @@
         }
 
         & a {
-            color: white;
+            &:not(:hover) {
+                color: white;
+            }
         }
     }
 

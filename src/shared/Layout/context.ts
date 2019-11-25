@@ -6,10 +6,12 @@ export const ConfigContext = createContext({ config: null });
 export const InstallKeeperModalContext = createContext<{
     onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
     onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
+    openModal: () => void;
     isVisible: boolean;
 }>({
     onLogin: () => {},
     onLogout: () => {},
+    openModal: () => {},
     isVisible: false,
 });
 
@@ -43,8 +45,7 @@ export const defaultLearnLinks = [
     },
     {
         label: 'Smart Contract',
-        url:
-            'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
+        url: 'https://wavesexplorer.com/address/3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo/script',
         target: '_blank',
     },
     {

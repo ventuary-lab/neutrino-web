@@ -91,7 +91,7 @@ export default class RightSidebar extends React.PureComponent {
                     className={bem.element('auth-button')}
                     block
                     label={'Login with Keeper'}
-                    onClick={this.context.onLogin}
+                    onClick={() => this.context.onLogin()}
                 />
                 <p className={bem.element('auth-info')}>
                     <a

@@ -1,5 +1,5 @@
 import React from 'react';
-import { html } from 'components';
+import { html, dal } from 'components';
 import LandingHeader from './LandingHeader';
 // import { InstallKeeperModalContext } from 'shared/Layout/context';
 import backgroundImage from 'static/images/landing/background.png';
@@ -23,6 +23,12 @@ type SocLink = { icon: string; route: string };
 class LandingPage extends React.Component<Props> {
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount () {
+        (async () => {
+            await dal.logout();
+        })();
     }
 
     render() {

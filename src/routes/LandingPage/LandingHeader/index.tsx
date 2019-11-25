@@ -1,7 +1,8 @@
 import React from 'react';
-import { html, store } from 'components';
+import { html, store, dal } from 'components';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import { LearnLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 
 import { Link } from 'ui/global/types';
@@ -134,7 +135,7 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     onSuccessLogin () {
-        store.dispatch(goToPage('neutrino'));
+        store.dispatch(goToPage('neutrino'), { currency: CurrencyEnum.USD_N });
     }
 
     onErrorLogin () {}
@@ -160,7 +161,13 @@ class LandingHeader extends React.Component<Props, State> {
                                 currentLinks[currentLinks.length - 1] = {
                                     ...currentLinks[currentLinks.length - 1],
                                     onClick: async () => {
-                                        await installKeeperContext.onLogin(this.onSuccessLogin, this.onErrorLogin);
+
+                                        try {
+                                            await dal.login();
+                                            store.dispatch(goToPage('neutrino'), { currency: CurrencyEnum.USD_N });
+                                        } finally {
+                                            installKeeperContext.openModal();
+                                        }
                                     }
                                 };
                                 const links = currentLinks.map(this.mapLink);

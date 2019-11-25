@@ -233,10 +233,10 @@ class InstallKeeperModal extends React.Component<Props, State> {
                     <h3>Check Waves Keeper permissions</h3>
                     <div>
                         <div>
-                            If you haven’t yet given Waves Keeper access to Ventuary DAO, you will
+                            If you haven’t yet given Waves Keeper access to Neutrino, you will
                             need to do the following steps: Open Waves Keeper. Go to Settings menu
                             (in the right upper corner) Open Permissions Control menu Give access to
-                            beta.ventuary.space by clicking a power button icon on the left
+                            beta.neutrino.at by clicking a power button icon on the left
                         </div>
                         <img src={imageTwo} className={bem.element('img-keeper')} />
                     </div>

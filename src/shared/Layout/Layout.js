@@ -96,7 +96,7 @@ export default class Layout extends React.PureComponent {
         this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
-        this.checkIsKeeperInstalled = this.checkIsKeeperInstalled.bind(this);
+        // this.checkIsKeeperInstalled = this.checkIsKeeperInstalled.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
         this.resizeObserver = null;
@@ -116,7 +116,7 @@ export default class Layout extends React.PureComponent {
 
     handleUserWithNoKeeper () {
         const fn = () => {
-            const isKeeperInstalled = this.checkIsKeeperInstalled();
+            const isKeeperInstalled = Boolean(window.WavesKeeper && window.WavesKeeper.publicState);
 
             const { page } = this.props;
 
@@ -126,7 +126,7 @@ export default class Layout extends React.PureComponent {
             }
         };
 
-        setTimeout(() => fn(), 300);
+        setTimeout(() => fn(), 1500);
     }
 
     componentWillMount () {
@@ -194,6 +194,7 @@ export default class Layout extends React.PureComponent {
             await dal.login();
             onSuccess();
         } catch (err) {
+            console.log({ err });
             this.setState({ shouldShowInviteModal: true });
             onError();
         }
@@ -210,10 +211,6 @@ export default class Layout extends React.PureComponent {
         }
 
         this._attachWavesDataController();
-    }
-
-    checkIsKeeperInstalled () {
-        return window.WavesKeeper && window.WavesKeeper.publicState;
     }
 
     componentWillUnmount() {
@@ -326,6 +323,7 @@ export default class Layout extends React.PureComponent {
                                 onLogin: this.onWavesKeeperLogin,
                                 onLogout: this.onWavesKeeperLogout,
                                 isVisible: shouldShowInviteModal,
+                                openModal: () => this.triggerInstallKeeperModalVisibility(true)
                             }}
                         >
                             <ConfigContext.Provider value={configValue}>
