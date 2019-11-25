@@ -1,0 +1,29 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.StakingAccountBalance {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #343869;
+
+    &__buy-btn {
+        width: 100%;
+        padding-top: 10px;
+                
+        & > * {
+            width: 100%;
+            max-width: unset !important;
+
+            &:not(:hover) {
+                background-image: $green-button-gradient !important;
+            }
+
+            &:hover {
+                background-color: #00BC78 !important;
+            }
+        }
+    }
+
+}

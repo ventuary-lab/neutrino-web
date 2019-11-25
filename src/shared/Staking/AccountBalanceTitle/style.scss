@@ -1,0 +1,41 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.AccountBalanceTitle {
+
+    &__main {
+        font-size: 14px;
+        line-height: 17px;
+        font-weight: normal;
+        display: block;
+        position: relative;
+    }
+
+    &__balance {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block !important;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: #00F5FF;
+        margin-top: -2px !important;
+
+        & > :nth-child(1) {
+            margin-right: 5px;
+
+            & > img {
+                width: 20px;
+                height: 20px;
+                margin-bottom: -3px;
+            }
+        }
+        & > :nth-child(2) {
+            margin-right: 5px;
+        }
+        & > :nth-child(3) {
+            font-size: .75em;
+        }
+    }
+}

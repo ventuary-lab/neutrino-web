@@ -21,6 +21,7 @@
     "dotenv": "^8.1.0",
     "dotenv-webpack": "^1.7.0",
     "lodash": "^4.17.15",
+    "null-loader": "^3.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "raven": "^2.6.4",
     "react-copy-to-clipboard": "^5.0.1",

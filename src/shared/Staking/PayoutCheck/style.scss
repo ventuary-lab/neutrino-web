@@ -1,0 +1,55 @@
+
+.PayoutCheck {
+    background-color: rgb(41, 41, 89);
+    padding: 8px;
+    height: 163px;
+    font-size: 14px;
+
+    & a {
+        width: 260px;
+        background-color: #171839;
+        font-weight: 600;
+        position: relative;
+        padding: 11px 82px;
+        border-radius: 50px;
+        top: 29px;
+        color: #fff;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__body {
+        border: 1px solid rgb(23, 24, 58);
+        display: flex;
+        flex-direction: column;
+        text-align: center;height: 100%;
+    }
+
+    &__date {
+        font-size: .9em;
+        padding: 11.5px 28px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__profit {
+        background-color: rgb(23, 24, 58);
+        padding: 7.5px;
+    }
+
+    &__see-tx {
+        position: relative;
+        width: 100%;
+
+        & > img {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: -19px;
+            opacity: .1;
+        }
+    }
+}

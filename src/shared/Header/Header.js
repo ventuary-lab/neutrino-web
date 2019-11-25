@@ -9,7 +9,7 @@ import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
-import { InstallKeeperModalContext } from 'shared/Layout/context';
+import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -37,7 +37,6 @@ export default class Header extends React.PureComponent {
         quoteCurrency: PropTypes.string,
         userRole: PropTypes.string,
     };
-    static contextType = InstallKeeperModalContext;
 
     constructor(props) {
         super(props);
@@ -86,29 +85,27 @@ export default class Header extends React.PureComponent {
                         </Form>
                     </div>
                 )) || (
-                    <Button
-                        className={bem.element('auth-button')}
-                        label={__('Login with Keeper')}
-                        color="secondary"
-                        onClick={this.context.onLogin}
-                    />
+                    <InstallKeeperModalContext.Consumer>
+                        {context => (
+                            <Button
+                                className={bem.element('auth-button')}
+                                label={__('Login with Keeper')}
+                                color='secondary'
+                                onClick={() => context.onLogin()}
+                            />
+                        )}
+                    </InstallKeeperModalContext.Consumer>
                 )}
                 <div className={'info-dropdown'}>
-                    <InfoDropDown
-                        icon={'Icon__learn'}
-                        label={__('Learn')}
-                        items={[
-                            {
-                                label: __('White paper'),
-                                linkUrl:
-                                    'https://drive.google.com/file/d/1rJz2LIwPsK7VUxT9af8DKGFIMA5ksioW/view',
-                            },
-                            {
-                                label: __('Blog'),
-                                linkUrl: 'https://medium.com/@neutrinoteam',
-                            },
-                        ]}
-                    />
+                    <GlobalLinksContext.Consumer>
+                        {links => (
+                            <InfoDropDown
+                                icon={'Icon__learn'}
+                                label={__('Learn')}
+                                items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
+                            />
+                        )}
+                    </GlobalLinksContext.Consumer>
                 </div>
             </header>
         );

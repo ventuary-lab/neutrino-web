@@ -1,0 +1,132 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.LandingHeader {
+    &__main {
+        font-size: .58em;
+        height: 77px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        border-bottom: 1px solid #1F1D31;
+
+
+        & li {
+            list-style-type: none;
+            font-weight: 600;
+        }
+
+        & a {
+            &:not(:hover) {
+                color: white;
+            }
+        }
+    }
+
+    &__burger {
+        display: none;
+        margin: 46px 20px;
+
+        @media screen and (max-width: 768px) {
+            display: block;
+        }
+    }
+
+    &__sub-dp {
+        background: #11122f;
+        position: absolute;
+        top: 60px;
+        border: 1px solid #25233C;
+        border-radius: 7px;
+
+        & > ul:nth-child(1) {
+            padding: 22px 20px;
+            margin: 0;
+
+            & > li:not(:first-child) {
+                padding-top: 16px;
+            }
+        }
+
+        &_products {
+            left: -60px;
+        }
+        &_learn {
+            left: 100px;
+        }
+    }
+
+    &__logo {
+        margin: auto;
+        margin-left: 120px;
+        margin-right: 0;
+        font-size: .78em;
+
+        & > :nth-child(2) {
+            margin: 12px 5px;
+            display: block;
+            float: right;
+        }
+
+        @media screen and (max-width: 768px) {
+            margin-left: 25px;
+            margin-top: 35px;
+        }
+    }
+
+    &__actions {
+        margin: auto;
+        margin-right: 120px;
+        position: relative;
+
+        @media screen and (max-width: 768px) {
+            display: none;
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: row;
+        width: 300px;
+        justify-content: space-between;
+    }
+
+    &__h-link {
+        & > :nth-child(2) {
+            padding: 0 8px;
+            transition: transform .15s linear;
+        }
+
+        &_opened > :nth-child(2) {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__mobile-menu {
+        position: absolute;
+        background: #fff;
+        color: black;
+        padding: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        min-height: 616px;
+        width: 260px;
+        z-index: 2;
+
+        & a {
+            color: black !important;
+        }
+
+        & ul {
+            padding: 0;
+
+            & > li {
+                margin-top: 24px;
+            }
+        }
+    }
+}
+

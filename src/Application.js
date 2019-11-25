@@ -16,7 +16,6 @@ ui.addViews({
 ui.addViews(require.context('./ui', true, /View.js$/));
 
 export default class Application extends React.PureComponent {
-
     render() {
 
         return (

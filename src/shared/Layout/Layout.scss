@@ -55,6 +55,10 @@ body {
     // min-height: 100vh;
     max-height: unset;
     height: 100%;
+
+    &_blurred {
+      filter: blur(10px);
+    }
   }
 
   &__left {

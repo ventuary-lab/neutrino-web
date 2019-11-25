@@ -38,6 +38,20 @@ module.exports = class Router {
                     // prices: await this._getPrices(),
                 };
             },
+            '/api/v1/staking/mass-payment/:address/:assetId': async ({
+                params: { address, assetId },
+            }) => {
+                if (!assetId || !address) {
+                    return [];
+                }
+
+                const transactions = await this.app.massPaymentService.getRecipientMassPaymentsByAssetId(
+                    address,
+                    assetId
+                );
+
+                return transactions || [];
+            },
             '/api/v1/rpd-checks/:pairName/:address': async request => {
                 const nextIndex = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.RPD_NEXT_INDEX)
@@ -177,9 +191,9 @@ module.exports = class Router {
                     .getCollection(request.params.pairName, CollectionEnum.CONTROL_CONFIG)
                     .getConfig();
             },
-            '/api/v1/waves-exchange/:currency/:period': async request => {
-                return this._getWavesExchanges(request.params.currency, request.params.period);
-            },
+            // '/api/v1/waves-exchange/:currency/:period': async request => {
+            //     return this._getWavesExchanges(request.params.currency, request.params.period);
+            // },
             '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
@@ -254,6 +268,11 @@ module.exports = class Router {
                     methods: Object.keys(this._routes),
                 };
             },
+            '/whitepaper': async (req, res) => {
+                res.redirect(
+                    'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit'
+                );
+            },
         };
     }
 
@@ -262,7 +281,7 @@ module.exports = class Router {
             this.expressApp.get(url, async (request, response) => {
                 let content = {};
                 try {
-                    content = await this._routes[url](request);
+                    content = await this._routes[url](request, response);
                 } catch (err) {
                     this.app.logger.error(`Router build Error: ${String(err.stack || err)}`);
                     content = {
@@ -284,7 +303,12 @@ module.exports = class Router {
             const currency = PairsEnum.getSource(pairName);
             if (!result[currency]) {
                 const collection = this.app.getCollection(pairName, CollectionEnum.NEUTRINO_PRICES);
-                result[currency] = await collection.getPrices();
+                
+                try {
+                    result[currency] = await collection.getPrices();
+                } catch (err) {
+                    console.log('Error occured on getPrices call')
+                }
             }
         }
         return result;

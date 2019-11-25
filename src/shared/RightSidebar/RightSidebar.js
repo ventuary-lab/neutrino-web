@@ -10,7 +10,7 @@ import { html, dal } from 'components';
 import BalanceTable from 'shared/BalanceTable';
 
 import './RightSidebar.scss';
-import WavesExchangeChart from 'shared/RightSidebar/views/WavesExchangeChart';
+// import WavesExchangeChart from 'shared/RightSidebar/views/WavesExchangeChart';
 
 const bem = html.bem('RightSidebar');
 
@@ -54,7 +54,7 @@ export default class RightSidebar extends React.PureComponent {
                             <button
                                 className={bem.element('logout')}
                                 type={'button'}
-                                onClick={() => dal.logout()}
+                                onClick={this.context.onLogout}
                             >
                                 <span className={'Icon Icon__logout'} />
                             </button>
@@ -72,7 +72,7 @@ export default class RightSidebar extends React.PureComponent {
                         </div>
                     </>
                 )) || <>{this.renderAuthBlock()}</>}
-                <WavesExchangeChart />
+                {/* <WavesExchangeChart /> */}
             </div>
         );
     }
@@ -91,7 +91,7 @@ export default class RightSidebar extends React.PureComponent {
                     className={bem.element('auth-button')}
                     block
                     label={'Login with Keeper'}
-                    onClick={this.context.onLogin}
+                    onClick={() => this.context.onLogin()}
                 />
                 <p className={bem.element('auth-info')}>
                     <a

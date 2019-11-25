@@ -1,0 +1,35 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.StakingLeftPanel {
+    font-size: 16px;
+
+    &__list-item {
+        padding: 20px 26px;
+        padding-bottom: 4px;
+        border-radius: 4px;
+
+        & button {
+            max-width: 100px;
+        }
+        & h3 {
+            margin: 0;
+        }
+
+        &:not(:nth-child(1)) {
+            margin-top: 8px;
+        }
+
+        & > * > :nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            text-align: center;
+            margin-top: 6px;
+
+            & > :last-child {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

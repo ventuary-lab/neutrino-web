@@ -5,10 +5,13 @@ $color-base               : #fff;
 $color-base-revert        : #000;
 $color-brand-purple       : #17183a;
 $color-brand-purple-light : #494991;
+$color-brand-purple-lt-alt : #4A4A7F;
 $color-brand-green        : #00f59e;
 $color-brand-blue         : #08a3f8;
 $color-brand-azure        : #00f5ff;
 $color-brand-red          : #ff5c5c;
+$color-brand-lt-green: #23FFA6;
+$color-dark-button: #35356F;
 
 // Color Scheme - Gray Gradation
 $color-gg-1 : #333;
@@ -63,3 +66,8 @@ $width-site: 150px;
 $width-mining: 180px;
 $width-payouts: 180px;
 $width-leasing: 260px;
+
+
+// background-image styles
+$main-gradient: linear-gradient(264.83deg, rgb(23, 24, 58) 16.12%, rgb(30, 30, 71) 38.25%, rgb(23, 24, 58) 66.27%);
+$green-button-gradient:  linear-gradient(4.75deg, #00F59E 18.12%, #008B61 101.23%);

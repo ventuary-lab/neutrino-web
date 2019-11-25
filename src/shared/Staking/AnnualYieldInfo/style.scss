@@ -1,0 +1,35 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.AnnualYieldInfo {
+    padding-bottom: 28px;
+    border-bottom: 1px solid #343869;
+
+    &__yield-percent {
+        color: #23FFA6;
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 37px;
+        font-style: normal;
+        background-color: #292959;
+        text-align: left;
+        margin: 0 -38px;
+        padding: 11px 38px;
+    }
+
+    &__main {
+        font-size: 15px;
+        text-align: left !important;
+    }
+
+    &__title {
+        font-size: 1em;
+        padding-top: 15px;
+        font-weight: 600;
+    }
+
+    &__body {
+        font-size: .86em;
+        padding-top: 12px;
+    }
+}

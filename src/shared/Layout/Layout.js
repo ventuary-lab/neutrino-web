@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import { setUser } from 'yii-steroids/actions/auth';
 import layoutHoc, {
     STATUS_ACCESS_DENIED,
@@ -17,6 +18,8 @@ import { openModal } from 'yii-steroids/actions/modal';
 import { isPhone } from 'yii-steroids/reducers/screen';
 import WarningMobileModal from 'modals/WarningMobileModal';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
+import TransferModal from 'modals/TransferModal';
+import CreateInvoiceModal from 'modals/CreateInvoiceModal';
 
 import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
@@ -30,9 +33,16 @@ import BlockedApp from 'shared/BlockedApp';
 import MessageModal from 'modals/MessageModal';
 import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
-import { ROUTE_ROOT } from 'routes';
+import { ROUTE_ROOT, ROUTE_NEUTRINO_SHOW_TRANSFERS, ROUTE_NEUTRINO_SHOW_INVOICE_GEN } from 'routes';
 import { getPairName } from 'reducers/currency';
-import { ConfigContext, InstallKeeperModalContext } from './context';
+import {
+    ConfigContext,
+    InstallKeeperModalContext,
+    BlurContext,
+    GlobalLinksContext,
+    defaultLearnLinks as links,
+    defaultProductLinks as product,
+} from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 
@@ -88,21 +98,71 @@ export default class Layout extends React.PureComponent {
         this.onScreenResize = this.onScreenResize.bind(this);
         this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
+        this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
+        this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
+        this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
         this.resizeObserver = null;
         this.wcc = null;
+        this.blurContextValue = {
+            blur: () => this.setState({ isBlurred: true }),
+            unblur: () => this.setState({ isBlurred: false }),
+            checkIsBlurred: () => this.state.isBlurred,
+        };
+        this.globalLinksContextValue = { links, product };
 
         this.state = {
             shouldShowInviteModal: false,
+            isBlurred: false,
         };
     }
 
-    componentDidMount() {
+    handleUserWithNoKeeper(onSuccess = () => {}, onError = () => {}) {
+        const fn = () => {
+            const isKeeperInstalled = Boolean(window.WavesKeeper && window.WavesKeeper.publicState);
+
+            const { page } = this.props;
+
+            if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
+                store.dispatch(goToPage(ROUTE_ROOT));
+
+                this.setState({ shouldShowInviteModal: true });
+                onError();
+            } else {
+                onSuccess();
+            }
+        };
+
+        setTimeout(() => fn(), 1500);
+    }
+
+    checkCurrentRoute() {
+        const { page, user } = this.props;
+
+        if (document.body.offsetWidth < 600 || !user) {
+            return;
+        }
+
+        switch (page.id) {
+            case ROUTE_NEUTRINO_SHOW_TRANSFERS:
+                store.dispatch(openModal(TransferModal, { currency: CurrencyEnum.USD_N }));
+                break;
+            case ROUTE_NEUTRINO_SHOW_INVOICE_GEN:
+                store.dispatch(openModal(CreateInvoiceModal, { currency: CurrencyEnum.USD_N }));
+                break;
+        }
+    }
+
+    componentWillMount() {
+        this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
+    }
+
+    async componentDidMount() {
         this.attachResizeObserver();
         this.openWarningModal();
     }
 
-    openWarningModal(width = document.body.width) {
+    openWarningModal(width = document.body.offsetWidth) {
         if (width < 600) {
             store.dispatch(openModal(WarningMobileModal));
         }
@@ -153,20 +213,33 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    async onWavesKeeperLogin() {
+    async onWavesKeeperLogin(onSuccess = () => {}, onError = () => {}) {
         try {
             await dal.login();
+            onSuccess();
         } catch (err) {
+            console.log({ err });
             this.setState({ shouldShowInviteModal: true });
+            onError();
         }
     }
 
-    componentDidUpdate(nextProps) {
-        if (nextProps.user) {
-            this._checkForInvoice();
+    async onWavesKeeperLogout() {
+        await dal.logout();
+        store.dispatch(goToPage(ROUTE_ROOT));
+    }
+
+    componentDidUpdate(prevProps) {        
+        if (prevProps.user) {
+            const invoiceProvided = this._checkForInvoice();
+
+            if (!invoiceProvided && prevProps.page.id !== this.props.page.id) {
+                this.checkCurrentRoute();
+            }
         }
 
         this._attachWavesDataController();
+
     }
 
     componentWillUnmount() {
@@ -235,7 +308,32 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal } = this.state;
+        const { shouldShowInviteModal, isBlurred } = this.state;
+
+        const children =
+            this.props.currentItem.id !== ROUTE_ROOT ? (
+                <div className={bem.element('inner')}>
+                    {this.props.isShowLeftSidebar && (
+                        <aside className={bem.element('left')}>
+                            <LeftSidebar />
+                        </aside>
+                    )}
+                    <div className={bem.element('center')}>
+                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                        <header className={bem.element('header')}>
+                            <Header />
+                        </header>
+                        <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                            {this.props.status !== STATUS_LOADING && this.props.children}
+                        </main>
+                    </div>
+                    <aside className={bem.element('right')}>
+                        <RightSidebar />
+                    </aside>
+                </div>
+            ) : (
+                this.props.children
+            );
 
         return (
             <div
@@ -247,36 +345,23 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <InstallKeeperModalContext.Provider
-                    value={{
-                        onLogin: this.onWavesKeeperLogin,
-                    }}
-                >
-                    <ConfigContext.Provider value={configValue}>
-                        <div className={bem.element('inner')}>
-                            {this.props.isShowLeftSidebar && (
-                                <aside className={bem.element('left')}>
-                                    <LeftSidebar />
-                                </aside>
-                            )}
-                            <div className={bem.element('center')}>
-                                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && (
-                                    <BlockedApp />
-                                )}
-                                <header className={bem.element('header')}>
-                                    <Header />
-                                </header>
-                                <main className={bem.element('content')}>
-                                    {this.props.status !== STATUS_LOADING && this.props.children}
-                                </main>
-                            </div>
-                            <aside className={bem.element('right')}>
-                                <RightSidebar />
-                            </aside>
-                        </div>
-                    </ConfigContext.Provider>
-                    <ModalWrapper />
-                </InstallKeeperModalContext.Provider>
+                <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
+                    <BlurContext.Provider value={this.blurContextValue}>
+                        <InstallKeeperModalContext.Provider
+                            value={{
+                                onLogin: this.onWavesKeeperLogin,
+                                onLogout: this.onWavesKeeperLogout,
+                                isVisible: shouldShowInviteModal,
+                                openModal: () => this.triggerInstallKeeperModalVisibility(true),
+                            }}
+                        >
+                            <ConfigContext.Provider value={configValue}>
+                                {children}
+                            </ConfigContext.Provider>
+                            <ModalWrapper />
+                        </InstallKeeperModalContext.Provider>
+                    </BlurContext.Provider>
+                </GlobalLinksContext.Provider>
             </div>
         );
     }
@@ -292,6 +377,9 @@ export default class Layout extends React.PureComponent {
                     currency: params.invoiceCurrency,
                 })
             );
+
+            return true;
         }
+        return false;
     }
 }

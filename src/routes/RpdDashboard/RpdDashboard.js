@@ -1,56 +1,53 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {getFormValues, change} from 'redux-form';
+import { getFormValues, change } from 'redux-form';
 import _get from 'lodash-es/get';
-import Form from 'yii-steroids/ui/form/Form';
-import NumberField from 'yii-steroids/ui/form/NumberField';
-import Button from 'yii-steroids/ui/form/Button';
-import Nav from 'yii-steroids/ui/nav/Nav';
-import {getUser} from 'yii-steroids/reducers/auth';
+// import Form from 'yii-steroids/ui/form/Form';
+// import NumberField from 'yii-steroids/ui/form/NumberField';
+// import Button from 'yii-steroids/ui/form/Button';
+// import Nav from 'yii-steroids/ui/nav/Nav';
+import { getUser } from 'yii-steroids/reducers/auth';
 
 import { html, dal, store } from 'components';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
-import CurrencyEnum from 'enums/CurrencyEnum';
+import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 import CollectionEnum from 'enums/CollectionEnum';
-import Hint from 'shared/Hint';
-import ChecksList from './views/ChecksList';
+// import CurrencyEnum from 'enums/CurrencyEnum';
+// import Hint from 'shared/Hint';
+// import ChecksList from './views/ChecksList';
+import StakingLeftPanel from 'shared/Staking/LeftPanel';
+import StakingRightPanel from 'shared/Staking/RightPanel';
 
 import './RpdDashboard.scss';
 
 const bem = html.bem('RpdDashboard');
 const FORM_ID = 'RpdDashboard';
 
-@connect(
-    state => ({
-        quoteCurrency: getQuoteCurrency(state),
-        baseCurrency: getBaseCurrency(state),
-        pairName: getPairName(state),
-        formValues: getFormValues(FORM_ID)(state),
-        user: getUser(state),
-    })
-)
-@dal.hoc(
-    props => [
-        {
-            url: `/api/v1/rpd-balance/${props.pairName}`,
-            key: 'rpdBalance',
-            collection: CollectionEnum.RPD_BALANCES,
-        },
-        {
-            url: `/api/v1/rpd-user-balance/${props.pairName}/${_get(props, 'user.address')}`,
-            key: 'rpdUserBalance',
-            collection: CollectionEnum.RPD_USER_BALANCES,
-        },
-        {
-            url: `/api/v1/rpd-checks/${props.pairName}/${_get(props, 'user.address')}`,
-            key: 'rpdChecks',
-            collection: [CollectionEnum.RPD_NEXT_INDEX, CollectionEnum.RPD_IS_CLAIMED],
-        },
-    ]
-)
+@connect(state => ({
+    quoteCurrency: getQuoteCurrency(state),
+    baseCurrency: getBaseCurrency(state),
+    pairName: getPairName(state),
+    formValues: getFormValues(FORM_ID)(state),
+    user: getUser(state),
+}))
+@dal.hoc(props => [
+    {
+        url: `/api/v1/rpd-balance/${props.pairName}`,
+        key: 'rpdBalance',
+        collection: CollectionEnum.RPD_BALANCES,
+    },
+    {
+        url: `/api/v1/rpd-user-balance/${props.pairName}/${_get(props, 'user.address')}`,
+        key: 'rpdUserBalance',
+        collection: CollectionEnum.RPD_USER_BALANCES,
+    },
+    {
+        url: `/api/v1/rpd-checks/${props.pairName}/${_get(props, 'user.address')}`,
+        key: 'rpdChecks',
+        collection: [CollectionEnum.RPD_NEXT_INDEX, CollectionEnum.RPD_IS_CLAIMED],
+    },
+])
 export default class RpdDashboard extends React.PureComponent {
-
     static propTypes = {
         baseCurrency: PropTypes.string,
         quoteCurrency: PropTypes.string,
@@ -62,16 +59,20 @@ export default class RpdDashboard extends React.PureComponent {
             bond: PropTypes.shape({
                 balance: PropTypes.number,
                 id: PropTypes.string,
-            })
+            }),
         }),
-        rpdBalance: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
-            balance: PropTypes.number,
-        })),
-        rpdChecks: PropTypes.arrayOf(PropTypes.shape({
-            index: PropTypes.number,
-            profit: PropTypes.number,
-        }))
+        rpdBalance: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.string,
+                balance: PropTypes.number,
+            })
+        ),
+        rpdChecks: PropTypes.arrayOf(
+            PropTypes.shape({
+                index: PropTypes.number,
+                profit: PropTypes.number,
+            })
+        ),
     };
 
     constructor() {
@@ -96,7 +97,11 @@ export default class RpdDashboard extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    <div className={bem.element('balances')}>
+                    <StakingLeftPanel
+                        stakingBalance={rpdNeutrinoBalance.toFixed(2)}
+                        pairName={this.props.pairName}
+                    />
+                    {/* <div className={bem.element('balances')}>
                         <div className={bem.element('balance-item')}>
                             <div className={bem.element('balance-icon')}>
                                 <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
@@ -166,10 +171,11 @@ export default class RpdDashboard extends React.PureComponent {
                                 }}
                             />
                         </div>
-                    </Form>
+                    </Form> */}
                 </div>
                 <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('check-title')}>
+                    <StakingRightPanel />
+                    {/* <div className={bem.element('check-title')}>
                         <span>{__('Payouts')}</span>
                         <div className={bem.element('check-hint')}>
                             <Hint
@@ -198,7 +204,7 @@ export default class RpdDashboard extends React.PureComponent {
                                 }
                             },
                         ]}
-                    />
+                    /> */}
                 </div>
             </div>
         );

@@ -4,6 +4,12 @@
 .InfoDropDown {
   position: relative;
 
+  & a {
+    &:not(:hover) {
+      color: #fff;
+    }
+  }
+
   &__label-container {
     display: flex;
     align-items: center;

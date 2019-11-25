@@ -3,9 +3,10 @@ import _ from 'lodash';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
 import Button from 'yii-steroids/ui/form/Button';
+import { html, store } from 'components';
 import { openModal } from 'yii-steroids/actions/modal';
 import WarningMobileModal from 'modals/WarningMobileModal';
-import { html, store } from 'components';
+import crossIcon from 'static/images/landing/cross-icon.svg';
 import browsersImage from 'static/images/guide/browsers.svg';
 import imageOne from 'static/images/guide/img1.jpg';
 import imageTwo from 'static/images/guide/img2.jpg';
@@ -56,9 +57,7 @@ interface ImageLink {
     title: string;
 }
 
-class InstallKeeperModal extends React.Component {
-    readonly state: State;
-    readonly props: Props;
+class InstallKeeperModal extends React.Component<Props, State> {
     readonly sliderConfig: { [key: string]: any };
     sliderRef: React.RefObject<any>;
     views: React.ReactNode[];
@@ -235,10 +234,10 @@ class InstallKeeperModal extends React.Component {
                     <h3>Check Waves Keeper permissions</h3>
                     <div>
                         <div>
-                            If you haven’t yet given Waves Keeper access to Ventuary DAO, you will
-                            need to do the following steps: Open Waves Keeper. Go to Settings menu
-                            (in the right upper corner) Open Permissions Control menu Give access to
-                            beta.ventuary.space by clicking a power button icon on the left
+                            If you haven’t yet given Waves Keeper access to Neutrino, you will need
+                            to do the following steps: Open Waves Keeper. Go to Settings menu (in
+                            the right upper corner) Open Permissions Control menu Give access to
+                            beta.neutrino.at by clicking a power button icon on the left
                         </div>
                         <img src={imageTwo} className={bem.element('img-keeper')} />
                     </div>
@@ -284,6 +283,12 @@ class InstallKeeperModal extends React.Component {
                     style={customStyles}
                     onRequestClose={this.props.onClose}
                 >
+                    <img
+                        className={bem.element('cross')}
+                        src={crossIcon}
+                        alt="cross"
+                        onClick={this.props.onClose}
+                    />
                     <h1>Welcome to the Neutrino!</h1>
                     <div className={bem.element('cont')}>
                         <Slider {...this.sliderConfig} ref={this.sliderRef}>
