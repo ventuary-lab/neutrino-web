@@ -17,6 +17,10 @@
             list-style-type: none;
             font-weight: 600;
         }
+
+        & a {
+            color: white;
+        }
     }
 
     &__burger {
@@ -111,7 +115,7 @@
         z-index: 2;
 
         & a {
-            color: black !important;
+            color: black;
         }
 
         & ul {
