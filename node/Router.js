@@ -266,6 +266,9 @@ module.exports = class Router {
                     methods: Object.keys(this._routes),
                 };
             },
+            '/whitepaper': async (req, res) => {
+                res.redirect('https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view');
+            }
         };
     }
 
@@ -274,7 +277,7 @@ module.exports = class Router {
             this.expressApp.get(url, async (request, response) => {
                 let content = {};
                 try {
-                    content = await this._routes[url](request);
+                    content = await this._routes[url](request, response);
                 } catch (err) {
                     this.app.logger.error(`Router build Error: ${String(err.stack || err)}`);
                     content = {
