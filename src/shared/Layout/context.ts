@@ -17,6 +17,34 @@ export const InstallKeeperModalContext = createContext<{
 
 export const BlurContext = createContext({ blur: null, unblur: null, checkIsBlurred: null });
 
+export const defaultProductLinks = [
+    {
+        label: 'Neutrino dashboard',
+        url: '/neutrino/usd-n',
+    },
+    {
+        label: 'Staking dashboard',
+        url: 'rpd/usd-n',
+    },
+    {
+        label: 'Bonds dashboard',
+        url: '/bonds/usd-n',
+    },
+    {
+        label: 'Exchange',
+        url:
+            'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
+    },
+    {
+        label: 'Transfers',
+        url: '/transfers/usd-n',
+    },
+    {
+        label: 'Invoice Generator',
+        url: '/invoices/usd-n',
+    },
+];
+
 export const defaultLearnLinks = [
     {
         label: 'White paper',
@@ -56,6 +84,7 @@ export const defaultLearnLinks = [
     },
 ];
 
-export const LearnLinksContext = createContext<{ links: Link[] }>({
+export const GlobalLinksContext = createContext<{ links: Link[], product: Link[] }>({
     links: defaultLearnLinks,
+    product: defaultProductLinks,
 });

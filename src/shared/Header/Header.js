@@ -9,7 +9,7 @@ import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
-import { InstallKeeperModalContext, LearnLinksContext } from 'shared/Layout/context';
+import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -97,7 +97,7 @@ export default class Header extends React.PureComponent {
                     </InstallKeeperModalContext.Consumer>
                 )}
                 <div className={'info-dropdown'}>
-                    <LearnLinksContext.Consumer>
+                    <GlobalLinksContext.Consumer>
                         {links => (
                             <InfoDropDown
                                 icon={'Icon__learn'}
@@ -105,7 +105,7 @@ export default class Header extends React.PureComponent {
                                 items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
                             />
                         )}
-                    </LearnLinksContext.Consumer>
+                    </GlobalLinksContext.Consumer>
                 </div>
             </header>
         );

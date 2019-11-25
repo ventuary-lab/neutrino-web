@@ -3,7 +3,7 @@ import { html, store, dal } from 'components';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import { LearnLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
+import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 
 import { Link } from 'ui/global/types';
 import mainLogo from 'static/images/logo.svg';
@@ -23,7 +23,7 @@ interface State {
 }
 
 class LandingHeader extends React.Component<Props, State> {
-    productLinks!: Link[];
+    // productLinks!: Link[];
     learnLinks!: Link[];
     links!: Link[];
 
@@ -39,33 +39,33 @@ class LandingHeader extends React.Component<Props, State> {
         this.onErrorLogin = this.onErrorLogin.bind(this);
         this.onSuccessLogin = this.onSuccessLogin.bind(this);
 
-        this.productLinks = [
-            {
-                label: 'Neutrino dashboard',
-                url: '/neutrino/usd-n',
-            },
-            {
-                label: 'Staking dashboard',
-                url: 'rpd/usd-n',
-            },
-            {
-                label: 'Bonds dashboard',
-                url: '/bonds/usd-n',
-            },
-            {
-                label: 'Exchange',
-                url:
-                    'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
-            },
-            {
-                label: 'Transfers',
-                url: '#',
-            },
-            {
-                label: 'Invoice Generator',
-                url: '#',
-            },
-        ];
+        // this.productLinks = [
+        //     {
+        //         label: 'Neutrino dashboard',
+        //         url: '/neutrino/usd-n',
+        //     },
+        //     {
+        //         label: 'Staking dashboard',
+        //         url: 'rpd/usd-n',
+        //     },
+        //     {
+        //         label: 'Bonds dashboard',
+        //         url: '/bonds/usd-n',
+        //     },
+        //     {
+        //         label: 'Exchange',
+        //         url:
+        //             'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
+        //     },
+        //     {
+        //         label: 'Transfers',
+        //         url: '/transfers/usd-n',
+        //     },
+        //     {
+        //         label: 'Invoice Generator',
+        //         url: '/invoices/usd-n',
+        //     },
+        // ];
         this.links = [
             {
                 label: 'Products',
@@ -148,12 +148,12 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     render() {
-        const productLinks = this.productLinks.map(this.mapLink);
+        // const productLinks = this.productLinks.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
         return (
             <div className={bem.element('main')}>
-                <LearnLinksContext.Consumer>
+                <GlobalLinksContext.Consumer>
                     {context => (
                         <InstallKeeperModalContext.Consumer>
                             {installKeeperContext => {
@@ -171,6 +171,7 @@ class LandingHeader extends React.Component<Props, State> {
                                     }
                                 };
                                 const links = currentLinks.map(this.mapLink);
+                                const productLinks = context.product.map(this.mapLink);
 
                                 return (
                                     <>
@@ -223,7 +224,7 @@ class LandingHeader extends React.Component<Props, State> {
                             }}
                         </InstallKeeperModalContext.Consumer>
                     )}
-                </LearnLinksContext.Consumer>
+                </GlobalLinksContext.Consumer>
             </div>
         );
     }

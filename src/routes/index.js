@@ -109,11 +109,21 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
-        // [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
-        //     exact: true,
-        // },
-        // [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
-
-        // }
+        [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
+            exact: true,
+            path: '/transfers/:currency',
+            component: NeutrinoDashboard,
+            label: __('Transfers'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
+            exact: true,
+            path: '/invoices/:currency',
+            component: NeutrinoDashboard,
+            label: __('Invoice generator'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        }
     },
 };
