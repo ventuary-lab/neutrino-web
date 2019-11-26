@@ -69,7 +69,7 @@ class StakingRightPanel extends React.Component<Props, State> {
 
             massPaymentTxs = massPaymentTxs.filter((tx: MappedWavesTransactionInfo) => tx.sender === massPaymentSender);
         } catch (err) {
-            console.log({ err });
+            console.log('Incorrect mass payment address provided');
         }
 
         this.setState({ mappedTransactions: massPaymentTxs });
