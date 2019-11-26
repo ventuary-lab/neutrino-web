@@ -6,6 +6,7 @@ import { html, dal, store } from 'components';
 import PayoutCheck from '../PayoutCheck';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { WavesTransactionInfo, WavesTransfer, User } from 'contractControllers/types';
+import { getMassPaymentSender } from 'reducers/auth/selectors';
 
 import './style.scss';
 
@@ -57,12 +58,20 @@ class StakingRightPanel extends React.Component<Props, State> {
     }
 
     async updateMassPaymentsList (user: User) {
-        
-        const massPaymentTxs = await this.getMassTransactionsList(
+        let massPaymentTxs = await this.getMassTransactionsList(
             user.address,
-            dal.assets['usd-n']
+            dal.assets[CurrencyEnum.USD_N]
         );
-        console.log({ massPaymentTxs });
+
+        try {
+            const massPaymentSender = getMassPaymentSender(store.getState());
+            if (!massPaymentSender) throw new Error();
+
+            massPaymentTxs = massPaymentTxs.filter((tx: MappedWavesTransactionInfo) => tx.sender === massPaymentSender);
+        } catch (err) {
+            console.log({ err });
+        }
+
         this.setState({ mappedTransactions: massPaymentTxs });
     }
 

@@ -29,13 +29,13 @@ module.exports = class Router {
                         dal: {
                             // neutrinoAddress: this.app.neutrinoAddress,
                             // auctionAddress: this.app.auctionAddress,
+                            massPaymentSender: this.app.massPaymentSender || null,
                             network: this.app.network,
                             nodeUrl: this.app.nodeUrl,
                             assets: this.app.assets,
                             contracts,
                         },
                     },
-                    // prices: await this._getPrices(),
                 };
             },
             '/api/v1/staking/mass-payment/:address/:assetId': async ({
