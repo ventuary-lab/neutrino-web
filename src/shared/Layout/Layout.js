@@ -42,6 +42,7 @@ import {
 } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
+import UserCongratsModal from 'modals/UserCongratsModal';
 
 import './Layout.scss';
 
@@ -110,6 +111,7 @@ export default class Layout extends React.PureComponent {
 
         this.state = {
             shouldShowInviteModal: false,
+            isUserCongratsModalOpened: false,
             isBlurred: false,
         };
     }
@@ -131,6 +133,8 @@ export default class Layout extends React.PureComponent {
 
     componentWillMount () {
         this.handleUserWithNoKeeper();
+
+        this.setState({ isUserCongratsModalOpened: true });
     }
 
     async componentDidMount() {
@@ -168,6 +172,7 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillUnmount() {
+        this.wcc.stopUpdating();
         this.detachResizeObserver();
     }
 
@@ -211,10 +216,6 @@ export default class Layout extends React.PureComponent {
         }
 
         this._attachWavesDataController();
-    }
-
-    componentWillUnmount() {
-        this.wcc.stopUpdating();
     }
 
     triggerInstallKeeperModalVisibility(isVisible) {
@@ -279,7 +280,7 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal, isBlurred } = this.state;
+        const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
 
         const children =
             this.props.currentItem.id !== 'root' ? (
@@ -315,6 +316,10 @@ export default class Layout extends React.PureComponent {
                 <InstallKeeperModal
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
+                />
+                <UserCongratsModal 
+                    isOpened={isUserCongratsModalOpened}
+                    onClose={() => this.setState({ isUserCongratsModalOpened: false })}
                 />
                 <LearnLinksContext.Provider value={this.learnLinksContextValue}>
                     <BlurContext.Provider value={this.blurContextValue}>

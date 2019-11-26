@@ -3,10 +3,16 @@
 @import 'style/helpers/mixins';
 
 .UserCongratsModal {
+    position: absolute;
+    left: 100px;
+    top: 50%;
+    transform: translate(0, -50%);
 
     &__main {
         width: 803px;
         height: 558px;
+        background-color: #17183A;
+        border: 1px solid #494991;
     }
 
     &__title {
@@ -14,6 +20,31 @@
         font-size: 24px;
         line-height: 29px;
         color: #00F5FF;
+        padding: 50px;
+        text-align: center;
+    }
+
+    &__body {
+        position: relative;
+    }
+
+    &__usdn-logo {
+        width: 51px;
+        height: 51px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        top: -22px;
+    }
+
+    &__msg {
+        background-color: #494991;
+        padding: 40px;
+        text-align: center;
+    }
+
+    &__spot {
+        
     }
 }
 
