@@ -135,7 +135,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         hint={
                             _get(this.props, 'formValues.bounds')
                                 ? `${_round(
-                                    _get(this.props, 'formValues.bounds') / (controlPrice / 100),
+                                    _get(this.props, 'formValues.neutrino') / (controlPrice / 100),
                                     2
                                 )} WAVES`
                                 : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
