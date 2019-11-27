@@ -1,45 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {getFormValues, change} from 'redux-form';
+import { connect } from 'react-redux';
+import { getFormValues, change } from 'redux-form';
 import _get from 'lodash-es/get';
 import _ from 'lodash';
 import _round from 'lodash-es/round';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
-import {openModal} from 'yii-steroids/actions/modal';
+import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import CollectionEnum from 'enums/CollectionEnum';
+// import CollectionEnum from 'enums/CollectionEnum';
 import MessageModal from 'modals/MessageModal';
+import { getControlPrice } from 'reducers/contract/selectors';
 
 import { dal, html, store } from 'components';
 
 import './BuyBoundsForm.scss';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
+import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 
 const bem = html.bem('BuyBoundsForm');
 const FORM_ID = 'BuyBoundsForm';
 
-@connect(
-    state => ({
-        pairName: getPairName(state),
-        baseCurrency: getBaseCurrency(state),
-        quoteCurrency: getQuoteCurrency(state),
-        formValues: getFormValues(FORM_ID)(state),
-    })
-)
-@dal.hoc(
-    props => [
-        {
-            url: `/api/v1/neutrino-config/${props.pairName}`,
-            key: 'neutrinoConfig',
-            collection: CollectionEnum.NEUTRINO_BALANCES,
-        },
-    ]
-)
+@connect(state => ({
+    pairName: getPairName(state),
+    baseCurrency: getBaseCurrency(state),
+    quoteCurrency: getQuoteCurrency(state),
+    formValues: getFormValues(FORM_ID)(state),
+    controlPrice: getControlPrice(state),
+}))
 export default class BuyBoundsForm extends React.PureComponent {
-
     static propTypes = {
         pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
@@ -57,14 +47,17 @@ export default class BuyBoundsForm extends React.PureComponent {
         this._isProgramChange = false;
 
         this.state = {
-            isButtonDisabled: false
+            isButtonDisabled: false,
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        const isChangeDiscountAmount = _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
-        const isChangeBoundsAmount = _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
-        const isChangeNeutrinoAmount = _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
+        const isChangeDiscountAmount =
+            _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
+        const isChangeBoundsAmount =
+            _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
+        const isChangeNeutrinoAmount =
+            _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
 
         //discount validate
         if (_get(this.props.formValues, 'discount')) {
@@ -81,20 +74,20 @@ export default class BuyBoundsForm extends React.PureComponent {
         }
 
         if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeNeutrinoAmount) {
-            this._refreshAmount(nextProps, false,isChangeBoundsAmount || isChangeDiscountAmount);
-        }
-        else {
+            this._refreshAmount(nextProps, false, isChangeBoundsAmount || isChangeDiscountAmount);
+        } else {
             this._isProgramChange = false;
         }
     }
 
-    _onDiscountChange (value) {
+    _onDiscountChange(value) {
         const parsed = _.toNumber(value);
         this.setState({ isButtonDisabled: parsed > 50 });
     }
 
     render() {
         const { isButtonDisabled } = this.state;
+        const { controlPrice } = this.props;
 
         return (
             <div className={bem.block()}>
@@ -113,7 +106,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                     <NumberField
                         min={1}
                         max={99}
-                        step='any'
+                        step="any"
                         required
                         inputProps={{
                             autoComplete: 'off',
@@ -127,27 +120,32 @@ export default class BuyBoundsForm extends React.PureComponent {
                     />
                     <NumberField
                         min={0}
-                        step='any'
+                        step="any"
                         required
                         inputProps={{
-                            autoComplete: 'off'
+                            autoComplete: 'off',
                         }}
                         label={__('Amount')}
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency)
+                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
                         }}
-                        hint={_get(this.props, 'formValues.bounds')
-                            ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
-                            // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
-                            : ' '
+                        hint={
+                            _get(this.props, 'formValues.bounds')
+                                ? `${_round(
+                                    _get(this.props, 'formValues.bounds') / (controlPrice / 100),
+                                    2
+                                )} WAVES`
+                                : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
+                                // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
+                                ' '
                         }
                     />
                     <NumberField
                         min={0}
-                        step='any'
+                        step="any"
                         inputProps={{
                             autoComplete: 'off',
                         }}
@@ -156,7 +154,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         attribute={'neutrino'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.quoteCurrency)
+                            icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
                         }}
                     />
                     <Button
@@ -175,14 +173,11 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
-        const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
+        // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
+        const wavesToUsdPrice = this.props.controlPrice;
 
-        return dal.setBondOrder(
-            this.props.pairName,
-            price,
-            this.props.quoteCurrency,
-            values.bounds
-        )
+        return dal
+            .setBondOrder(this.props.pairName, price, this.props.quoteCurrency, values.bounds)
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console
             })
@@ -191,15 +186,19 @@ export default class BuyBoundsForm extends React.PureComponent {
 
                 //User denied message
                 if (err && err.code === '10') {
-                    store.dispatch(openModal(MessageModal, {
-                        text: __('You have canceled the order'),
-                    }));
+                    store.dispatch(
+                        openModal(MessageModal, {
+                            text: __('You have canceled the order'),
+                        })
+                    );
                 } else if (err) {
-                    store.dispatch(openModal(MessageModal, {
-                        text: __('The order was canceled.\n Error: {err}', {
-                            err: err.message,
-                        }),
-                    }));
+                    store.dispatch(
+                        openModal(MessageModal, {
+                            text: __('The order was canceled.\n Error: {err}', {
+                                err: err.message,
+                            }),
+                        })
+                    );
                 }
             });
     }
@@ -222,23 +221,21 @@ export default class BuyBoundsForm extends React.PureComponent {
         if (isRefreshDiscount) {
             amount = this._parseAmount(((bounds - neutrino) * 100) / bounds);
 
-            store.dispatch(change(
-                FORM_ID,
-                'discount',
-                this._toFixedSpecial(amount, 2)
-            ));
-
+            store.dispatch(change(FORM_ID, 'discount', this._toFixedSpecial(amount, 2)));
         } else {
-            amount = this._parseAmount(isRefreshNeutrino
-                ? (bounds / 100) * (100 - discount)
-                : (neutrino / (100 - discount)) * 100);
+            amount = this._parseAmount(
+                isRefreshNeutrino
+                    ? (bounds / 100) * (100 - discount)
+                    : (neutrino / (100 - discount)) * 100
+            );
 
-
-            store.dispatch(change(
-                FORM_ID,
-                isRefreshNeutrino ? 'neutrino' : 'bounds',
-                this._toFixedSpecial(amount, 2)
-            ));
+            store.dispatch(
+                change(
+                    FORM_ID,
+                    isRefreshNeutrino ? 'neutrino' : 'bounds',
+                    this._toFixedSpecial(amount, 2)
+                )
+            );
         }
     }
 
@@ -250,16 +247,22 @@ export default class BuyBoundsForm extends React.PureComponent {
         return !isNaN(parseFloat(result)) && isFinite(result) ? result : 0;
     }
 
-    _toFixedSpecial = function (num, n) {
+    _toFixedSpecial = function(num, n) {
         const str = num.toFixed(n);
         if (str.indexOf('e+') < 0) {
             return str;
         }
 
         // if number is in scientific notation, pick (b)ase and (p)ower
-        return str.replace('.', '').split('e+').reduce(function (p, b) {
-            return p + new Array(b - p.length + 2).join(0);
-        }) + '.' + new Array(n + 1).join(0);
+        return (
+            str
+                .replace('.', '')
+                .split('e+')
+                .reduce(function(p, b) {
+                    return p + new Array(b - p.length + 2).join(0);
+                }) +
+            '.' +
+            new Array(n + 1).join(0)
+        );
     };
-
 }
