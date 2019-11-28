@@ -1,11 +1,25 @@
-const {waitForTx, broadcast} = require('@waves/waves-transactions');
+const { waitForTx, broadcast } = require('@waves/waves-transactions');
 const _isString = require('lodash/isString');
 const _isInteger = require('lodash/isInteger');
 const _isObject = require('lodash/isObject');
+import { WavesKeeperTransaction, WavesKeeper, WavesKeeperAccount } from './types';
+
+declare global {
+    interface Window {
+        WavesKeeper?: WavesKeeper;
+    }
+}
 
 export default class Keeper {
+    dal: any;
+    onUpdate: (address: string) => void | null;
+    fee: number;
+    _isAvailable: boolean | null;
+    _address: string | null;
+    _pageStart: number;
+    _checkerInterval: number;
 
-    constructor(dal) {
+    constructor(dal: any) {
         this.dal = dal;
         this.onUpdate = null;
         this.fee = 0.009;
@@ -14,6 +28,8 @@ export default class Keeper {
         this._address = null;
         this._pageStart = Date.now();
         this._checkerInterval = null;
+
+        this._buildTransaction = this._buildTransaction.bind(this);
 
         this._addressChecker = this._addressChecker.bind(this);
     }
@@ -24,7 +40,7 @@ export default class Keeper {
         }
 
         this._address = await this.getAddress();
-
+        // @ts-ignore
         this._checkerInterval = setInterval(this._addressChecker, 1000);
     }
 
@@ -41,7 +57,7 @@ export default class Keeper {
         return !!keeper;
     }
 
-    async getAccount() {
+    async getAccount(): Promise<WavesKeeperAccount | null> {
         const keeper = await this.getPlugin();
         if (!keeper) {
             return null;
@@ -65,43 +81,42 @@ export default class Keeper {
         return account.address;
     }
 
-    /**
-     * Get WavesKeeper from window
-     * @returns {Promise}
-     */
-    async getPlugin() {
+    async getPlugin(): Promise<WavesKeeper | undefined> {
         const checker = resolve => {
-            if (this._isAvailable === true || (Date.now() - this._pageStart > 2000 && window.WavesKeeper && window.WavesKeeper.publicState)) {
+            if (
+                this._isAvailable === true ||
+                (Date.now() - this._pageStart > 2000 &&
+                    window.WavesKeeper &&
+                    window.WavesKeeper.publicState)
+            ) {
                 this._isAvailable = true;
                 setTimeout(() => resolve(window.WavesKeeper));
-
             } else if (this._isAvailable === false || Date.now() - this._pageStart > 5000) {
                 this._isAvailable = false;
                 resolve(null);
-            }
-            else if (this._isAvailable === null) {
+            } else if (this._isAvailable === null) {
                 setTimeout(() => checker(resolve), 100);
             }
         };
         return new Promise(checker);
     }
 
-    /**
-     *
-     * @param {string} pairName
-     * @param {string} contractName
-     * @param {string} method
-     * @param {array} args
-     * @param {string} paymentCurrency
-     * @param {number} paymentAmount
-     * @param {boolean} waitTx
-     * @returns {Promise}
-     */
-    async sendTransaction(pairName, contractName, method, args, paymentCurrency, paymentAmount, waitTx = true) {
+    async sendTransaction(
+        pairName: string,
+        contractName: string,
+        method: string,
+        args: string[],
+        paymentCurrency: string,
+        paymentAmount: number,
+        waitTx: boolean = true,
+    ) {
         const keeper = await this.getPlugin();
         const dApp = this.dal.contracts[pairName][contractName];
-        console.log(this.dal.contracts)
-        const result = await keeper.signAndPublishTransaction(this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount));
+
+        const result = await keeper.signAndPublishTransaction(
+            this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
+        );
+
         if (result) {
             if (!waitTx) {
                 return result;
@@ -114,17 +129,32 @@ export default class Keeper {
             }).then(() => result);
         }
         return result;
-
     }
 
-    async signTransaction(pairName, contractName, method, args, paymentCurrency, paymentAmount) {
+    async signTransaction(
+        pairName: string,
+        contractName: string,
+        method: string,
+        args: string[],
+        paymentCurrency: string,
+        paymentAmount: number,
+    ) {
         const keeper = await this.getPlugin();
         const dApp = this.dal.contracts[pairName][contractName];
-        return keeper.signTransaction(this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount));
+
+        return keeper.signTransaction(
+            this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
+        );
     }
 
-    _buildTransaction(dApp, method, args, paymentCurrency, paymentAmount) {
-        const transaction = {
+    _buildTransaction(
+        dApp: string,
+        method: string,
+        args: Array<number | string>,
+        paymentCurrency,
+        paymentAmount
+    ) {
+        const transaction: WavesKeeperTransaction = {
             type: 16,
             data: {
                 fee: {
@@ -135,16 +165,18 @@ export default class Keeper {
                 call: {
                     args: args.map(item => ({
                         type: _isInteger(item) ? 'integer' : 'string',
-                        value: _isObject(item) ? JSON.stringify(item) : item,
+                        value: _isObject(item) ? JSON.stringify(item) : `${item}`,
                     })),
-                    function: method
+                    function: method,
                 },
-                payment: !paymentAmount ? [] : [
-                    {
-                        assetId: paymentCurrency || 'WAVES',
-                        tokens: String(paymentAmount),
-                    }
-                ],
+                payment: !paymentAmount
+                    ? []
+                    : [
+                          {
+                              assetId: paymentCurrency || 'WAVES',
+                              tokens: String(paymentAmount),
+                          },
+                      ],
             },
         };
         if (process.env.NODE_ENV !== 'production') {
@@ -188,5 +220,33 @@ export default class Keeper {
         }
     }
 
+    async _buildTransferTransaction() {}
 
+    async transfer(
+        pairName: string,
+        recipient: string,
+        amount: string,
+        assetId: string,
+        fee: string
+    ) {
+
+        const tx = {
+            type: 4,
+            data: {
+                amount: {
+                    assetId: assetId,
+                    tokens: amount,
+                },
+                fee: {
+                    assetId: 'WAVES',
+                    tokens: '0.001',
+                },
+                recipient: recipient,
+            },
+        };
+
+        const keeper = await this.getPlugin();
+        const result = await keeper.signAndPublishTransaction(tx);
+        console.log({ result });
+    }
 }
