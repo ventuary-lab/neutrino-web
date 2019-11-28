@@ -40,11 +40,30 @@ export default class Header extends React.PureComponent {
 
     constructor(props) {
         super(props);
+
+        this.onNavItemChange = this.onNavItemChange.bind(this);
+
+        this.lastNavItem = null;
     }
 
-    componentDidUpdate(nextProps) {
-        if (this.props.currentItem.id !== ROUTE_ROOT && nextProps.currentItem.id === ROUTE_ROOT) {
+    componentDidUpdate(prevProps) {
+        this.lastNavItem = prevProps.currentItem;
+
+        if (this.props.currentItem.id !== ROUTE_ROOT && prevProps.currentItem.id === ROUTE_ROOT) {
             store.dispatch(change(FORM_ID, 'section', null));
+        }
+    }
+
+    onNavItemChange(item) {
+        if (item.label === 'Exchange' && this.lastNavItem) {
+            window.open('https://ya.ru');
+            store.dispatch(change(FORM_ID, 'section', this.lastNavItem.label));
+        } else {
+            store.dispatch(
+                goToPage(item.id, {
+                    currency: this.props.quoteCurrency,
+                })
+            );
         }
     }
 
@@ -73,13 +92,7 @@ export default class Header extends React.PureComponent {
                             <DropDownField
                                 attribute={'section'}
                                 items={this.props.navItems}
-                                onItemChange={item =>
-                                    store.dispatch(
-                                        goToPage(item.id, {
-                                            currency: this.props.quoteCurrency,
-                                        })
-                                    )
-                                }
+                                onItemChange={this.onNavItemChange}
                                 defaultItemLabel={'Products'}
                             />
                         </Form>
@@ -90,7 +103,7 @@ export default class Header extends React.PureComponent {
                             <Button
                                 className={bem.element('auth-button')}
                                 label={__('Login with Keeper')}
-                                color='secondary'
+                                color="secondary"
                                 onClick={() => context.onLogin()}
                             />
                         )}

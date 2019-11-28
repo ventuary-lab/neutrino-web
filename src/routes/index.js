@@ -5,6 +5,7 @@ import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import LandingPage from './LandingPage';
+import { defaultProductLinks } from 'shared/Layout/context';
 
 // Temporary approach
 import RpdDashboard from './RpdDashboard';
@@ -101,6 +102,14 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
+        'Exchange': {
+            exact: true,
+            // path: '#',
+            label: __('Exchange'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+            url: defaultProductLinks.find(link => link.label === 'Exchange')
+        },
         [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
             exact: true,
             path: '/transfers/:currency',
@@ -124,6 +133,6 @@ export default {
             label: __('Bonds dashboard'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
-        }
+        },
     },
 };
