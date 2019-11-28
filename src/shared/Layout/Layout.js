@@ -229,7 +229,7 @@ export default class Layout extends React.PureComponent {
         store.dispatch(goToPage(ROUTE_ROOT));
     }
 
-    componentDidUpdate(prevProps) {        
+    componentDidUpdate(prevProps) {
         if (prevProps.user) {
             const invoiceProvided = this._checkForInvoice();
 
@@ -239,7 +239,6 @@ export default class Layout extends React.PureComponent {
         }
 
         this._attachWavesDataController();
-
     }
 
     componentWillUnmount() {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUser } from 'yii-steroids/reducers/auth';
 import _upperFirst from 'lodash-es/upperFirst';
-import { InstallKeeperModalContext } from 'shared/Layout/context';
+import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
 
 import { html, dal } from 'components';
 import BalanceTable from 'shared/BalanceTable';
@@ -94,12 +94,18 @@ export default class RightSidebar extends React.PureComponent {
                     onClick={() => this.context.onLogin()}
                 />
                 <p className={bem.element('auth-info')}>
-                    <a
-                        href="https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit"
-                        target={'_blank'}
-                    >
-                        Terms of Service
-                    </a>
+                    <GlobalLinksContext.Consumer>
+                        {context => {
+                            const tosLink = context.links.find(
+                                link => link.label === 'Terms of Service'
+                            ).url;
+                            return (
+                                <a href={tosLink} target={'_blank'}>
+                                    Terms of Service
+                                </a>
+                            );
+                        }}
+                    </GlobalLinksContext.Consumer>
                     <br />
                     <a
                         href="https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit?usp=sharing"
