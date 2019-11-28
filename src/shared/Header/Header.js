@@ -10,6 +10,7 @@ import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
 import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
+import { getExchangeLink } from 'shared/Layout/helpers';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -40,11 +41,30 @@ export default class Header extends React.PureComponent {
 
     constructor(props) {
         super(props);
+
+        this.onNavItemChange = this.onNavItemChange.bind(this);
+
+        this.lastNavItem = null;
     }
 
-    componentDidUpdate(nextProps) {
-        if (this.props.currentItem.id !== ROUTE_ROOT && nextProps.currentItem.id === ROUTE_ROOT) {
-            store.dispatch(change(FORM_ID, 'section', null));
+    componentDidUpdate(prevProps) {
+        this.lastNavItem = prevProps.currentItem;
+
+        if (this.props.currentItem.id !== ROUTE_ROOT && prevProps.currentItem.id === ROUTE_ROOT && this.lastNavItem) {
+            store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
+        }
+    }
+
+    onNavItemChange(item, dexLink) {
+        if (item.label === 'Exchange' && this.lastNavItem) {
+            window.open(dexLink);
+            store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
+        } else {
+            store.dispatch(
+                goToPage(item.id, {
+                    currency: this.props.quoteCurrency,
+                })
+            );
         }
     }
 
@@ -54,60 +74,54 @@ export default class Header extends React.PureComponent {
         );
 
         return (
-            <header className={bem.block()}>
-                <Link className={bem.element('logo')} noStyles toRoute={ROUTE_ROOT}>
-                    <img className={bem.element('logo-image')} src={logo} alt="Neutrino" />
-                </Link>
-                {(showNav && (
-                    <div className={bem.element('section-toggle')}>
-                        <Form
-                            formId={FORM_ID}
-                            initialValues={{
-                                section: this.props.navItems
-                                    .map(item => item.id)
-                                    .includes(this.props.currentItem.id)
-                                    ? this.props.currentItem.id
-                                    : null,
-                            }}
-                        >
-                            <DropDownField
-                                attribute={'section'}
-                                items={this.props.navItems}
-                                onItemChange={item =>
-                                    store.dispatch(
-                                        goToPage(item.id, {
-                                            currency: this.props.quoteCurrency,
-                                        })
-                                    )
-                                }
-                                defaultItemLabel={'Products'}
-                            />
-                        </Form>
-                    </div>
-                )) || (
-                    <InstallKeeperModalContext.Consumer>
-                        {context => (
-                            <Button
-                                className={bem.element('auth-button')}
-                                label={__('Login with Keeper')}
-                                color='secondary'
-                                onClick={() => context.onLogin()}
-                            />
+            <GlobalLinksContext.Consumer>
+                {links => (
+                    <header className={bem.block()}>
+                        <Link className={bem.element('logo')} noStyles toRoute={ROUTE_ROOT}>
+                            <img className={bem.element('logo-image')} src={logo} alt="Neutrino" />
+                        </Link>
+                        {(showNav && (
+                            <div className={bem.element('section-toggle')}>
+                                <Form
+                                    formId={FORM_ID}
+                                    initialValues={{
+                                        section: this.props.navItems
+                                            .map(item => item.id)
+                                            .includes(this.props.currentItem.id)
+                                            ? this.props.currentItem.id
+                                            : null,
+                                    }}
+                                >
+                                    <DropDownField
+                                        attribute={'section'}
+                                        items={this.props.navItems}
+                                        onItemChange={item => this.onNavItemChange(item, getExchangeLink(links.product).url)}
+                                        defaultItemLabel={'Products'}
+                                    />
+                                </Form>
+                            </div>
+                        )) || (
+                            <InstallKeeperModalContext.Consumer>
+                                {context => (
+                                    <Button
+                                        className={bem.element('auth-button')}
+                                        label={__('Login with Keeper')}
+                                        color="secondary"
+                                        onClick={() => context.onLogin()}
+                                    />
+                                )}
+                            </InstallKeeperModalContext.Consumer>
                         )}
-                    </InstallKeeperModalContext.Consumer>
-                )}
-                <div className={'info-dropdown'}>
-                    <GlobalLinksContext.Consumer>
-                        {links => (
+                        <div className={'info-dropdown'}>
                             <InfoDropDown
                                 icon={'Icon__learn'}
                                 label={__('Learn')}
                                 items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
                             />
-                        )}
-                    </GlobalLinksContext.Consumer>
-                </div>
-            </header>
+                        </div>
+                    </header>
+                )}
+            </GlobalLinksContext.Consumer>
         );
     }
 }
