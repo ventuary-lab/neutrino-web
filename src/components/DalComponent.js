@@ -219,7 +219,7 @@ export default class DalComponent {
             pairName,
             address,
             amount,
-            this.assets[paymentCurrency]
+            this.assets[paymentCurrency] || 'WAVES'
         );
     }
 }
