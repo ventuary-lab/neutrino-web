@@ -17,7 +17,7 @@ export default class Keeper {
     _isAvailable: boolean | null;
     _address: string | null;
     _pageStart: number;
-    _checkerInterval: NodeJS.Timeout | null;
+    _checkerInterval: number;
 
     constructor(dal: any) {
         this.dal = dal;
@@ -29,6 +29,8 @@ export default class Keeper {
         this._pageStart = Date.now();
         this._checkerInterval = null;
 
+        this._buildTransaction = this._buildTransaction.bind(this);
+
         this._addressChecker = this._addressChecker.bind(this);
     }
 
@@ -38,7 +40,7 @@ export default class Keeper {
         }
 
         this._address = await this.getAddress();
-
+        // @ts-ignore
         this._checkerInterval = setInterval(this._addressChecker, 1000);
     }
 
@@ -99,29 +101,18 @@ export default class Keeper {
         return new Promise(checker);
     }
 
-    /**
-     *
-     * @param {string} pairName
-     * @param {string} contractName
-     * @param {string} method
-     * @param {array} args
-     * @param {string} paymentCurrency
-     * @param {number} paymentAmount
-     * @param {boolean} waitTx
-     * @returns {Promise}
-     */
     async sendTransaction(
-        pairName,
-        contractName,
-        method,
-        args,
-        paymentCurrency,
-        paymentAmount,
-        waitTx = true
+        pairName: string,
+        contractName: string,
+        method: string,
+        args: string[],
+        paymentCurrency: string,
+        paymentAmount: number,
+        waitTx: boolean = true,
     ) {
         const keeper = await this.getPlugin();
         const dApp = this.dal.contracts[pairName][contractName];
-        console.log(this.dal.contracts);
+
         const result = await keeper.signAndPublishTransaction(
             this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
         );
@@ -140,9 +131,17 @@ export default class Keeper {
         return result;
     }
 
-    async signTransaction(pairName, contractName, method, args, paymentCurrency, paymentAmount) {
+    async signTransaction(
+        pairName: string,
+        contractName: string,
+        method: string,
+        args: string[],
+        paymentCurrency: string,
+        paymentAmount: number,
+    ) {
         const keeper = await this.getPlugin();
         const dApp = this.dal.contracts[pairName][contractName];
+
         return keeper.signTransaction(
             this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
         );
@@ -221,5 +220,33 @@ export default class Keeper {
         }
     }
 
-    async transferTransaction() {}
+    async _buildTransferTransaction() {}
+
+    async transfer(
+        pairName: string,
+        recipient: string,
+        amount: string,
+        assetId: string,
+        fee: string
+    ) {
+
+        const tx = {
+            type: 4,
+            data: {
+                amount: {
+                    assetId: assetId,
+                    tokens: amount,
+                },
+                fee: {
+                    assetId: 'WAVES',
+                    tokens: '0.001',
+                },
+                recipient: recipient,
+            },
+        };
+
+        const keeper = await this.getPlugin();
+        const result = await keeper.signAndPublishTransaction(tx);
+        console.log({ result });
+    }
 }

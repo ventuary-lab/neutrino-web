@@ -13,10 +13,11 @@ export interface WavesKeeperCallData {
 }
 
 export interface WavesKeeperTransactionData {
-    fee: WavesKeeperAssetData;
-    dApp: string;
-    call: WavesKeeperCallData;
-    payment: WavesKeeperAssetData[];
+    fee?: WavesKeeperAssetData;
+    dApp?: string;
+    call?: WavesKeeperCallData;
+    payment?: WavesKeeperAssetData[];
+    recipient?: string;
 }
 
 export interface WavesKeeperTransaction {
