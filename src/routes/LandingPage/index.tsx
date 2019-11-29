@@ -1,6 +1,7 @@
 import React from 'react';
 import { html, dal } from 'components';
 import LandingHeader from './LandingHeader';
+import { GlobalLinksContext } from 'shared/Layout/context';
 // import { InstallKeeperModalContext } from 'shared/Layout/context';
 import backgroundImage from 'static/images/landing/background.png';
 import usdnLogo from 'static/icons/usd-n.svg';
@@ -25,7 +26,7 @@ class LandingPage extends React.Component<Props> {
         super(props);
     }
 
-    componentWillMount () {
+    componentWillMount() {
         (async () => {
             await dal.logout();
         })();
@@ -97,14 +98,18 @@ class LandingPage extends React.Component<Props> {
                         </a>
                     </div>
                     <div className={bem.element('mobile-info')}>{paragraph}</div>
-                    <div className={bem.element('tos')}>
-                        <a
-                            href="https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit?usp=sharing"
-                            target="_blank"
-                        >
-                            Terms of Service
-                        </a>
-                    </div>
+                    <GlobalLinksContext.Consumer>
+                        {context => {
+                            const tosLink = context.links.find(link => link.label === 'Terms of Service').url;
+                            return (
+                                <div className={bem.element('tos')}>
+                                    <a href={tosLink} target="_blank">
+                                        Terms of Service
+                                    </a>
+                                </div>
+                            );
+                        }}
+                    </GlobalLinksContext.Consumer>
                     <div className={bem.element('soc-links')}>{socLinks}</div>
                     <div className={bem.element('powered-by-waves')}>
                         <img src={poweredByWavesLogo} alt="powered by waves" />

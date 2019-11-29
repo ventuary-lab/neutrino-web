@@ -44,11 +44,11 @@ export default class DalComponent {
         // Keeper user
         const user = account
             ? {
-                role: UserRole.REGISTERED,
-                address: account.address,
-                network: account.network,
-                balances: this.balance.getBalances()
-            }
+                  role: UserRole.REGISTERED,
+                  address: account.address,
+                  network: account.network,
+                  balances: this.balance.getBalances(),
+              }
             : null;
 
         // Mark logged
@@ -127,7 +127,7 @@ export default class DalComponent {
         const contractPrice = price * 100;
         let position = _get(
             await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice }
+                params: { price: contractPrice },
             }),
             'data.position'
         );
@@ -215,16 +215,11 @@ export default class DalComponent {
     }
 
     async transferFunds(pairName, paymentCurrency, address, amount) {
-        await this.keeper.sendTransaction(
+        await this.keeper.transfer(
             pairName,
-            ContractEnum.NEUTRINO,
-            'transfer',
-            [
-                address
-            ],
-            this.assets[paymentCurrency],
+            address,
             amount,
+            this.assets[paymentCurrency] || 'WAVES'
         );
     }
-
 }

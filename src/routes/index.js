@@ -5,6 +5,7 @@ import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import LandingPage from './LandingPage';
+import { defaultProductLinks } from 'shared/Layout/context';
 
 // Temporary approach
 import RpdDashboard from './RpdDashboard';
@@ -14,6 +15,8 @@ import UserRole from 'enums/UserRole';
 export const ROUTE_ROOT = 'root';
 export const ROUTE_LANDING_PAGE = 'landing';
 export const ROUTE_NEUTRINO = 'neutrino';
+export const ROUTE_NEUTRINO_SHOW_TRANSFERS = 'neutrino_show_transfers';
+export const ROUTE_NEUTRINO_SHOW_INVOICE_GEN = 'neutrino_show_invoice_gen';
 export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
 export const ROUTE_BONDS = 'bonds';
 export const ROUTE_BONDS_REDIRECT = 'bounds_redirect';
@@ -62,14 +65,6 @@ export default {
             isVisible: false,
             roles: UserRole.getAuth(),
         },
-        [ROUTE_BONDS]: {
-            exact: true,
-            path: '/bonds/:currency',
-            component: BoundsDashboard,
-            label: __('Bonds dashboard'),
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-        },
         [ROUTE_LEASING_REDIRECT]: {
             exact: true,
             path: '/leasing',
@@ -104,6 +99,38 @@ export default {
             path: '/rpd/:currency',
             component: RpdDashboard,
             label: __('Staking dashboard'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        'Exchange': {
+            exact: true,
+            // path: '#',
+            label: __('Exchange'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+            url: defaultProductLinks.find(link => link.label === 'Exchange')
+        },
+        [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
+            exact: true,
+            path: '/transfers/:currency',
+            component: NeutrinoDashboard,
+            label: __('Transfers'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
+            exact: true,
+            path: '/invoices/:currency',
+            component: NeutrinoDashboard,
+            label: __('Invoice generator'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        },
+        [ROUTE_BONDS]: {
+            exact: true,
+            path: '/bonds/:currency',
+            component: BoundsDashboard,
+            label: __('Bonds dashboard'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },

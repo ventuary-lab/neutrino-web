@@ -37,6 +37,7 @@ module.exports = class App implements ApplicationParams {
     httpServer: ExpressHttp.server;
     expressApp: ExpressCore.Express;
     massPaymentService: MassPaymentService;
+    massPaymentSender: string | null;
 
     // Internal class props
     _isSkipUpdates: boolean;
@@ -71,6 +72,7 @@ module.exports = class App implements ApplicationParams {
             // [PairsEnum.EURNB_EURN]: process.env.APP_ADDRESS_EURNB_EURN || '3Mz5Ya4WEXatCfa2JKqqCe4g3deCrFaBxiL', // testnet
         };
 
+        this.massPaymentSender = process.env.MASS_PAYMENT_SENDER || null;
         this.massPaymentService = new MassPaymentService({ nodeUrl: this.nodeUrl });
 
         // Create main redis client & storage

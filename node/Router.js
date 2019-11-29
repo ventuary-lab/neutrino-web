@@ -29,16 +29,18 @@ module.exports = class Router {
                         dal: {
                             // neutrinoAddress: this.app.neutrinoAddress,
                             // auctionAddress: this.app.auctionAddress,
+                            massPaymentSender: this.app.massPaymentSender || null,
                             network: this.app.network,
                             nodeUrl: this.app.nodeUrl,
                             assets: this.app.assets,
                             contracts,
                         },
                     },
-                    // prices: await this._getPrices(),
                 };
             },
-            '/api/v1/staking/mass-payment/:address/:assetId': async ({ params: { address, assetId } }) => {
+            '/api/v1/staking/mass-payment/:address/:assetId': async ({
+                params: { address, assetId },
+            }) => {
                 if (!assetId || !address) {
                     return [];
                 }
@@ -194,6 +196,11 @@ module.exports = class Router {
             // },
             '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
+
+                if (Object.keys(prices)) {
+                    return {};
+                }
+
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },
@@ -267,8 +274,10 @@ module.exports = class Router {
                 };
             },
             '/whitepaper': async (req, res) => {
-                res.redirect('https://drive.google.com/file/d/1QcA8msCWPTbAVGg5_VGGGttm11WHghwX/view');
-            }
+                res.redirect(
+                    'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit'
+                );
+            },
         };
     }
 
@@ -299,7 +308,12 @@ module.exports = class Router {
             const currency = PairsEnum.getSource(pairName);
             if (!result[currency]) {
                 const collection = this.app.getCollection(pairName, CollectionEnum.NEUTRINO_PRICES);
-                result[currency] = await collection.getPrices();
+                
+                try {
+                    result[currency] = await collection.getPrices();
+                } catch (err) {
+                    console.log('Error occured on getPrices call')
+                }
             }
         }
         return result;
