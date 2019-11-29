@@ -37,6 +37,7 @@ import {
     ConfigContext,
     InstallKeeperModalContext,
     BlurContext,
+    UserCongratsModalContext,
     LearnLinksContext,
     defaultLearnLinks as links,
 } from './context';
@@ -108,6 +109,9 @@ export default class Layout extends React.PureComponent {
             checkIsBlurred: () => this.state.isBlurred,
         };
         this.learnLinksContextValue = { links };
+        this.userCongratsModalContextValue = {
+            onClose: () => this.setState({ isUserCongratsModalOpened: false })
+        }
 
         this.state = {
             shouldShowInviteModal: false,
@@ -116,7 +120,7 @@ export default class Layout extends React.PureComponent {
         };
     }
 
-    handleUserWithNoKeeper () {
+    handleUserWithNoKeeper() {
         const fn = () => {
             const isKeeperInstalled = Boolean(window.WavesKeeper && window.WavesKeeper.publicState);
 
@@ -131,7 +135,7 @@ export default class Layout extends React.PureComponent {
         setTimeout(() => fn(), 1500);
     }
 
-    componentWillMount () {
+    componentWillMount() {
         this.handleUserWithNoKeeper();
 
         this.setState({ isUserCongratsModalOpened: true });
@@ -205,7 +209,7 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    async onWavesKeeperLogout () {
+    async onWavesKeeperLogout() {
         await dal.logout();
         store.dispatch(goToPage('root'));
     }
@@ -317,25 +321,27 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <UserCongratsModal 
+                <UserCongratsModal
                     isOpened={isUserCongratsModalOpened}
                     onClose={() => this.setState({ isUserCongratsModalOpened: false })}
                 />
                 <LearnLinksContext.Provider value={this.learnLinksContextValue}>
                     <BlurContext.Provider value={this.blurContextValue}>
-                        <InstallKeeperModalContext.Provider
-                            value={{
-                                onLogin: this.onWavesKeeperLogin,
-                                onLogout: this.onWavesKeeperLogout,
-                                isVisible: shouldShowInviteModal,
-                                openModal: () => this.triggerInstallKeeperModalVisibility(true)
-                            }}
-                        >
-                            <ConfigContext.Provider value={configValue}>
-                                {children}
-                            </ConfigContext.Provider>
-                            <ModalWrapper />
-                        </InstallKeeperModalContext.Provider>
+                        <UserCongratsModalContext.Provider value={this.userCongratsModalContextValue}>
+                            <InstallKeeperModalContext.Provider
+                                value={{
+                                    onLogin: this.onWavesKeeperLogin,
+                                    onLogout: this.onWavesKeeperLogout,
+                                    isVisible: shouldShowInviteModal,
+                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
+                                }}
+                            >
+                                <ConfigContext.Provider value={configValue}>
+                                    {children}
+                                </ConfigContext.Provider>
+                                <ModalWrapper />
+                            </InstallKeeperModalContext.Provider>
+                        </UserCongratsModalContext.Provider>
                     </BlurContext.Provider>
                 </LearnLinksContext.Provider>
             </div>

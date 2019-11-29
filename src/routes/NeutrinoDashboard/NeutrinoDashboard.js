@@ -10,7 +10,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
-import { ConfigContext } from 'shared/Layout/context';
+import { ConfigContext, UserCongratsModalContext, BlurContext } from 'shared/Layout/context';
 import _ from 'lodash';
 
 import { html, dal, store } from 'components';

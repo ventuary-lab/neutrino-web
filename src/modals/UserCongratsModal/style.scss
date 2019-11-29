@@ -44,7 +44,36 @@
     }
 
     &__spot {
-        
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        margin-top: 25px;
+    }
+
+    &__logos-flex {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        margin-top: 50px;
+    }
+
+    &__logo-link {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & > a {
+            margin-top: 15px;
+            display: block;
+        }
+
+        & > img {
+            max-height: 190px;
+            max-width: 190px;
+        }
     }
 }
 
