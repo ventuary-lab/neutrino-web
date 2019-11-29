@@ -110,7 +110,8 @@ export default class Layout extends React.PureComponent {
         };
         this.learnLinksContextValue = { links };
         this.userCongratsModalContextValue = {
-            onClose: () => this.setState({ isUserCongratsModalOpened: false })
+            onClose: () => this.setState({ isUserCongratsModalOpened: false }),
+            onOpen: () => this.setState({ isUserCongratsModalOpened: true })
         }
 
         this.state = {
@@ -137,8 +138,6 @@ export default class Layout extends React.PureComponent {
 
     componentWillMount() {
         this.handleUserWithNoKeeper();
-
-        this.setState({ isUserCongratsModalOpened: true });
     }
 
     async componentDidMount() {
@@ -321,10 +320,6 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <UserCongratsModal
-                    isOpened={isUserCongratsModalOpened}
-                    onClose={() => this.setState({ isUserCongratsModalOpened: false })}
-                />
                 <LearnLinksContext.Provider value={this.learnLinksContextValue}>
                     <BlurContext.Provider value={this.blurContextValue}>
                         <UserCongratsModalContext.Provider value={this.userCongratsModalContextValue}>
@@ -337,6 +332,10 @@ export default class Layout extends React.PureComponent {
                                 }}
                             >
                                 <ConfigContext.Provider value={configValue}>
+                                    <UserCongratsModal
+                                        isOpened={isUserCongratsModalOpened}
+                                        onClose={() => this.setState({ isUserCongratsModalOpened: false })}
+                                    />
                                     {children}
                                 </ConfigContext.Provider>
                                 <ModalWrapper />

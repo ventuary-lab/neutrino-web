@@ -10,7 +10,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
-import { ConfigContext, UserCongratsModalContext, BlurContext } from 'shared/Layout/context';
+import { ConfigContext, UserCongratsModalContext } from 'shared/Layout/context';
 import _ from 'lodash';
 
 import { html, dal, store } from 'components';
@@ -97,10 +97,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
         };
 
         this.getControlPrice = this.getControlPrice.bind(this);
+        this._wasSwapLoading = null;
 
         this._onSubmit = this._onSubmit.bind(this);
         this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
+    }
+
+    doesSwapLoadingEnd (newState, oldState, callback = () => {}) {
+        if (newState && !oldState) {
+            callback();
+        }
+    }
+
+    componentDidUpdate (prevProps, prevState) {
+        this._wasSwapLoading = prevState.isSwapLoading;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -160,6 +171,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
+        const { isSwapLoading } = this.state;
+
 
         const steps = [
             {
@@ -174,6 +187,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
+                <UserCongratsModalContext.Consumer>
+                    {context => this.doesSwapLoadingEnd(this._wasSwapLoading, isSwapLoading, context.onOpen)}
+                </UserCongratsModalContext.Consumer>
                 {this.state.isSwapLoading && (
                     <SwapLoader
                         {...this.props.withdraw}

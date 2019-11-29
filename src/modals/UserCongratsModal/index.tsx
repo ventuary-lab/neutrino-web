@@ -42,6 +42,21 @@ class UserCongratsModal extends React.Component<Props> {
         );
     }
 
+    componentDidUpdate() {
+        console.log(this.context);
+
+        if (this.props.isOpened) {
+            this.context.blur();
+        } else {
+            this.context.unblur();
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.onClose();
+        this.context.unblur();
+    }
+
     render() {
         const { title = 'Congratulations!' } = this.props;
         const links = [
