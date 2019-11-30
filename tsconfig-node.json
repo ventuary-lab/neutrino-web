@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "lib": [
+        "dom",
+        "webworker",
+        "es2017"
+        ],
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "typeRoots": [
+        "./node_modules/@types"
+        ],
+        "baseUrl": "./src",
+    },
+    "exclude": [
+        "node_modules",
+    ]
+}
