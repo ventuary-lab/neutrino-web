@@ -48,6 +48,7 @@ module.exports = class App implements ApplicationParams {
     _collections: ContractDictionary<ContractDictionary<ContractCache>> | null; // Not type-checked
     _router: any;
     _websocket: WebSocketServer;
+    _collectionUpdateTimeout: number;
 
     constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
@@ -127,6 +128,8 @@ module.exports = class App implements ApplicationParams {
         this._isSkipUpdates = false;
         this._isNowUpdated = false;
         this._isNeedUpdateAgain = false;
+
+        this._collectionUpdateTimeout = 5000;
     }
 
     async start() {
@@ -270,38 +273,46 @@ module.exports = class App implements ApplicationParams {
         if (this._isNowUpdated) {
             return;
         }
+
         this._isNowUpdated = true;
 
-        try {
-            for (const pairName of PairsEnum.getKeys()) {
-                const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
-
-                for (const collectionName of CollectionEnum.getKeys() as string[]) {
-                    const collection = this.getCollection(pairName, collectionName);
-                    const contractName = CollectionEnum.getContractName(collectionName) as string;
-
-                    if (!data[contractName]) {
-                        data[contractName] = await collection.transport.fetchAll();
+        const update = async () => {
+            try {
+                for (const pairName of PairsEnum.getKeys()) {
+                    const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
+    
+                    for (const collectionName of CollectionEnum.getKeys() as string[]) {
+                        const collection = this.getCollection(pairName, collectionName);
+                        const contractName = CollectionEnum.getContractName(collectionName) as string;
+    
+                        if (!data[contractName]) {
+                            data[contractName] = await collection.transport.fetchAll();
+                        }
+    
+                        this.logger.info('Update all data in collection... ' + collectionName);
+    
+                        if (shouldFlush) {
+                            await collection.removeAll();
+                        }
+    
+                        const nodeNewData = data[contractName];
+    
+                        await collection.updateAll(nodeNewData);
                     }
-
-                    this.logger.info('Update all data in collection... ' + collectionName);
-
-                    if (shouldFlush) {
-                        await collection.removeAll();
-                    }
-
-                    const nodeNewData = data[contractName];
-
-                    await collection.updateAll(nodeNewData);
                 }
+            } catch (err) {
+                this.logger.error(`Update All Error: ${String(err.stack || err)}`);
             }
-        } catch (err) {
-            this.logger.error(`Update All Error: ${String(err.stack || err)}`);
+    
+            this._isNowUpdated = false;
         }
 
-        this._isNowUpdated = false;
+        setImmediate(async () => {
+            await update();
+        });
+
         // TODO
-        setTimeout(() => this._updateAll(), 5000);
+        setTimeout(() => this._updateAll(), this._collectionUpdateTimeout);
     }
 
     _onHeightUpdate() {

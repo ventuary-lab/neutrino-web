@@ -10,7 +10,7 @@ WORKDIR /app
 COPY node /app/node
 COPY src /app/src
 COPY pages /app/pages
-COPY src/static /app/public
+COPY src/static /app/public/static
 COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 

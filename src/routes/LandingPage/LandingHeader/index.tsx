@@ -6,10 +6,15 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 
 import { Link } from 'ui/global/types';
-import mainLogo from 'static/images/logo.svg';
-import arrowDown from 'static/images/landing/arrow-down.svg';
-import burgerIcon from 'static/images/landing/burger.svg';
-import crossIcon from 'static/images/landing/cross-icon.svg';
+
+// import mainLogo from 'static/images/logo.svg';
+// import arrowDown from 'static/images/landing/arrow-down.svg';
+// import burgerIcon from 'static/images/landing/burger.svg';
+// import crossIcon from 'static/images/landing/cross-icon.svg';
+const mainLogo = 'static/images/logo.svg';
+const arrowDown = 'static/images/landing/arrow-down.svg';
+const burgerIcon = 'static/images/landing/burger.svg';
+const crossIcon = 'static/images/landing/cross-icon.svg';
 
 import './style.scss';
 

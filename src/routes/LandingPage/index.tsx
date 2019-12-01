@@ -2,16 +2,26 @@ import React from 'react';
 import { html, dal } from 'components';
 import LandingHeader from './LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
-// import { InstallKeeperModalContext } from 'shared/Layout/context';
-import backgroundImage from 'static/images/landing/background.png';
-import usdnLogo from 'static/icons/usd-n.svg';
-import boxesImage from 'static/images/landing/boxes.svg';
-import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
-import fbIcon from 'static/images/landing/socials/fb-icon.svg';
-import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
-import tgIcon from 'static/images/landing/socials/tg-icon.svg';
-import twitterIcon from 'static/images/landing/socials/twitter.svg';
-import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
+
+// import backgroundImage from 'static/images/landing/background.png';
+// import usdnLogo from 'static/icons/usd-n.svg';
+// import boxesImage from 'static/images/landing/boxes.svg';
+// import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
+// import fbIcon from 'static/images/landing/socials/fb-icon.svg';
+// import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
+// import tgIcon from 'static/images/landing/socials/tg-icon.svg';
+// import twitterIcon from 'static/images/landing/socials/twitter.svg';
+// import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
+
+const backgroundImage = 'static/images/landing/background.png';
+const usdnLogo = 'static/icons/usd-n.svg';
+const boxesImage = 'static/images/landing/boxes.svg';
+const coloredBoxesImage = 'static/images/landing/colored_boxes.svg';
+const fbIcon = 'static/images/landing/socials/fb-icon.svg';
+const mediumIcon = 'static/images/landing/socials/medium-icon.svg';
+const tgIcon = 'static/images/landing/socials/tg-icon.svg';
+const twitterIcon = 'static/images/landing/socials/twitter.svg';
+const poweredByWavesLogo = 'static/images/landing/powered_by_waves.svg';
 
 import './style.scss';
 
