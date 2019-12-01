@@ -2,30 +2,36 @@
   "devFiles": [],
   "pages": {
     "/": [
-      "static/runtime/webpack-cde53d668a21df19f1ff.js",
-      "static/chunks/commons.b58b053d5df581c0d096.js",
-      "static/css/styles.3c494102.chunk.css",
-      "static/chunks/styles.5e03705657c429e57f82.js",
+      "static/runtime/webpack-5599574ee465c3e3f18c.js",
+      "static/css/commons.28f4ea02.chunk.css",
+      "static/chunks/commons.7b781a4810de1cd674d4.js",
+      "static/runtime/main-77b27ec7a8eddd194fac.js"
+    ],
+    "/NeutrinoDashboard": [
+      "static/runtime/webpack-5599574ee465c3e3f18c.js",
+      "static/css/commons.28f4ea02.chunk.css",
+      "static/chunks/commons.7b781a4810de1cd674d4.js",
       "static/runtime/main-77b27ec7a8eddd194fac.js"
     ],
     "/_app": [
-      "static/runtime/webpack-cde53d668a21df19f1ff.js",
-      "static/chunks/commons.b58b053d5df581c0d096.js",
+      "static/runtime/webpack-5599574ee465c3e3f18c.js",
+      "static/css/commons.28f4ea02.chunk.css",
+      "static/chunks/commons.7b781a4810de1cd674d4.js",
       "static/runtime/main-77b27ec7a8eddd194fac.js"
     ],
     "/_error": [
-      "static/runtime/webpack-cde53d668a21df19f1ff.js",
-      "static/chunks/commons.b58b053d5df581c0d096.js",
+      "static/runtime/webpack-5599574ee465c3e3f18c.js",
+      "static/css/commons.28f4ea02.chunk.css",
+      "static/chunks/commons.7b781a4810de1cd674d4.js",
       "static/runtime/main-77b27ec7a8eddd194fac.js"
     ],
     "/_polyfills": [
       "static/runtime/polyfills-eda006bd44466db3ab58.js"
     ],
     "/index": [
-      "static/runtime/webpack-cde53d668a21df19f1ff.js",
-      "static/chunks/commons.b58b053d5df581c0d096.js",
-      "static/css/styles.3c494102.chunk.css",
-      "static/chunks/styles.5e03705657c429e57f82.js",
+      "static/runtime/webpack-5599574ee465c3e3f18c.js",
+      "static/css/commons.28f4ea02.chunk.css",
+      "static/chunks/commons.7b781a4810de1cd674d4.js",
       "static/runtime/main-77b27ec7a8eddd194fac.js"
     ]
   }

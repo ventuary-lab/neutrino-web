@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --project tsconfig-node.json --log-error server.js",
+    "serve": "ts-node --project tsconfig-node.json --log-error server.js",
     "dev": "node webpack",
     "build": "node webpack production",
     "next-dev": "next",

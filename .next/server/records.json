@@ -4,13 +4,15 @@
       "multi private-next-pages/index.tsx": 0,
       "multi next/dist/pages/_app": 1,
       "multi next/dist/pages/_error": 2,
-      "multi next/dist/pages/_document": 3
+      "multi next/dist/pages/_document": 3,
+      "multi private-next-pages/NeutrinoDashboard/index.tsx": 4
     },
     "usedIds": {
       "0": 0,
       "1": 1,
       "2": 2,
-      "3": 3
+      "3": 3,
+      "4": 4
     }
   },
   "chunks": {
@@ -80,19 +82,27 @@
       "static/GQ5YblsRK08z7E13yHohQ/pages/_app.js": 6,
       "static/GQ5YblsRK08z7E13yHohQ/pages/_document.js": 7,
       "static/GQ5YblsRK08z7E13yHohQ/pages/_error.js": 8,
-      "static/GQ5YblsRK08z7E13yHohQ/pages/index.js": 9
+      "static/GQ5YblsRK08z7E13yHohQ/pages/index.js": 9,
+      "static/ia3eTw6Tjsz5BryLBTCQp/pages/NeutrinoDashboard.js": 2,
+      "static/ia3eTw6Tjsz5BryLBTCQp/pages/_app.js": 3,
+      "static/ia3eTw6Tjsz5BryLBTCQp/pages/_document.js": 4,
+      "static/ia3eTw6Tjsz5BryLBTCQp/pages/_error.js": 5,
+      "static/ia3eTw6Tjsz5BryLBTCQp/pages/index.js": 11
     },
     "bySource": {
-      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.tsx ../src/routes/LandingPage": 10
+      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.tsx ../src/routes/LandingPage": 10,
+      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/NeutrinoDashboard/index.tsx ../../src/routes/NeutrinoDashboard": 12
     },
     "usedIds": [
       0,
       1,
       10,
-      6,
-      7,
-      8,
-      9
+      11,
+      12,
+      2,
+      3,
+      4,
+      5
     ]
   }
 }
