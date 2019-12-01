@@ -36,7 +36,13 @@ expressApp.use(function(req, res, next) {
 
 mainApp.start();
 
+expressApp.use(express.static(__dirname + '/../out'));
 expressApp.use(express.static(__dirname + '/../dist'));
+
+expressApp.get('/', (req, res) => {
+    res.sendFile('index.html', { root: __dirname + '/../out' });
+});
+
 expressApp.get('/*', (req, res) => {
     res.sendFile('index.html', { root: __dirname + '/../dist' });
 });

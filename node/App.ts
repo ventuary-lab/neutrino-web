@@ -236,7 +236,7 @@ module.exports = class App implements ApplicationParams {
         });
 
         this._collections[pairName] = this._collections[pairName] || {};
-        this._collections[pairName][collectionName] = collection;
+        this._collections[pairName][collectionName] = collection as any; // TODO: Infer correct type
 
         return collection;
     }
