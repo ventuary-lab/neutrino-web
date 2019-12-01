@@ -1,1 +1,0 @@
-{"ast":null,"code":"export const ROUTING_REGISTER = 'ROUTING_REGISTER';\nexport const registerRoutes = routes => ({\n  type: ROUTING_REGISTER,\n  routes\n});","map":null,"metadata":{},"sourceType":"module"}

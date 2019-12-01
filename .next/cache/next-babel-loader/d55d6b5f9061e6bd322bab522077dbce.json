@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var ROUTING_REGISTER = 'ROUTING_REGISTER';\nexport var registerRoutes = function registerRoutes(routes) {\n  return {\n    type: ROUTING_REGISTER,\n    routes: routes\n  };\n};","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"var __jsx = React.createElement;\nimport React from 'react';\n\nvar App = function App() {\n  return __jsx(\"div\", null, \"Hello\");\n};\n\nexport default App;","map":null,"metadata":{},"sourceType":"module"}
