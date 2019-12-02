@@ -364,6 +364,11 @@ export default class Layout extends React.PureComponent {
                                 }}
                             >
                                 <ConfigContext.Provider value={configValue}>
+                                    <UserCongratsModal
+                                        isOpened={isUserCongratsModalOpened}
+                                        onClose={this.userCongratsModalContextValue.onClose}
+                                        onOpen={this.userCongratsModalContextValue.onOpen}
+                                    />
                                     {children}
                                 </ConfigContext.Provider>
                                 <ModalWrapper />

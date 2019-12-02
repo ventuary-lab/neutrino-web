@@ -6,6 +6,7 @@ import usdnLogo from 'static/icons/usd-n.svg';
 import neutrinoManIcon from 'static/images/neutrino-man.svg';
 import graphsIcon from 'static/images/graphs.svg';
 import spotImage from 'static/images/spot.svg';
+import crossIcon from 'static/icons/cancel.svg';
 
 import './style.scss';
 
@@ -83,6 +84,7 @@ class UserCongratsModal extends React.Component<Props> {
             >
                 <div>
                     <div className={bem.element('main')}>
+                        <img className={bem.element('close')} src={crossIcon} onClick={this.props.onClose}/>
                         <div className={bem.element('title')}>{title}</div>
                         <div className={bem.element('body')}>
                             <img className={bem.element('usdn-logo')} src={usdnLogo} alt="" />

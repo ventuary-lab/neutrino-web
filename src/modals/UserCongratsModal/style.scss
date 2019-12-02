@@ -8,6 +8,19 @@
     top: 50%;
     transform: translate(0, -50%);
 
+    & a:not(:hover) {
+        color: #fff;
+    }
+
+    &__close {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+    }
+
     &__main {
         width: 803px;
         height: 558px;

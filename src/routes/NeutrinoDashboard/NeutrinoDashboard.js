@@ -180,14 +180,16 @@ export default class NeutrinoDashboard extends React.PureComponent {
             },
         ];
 
-        console.log('withdraw', this.props.withdraw);
-
         return (
             <div className={bem.block()}>
                 <UserCongratsModalContext.Consumer>
-                    {context =>
-                        this.doesSwapLoadingEnd(this._wasSwapLoading, isSwapLoading, context.onOpen)
-                    }
+                    {context => {
+                        this.doesSwapLoadingEnd(
+                            this._wasSwapLoading,
+                            isSwapLoading,
+                            context.onOpen
+                        );
+                    }}
                 </UserCongratsModalContext.Consumer>
                 {this.state.isSwapLoading && <SwapLoader {...this.props.withdraw} />}
                 {this.renderStepChanger(steps)}
