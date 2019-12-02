@@ -99,12 +99,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
         this._isProgramChange = false;
     }
 
-    doesSwapLoadingEnd(newState, oldState, callback = () => {}) {
-        if (this.state.isWavesLeft && newState && !oldState) {
-            callback();
-        }
-    }
-
     componentDidUpdate(prevProps, prevState) {
         this._wasSwapLoading = prevState.isSwapLoading;
     }
@@ -181,23 +175,22 @@ export default class NeutrinoDashboard extends React.PureComponent {
         ];
 
         return (
-            <div className={bem.block()}>
-                <UserCongratsModalContext.Consumer>
-                    {context => {
-                        this.doesSwapLoadingEnd(
-                            this._wasSwapLoading,
-                            isSwapLoading,
-                            context.onOpen
-                        );
-                    }}
-                </UserCongratsModalContext.Consumer>
-                {this.state.isSwapLoading && <SwapLoader {...this.props.withdraw} />}
-                {this.renderStepChanger(steps)}
-                <Form className={bem.element('form')} formId={FORM_ID} onSubmit={this._onSubmit}>
-                    {this.state.step === 'generation' && this.renderGenerationStep()}
-                    {this.state.step === 'details' && this.renderDetailsStep()}
-                </Form>
-            </div>
+            <UserCongratsModalContext.Consumer>
+                {context => (
+                    <div className={bem.block()}>
+                        {this.state.isSwapLoading && <SwapLoader {...this.props.withdraw} />}
+                        {this.renderStepChanger(steps)}
+                        <Form
+                            className={bem.element('form')}
+                            formId={FORM_ID}
+                            onSubmit={formData => this._onSubmit(formData, context)}
+                        >
+                            {this.state.step === 'generation' && this.renderGenerationStep()}
+                            {this.state.step === 'details' && this.renderDetailsStep()}
+                        </Form>
+                    </div>
+                )}
+            </UserCongratsModalContext.Consumer>
         );
     }
 
@@ -550,22 +543,25 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     };
 
-    _onSubmit(values) {
+    async _onSubmit(values, congratsModalContext) {
         this.setState({ step: 'generation' });
         store.dispatch(reset(FORM_ID));
 
-        return this.state.isWavesLeft
-            ? dal.swapWavesToNeutrino(this.props.pairName, values.waves)
-            : dal
-                  .swapNeutrinoToWaves(
-                      this.props.pairName,
-                      this.props.quoteCurrency,
-                      values.neutrino
-                  )
-                  .catch(err => {
-                      console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
-                      throw new Error(err.data);
-                  });
+        try {
+            if (this.state.isWavesLeft) {
+                await dal.swapWavesToNeutrino(this.props.pairName, values.waves);
+                congratsModalContext.onOpen();
+            } else {
+                await dal.swapNeutrinoToWaves(
+                    this.props.pairName,
+                    this.props.quoteCurrency,
+                    values.neutrino
+                );
+            }
+        } catch (err) {
+            console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
+            throw new Error(err.data);
+        }
     }
 
     _withdraw() {
