@@ -196,6 +196,11 @@ module.exports = class Router {
             // },
             '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
+
+                if (Object.keys(prices)) {
+                    return {};
+                }
+
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },

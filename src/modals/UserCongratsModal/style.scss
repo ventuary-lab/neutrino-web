@@ -1,0 +1,92 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.UserCongratsModal {
+    position: absolute;
+    left: 160px;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    & a:not(:hover) {
+        color: #fff;
+    }
+
+    &__close {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+    }
+
+    &__main {
+        width: 803px;
+        height: 558px;
+        background-color: #17183A;
+        border: 1px solid #494991;
+    }
+
+    &__title {
+        font-weight: normal;
+        font-size: 24px;
+        line-height: 29px;
+        color: #00F5FF;
+        padding: 50px;
+        text-align: center;
+    }
+
+    &__body {
+        position: relative;
+    }
+
+    &__usdn-logo {
+        width: 51px;
+        height: 51px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        top: -22px;
+    }
+
+    &__msg {
+        background-color: #494991;
+        padding: 40px;
+        text-align: center;
+    }
+
+    &__spot {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        margin-top: 25px;
+    }
+
+    &__logos-flex {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        margin-top: 50px;
+    }
+
+    &__logo-link {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & > a {
+            margin-top: 15px;
+            display: block;
+        }
+
+        & > img {
+            max-height: 190px;
+            max-width: 190px;
+        }
+    }
+}
+
