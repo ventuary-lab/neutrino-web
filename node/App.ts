@@ -267,12 +267,13 @@ module.exports = class App implements ApplicationParams {
     }
 
     async _updateAll(shouldFlush?: boolean) {
-        const update = async () => {
-            if (this._isNowUpdated) {
-                return;
-            }
-            this._isNowUpdated = true;
+        if (this._isNowUpdated) {
+            return;
+        }
+        this._isNowUpdated = true;
 
+
+        const update = async () => {
             try {
                 for (const pairName of PairsEnum.getKeys()) {
                     const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
