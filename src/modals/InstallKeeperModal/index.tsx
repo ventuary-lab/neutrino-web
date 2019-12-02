@@ -112,9 +112,9 @@ class InstallKeeperModal extends React.Component<Props, State> {
             },
             {
                 link:
-                    'https://dex.wavesplatform.com/dex-demo?assetId2=WAVES&assetId1=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS',
-                img: companyImages.wavesDex,
-                title: 'DEX',
+                    'https://waves.exchange/dex?assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS',
+                img: companyImages.wavesExchange,
+                title: 'Waves Exchange',
             },
             {
                 link: 'https://changelly.com/',
