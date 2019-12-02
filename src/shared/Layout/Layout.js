@@ -39,12 +39,15 @@ import {
     ConfigContext,
     InstallKeeperModalContext,
     BlurContext,
+    UserCongratsModalContext,
+    LearnLinksContext,
     GlobalLinksContext,
     defaultLearnLinks as links,
     defaultProductLinks as product,
 } from './context';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
+import UserCongratsModal from 'modals/UserCongratsModal';
 
 import './Layout.scss';
 
@@ -109,10 +112,16 @@ export default class Layout extends React.PureComponent {
             unblur: () => this.setState({ isBlurred: false }),
             checkIsBlurred: () => this.state.isBlurred,
         };
+        this.learnLinksContextValue = { links };
+        this.userCongratsModalContextValue = {
+            onClose: () => this.setState({ isUserCongratsModalOpened: false }),
+            onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
+        };
         this.globalLinksContextValue = { links, product };
 
         this.state = {
             shouldShowInviteModal: false,
+            isUserCongratsModalOpened: false,
             isBlurred: false,
         };
     }
@@ -192,6 +201,7 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillUnmount() {
+        this.wcc.stopUpdating();
         this.detachResizeObserver();
     }
 
@@ -239,10 +249,6 @@ export default class Layout extends React.PureComponent {
         }
 
         this._attachWavesDataController();
-    }
-
-    componentWillUnmount() {
-        this.wcc.stopUpdating();
     }
 
     triggerInstallKeeperModalVisibility(isVisible) {
@@ -307,7 +313,7 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal, isBlurred } = this.state;
+        const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
 
         const children =
             this.props.currentItem.id !== ROUTE_ROOT ? (
@@ -346,19 +352,28 @@ export default class Layout extends React.PureComponent {
                 />
                 <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
                     <BlurContext.Provider value={this.blurContextValue}>
-                        <InstallKeeperModalContext.Provider
-                            value={{
-                                onLogin: this.onWavesKeeperLogin,
-                                onLogout: this.onWavesKeeperLogout,
-                                isVisible: shouldShowInviteModal,
-                                openModal: () => this.triggerInstallKeeperModalVisibility(true),
-                            }}
+                        <UserCongratsModalContext.Provider
+                            value={this.userCongratsModalContextValue}
                         >
-                            <ConfigContext.Provider value={configValue}>
-                                {children}
-                            </ConfigContext.Provider>
-                            <ModalWrapper />
-                        </InstallKeeperModalContext.Provider>
+                            <InstallKeeperModalContext.Provider
+                                value={{
+                                    onLogin: this.onWavesKeeperLogin,
+                                    onLogout: this.onWavesKeeperLogout,
+                                    isVisible: shouldShowInviteModal,
+                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
+                                }}
+                            >
+                                <ConfigContext.Provider value={configValue}>
+                                    <UserCongratsModal
+                                        isOpened={isUserCongratsModalOpened}
+                                        onClose={this.userCongratsModalContextValue.onClose}
+                                        onOpen={this.userCongratsModalContextValue.onOpen}
+                                    />
+                                    {children}
+                                </ConfigContext.Provider>
+                                <ModalWrapper />
+                            </InstallKeeperModalContext.Provider>
+                        </UserCongratsModalContext.Provider>
                     </BlurContext.Provider>
                 </GlobalLinksContext.Provider>
             </div>

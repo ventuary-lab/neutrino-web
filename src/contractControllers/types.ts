@@ -60,7 +60,7 @@ export interface WavesTransactionInfo {
     feeAssetId: string | null;
     proofs: string[];
     assetId: string;
-    transfers: WavesTransfer[];
+    transfers?: WavesTransfer[];
     buyMatcherFee: number;
     timestamp: number;
     height: number;

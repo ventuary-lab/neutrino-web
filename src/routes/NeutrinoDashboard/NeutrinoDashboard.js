@@ -1,8 +1,8 @@
 import React from 'react';
+import _, { get as _get } from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change, reset } from 'redux-form';
-import _get from 'lodash-es/get';
 import _toNumber from 'lodash-es/toNumber';
 import round from 'lodash-es/round';
 import InputField from 'yii-steroids/ui/form/InputField';
@@ -10,8 +10,7 @@ import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
-import { ConfigContext, GlobalLinksContext } from 'shared/Layout/context';
-import _ from 'lodash';
+import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -93,10 +92,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
         };
 
         this.getControlPrice = this.getControlPrice.bind(this);
+        this._wasSwapLoading = null;
 
         this._onSubmit = this._onSubmit.bind(this);
         this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
+    }
+
+    doesSwapLoadingEnd(newState, oldState, callback = () => {}) {
+        if (this.state.isWavesLeft && newState && !oldState) {
+            callback();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        this._wasSwapLoading = prevState.isSwapLoading;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -157,6 +167,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
+        const { isSwapLoading } = this.state;
+
         const steps = [
             {
                 id: 'generation',
@@ -170,8 +182,16 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <div className={bem.block()}>
+                <UserCongratsModalContext.Consumer>
+                    {context => {
+                        this.doesSwapLoadingEnd(
+                            this._wasSwapLoading,
+                            isSwapLoading,
+                            context.onOpen
+                        );
+                    }}
+                </UserCongratsModalContext.Consumer>
                 {this.state.isSwapLoading && <SwapLoader {...this.props.withdraw} />}
-
                 {this.renderStepChanger(steps)}
                 <Form className={bem.element('form')} formId={FORM_ID} onSubmit={this._onSubmit}>
                     {this.state.step === 'generation' && this.renderGenerationStep()}
