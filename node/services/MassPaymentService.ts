@@ -8,7 +8,7 @@ class MassPaymentService {
 
     constructor({ nodeUrl }: { nodeUrl: string }) {
         this.nodeUrl = nodeUrl;
-        this.transactionsCountLimit = 140;
+        this.transactionsCountLimit = 1000;
     }
 
     // 3P4EUdeD22MrnAiWNZqjmV2x3bfnGFU2E45 just as an example
