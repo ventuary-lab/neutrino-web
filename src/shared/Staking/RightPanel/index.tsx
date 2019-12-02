@@ -83,7 +83,9 @@ class StakingRightPanel extends React.Component<Props, State> {
         if (response.statusText !== 'OK') {
             return [];
         }
-        const mappedTransactions: MappedWavesTransactionInfo[] = response.data.map(
+        const mappedTransactions: MappedWavesTransactionInfo[] = response.data
+            .filter((tx: WavesTransactionInfo) => tx.transfers)
+            .map(
             (tx: WavesTransactionInfo) => ({
                 ...tx,
                 transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
