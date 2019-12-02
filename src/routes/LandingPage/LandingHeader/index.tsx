@@ -139,11 +139,11 @@ class LandingHeader extends React.Component<Props, State> {
         );
     }
 
-    onSuccessLogin () {
+    onSuccessLogin() {
         store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
     }
 
-    onErrorLogin () {}
+    onErrorLogin() {}
 
     outsideHandler() {
         this.setState({
@@ -163,17 +163,23 @@ class LandingHeader extends React.Component<Props, State> {
                         <InstallKeeperModalContext.Consumer>
                             {installKeeperContext => {
                                 const { links: currentLinks } = this;
+
                                 currentLinks[currentLinks.length - 1] = {
                                     ...currentLinks[currentLinks.length - 1],
                                     onClick: async () => {
-
                                         try {
                                             await dal.login();
-                                            store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
+                                            store.dispatch(
+                                                goToPage('neutrino', {
+                                                    currency: CurrencyEnum.USD_N,
+                                                })
+                                            );
+                                        } catch (err) {
+                                            window.location.href = `/neutrino/${CurrencyEnum.USD_N}?openKeeperWarning=1`;
                                         } finally {
                                             installKeeperContext.openModal();
                                         }
-                                    }
+                                    },
                                 };
                                 const links = currentLinks.map(this.mapLink);
                                 const productLinks = context.product.map(this.mapLink);

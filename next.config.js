@@ -11,10 +11,13 @@ module.exports = withSass(
             config.module.rules = [
                 ...config.module.rules,
                 {
-                    test: /\.(ttf|woff2?|eot|svg|png|jpg|gif|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                    test: /\.(ttf|woff|woff2|eot|svg|png|jpg|gif|ico)$/,
                     use: [
                         {
                             loader: 'file-loader',
+                            options: {
+                                name: '[name].[hash].[ext]',
+                            }
                         },
                     ],
                 },

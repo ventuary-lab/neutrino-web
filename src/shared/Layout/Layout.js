@@ -100,6 +100,7 @@ export default class Layout extends React.PureComponent {
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
+        this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
         this.resizeObserver = null;
@@ -160,6 +161,16 @@ export default class Layout extends React.PureComponent {
     async componentDidMount() {
         this.attachResizeObserver();
         this.openWarningModal();
+
+        this.handleQueryParams();
+    }
+
+    handleQueryParams () {
+        const url = new URL(window.location.href);
+
+        if (url.searchParams.get('openKeeperWarning')) {
+            this.triggerInstallKeeperModalVisibility(true);
+        }
     }
 
     openWarningModal(width = document.body.offsetWidth) {
