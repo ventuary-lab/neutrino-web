@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { html } from 'components';
+import { html, store } from 'components';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
 import neutrinoManIcon from 'static/images/neutrino-man.svg';
@@ -9,6 +10,7 @@ import spotImage from 'static/images/spot.svg';
 import crossIcon from 'static/icons/cancel.svg';
 
 import './style.scss';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const bem = html.bem('UserCongratsModal');
 
@@ -18,7 +20,7 @@ interface Props {
     onClose: () => void;
 }
 interface Link {
-    logo: string;
+    logo?: string;
     url: string;
     label: string;
 }
@@ -32,11 +34,17 @@ class UserCongratsModal extends React.Component<Props> {
 
     static contextType = BlurContext;
 
-    mapLink({ url, label, icon, target }: Link & { target: string; icon: string }) {
+    mapLink({
+        url,
+        label,
+        icon,
+        target,
+        onClick,
+    }: Omit<Link, 'logo'> & { onClick?: () => any; target?: string; icon: string }) {
         return (
             <div className={bem.element('logo-link')}>
                 <img src={icon} alt={label} />
-                <a href={url} target={target}>
+                <a href={url} target={target} onClick={onClick}>
                     {label}
                 </a>
             </div>
@@ -65,6 +73,10 @@ class UserCongratsModal extends React.Component<Props> {
                 label: 'Collect staking rewards',
                 url: '#',
                 icon: neutrinoManIcon,
+                onClick: () => {
+                    store.dispatch(goToPage('rpd', { currency: CurrencyEnum.USD_N }));
+                    this.props.onClose();
+                },
             },
             {
                 label: 'Trade on exchanges',
@@ -84,7 +96,11 @@ class UserCongratsModal extends React.Component<Props> {
             >
                 <div>
                     <div className={bem.element('main')}>
-                        <img className={bem.element('close')} src={crossIcon} onClick={this.props.onClose}/>
+                        <img
+                            className={bem.element('close')}
+                            src={crossIcon}
+                            onClick={this.props.onClose}
+                        />
                         <div className={bem.element('title')}>{title}</div>
                         <div className={bem.element('body')}>
                             <img className={bem.element('usdn-logo')} src={usdnLogo} alt="" />
