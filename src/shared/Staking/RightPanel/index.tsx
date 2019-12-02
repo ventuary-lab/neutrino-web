@@ -67,6 +67,8 @@ class StakingRightPanel extends React.Component<Props, State> {
             const massPaymentSender = getMassPaymentSender(store.getState());
             if (!massPaymentSender) throw new Error();
 
+            console.log({ massPaymentSender });
+
             massPaymentTxs = massPaymentTxs.filter((tx: MappedWavesTransactionInfo) => tx.sender === massPaymentSender);
         } catch (err) {
             console.log('Incorrect mass payment address provided');
@@ -83,7 +85,9 @@ class StakingRightPanel extends React.Component<Props, State> {
         if (response.statusText !== 'OK') {
             return [];
         }
-        const mappedTransactions: MappedWavesTransactionInfo[] = response.data.map(
+        const mappedTransactions: MappedWavesTransactionInfo[] = response.data
+            .filter((tx: WavesTransactionInfo) => tx.transfers)
+            .map(
             (tx: WavesTransactionInfo) => ({
                 ...tx,
                 transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
