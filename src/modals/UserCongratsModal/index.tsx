@@ -70,7 +70,7 @@ class UserCongratsModal extends React.Component<Props> {
                 label: 'Trade on exchanges',
                 target: '_blank',
                 url:
-                    'https://dex.wavesplatform.com/dex-demo?assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS&assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
+                    'https://waves.exchange/dex?assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS&assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
                 icon: graphsIcon,
             },
         ].map(this.mapLink);
