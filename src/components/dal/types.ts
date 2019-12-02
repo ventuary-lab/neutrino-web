@@ -4,7 +4,7 @@ export interface WavesKeeperAssetData {
 }
 export interface WavesKeeperCallArgument {
     type: 'integer' | 'string';
-    value: string;
+    value: string | number;
 }
 
 export interface WavesKeeperCallData {
