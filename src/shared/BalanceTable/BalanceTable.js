@@ -108,8 +108,6 @@ export default class BalanceTable extends React.PureComponent {
                 )
                 : this.props.user.balances[currency];
 
-        console.log({ rows });
-
         return rows.map(currency => this.mapCurrency(currency, balanceSign, getBottomBalance));
     }
 
