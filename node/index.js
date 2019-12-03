@@ -45,8 +45,7 @@ expressApp.get('/*', (req, res) => {
     if (req.originalUrl === '/') {
         res.sendFile('index.html', { root: __dirname + '/../out' });
     }
-
-    if (req.originalUrl.indexOf('_next')) {
+    if (req.originalUrl.indexOf('_next') !== -1) {
         res.sendFile(req.originalUrl, { root: __dirname + '/../out' });
     };
 
