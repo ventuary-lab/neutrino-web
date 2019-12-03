@@ -91,8 +91,6 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         const { pairName } = this.props;
         const { usdnValue } = this.state;
 
-        console.log({ pairName, usdnValue });
-
         await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
 
         this.props.onClose();

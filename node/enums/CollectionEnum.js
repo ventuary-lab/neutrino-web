@@ -6,8 +6,6 @@ module.exports = class CollectionEnum {
     static BONDS_ORDERS = 'bonds_orders';
     static BONDS_ORDERS_HISTORY = 'bonds_orders_history';
     static NEUTRINO_ORDERS = 'neutrino_orders';
-    // static NEUTRINO_PRICES = 'neutrino_prices';
-    static NEUTRINO_INDEX_PRICES = 'neutrino_index_prices';
     static NEUTRINO_BALANCES = 'neutrino_balances';
     static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
     static RPD_BALANCES = 'rpd_balances';
@@ -28,7 +26,6 @@ module.exports = class CollectionEnum {
             this.CONTROL_CONFIG,
             this.NEUTRINO_BALANCES,
             this.NEUTRINO_WITHDRAW,
-            this.NEUTRINO_INDEX_PRICES,
             this.RPD_BALANCES,
             this.RPD_HISTORY_BALANCES,
             this.RPD_USER_BALANCES,
@@ -37,7 +34,6 @@ module.exports = class CollectionEnum {
             this.RPD_NEXT_INDEX,
             this.RPD_INDEX_NUMBERS,
             this.RPD_IS_CLAIMED,
-            // this.NEUTRINO_PRICES,
         ];
     }
 
@@ -46,8 +42,6 @@ module.exports = class CollectionEnum {
             [this.BONDS_ORDERS]: collections.BondsOrders,
             [this.BONDS_ORDERS_HISTORY]: collections.BondsOrdersHistory,
             [this.NEUTRINO_ORDERS]: collections.NeutrinoOrders,
-            // [this.NEUTRINO_PRICES]: collections.NeutrinoPrices,
-            [this.NEUTRINO_INDEX_PRICES]: collections.NeutrinoIndexPrices,
             [this.NEUTRINO_BALANCES]: collections.NeutrinoBalances,
             [this.NEUTRINO_WITHDRAW]: collections.NeutrinoWithdraw,
             [this.RPD_BALANCES]: collections.RpdBalances,
@@ -68,8 +62,6 @@ module.exports = class CollectionEnum {
             [this.BONDS_ORDERS]: ContractEnum.AUCTION,
             [this.BONDS_ORDERS_HISTORY]: ContractEnum.AUCTION,
             [this.NEUTRINO_ORDERS]: ContractEnum.LIQUIDATION,
-            // [this.NEUTRINO_PRICES]: ContractEnum.CONTROL,
-            [this.NEUTRINO_INDEX_PRICES]: ContractEnum.CONTROL,
             [this.NEUTRINO_BALANCES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_WITHDRAW]: ContractEnum.NEUTRINO,
             [this.RPD_BALANCES]: ContractEnum.RPD,

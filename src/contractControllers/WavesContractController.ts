@@ -1,20 +1,13 @@
-import { store } from "../components";
-import {
-    SET_CONTRACT_PRICE,
-    SET_TOTAL_ISSUED
-} from "../actions/contract";
+import { store } from '../components';
+import { SET_CONTRACT_PRICE, SET_TOTAL_ISSUED } from '../actions/contract';
 
 import {
     getAddressInfo,
     getAddressDataByKey,
     getAssetDetails,
-    getAssetBalanceInfo
-} from "./helpers";
-
-enum ContractKeysEnum {
-    CONTROL_CONTRACT = "control_contract",
-    PRICE = "price"
-}
+    getAssetBalanceInfo,
+} from './helpers';
+import { ContractKeysEnum } from './enums';
 
 export class WavesContractDataController {
     private _interval: NodeJS.Timeout;
@@ -25,14 +18,8 @@ export class WavesContractDataController {
     dAppAddress: string;
     neutrinoAssetId?: string;
 
-    constructor({
-        dAppAddress,
-        nodeUrl
-    }: {
-        dAppAddress: string;
-        nodeUrl: string;
-    }) {
-        this.nodeUrl = nodeUrl ? nodeUrl : "https://nodes.wavesplatform.com";
+    constructor({ dAppAddress, nodeUrl }: { dAppAddress: string; nodeUrl: string }) {
+        this.nodeUrl = nodeUrl ? nodeUrl : 'https://nodes.wavesplatform.com';
         this._updateFrequency = 3;
         this._timeout = this._updateFrequency * 1000;
 
@@ -65,7 +52,7 @@ export class WavesContractDataController {
         store.dispatch({
             type: SET_CONTRACT_PRICE,
             value: contractControlPrice,
-            name: ContractKeysEnum.CONTROL_CONTRACT
+            name: ContractKeysEnum.CONTROL_CONTRACT,
         });
 
         const totalIssued = await this._getTotalIssuedAmount();
@@ -81,10 +68,7 @@ export class WavesContractDataController {
         const { dAppAddress, neutrinoAssetId } = this;
 
         const totalQtyRes = await this.getAssetDetails(neutrinoAssetId);
-        const neutrinoBalanceRes = await this.getAssetBalanceInfo(
-            dAppAddress,
-            neutrinoAssetId
-        );
+        const neutrinoBalanceRes = await this.getAssetBalanceInfo(dAppAddress, neutrinoAssetId);
 
         const { quantity } = totalQtyRes.data;
         const { balance } = neutrinoBalanceRes.data;
