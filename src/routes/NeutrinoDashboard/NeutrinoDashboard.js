@@ -206,8 +206,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const { lockedWaves, lockedNeutrino, unlockBlock } = this.state.lastBalanceIndices;
         const currentHeight = await nodeInteraction.currentHeight(dal.nodeUrl);
 
-        console.log({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock });
-
         const isLocked = (lockedWaves > 0 || lockedNeutrino > 0) && unlockBlock >= currentHeight;
 
         this.setState({
