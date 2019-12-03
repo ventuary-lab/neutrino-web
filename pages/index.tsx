@@ -5,27 +5,15 @@ import Head from 'next/head';
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
 
-interface State {
-    isInstallModalOpened: boolean;
-}
-
-class App extends React.Component<{}, State> {
-
+class App extends React.Component {
     render() {
         const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: true });
-        const landingProps = {
-            
-        }
+        const landingProps = {};
 
         return (
             <div>
                 <Head>
                     <link rel="icon" href={'static/images/favicon.ico'} />
-                    <link rel="stylesheet" href={'static/fonts/Montserrat.woff'} />
-                    <link rel="stylesheet" href={'static/fonts/Montserrat-Bold.woff'} />
-                    <link rel="stylesheet" href={'static/fonts/Montserrat-Medium.woff'} />
-                    <link rel="stylesheet" href={'static/fonts/Montserrat-Regular.woff'} />
-                    <link rel="stylesheet" href={'static/fonts/Montserrat-Light.woff'} />
                 </Head>
                 <div className="Layout">
                     <div></div>

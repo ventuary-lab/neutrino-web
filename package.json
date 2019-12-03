@@ -48,5 +48,8 @@
     "waves-contract-cache": "^0.2.0",
     "websocket": "^1.0.29",
     "yii-steroids": "^1.14.0"
+  },
+  "devDependencies": {
+    "url-loader": "^3.0.0"
   }
 }

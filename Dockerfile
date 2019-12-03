@@ -11,6 +11,7 @@ COPY node /app/node
 COPY src /app/src
 COPY pages /app/pages
 COPY src/static /app/public/static
+COPY src/style /app/public/style
 COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 

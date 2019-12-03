@@ -8,20 +8,29 @@ module.exports = withSass(
         webpack: config => {
             config.resolve.modules.push(srcPath);
 
-            config.module.rules = [
-                ...config.module.rules,
-                {
-                    test: /\.(ttf|woff|woff2|eot|svg|png|jpg|gif|ico)$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: '[name].[hash].[ext]',
-                            }
-                        },
-                    ],
-                },
-            ];
+            // config.module.rules = [
+            //     ...config.module.rules,
+            //     {
+            //         test: /\.(ttf|woff|woff2|eot|svg|png|jpg|gif|ico)$/,
+            //         use: [
+            //             {
+            //                 loader: 'file-loader',
+            //                 options: {
+            //                     name: '[name].[hash].[ext]',
+            //                 }
+            //             },
+            //         ],
+            //     },
+            // ];
+            config.module.rules.push({
+                test: /\.(eot|woff|woff2|ttf|ico|svg|png|jpg|gif)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]'
+                    }
+                }
+            })
 
             return config;
         },
