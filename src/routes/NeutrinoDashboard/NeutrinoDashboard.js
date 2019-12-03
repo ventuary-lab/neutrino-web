@@ -1,10 +1,14 @@
 import React from 'react';
 import _, { get as _get } from 'lodash';
+import { html, dal, store } from 'components';
+import { getNeutrinoDappAddress, getCurrentAccountAddress } from 'components/selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change, reset } from 'redux-form';
 import _toNumber from 'lodash-es/toNumber';
-import round from 'lodash-es/round';
+import { nodeInteraction } from '@waves/waves-transactions';
+import { ContractBalanceKeysEnum } from 'contractControllers/enums';
+import { getAddressDataByKey } from 'contractControllers/helpers';
 import InputField from 'yii-steroids/ui/form/InputField';
 import Form from 'yii-steroids/ui/form/Form';
 import Button from 'yii-steroids/ui/form/Button';
@@ -12,7 +16,6 @@ import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
 
-import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
 import PairsEnum from 'enums/PairsEnum';
@@ -53,11 +56,11 @@ const PRICE_FEED_PERIOD = 1000;
         url: `/api/v1/price-feed/${props.sourceCurrency}/${PRICE_FEED_PERIOD}`,
         key: 'priceFeed',
     },
-    {
-        url: `/api/v1/withdraw/${props.pairName}/${_get(props, 'user.address')}`,
-        key: 'withdraw',
-        collection: CollectionEnum.NEUTRINO_WITHDRAW,
-    },
+    // {
+    //     url: `/api/v1/withdraw/${props.pairName}/${_get(props, 'user.address')}`,
+    //     key: 'withdraw',
+    //     collection: CollectionEnum.NEUTRINO_WITHDRAW,
+    // },
 ])
 export default class NeutrinoDashboard extends React.PureComponent {
     static propTypes = {
@@ -89,18 +92,57 @@ export default class NeutrinoDashboard extends React.PureComponent {
             step: 'generation',
             isWavesLeft: true,
             isSwapLoading: false,
+            lastBalanceIndices: {
+                lockedWaves: null,
+                lockedNeutrino: null,
+                unlockBlock: null,
+            },
         };
 
         this.getControlPrice = this.getControlPrice.bind(this);
+        this._checkForSwap = this._checkForSwap.bind(this);
+        this._updateBalanceIndices = this._updateBalanceIndices.bind(this);
+        this._updateAndCheckBalanceIndices = this._updateAndCheckBalanceIndices.bind(this);
         this._wasSwapLoading = null;
 
         this._onSubmit = this._onSubmit.bind(this);
-        this._withdraw = this._withdraw.bind(this);
         this._isProgramChange = false;
+
+        this._swapCheckerEnabed = false;
+        this._swapCheckerInterval = null;
+        this._swapCheckerIntervalMs = 30 * 1000;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    async _updateAndCheckBalanceIndices() {
+        const dAppAddress = getNeutrinoDappAddress(dal);
+        const currentAccountAddress = getCurrentAccountAddress(dal);
+
+        if (!currentAccountAddress) {
+            return;
+        }
+
+        await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        await this._checkForSwap();
+    }
+
+    async componentDidUpdate(prevProps, prevState) {
         this._wasSwapLoading = prevState.isSwapLoading;
+
+        if (getCurrentAccountAddress(dal) && !this._swapCheckerEnabed) {
+            this._swapCheckerEnabed = true;
+
+            await this._updateAndCheckBalanceIndices();
+
+            this._swapCheckerInterval = setInterval(async () => {
+                await this._updateAndCheckBalanceIndices();
+            }, this._swapCheckerIntervalMs);
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this._swapCheckerInterval);
+
+        this._swapCheckerEnabed = false;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -125,29 +167,92 @@ export default class NeutrinoDashboard extends React.PureComponent {
             this._isProgramChange = false;
         }
 
-        const thisWithdraw = _get(this.props, 'withdraw');
-        const nextWithdraw = _get(nextProps, 'withdraw');
-        const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
-        const nextHeight = Number(_get(nextProps, 'withdraw.height'));
+        // const thisWithdraw = _get(this.props, 'withdraw');
+        // const nextWithdraw = _get(nextProps, 'withdraw');
+        // const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
+        // const nextHeight = Number(_get(nextProps, 'withdraw.height'));
+        // //first loading component
+        // if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
+        //     this.setState({ isSwapLoading: true });
+        // }
 
-        //first loading component
-        if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
-            this.setState({ isSwapLoading: true });
-        }
+        // //changing withdraw
+        // if (thisWithdraw && nextWithdraw) {
+        //     if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
+        //         this.setState({ isSwapLoading: true });
+        //     } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
+        //         this.setState({ isSwapLoading: false });
+        //     } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
+        //         //close delay
+        //         setTimeout(() => this.setState({ isSwapLoading: false }), 3000);
+        //     }
+        // } else if (this.state.isSwapLoading) {
+        //     this.setState({ isSwapLoading: false });
+        // }
+    }
 
-        //changing withdraw
-        if (thisWithdraw && nextWithdraw) {
-            if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-                this.setState({ isSwapLoading: true });
-            } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
-                this.setState({ isSwapLoading: false });
-            } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
-                //close delay
-                setTimeout(() => this.setState({ isSwapLoading: false }), 3000);
-            }
-        } else if (this.state.isSwapLoading) {
-            this.setState({ isSwapLoading: false });
-        }
+    mapToSwapLoaderProps({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock }) {
+        return {
+            height: currentHeight,
+            wavesBlocked: lockedWaves,
+            neutrinoBlocked: lockedNeutrino,
+            unblockBlock: unlockBlock,
+        };
+    }
+
+    async _checkForSwap() {
+        // (balance_lock_waves_{address} > 0 || balance_lock_neutrino_{address} > 0) && balance_unlock_block_{address} >= height
+
+        const { lockedWaves, lockedNeutrino, unlockBlock } = this.state.lastBalanceIndices;
+        const currentHeight = await nodeInteraction.currentHeight(dal.nodeUrl);
+
+        console.log({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock });
+
+        const isLocked = (lockedWaves > 0 || lockedNeutrino > 0) && unlockBlock >= currentHeight;
+
+        this.setState({
+            isSwapLoading: isLocked,
+            swapLoaderProps: this.mapToSwapLoaderProps({
+                currentHeight,
+                lockedWaves,
+                lockedNeutrino,
+                unlockBlock,
+            }),
+        });
+
+        // height: 1822964
+        // - id: "3P8ZzvkLGWtaoPVYDozhbWavqgYgZJWbq9j"
+        // neutrinoBlocked: 0
+        // unblockBlock: 1821919
+        // wavesBlocked: 0
+    }
+
+    async _updateBalanceIndices(dAppAddress, address) {
+        const { nodeUrl } = dal;
+
+        const { data: lockedWaves } = await getAddressDataByKey({
+            nodeUrl,
+            address: dAppAddress,
+            key: `${ContractBalanceKeysEnum.BALANCE_LOCK_WAVES}_${address}`,
+        });
+        const { data: lockedNeutrino } = await getAddressDataByKey({
+            nodeUrl,
+            address: dAppAddress,
+            key: `${ContractBalanceKeysEnum.BALANCE_LOCK_NEUTRINO}_${address}`,
+        });
+        const { data: unlockBlock } = await getAddressDataByKey({
+            nodeUrl,
+            address: dAppAddress,
+            key: `${ContractBalanceKeysEnum.BALLANCE_UNBLOCK_BLOCK}_${address}`,
+        });
+
+        this.setState({
+            lastBalanceIndices: {
+                lockedWaves: lockedWaves.value,
+                lockedNeutrino: lockedNeutrino.value,
+                unlockBlock: unlockBlock.value,
+            },
+        });
     }
 
     getControlPrice() {
@@ -161,7 +266,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     render() {
-        const { isSwapLoading } = this.state;
+        const { isSwapLoading, swapLoaderProps } = this.state;
 
         const steps = [
             {
@@ -178,7 +283,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             <UserCongratsModalContext.Consumer>
                 {context => (
                     <div className={bem.block()}>
-                        {this.state.isSwapLoading && <SwapLoader {...this.props.withdraw} />}
+                        {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
                         {this.renderStepChanger(steps)}
                         <Form
                             className={bem.element('form')}
@@ -346,44 +451,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         }
                         onClick={() => this.setState({ step: 'details' })}
                     />
-                    {this.renderWithdraw()}
                 </div>
             </>
-        );
-    }
-
-    renderWithdraw() {
-        const neutrinoBlocked = _get(this.props, 'withdraw.neutrinoBlocked');
-        const wavesBlocked = _get(this.props, 'withdraw.wavesBlocked');
-        const height = _get(this.props, 'withdraw.height');
-        const unblockBlock = _get(this.props, 'withdraw.unblockBlock');
-        const countBlock = unblockBlock - height > 0 ? unblockBlock - height : 0;
-        const withdrawHint = __(
-            'Assets locked on the smart contract which will become available for withdrawal after {count-blocks} blocks (~{count-minutes} minutes)',
-            {
-                'count-blocks': countBlock,
-                'count-minutes': countBlock, // 1block = 1min
-            }
-        );
-
-        return (
-            <div className={bem.element('withdraw')}>
-                <div className={bem.element('withdraw-info')}>
-                    <div className={bem.element('withdraw-hint')}>
-                        <Hint text={withdrawHint} />
-                    </div>
-                    {/*__('Neutrino locked: {neutrino} | Waves locked: {waves}', {
-                        neutrino: neutrinoBlocked && neutrinoBlocked.toFixed(2) || 0,
-                        waves: wavesBlocked && wavesBlocked.toFixed(2) || 0,
-                    })*/}
-                </div>
-                {/* <Button
-                    disabled={(!neutrinoBlocked && !wavesBlocked) || height < unblockBlock}
-                    className={bem.element('withdraw-button')}
-                    label={__('Withdraw')}
-                    onClick={this._withdraw}
-                /> */}
-            </div>
         );
     }
 
@@ -545,6 +614,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     async _onSubmit(values, congratsModalContext) {
         this.setState({ step: 'generation' });
+
         store.dispatch(reset(FORM_ID));
 
         try {
@@ -558,17 +628,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     values.neutrino
                 );
             }
+
+            await this._updateAndCheckBalanceIndices();
         } catch (err) {
             console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
             throw new Error(err.data);
         }
-    }
-
-    _withdraw() {
-        return dal.withdraw(
-            this.props.pairName,
-            this.props.user.address,
-            this.props.withdraw.index
-        );
     }
 }

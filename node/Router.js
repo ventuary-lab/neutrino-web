@@ -165,20 +165,7 @@ module.exports = class Router {
                         .getItem(`${bondAssetId}_${request.params.address}`),
                 };
             },
-            '/api/v1/withdraw/:pairName/:address': async request => {
-                let result = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW)
-                    .getItem(request.params.address); //TODO crutch
-                let index = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES)
-                    .findIndexByHeight(result != undefined ? result.unblockBlock : 0); //TODO crutch
-
-                return {
-                    ...result,
-                    index: Number(index != undefined ? index : 0),
-                };
-            },
-            '/api/v1/prices': async request => {
+            '/api/v1/prices': async () => {
                 return await this._getPrices();
             },
             '/api/v1/neutrino-balances/:pairName': async request => {
