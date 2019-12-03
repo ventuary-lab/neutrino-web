@@ -1,5 +1,6 @@
 import React from 'react';
-import { html, dal } from 'components';
+// import { html, dal } from 'components';
+import { buildBem } from './helpers';
 import LandingHeader from './LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
 
@@ -25,7 +26,8 @@ const poweredByWavesLogo = 'static/images/landing/powered_by_waves.svg';
 
 import './style.scss';
 
-const bem = html.bem('LandingPage');
+// const bem = html.bem('LandingPage');
+const bem = buildBem('LandingPage');
 
 interface Props {}
 
@@ -34,12 +36,6 @@ type SocLink = { icon: string; route: string };
 class LandingPage extends React.Component<Props> {
     constructor(props) {
         super(props);
-    }
-
-    componentWillMount() {
-        (async () => {
-            await dal.logout();
-        })();
     }
 
     render() {
