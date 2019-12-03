@@ -195,7 +195,7 @@ module.exports = class App implements ApplicationParams {
             logger: this.logger,
         });
 
-        console.log('---createContract ' + contractName + ":" + dApp);
+        console.log('---createContract ' + contractName + ':' + dApp);
 
         const contract: ContractCache = new WavesContractCache({
             dApp,
@@ -276,40 +276,34 @@ module.exports = class App implements ApplicationParams {
 
         this._isNowUpdated = true;
 
-        const update = async () => {
-            try {
-                for (const pairName of PairsEnum.getKeys()) {
-                    const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
-    
-                    for (const collectionName of CollectionEnum.getKeys() as string[]) {
-                        const collection = this.getCollection(pairName, collectionName);
-                        const contractName = CollectionEnum.getContractName(collectionName) as string;
-    
-                        if (!data[contractName]) {
-                            data[contractName] = await collection.transport.fetchAll();
-                        }
-    
-                        this.logger.info('Update all data in collection... ' + collectionName);
-    
-                        if (shouldFlush) {
-                            await collection.removeAll();
-                        }
-    
-                        const nodeNewData = data[contractName];
-    
-                        await collection.updateAll(nodeNewData);
+        try {
+            for (const pairName of PairsEnum.getKeys()) {
+                const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
+
+                for (const collectionName of CollectionEnum.getKeys() as string[]) {
+                    const collection = this.getCollection(pairName, collectionName);
+                    const contractName = CollectionEnum.getContractName(collectionName) as string;
+
+                    if (!data[contractName]) {
+                        data[contractName] = await collection.transport.fetchAll();
                     }
+
+                    this.logger.info('Update all data in collection... ' + collectionName);
+
+                    if (shouldFlush) {
+                        await collection.removeAll();
+                    }
+
+                    const nodeNewData = data[contractName];
+
+                    await collection.updateAll(nodeNewData);
                 }
-            } catch (err) {
-                this.logger.error(`Update All Error: ${String(err.stack || err)}`);
             }
-    
-            this._isNowUpdated = false;
+        } catch (err) {
+            this.logger.error(`Update All Error: ${String(err.stack || err)}`);
         }
 
-        setImmediate(async () => {
-            await update();
-        });
+        this._isNowUpdated = false;
 
         // TODO
         setTimeout(() => this._updateAll(), this._collectionUpdateTimeout);

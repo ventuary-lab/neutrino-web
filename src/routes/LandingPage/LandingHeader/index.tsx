@@ -44,33 +44,6 @@ class LandingHeader extends React.Component<Props, State> {
         this.onErrorLogin = this.onErrorLogin.bind(this);
         this.onSuccessLogin = this.onSuccessLogin.bind(this);
 
-        // this.productLinks = [
-        //     {
-        //         label: 'Neutrino dashboard',
-        //         url: '/neutrino/usd-n',
-        //     },
-        //     {
-        //         label: 'Staking dashboard',
-        //         url: 'rpd/usd-n',
-        //     },
-        //     {
-        //         label: 'Bonds dashboard',
-        //         url: '/bonds/usd-n',
-        //     },
-        //     {
-        //         label: 'Exchange',
-        //         url:
-        //             'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
-        //     },
-        //     {
-        //         label: 'Transfers',
-        //         url: '/transfers/usd-n',
-        //     },
-        //     {
-        //         label: 'Invoice Generator',
-        //         url: '/invoices/usd-n',
-        //     },
-        // ];
         this.links = [
             {
                 label: 'Products',

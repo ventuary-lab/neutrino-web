@@ -6,6 +6,7 @@ import shapeshift from './shapeshift.png';
 import wavesDex from './waves_dex.png';
 import kraken from './kraken.png';
 import bittrex from './bittrex.png';
+import wavesExchange from './waves-exchange.png';
 
 export {
     binance,
@@ -14,5 +15,6 @@ export {
     kraken,
     huobi,
     shapeshift,
-    wavesDex
+    wavesDex,
+    wavesExchange
 };

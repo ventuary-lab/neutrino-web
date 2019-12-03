@@ -50,26 +50,11 @@ export default class BalanceTable extends React.PureComponent {
         super(props);
 
         this.getTableBody = this.getTableBody.bind(this);
+        this.mapCurrency = this.mapCurrency.bind(this);
     }
 
-    getTableBody() {
-        const rows = [
-            CurrencyEnum.WAVES,
-            this.props.quoteCurrency,
-            this.props.baseCurrency
-        ];
-
-        const balanceSign = CurrencyEnum.getSign(this.props.sourceCurrency);
-        const getBottomBalance = (currency) =>
-            currency === CurrencyEnum.WAVES
-                ? _round(
-                    this.props.user.balances[currency] *
-                        this.props.neutrinoConfig.price,
-                    2
-                )
-                : this.props.user.balances[currency];
-
-        return rows.map((currency) => (
+    mapCurrency (currency, balanceSign, getBottomBalance) {
+        return (
             <tr key={currency}>
                 <td>
                     <div className={bem.element('labels-column')}>
@@ -103,7 +88,27 @@ export default class BalanceTable extends React.PureComponent {
                 </td>
                 <td>{this.renderDexButtons(currency)}</td>
             </tr>
-        ));
+        )
+    }
+
+    getTableBody() {
+        const rows = [
+            CurrencyEnum.WAVES,
+            this.props.quoteCurrency,
+            this.props.baseCurrency
+        ];
+
+        const balanceSign = CurrencyEnum.getSign(this.props.sourceCurrency);
+        const getBottomBalance = (currency) =>
+            currency === CurrencyEnum.WAVES
+                ? _round(
+                    this.props.user.balances[currency] *
+                        this.props.neutrinoConfig.price,
+                    2
+                )
+                : this.props.user.balances[currency];
+
+        return rows.map(currency => this.mapCurrency(currency, balanceSign, getBottomBalance));
     }
 
     render() {
@@ -159,7 +164,7 @@ export default class BalanceTable extends React.PureComponent {
                             ) || (
                                 <a
                                     key={item.id}
-                                    href={`https://dex.wavesplatform.com/dex-demo?assetId2=${assetId2}&assetId1=${assetId1}`}
+                                    href={`https://waves.exchange/dex?assetId2=${assetId2}&assetId1=${assetId1}`}
                                     target={'_blank'}
                                     className={bem.element('control')}
                                 >

@@ -165,20 +165,7 @@ module.exports = class Router {
                         .getItem(`${bondAssetId}_${request.params.address}`),
                 };
             },
-            '/api/v1/withdraw/:pairName/:address': async request => {
-                let result = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_WITHDRAW)
-                    .getItem(request.params.address); //TODO crutch
-                let index = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.NEUTRINO_INDEX_PRICES)
-                    .findIndexByHeight(result != undefined ? result.unblockBlock : 0); //TODO crutch
-
-                return {
-                    ...result,
-                    index: Number(index != undefined ? index : 0),
-                };
-            },
-            '/api/v1/prices': async request => {
+            '/api/v1/prices': async () => {
                 return await this._getPrices();
             },
             '/api/v1/neutrino-balances/:pairName': async request => {
@@ -196,6 +183,11 @@ module.exports = class Router {
             // },
             '/api/v1/price-feed/:pairName/:period': async request => {
                 let prices = await this._getPrices();
+
+                if (Object.keys(prices)) {
+                    return {};
+                }
+
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },

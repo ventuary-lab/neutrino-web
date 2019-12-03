@@ -3,6 +3,8 @@ import { Link } from 'ui/global/types';
 
 export const ConfigContext = createContext({ config: null });
 
+export const UserCongratsModalContext = createContext({ onClose: null, onOpen: null });
+
 export const InstallKeeperModalContext = createContext<{
     onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
     onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
@@ -28,8 +30,10 @@ export const defaultProductLinks = [
     },
     {
         label: 'Exchange',
-        url:
-            'https://dex.wavesplatform.com/dex-demo?assetId2=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId1=WAVES',
+        url: `
+            https://waves.exchange/dex?assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS
+        `.trim(),
+        target: '_blank',
     },
     {
         label: 'Transfers',

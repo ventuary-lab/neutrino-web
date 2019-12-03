@@ -165,7 +165,7 @@ export default class Keeper {
                 call: {
                     args: args.map(item => ({
                         type: _isInteger(item) ? 'integer' : 'string',
-                        value: _isObject(item) ? JSON.stringify(item) : `${item}`,
+                        value: _isObject(item) ? JSON.stringify(item) : item,
                     })),
                     function: method,
                 },
