@@ -11,6 +11,10 @@
 
 body {
     margin: 0;
+
+    & a:visited:not(:hover) {
+        color: #fff;
+    }
 }
 
 code {

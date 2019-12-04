@@ -2,6 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
+import './style.scss';
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
 

@@ -12,6 +12,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
 import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
 import { getExchangeLink } from 'shared/Layout/helpers';
+import { TRANSFERS_LABEL, INVOICES_LABEL } from 'shared/Layout/constants';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -67,22 +68,21 @@ export default class Header extends React.PureComponent {
             window.open(dexLink);
             store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
         } else {
-            // if (item.label === 'Transfers') {
-            //     console.log({ item });
-            //     store.dispatch(
-            //         goToPage('neutrino', {
-            //             currency: this.props.quoteCurrency,
-            //         })
-            //     );
-            //     setImmediate(() =>
-            //         store.dispatch(
-            //             goToPage(item.id, {
-            //                 currency: this.props.quoteCurrency,
-            //             })
-            //         )
-            //     );
-            //     return;
-            // }
+            if ([TRANSFERS_LABEL, INVOICES_LABEL].includes(item.label)) {
+                store.dispatch(
+                    goToPage('neutrino', {
+                        currency: this.props.quoteCurrency,
+                    })
+                );
+                setImmediate(() =>
+                    store.dispatch(
+                        goToPage(item.id, {
+                            currency: this.props.quoteCurrency,
+                        })
+                    )
+                );
+                return;
+            }
 
             store.dispatch(
                 goToPage(item.id, {
