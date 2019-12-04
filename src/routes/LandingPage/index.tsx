@@ -3,6 +3,7 @@ import React from 'react';
 import { buildBem } from './helpers';
 import LandingHeader from './LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
+import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
 // import backgroundImage from 'static/images/landing/background.png';
 // import usdnLogo from 'static/icons/usd-n.svg';
@@ -15,7 +16,7 @@ import { GlobalLinksContext } from 'shared/Layout/context';
 // import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
 
 const backgroundImage = 'static/images/landing/background.png';
-const usdnLogo = 'static/icons/usd-n.svg';
+const usdnLogo = 'static/icons/usd-n_blue.svg';
 const boxesImage = 'static/images/landing/boxes.svg';
 const coloredBoxesImage = 'static/images/landing/colored_boxes.svg';
 const fbIcon = 'static/images/landing/socials/fb-icon.svg';
@@ -106,11 +107,11 @@ class LandingPage extends React.Component<Props> {
                     <div className={bem.element('mobile-info')}>{paragraph}</div>
                     <GlobalLinksContext.Consumer>
                         {context => {
-                            const tosLink = context.links.find(link => link.label === 'Terms of Service').url;
+                            const tosLink = context.links.find(link => link.label === TERMS_OF_USE_LABEL).url;
                             return (
                                 <div className={bem.element('tos')}>
                                     <a href={tosLink} target="_blank">
-                                        Terms of Service
+                                        {TERMS_OF_USE_LABEL}
                                     </a>
                                 </div>
                             );

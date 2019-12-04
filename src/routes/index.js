@@ -5,7 +5,8 @@ import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import LandingPage from './LandingPage';
-import { defaultProductLinks } from 'shared/Layout/context';
+import { defaultProductLinks } from 'shared/Layout/defaults';
+import { getExchangeLink } from 'shared/Layout/helpers';
 
 // Temporary approach
 import RpdDashboard from './RpdDashboard';
@@ -108,7 +109,7 @@ export default {
             label: __('Exchange'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
-            url: defaultProductLinks.find(link => link.label === 'Exchange')
+            url: getExchangeLink(defaultProductLinks)
         },
         [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
             exact: true,

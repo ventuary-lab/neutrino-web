@@ -42,9 +42,11 @@ import {
     UserCongratsModalContext,
     LearnLinksContext,
     GlobalLinksContext,
+} from './context';
+import {
     defaultLearnLinks as links,
     defaultProductLinks as product,
-} from './context';
+} from './defaults';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
@@ -134,7 +136,8 @@ export default class Layout extends React.PureComponent {
             const { page } = this.props;
 
             if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                store.dispatch(goToPage(ROUTE_ROOT));
+                // store.dispatch(goToPage(ROUTE_ROOT));
+                // window.location.href = '/';
 
                 this.setState({ shouldShowInviteModal: true });
                 onError();

@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
@@ -47,10 +48,16 @@ export default class Header extends React.PureComponent {
         this.lastNavItem = null;
     }
 
+    componentDidMount() {}
+
     componentDidUpdate(prevProps) {
         this.lastNavItem = prevProps.currentItem;
 
-        if (this.props.currentItem.id !== ROUTE_ROOT && prevProps.currentItem.id === ROUTE_ROOT && this.lastNavItem) {
+        if (
+            this.props.currentItem.id !== ROUTE_ROOT &&
+            prevProps.currentItem.id === ROUTE_ROOT &&
+            this.lastNavItem
+        ) {
             store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
         }
     }
@@ -60,6 +67,23 @@ export default class Header extends React.PureComponent {
             window.open(dexLink);
             store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
         } else {
+            // if (item.label === 'Transfers') {
+            //     console.log({ item });
+            //     store.dispatch(
+            //         goToPage('neutrino', {
+            //             currency: this.props.quoteCurrency,
+            //         })
+            //     );
+            //     setImmediate(() =>
+            //         store.dispatch(
+            //             goToPage(item.id, {
+            //                 currency: this.props.quoteCurrency,
+            //             })
+            //         )
+            //     );
+            //     return;
+            // }
+
             store.dispatch(
                 goToPage(item.id, {
                     currency: this.props.quoteCurrency,
@@ -95,7 +119,12 @@ export default class Header extends React.PureComponent {
                                     <DropDownField
                                         attribute={'section'}
                                         items={this.props.navItems}
-                                        onItemChange={item => this.onNavItemChange(item, getExchangeLink(links.product).url)}
+                                        onItemChange={item =>
+                                            this.onNavItemChange(
+                                                item,
+                                                getExchangeLink(links.product).url
+                                            )
+                                        }
                                         defaultItemLabel={'Products'}
                                     />
                                 </Form>

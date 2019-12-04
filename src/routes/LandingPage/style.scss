@@ -32,7 +32,9 @@
     }
 
     &__first-part {
-        height: 380px;
+        height: 55vh;
+        background-repeat: no-repeat;
+        background-size: cover;
 
         @media screen and (max-width: 768px) {
             height: 330px;
@@ -137,7 +139,7 @@
     &__romb-text {
         color: black;
         position: absolute;
-        transform: rotate(-45deg);
+        transform: rotate(-45deg) scale(1.2);
         top: 33%;
         left: 15%;
         display: flex;
