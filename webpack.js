@@ -85,7 +85,10 @@ require('yii-steroids/webpack')
                     },
                     typescript: {
                         test: /\.tsx?$/,
-                        loader: 'ts-loader'
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: 'tsconfig-node.json'
+                        }
                     },
                     no_autoreload: { // Disable webpack-dev-server's auto-reload feature in the browser.
                         test: path.resolve(__dirname, 'node_modules/webpack-dev-server/client'),
