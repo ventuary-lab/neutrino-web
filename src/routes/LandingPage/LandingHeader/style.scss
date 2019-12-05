@@ -128,5 +128,42 @@
             }
         }
     }
+
+    @media screen and (min-width: 3000px) {
+        &__main {
+            font-size: 72px;
+            height: 190px;
+            line-height: 190px;
+        }
+
+        &__logo {
+            height: 100px;
+
+            & img {
+                height: 100%;
+            }
+
+            & > :nth-child(2) {
+                margin: -11px 40px;
+            }
+        }
+
+        &__links {
+            min-width: 300px;
+            width: 100%;
+
+            & > :not(:last-child) {
+                margin-right: 135px;
+            }
+        }
+
+        &__sub-dp {
+            left: 0;
+            padding: 50px;
+            top: 250px;
+            z-index: 2;
+            border-radius: 25px;
+        }
+    }
 }
 

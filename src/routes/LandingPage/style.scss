@@ -316,5 +316,17 @@
         margin: auto;
         padding: 34px 0;
     }
+
+    @media screen and (min-width: 3000px) {
+        &__txt-body {
+            transform: scale(3);
+            padding-top: 7vh;
+            font-size: 35px;
+        }
+
+        &__second-part {
+            transform: scale(3) translate(0px, 100px);
+        }
+    }
 }
 
