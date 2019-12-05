@@ -49,7 +49,7 @@ class LandingPage extends React.Component<{}, State> {
                 </div>
                 <script
                     async
-                    src="https://www.googletagmanager.com/gtag/js?id=UA-145009690-3"
+                    src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}
                 ></script>
                 <script
                     dangerouslySetInnerHTML={{
