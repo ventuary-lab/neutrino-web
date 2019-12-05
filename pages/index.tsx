@@ -26,7 +26,7 @@ class LandingPage extends React.Component<{}, State> {
 
     async componentDidMount() {
         try {
-            const res = await axios.get('/api/v1/init', { baseURL: 'http://localhost:5000' });
+            const res = await axios.get('/api/v1/init');
 
             this.setState({ googleTagId: getGoogleTag(res.data.config) });
         } catch (err) {
