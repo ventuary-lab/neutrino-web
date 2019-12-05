@@ -35,6 +35,9 @@ module.exports = class Router {
                             assets: this.app.assets,
                             contracts,
                         },
+                        env: {
+                            google_tag_id: process.env.G_TAG_ID || '?'
+                        }
                     },
                 };
             },
