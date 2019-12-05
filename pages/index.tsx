@@ -13,19 +13,29 @@ interface AppConfig {
 }
 const getGoogleTag = (config: AppConfig) => config.env.google_tag_id;
 
-interface Props {
-    googleTagId: string;
+interface State {
+    googleTagId?: string;
 }
 
-class LandingPage extends React.Component<Props> {
-    static async getInitialProps(ctx: any) {
-        const res = await axios.get('/api/v1/init', { baseURL: 'http://localhost:5000' });
+class LandingPage extends React.Component<{}, State> {
+    constructor(props) {
+        super(props);
 
-        return { googleTagId: getGoogleTag(res.data.config) }
+        this.state = {};
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await axios.get('/api/v1/init', { baseURL: 'http://localhost:5000' });
+
+            this.setState({ googleTagId: getGoogleTag(res.data.config) });
+        } catch (err) {
+            console.warn('Error occured on google tag id fetch');
+        }
     }
 
     render() {
-        const { googleTagId } = this.props;
+        const { googleTagId } = this.state;
         const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: true });
 
         return (
@@ -37,15 +47,19 @@ class LandingPage extends React.Component<Props> {
                     <div></div>
                     <DynamicLandingPage />
                 </div>
-                <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145009690-3"></script>
+                <script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id=UA-145009690-3"
+                ></script>
                 <script
                     dangerouslySetInnerHTML={{
-                    __html: `
+                        __html: `
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
                     gtag('config', '${googleTagId}');
-                    `}}
+                    `,
+                    }}
                 />
                 <style jsx>{`
                     background: #f1f1f1;
