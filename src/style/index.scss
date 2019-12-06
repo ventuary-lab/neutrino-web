@@ -12,7 +12,7 @@
 body {
     margin: 0;
 
-    & a:not(:hover) {
+    & a:visited {
         color: #fff;
     }
 }
