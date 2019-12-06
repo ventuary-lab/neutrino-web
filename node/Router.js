@@ -1,3 +1,4 @@
+const ExplorerApiService = require('./services/ExplorerApiService');
 const CollectionEnum = require('./enums/CollectionEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
@@ -11,6 +12,7 @@ module.exports = class Router {
     constructor(contractApp, expressApp) {
         this.app = contractApp;
         this.expressApp = expressApp;
+        this.explorerApiService = new ExplorerApiService.default();
 
         this._routes = {
             '/api/v1/init': async () => {
@@ -257,6 +259,7 @@ module.exports = class Router {
                 result.history = _orderBy(result.history, 'height', 'desc');
                 return result;
             },
+            '/api/explorer/*': (req, res) => this.explorerApiService.handleRequest(req, res),
             '/api/*': async () => {
                 return {
                     version: 'v1',

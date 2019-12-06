@@ -1,6 +1,7 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
-import { http as ExpressHttp, core as ExpressCore } from 'express';
+import { Express } from 'express';
+import * as http from "http";
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
@@ -34,8 +35,8 @@ module.exports = class App implements ApplicationParams {
     storage: RedisStorage;
     logger: Logger;
     heightListener: HeightListener;
-    httpServer: ExpressHttp.server;
-    expressApp: ExpressCore.Express;
+    httpServer: http.Server;
+    expressApp: Express;
     massPaymentService: MassPaymentService;
     massPaymentSender: string | null;
 
