@@ -137,7 +137,7 @@ export default class Layout extends React.PureComponent {
 
             if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
                 // store.dispatch(goToPage(ROUTE_ROOT));
-                // window.location.href = '/';
+                window.location.href = '/';
 
                 this.setState({ shouldShowInviteModal: true });
                 onError();
