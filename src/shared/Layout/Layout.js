@@ -146,7 +146,7 @@ export default class Layout extends React.PureComponent {
             }
         };
 
-        setTimeout(() => fn(), 1500);
+        setTimeout(() => fn(), 2700);
     }
 
     checkCurrentRoute() {
