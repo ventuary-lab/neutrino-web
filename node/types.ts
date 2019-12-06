@@ -1,5 +1,6 @@
 import { Logger } from 'winston';
-import { http as ExpressHttp, core as ExpressCore } from 'express';
+import * as http from 'http';
+import { Express } from 'express';
 
 import RedisStorage from './cache/storage/RedisStorage';
 import WavesContractCache from './cache/WavesContractCache';
@@ -20,8 +21,8 @@ export interface ApplicationParams {
     storage: RedisStorage;
     logger: Logger;
     heightListener: HeightListener;
-    httpServer: ExpressHttp.server;
-    expressApp: ExpressCore.Express;
+    httpServer: http.Server;
+    expressApp: Express;
 }
 
 export interface ContractTransport extends WavesTransport {}
