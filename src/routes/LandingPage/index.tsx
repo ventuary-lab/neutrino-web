@@ -94,7 +94,7 @@ class LandingPage extends React.Component<Props> {
                     </div>
                     <div className={bem.element('action-buttons')}>
                         <a className="base-button" target="_blank" href="/neutrino/usd-n">
-                            Buy USD-N
+                            Get USD-N
                         </a>
                         <a
                             className="base-button alt"
