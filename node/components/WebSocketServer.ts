@@ -1,6 +1,6 @@
 // const webSocketServer = require('websocket').server;
 import { server as WebSocketModule } from 'websocket';
-import { http } from 'express';
+import * as http from "http";
 import { Logger } from 'winston';
 
 export interface WebSocketParams {
