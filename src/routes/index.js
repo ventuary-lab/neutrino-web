@@ -5,7 +5,16 @@ import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import LandingPage from './LandingPage';
-import { defaultProductLinks } from 'shared/Layout/context';
+import { defaultProductLinks } from 'shared/Layout/defaults';
+import { getExchangeLink } from 'shared/Layout/helpers';
+import {
+    INVOICES_LABEL,
+    TRANSFERS_LABEL,
+    EXCHANGE_LABEL,
+    NEUTRINO_DASHBOARD_LABEL,
+    BONDS_DASHBOARD_LABEL,
+    STAKING_DASHBOARD_LABEL,
+} from 'shared/Layout/constants';
 
 // Temporary approach
 import RpdDashboard from './RpdDashboard';
@@ -51,7 +60,7 @@ export default {
             exact: true,
             path: '/neutrino/:currency',
             component: NeutrinoDashboard,
-            label: __('Neutrino dashboard'),
+            label: __(NEUTRINO_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
@@ -98,23 +107,23 @@ export default {
             exact: true,
             path: '/rpd/:currency',
             component: RpdDashboard,
-            label: __('Staking dashboard'),
+            label: __(STAKING_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
-        'Exchange': {
+        Exchange: {
             exact: true,
             // path: '#',
-            label: __('Exchange'),
+            label: __(EXCHANGE_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
-            url: defaultProductLinks.find(link => link.label === 'Exchange')
+            url: getExchangeLink(defaultProductLinks),
         },
         [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
             exact: true,
             path: '/transfers/:currency',
             component: NeutrinoDashboard,
-            label: __('Transfers'),
+            label: __(TRANSFERS_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
@@ -122,7 +131,7 @@ export default {
             exact: true,
             path: '/invoices/:currency',
             component: NeutrinoDashboard,
-            label: __('Invoice generator'),
+            label: __(INVOICES_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
@@ -130,7 +139,7 @@ export default {
             exact: true,
             path: '/bonds/:currency',
             component: BoundsDashboard,
-            label: __('Bonds dashboard'),
+            label: __(BONDS_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },

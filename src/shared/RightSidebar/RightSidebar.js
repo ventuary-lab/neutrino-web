@@ -5,6 +5,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import { getUser } from 'yii-steroids/reducers/auth';
 import _upperFirst from 'lodash-es/upperFirst';
 import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
+import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
 import { html, dal } from 'components';
 import BalanceTable from 'shared/BalanceTable';
@@ -41,15 +42,17 @@ export default class RightSidebar extends React.PureComponent {
                             />
                             <div className={bem.element('address-container')}>
                                 <span className={bem.element('address-value')}>
-                                    {this.props.user.address}
+                                    <a href={addressUrl} target="_blank">
+                                        {this.props.user.address}
+                                    </a>
                                 </span>
-                                <a
+                                {/* <a
                                     href={addressUrl}
                                     target={'_blank'}
                                     className={bem.element('address-link')}
                                 >
                                     <span className={'Icon Icon__arrow-right-2'} />
-                                </a>
+                                </a> */}
                             </div>
                             <button
                                 className={bem.element('logout')}
@@ -97,11 +100,11 @@ export default class RightSidebar extends React.PureComponent {
                     <GlobalLinksContext.Consumer>
                         {context => {
                             const tosLink = context.links.find(
-                                link => link.label === 'Terms of Service'
+                                link => link.label === TERMS_OF_USE_LABEL
                             ).url;
                             return (
                                 <a href={tosLink} target={'_blank'}>
-                                    Terms of Service
+                                    {TERMS_OF_USE_LABEL}
                                 </a>
                             );
                         }}

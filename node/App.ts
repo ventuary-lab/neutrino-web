@@ -48,6 +48,7 @@ module.exports = class App implements ApplicationParams {
     _collections: ContractDictionary<ContractDictionary<ContractCache>> | null; // Not type-checked
     _router: any;
     _websocket: WebSocketServer;
+    _collectionUpdateTimeout: number;
 
     constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
@@ -127,6 +128,8 @@ module.exports = class App implements ApplicationParams {
         this._isSkipUpdates = false;
         this._isNowUpdated = false;
         this._isNeedUpdateAgain = false;
+
+        this._collectionUpdateTimeout = 5000;
     }
 
     async start() {
@@ -236,7 +239,7 @@ module.exports = class App implements ApplicationParams {
         });
 
         this._collections[pairName] = this._collections[pairName] || {};
-        this._collections[pairName][collectionName] = collection as any; // TODO
+        this._collections[pairName][collectionName] = collection as any; // TODO: Infer correct type
 
         return collection;
     }
@@ -270,6 +273,7 @@ module.exports = class App implements ApplicationParams {
         if (this._isNowUpdated) {
             return;
         }
+
         this._isNowUpdated = true;
 
         try {
@@ -302,7 +306,7 @@ module.exports = class App implements ApplicationParams {
         this._isNowUpdated = false;
 
         // TODO
-        setTimeout(() => this._updateAll(), 5000);
+        setTimeout(() => this._updateAll(), this._collectionUpdateTimeout);
     }
 
     _onHeightUpdate() {

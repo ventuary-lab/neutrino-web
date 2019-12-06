@@ -1,7 +1,11 @@
 import React from 'react';
 import _, { get as _get } from 'lodash';
 import { html, dal, store } from 'components';
-import { getNeutrinoDappAddress, getCurrentAccountAddress } from 'components/selectors';
+import {
+    getNeutrinoDappAddress,
+    getCurrentAccountAddress,
+    getNeutrinoAssetId,
+} from 'components/selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change, reset } from 'redux-form';
@@ -15,6 +19,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
+import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
@@ -394,15 +399,24 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         </div>
                                         <span>{__('Smart contract')}</span>
                                     </div>
-                                    <span>{grabNeutrinoAddress(environmentConfig)}</span>
+                                    <a
+                                        href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
+                                            environmentConfig
+                                        )}`}
+                                        target="_blank"
+                                    >
+                                        <span>{grabNeutrinoAddress(environmentConfig)}</span>
+                                    </a>
                                 </div>
                             )}
                         </ConfigContext.Consumer>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string', 'without-hint')}>
-                                <span>{__('Number of oracles')}</span>
+                                <span>{__('Asset ID')}</span>
                             </div>
-                            <span>{__('5')}</span>
+                            <a href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(dal)}`} target='_blank'>
+                                <span>{getNeutrinoAssetId(dal)}</span>
+                            </a>
                         </div>
                     </div>
                     <div className={bem.element('info-column')}>
@@ -520,7 +534,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <GlobalLinksContext.Consumer>
                         {context => {
                             const tosLink = context.links.find(
-                                link => link.label === 'Terms of Service'
+                                link => link.label === TERMS_OF_USE_LABEL
                             ).url;
                             return (
                                 <CheckboxField
@@ -529,7 +543,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         <span>
                                             {__('I have read and accept the')}{' '}
                                             <a href={tosLink} target="_blank">
-                                                {__('Terms of Service')}
+                                                {__(TERMS_OF_USE_LABEL)}
                                             </a>
                                         </span>
                                     }

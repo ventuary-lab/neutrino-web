@@ -60,7 +60,7 @@
   }
 
   &__address-container {
-    width: 70%;
+    width: 100%;
     display: flex;
     align-items: center;
     margin-bottom: 15px;
@@ -68,7 +68,7 @@
 
   &__address-value {
     font-weight: 300;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 16px;
     text-overflow: ellipsis;
     white-space: nowrap;

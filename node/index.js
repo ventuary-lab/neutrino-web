@@ -2,6 +2,7 @@ const App = require('./App');
 const express = require('express');
 const expressApp = express();
 const Sentry = require('@sentry/node');
+// const { isNextJsPrefixed } = require('./helpers');
 
 require('dotenv').config();
 
@@ -37,7 +38,16 @@ expressApp.use(function(req, res, next) {
 
 mainApp.start();
 
+expressApp.use(express.static(__dirname + '/../out'));
 expressApp.use(express.static(__dirname + '/../dist'));
+
 expressApp.get('/*', (req, res) => {
+    if (req.originalUrl === '/') {
+        res.sendFile('index.html', { root: __dirname + '/../out' });
+    }
+    if (req.originalUrl.indexOf('_next') !== -1) {
+        res.sendFile(req.originalUrl, { root: __dirname + '/../out' });
+    };
+
     res.sendFile('index.html', { root: __dirname + '/../dist' });
 });

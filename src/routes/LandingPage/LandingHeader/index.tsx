@@ -1,19 +1,25 @@
 import React from 'react';
-import { html, store, dal } from 'components';
+// import { html, store, dal } from 'components';
+import { buildBem } from '../helpers';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 
 import { Link } from 'ui/global/types';
-import mainLogo from 'static/images/logo.svg';
-import arrowDown from 'static/images/landing/arrow-down.svg';
-import burgerIcon from 'static/images/landing/burger.svg';
-import crossIcon from 'static/images/landing/cross-icon.svg';
+
+// import mainLogo from 'static/images/logo.svg';
+// import arrowDown from 'static/images/landing/arrow-down.svg';
+// import burgerIcon from 'static/images/landing/burger.svg';
+// import crossIcon from 'static/images/landing/cross-icon.svg';
+const mainLogo = 'static/images/logo.svg';
+const arrowDown = 'static/images/landing/arrow-down.svg';
+const burgerIcon = 'static/images/landing/burger.svg';
+const crossIcon = 'static/images/landing/cross-icon.svg';
 
 import './style.scss';
 
-const bem = html.bem('LandingHeader');
+const bem = buildBem('LandingHeader');
 
 interface Props {}
 interface State {
@@ -37,7 +43,7 @@ class LandingHeader extends React.Component<Props, State> {
         this.hideMobileMenu = this.hideMobileMenu.bind(this);
         this.openMobileMenu = this.openMobileMenu.bind(this);
         this.onErrorLogin = this.onErrorLogin.bind(this);
-        this.onSuccessLogin = this.onSuccessLogin.bind(this);
+        // this.onSuccessLogin = this.onSuccessLogin.bind(this);
 
         this.links = [
             {
@@ -107,11 +113,11 @@ class LandingHeader extends React.Component<Props, State> {
         );
     }
 
-    onSuccessLogin () {
-        store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
-    }
+    // onSuccessLogin() {
+    //     store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
+    // }
 
-    onErrorLogin () {}
+    onErrorLogin() {}
 
     outsideHandler() {
         this.setState({
@@ -131,17 +137,24 @@ class LandingHeader extends React.Component<Props, State> {
                         <InstallKeeperModalContext.Consumer>
                             {installKeeperContext => {
                                 const { links: currentLinks } = this;
+
                                 currentLinks[currentLinks.length - 1] = {
                                     ...currentLinks[currentLinks.length - 1],
                                     onClick: async () => {
-
-                                        try {
-                                            await dal.login();
-                                            store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
-                                        } finally {
-                                            installKeeperContext.openModal();
-                                        }
-                                    }
+                                        // try {
+                                        //     await dal.login();
+                                        //     store.dispatch(
+                                        //         goToPage('neutrino', {
+                                        //             currency: CurrencyEnum.USD_N,
+                                        //         })
+                                        //     );
+                                        // } catch (err) {
+                                        //     window.location.href = `/neutrino/${CurrencyEnum.USD_N}?openKeeperWarning=1`;
+                                        // } finally {
+                                        //     installKeeperContext.openModal();
+                                        // }
+                                        window.location.href = `/neutrino/${CurrencyEnum.USD_N}?openKeeperWarning=1`;
+                                    },
                                 };
                                 const links = currentLinks.map(this.mapLink);
                                 const productLinks = context.product.map(this.mapLink);
@@ -160,22 +173,23 @@ class LandingHeader extends React.Component<Props, State> {
                                             </a>
                                             <span>beta</span>
                                         </div>
-                                        {isMobileMenuVisible && (
-                                            <div className={bem.element('mobile-menu')}>
-                                                <div>
-                                                    <img
-                                                        src={crossIcon}
-                                                        alt=""
-                                                        onClick={this.hideMobileMenu}
-                                                    />
-                                                </div>
-                                                <ul>
-                                                    {links[links.length - 1]}
-                                                    {productLinks}
-                                                    {context.links.map(this.mapLink)}
-                                                </ul>
+                                        <div
+                                            className={bem.element('mobile-menu')}
+                                            style={{ display: !isMobileMenuVisible ? 'none' : '' }}
+                                        >
+                                            <div>
+                                                <img
+                                                    src={crossIcon}
+                                                    alt=""
+                                                    onClick={this.hideMobileMenu}
+                                                />
                                             </div>
-                                        )}
+                                            <ul>
+                                                {links[links.length - 1]}
+                                                {productLinks}
+                                                {context.links.map(this.mapLink)}
+                                            </ul>
+                                        </div>
                                         <OutsideAlerter
                                             handler={this.outsideHandler}
                                             className={bem.element('actions')}
