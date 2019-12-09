@@ -1,15 +1,16 @@
+import { t } from 'locales/config';
 
-export const NEUTRINO_DASHBOARD_LABEL = 'Neutrino dashboard';
-export const STAKING_DASHBOARD_LABEL = 'Staking dashboard';
-export const TRANSFERS_LABEL = 'Transfers';
-export const EXCHANGE_LABEL = 'Exchange';
-export const INVOICES_LABEL = 'Invoice Generator';
-export const BONDS_DASHBOARD_LABEL = 'Bonds dashboard';
+export const NEUTRINO_DASHBOARD_LABEL = t('heading.neutrino_dashboard.label');
+export const STAKING_DASHBOARD_LABEL = t('heading.staking_dashboard.label');
+export const TRANSFERS_LABEL = t('heading.transfers.label');
+export const EXCHANGE_LABEL = t('common.exchange.label');
+export const INVOICES_LABEL = t('heading.invoice_generator.label');
+export const BONDS_DASHBOARD_LABEL = t('heading.bonds_dashboard.label');
 
-export const WHITEPAPER_LABEL = 'White paper';
-export const FAQ_LABEL = 'FAQ';
-export const BLOG_LABEL = 'Blog';
-export const DISCUSSIONS_LABEL = 'Discussions';
-export const GITHUB_LABEL = 'GitHub';
-export const SMART_CONTRACT_LABEL = 'Smart Contract';
-export const TERMS_OF_USE_LABEL = 'Terms of Use';
+export const WHITEPAPER_LABEL = t('common.white_paper.label');
+export const FAQ_LABEL = t('common.faq.label');
+export const BLOG_LABEL = t('common.blog.label');
+export const DISCUSSIONS_LABEL = t('common.discussions.label');
+export const GITHUB_LABEL = t('common.github.label');
+export const SMART_CONTRACT_LABEL = t('common.smart_contract.label');
+export const TERMS_OF_USE_LABEL = t('common.terms_of_use.label');

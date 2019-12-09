@@ -1,5 +1,5 @@
 import Enum from './Enum';
-import i18n, { t } from 'locales/config';
+import { t } from 'locales/config';
 export default class CurrencyEnum extends Enum {
 
     static WAVES = 'waves';

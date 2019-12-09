@@ -59,6 +59,30 @@ export default {
             total: {
                 label: 'Total',
             },
+            exchange: {
+                label: 'Exchange'
+            },
+            white_paper: {
+                label: 'White paper'
+            },
+            faq: {
+                label: 'FAQ'
+            },
+            blog: {
+                label: 'Blog'
+            },
+            discussions: {
+                label: 'Discussions'
+            },
+            github: {
+                label: 'GitHub'
+            },
+            smart_contract: {
+                label: 'Smart Contract'
+            },
+            terms_of_use: {
+                label: 'Terms of Use'
+            }
         },
         modals: {
             create_invoice: {
@@ -97,8 +121,30 @@ export default {
                 label: 'The order was canceled',
             },
             set_liquidate_bonds_order: {
-                label: ''
+                label: 'Set liquidate order'
             }
         },
+        order_book: {
+            order_book: {
+                label: 'Order book'
+            }
+        },
+        heading: {
+            neutrino_dashboard: {
+                label: 'Neutrino dashboard'
+            },
+            staking_dashboard: {
+                label: 'Staking dashboard'
+            },
+            bonds_dashboard: {
+                label: 'Bonds dashboard'
+            },
+            transfers: {
+                label: 'Transfers'
+            },
+            invoice_generator: {
+                label: 'Invoice Generator'
+            },
+        }
     },
 };

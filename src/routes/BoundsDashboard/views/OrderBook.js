@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _round from 'lodash/round';
 import _sum from 'lodash/sum';
 import _groupBy from 'lodash/groupBy';
+import { t } from 'locales/config';
 
 import {html} from 'components';
 
@@ -56,7 +57,7 @@ export default class OrderBook extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('title')}>
-                    {__('Order Book')}
+                    {t('order_book.order_book.label')}
                 </div>
                 <div className={bem.element('header-row')}>
                     <div className={bem.element('header-column', 'upper-case')}>

@@ -94,13 +94,11 @@ export default class BoundsDashboard extends React.PureComponent {
                             items={[
                                 {
                                     id: 'buy',
-                                    // label: __('Buy'),
                                     label: t('enums.buy.label'),
                                     content: BuyBoundsForm,
                                 },
                                 {
                                     id: 'liquidate',
-                                    // label: __('Liquidate'),
                                     label: t('enums.liquidate.label'),
                                     className: bem.element('danger-tab'),
                                     content: LiquidateBoundsForm,
@@ -111,7 +109,7 @@ export default class BoundsDashboard extends React.PureComponent {
                 </div>
                 <div className={bem.element('column', 'right')}>
                     <div className={bem.element('graph')}>
-                        <span className={bem.element('graph-title')}>{__('common.discount_with_percent.label')}</span>
+                        <span className={bem.element('graph-title')}>{t('common.discount_with_percent.label')}</span>
                         <MainChart pairName={this.props.pairName} />
                     </div>
                     <div className={bem.element('orders')}>

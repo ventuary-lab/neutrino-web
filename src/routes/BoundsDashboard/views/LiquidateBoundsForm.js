@@ -75,7 +75,6 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         inputProps={{
                             autoComplete: 'off',
                         }}
-                        // label={__('Total')}
                         label={t('common.total.label')}
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
@@ -93,7 +92,7 @@ export default class LiquidateBoundsFrom extends React.PureComponent {
                         // label={__('Set liquidate {bonds} order', {
                         //     bonds: this.props.baseCurrency,
                         // })}
-                        // label={t('bonds.set_liquidate_bonds_order.label')}
+                        label={`${t('bonds.set_liquidate_bonds_order.label')} (${this.props.baseCurrency})`}
                     />
                 </Form>
             </div>
