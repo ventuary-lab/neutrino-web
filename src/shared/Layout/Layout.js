@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
+import { Translation } from 'react-i18next';
 import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
 import { goToPage } from 'yii-steroids/actions/navigation';
@@ -380,6 +381,16 @@ export default class Layout extends React.PureComponent {
                                         onClose={this.userCongratsModalContextValue.onClose}
                                         onOpen={this.userCongratsModalContextValue.onOpen}
                                     />
+                                    <div>
+                                        <Translation>
+                                            {(t, { i18n }) => (
+                                                <div>
+                                                    <button onClick={() => i18n.changeLanguage('en-us')}>Trigger To English</button>
+                                                    <button onClick={() => i18n.changeLanguage('ru-ru')}>Trigger To Russian</button>
+                                                </div>
+                                            )}
+                                        </Translation>
+                                    </div>
                                     {children}
                                 </ConfigContext.Provider>
                                 <ModalWrapper />
