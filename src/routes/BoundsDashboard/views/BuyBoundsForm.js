@@ -13,7 +13,7 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 // import CollectionEnum from 'enums/CollectionEnum';
 import MessageModal from 'modals/MessageModal';
 import { getControlPrice } from 'reducers/contract/selectors';
-import { t } from 'locales/config';
+import { Translation } from 'react-i18next';
 
 import { dal, html, store } from 'components';
 
@@ -91,87 +91,91 @@ export default class BuyBoundsForm extends React.PureComponent {
         const { controlPrice } = this.props;
 
         return (
-            <div className={bem.block()}>
-                <Form
-                    className={bem.element('form')}
-                    formId={FORM_ID}
-                    initialValues={{
-                        discount: 15,
-                    }}
-                    onSubmit={this._onSubmit}
-                    validators={[
-                        [['discount', 'bounds'], 'required'],
-                        [['discount', 'bounds'], 'integer'],
-                    ]}
-                >
-                    <NumberField
-                        min={1}
-                        max={99}
-                        step="any"
-                        required
-                        inputProps={{
-                            autoComplete: 'off',
-                        }}
-                        label={t('bonds.bonds_discount.label')}
-                        layoutClassName={bem.element('input')}
-                        attribute={'discount'}
-                        inners={{
-                            label: '%',
-                        }}
-                    />
-                    <NumberField
-                        min={0}
-                        step="any"
-                        required
-                        inputProps={{
-                            autoComplete: 'off',
-                        }}
-                        label={t('common.amount.label')}
-                        layoutClassName={bem.element('input', 'with-hint')}
-                        attribute={'bounds'}
-                        inners={{
-                            label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
-                        }}
-                        hint={
-                            _get(this.props, 'formValues.bounds')
-                                ? `${_round(
-                                      _get(this.props, 'formValues.neutrino') /
-                                          (controlPrice / 100),
-                                      2
-                                  )} WAVES`
-                                : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
-                                  // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
-                                  ' '
-                        }
-                    />
-                    <NumberField
-                        min={0}
-                        step="any"
-                        inputProps={{
-                            autoComplete: 'off',
-                        }}
-                        label={t('common.total.label')}
-                        layoutClassName={bem.element('input')}
-                        attribute={'neutrino'}
-                        inners={{
-                            label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
-                        }}
-                    />
-                    <Button
-                        type={'submit'}
-                        block
-                        disabled={isButtonDisabled}
-                        className={bem.element('submit-button')}
-                        label={`${t('enums.buy.label')} ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
-                    />
-                </Form>
-            </div>
+            <Translation>
+                {t => (
+                    <div className={bem.block()}>
+                        <Form
+                            className={bem.element('form')}
+                            formId={FORM_ID}
+                            initialValues={{
+                                discount: 15,
+                            }}
+                            onSubmit={values => this._onSubmit(values, t)}
+                            validators={[
+                                [['discount', 'bounds'], 'required'],
+                                [['discount', 'bounds'], 'integer'],
+                            ]}
+                        >
+                            <NumberField
+                                min={1}
+                                max={99}
+                                step="any"
+                                required
+                                inputProps={{
+                                    autoComplete: 'off',
+                                }}
+                                label={t('bonds.bonds_discount.label')}
+                                layoutClassName={bem.element('input')}
+                                attribute={'discount'}
+                                inners={{
+                                    label: '%',
+                                }}
+                            />
+                            <NumberField
+                                min={0}
+                                step="any"
+                                required
+                                inputProps={{
+                                    autoComplete: 'off',
+                                }}
+                                label={t('common.amount.label')}
+                                layoutClassName={bem.element('input', 'with-hint')}
+                                attribute={'bounds'}
+                                inners={{
+                                    label: CurrencyEnum.getLabel(this.props.baseCurrency),
+                                    icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
+                                }}
+                                hint={
+                                    _get(this.props, 'formValues.bounds')
+                                        ? `${_round(
+                                              _get(this.props, 'formValues.neutrino') /
+                                                  (controlPrice / 100),
+                                              2
+                                          )} WAVES`
+                                        : ' '
+                                }
+                            />
+                            <NumberField
+                                min={0}
+                                step="any"
+                                inputProps={{
+                                    autoComplete: 'off',
+                                }}
+                                label={t('common.total.label')}
+                                layoutClassName={bem.element('input')}
+                                attribute={'neutrino'}
+                                inners={{
+                                    label: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                    icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
+                                }}
+                            />
+                            <Button
+                                type={'submit'}
+                                block
+                                disabled={isButtonDisabled}
+                                className={bem.element('submit-button')}
+                                label={`${t('enums.buy.label')} ${CurrencyEnum.getLabel(
+                                    this.props.baseCurrency
+                                )}`}
+                            />
+                        </Form>
+                    </div>
+                )}
+            </Translation>
         );
     }
 
-    _onSubmit(values) {
+    _onSubmit(values, t) {
         const price = 1 - values.discount / 100;
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
         const wavesToUsdPrice = this.props.controlPrice;
@@ -188,13 +192,13 @@ export default class BuyBoundsForm extends React.PureComponent {
                 if (err && err.code === '10') {
                     store.dispatch(
                         openModal(MessageModal, {
-                            test: t('bonds.cancel_order.label')
+                            test: t('bonds.cancel_order.label'),
                         })
                     );
                 } else if (err) {
                     store.dispatch(
                         openModal(MessageModal, {
-                            test: `${t('bonds.order_was_canceled.label')}. ${err.message}`
+                            test: `${t('bonds.order_was_canceled.label')}. ${err.message}`,
                         })
                     );
                 }

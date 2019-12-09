@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
-import { t } from 'locales/config';
+import { Translation } from 'react-i18next';
 
 import { html } from 'components';
 import CopyToClipboard from 'shared/CopyToClipboard';
@@ -37,32 +37,38 @@ export default class CreateInvoiceModal extends React.PureComponent {
 
     render() {
         return (
-            <Modal
-                {...this.props.modalProps}
-                header={t('modals.create_invoice.label')}
-                className={bem.block()}
-            >
-                <div className={bem.element('inner')}>
-                    <div className={bem.element('form')}>
-                        <TransferForm
-                            formId={FORM_ID}
-                            onSubmit={this._onSubmit}
-                            buttonLabel={t('modals.get_share_link.label')}
-                            currency={this.props.currency}
-                        />
-                    </div>
-                    {this.state.invoiceLink && (
-                        <div className={bem.element('link-block')}>
-                            <span className={bem.element('link')}>{this.state.invoiceLink}</span>
-                            <CopyToClipboard copyText={this.state.invoiceLink} />
+            <Translation>
+                {t => (
+                    <Modal
+                        {...this.props.modalProps}
+                        header={t('modals.create_invoice.label')}
+                        className={bem.block()}
+                    >
+                        <div className={bem.element('inner')}>
+                            <div className={bem.element('form')}>
+                                <TransferForm
+                                    formId={FORM_ID}
+                                    onSubmit={(address, amount) => this._onSubmit(address, amount, t)}
+                                    buttonLabel={t('modals.get_share_link.label')}
+                                    currency={this.props.currency}
+                                />
+                            </div>
+                            {this.state.invoiceLink && (
+                                <div className={bem.element('link-block')}>
+                                    <span className={bem.element('link')}>
+                                        {this.state.invoiceLink}
+                                    </span>
+                                    <CopyToClipboard copyText={this.state.invoiceLink} />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </Modal>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 
-    _onSubmit(address, amount) {
+    _onSubmit(address, amount, t) {
         validate(address, [
             [
                 'address',

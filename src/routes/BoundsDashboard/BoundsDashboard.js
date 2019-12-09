@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Nav from 'yii-steroids/ui/nav/Nav';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
-import { t } from 'locales/config';
+import { Translation } from 'react-i18next';
 
 import { html, dal } from 'components';
 import OrdersTable from './views/OrdersTable';
@@ -71,78 +71,84 @@ export default class BoundsDashboard extends React.PureComponent {
         }
 
         return (
-            <div className={bem.block()}>
-                <div className={bem.element('column', 'left')}>
-                    <div className={bem.element('order-book')}>
-                        <OrderBook
-                            orders={
-                                this.state.formTab === 'buy'
-                                    ? this.props.bondOrders
-                                    : this.props.liquidateOrders
-                            }
-                            user={this.props.user}
-                            baseCurrency={this.props.baseCurrency}
-                            quoteCurrency={this.props.quoteCurrency}
-                            formTab={this.state.formTab}
-                        />
-                    </div>
-                    <div className={bem.element('forms')}>
-                        <Nav
-                            isFullWidthTabs
-                            layout={'tabs'}
-                            onChange={formTab => this.setState({ formTab })}
-                            items={[
-                                {
-                                    id: 'buy',
-                                    label: t('enums.buy.label'),
-                                    content: BuyBoundsForm,
-                                },
-                                {
-                                    id: 'liquidate',
-                                    label: t('enums.liquidate.label'),
-                                    className: bem.element('danger-tab'),
-                                    content: LiquidateBoundsForm,
-                                },
-                            ]}
-                        />
-                    </div>
-                </div>
-                <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('graph')}>
-                        <span className={bem.element('graph-title')}>{t('common.discount_with_percent.label')}</span>
-                        <MainChart pairName={this.props.pairName} />
-                    </div>
-                    <div className={bem.element('orders')}>
-                        {this.props.userOrders && (
-                            <Nav
-                                className={bem.element('orders-nav')}
-                                layout={'tabs'}
-                                items={[
-                                    {
-                                        id: 'my-open-orders',
-                                        label: t('common.my_open_orders.label'),
-                                        content: OrdersTable,
-                                        contentProps: {
-                                            items: this.props.userOrders.opened,
-                                            pairName: this.props.pairName,
+            <Translation>
+                {t => (
+                    <div className={bem.block()}>
+                        <div className={bem.element('column', 'left')}>
+                            <div className={bem.element('order-book')}>
+                                <OrderBook
+                                    orders={
+                                        this.state.formTab === 'buy'
+                                            ? this.props.bondOrders
+                                            : this.props.liquidateOrders
+                                    }
+                                    user={this.props.user}
+                                    baseCurrency={this.props.baseCurrency}
+                                    quoteCurrency={this.props.quoteCurrency}
+                                    formTab={this.state.formTab}
+                                />
+                            </div>
+                            <div className={bem.element('forms')}>
+                                <Nav
+                                    isFullWidthTabs
+                                    layout={'tabs'}
+                                    onChange={formTab => this.setState({ formTab })}
+                                    items={[
+                                        {
+                                            id: 'buy',
+                                            label: t('enums.buy.label'),
+                                            content: BuyBoundsForm,
                                         },
-                                    },
-                                    {
-                                        id: 'my-orders-history',
-                                        label: t('common.my_orders_history.label'),
-                                        content: OrdersTable,
-                                        contentProps: {
-                                            items: this.props.userOrders.history,
-                                            pairName: this.props.pairName,
-                                            isHistory: true,
+                                        {
+                                            id: 'liquidate',
+                                            label: t('enums.liquidate.label'),
+                                            className: bem.element('danger-tab'),
+                                            content: LiquidateBoundsForm,
                                         },
-                                    },
-                                ]}
-                            />
-                        )}
+                                    ]}
+                                />
+                            </div>
+                        </div>
+                        <div className={bem.element('column', 'right')}>
+                            <div className={bem.element('graph')}>
+                                <span className={bem.element('graph-title')}>
+                                    {t('common.discount_with_percent.label')}
+                                </span>
+                                <MainChart pairName={this.props.pairName} />
+                            </div>
+                            <div className={bem.element('orders')}>
+                                {this.props.userOrders && (
+                                    <Nav
+                                        className={bem.element('orders-nav')}
+                                        layout={'tabs'}
+                                        items={[
+                                            {
+                                                id: 'my-open-orders',
+                                                label: t('common.my_open_orders.label'),
+                                                content: OrdersTable,
+                                                contentProps: {
+                                                    items: this.props.userOrders.opened,
+                                                    pairName: this.props.pairName,
+                                                },
+                                            },
+                                            {
+                                                id: 'my-orders-history',
+                                                label: t('common.my_orders_history.label'),
+                                                content: OrdersTable,
+                                                contentProps: {
+                                                    items: this.props.userOrders.history,
+                                                    pairName: this.props.pairName,
+                                                    isHistory: true,
+                                                },
+                                            },
+                                        ]}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )}
+            </Translation>
         );
     }
 }

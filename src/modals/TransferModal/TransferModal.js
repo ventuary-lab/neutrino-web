@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, reset } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
-import { t } from 'locales/config';
+import { Translation } from 'react-i18next';
 
 import { html, dal } from 'components';
 import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
 import PairsEnum from 'enums/PairsEnum';
-// import {getPairName} from 'reducers/currency';
 
 import './TransferModal.scss';
 
@@ -40,54 +39,57 @@ export default class TransferModal extends React.PureComponent {
         const { currency, formValues } = this.props;
 
         return (
-            <Modal
-                {...this.props.modalProps}
-                className={bem.block({
-                    'is-success': this.state.isSuccess,
-                })}
-            >
-                <div className={bem.element('header')}>
-                    {this.state.isSuccess
-                        ? t('modals.successful_transfer.label')
-                        : t('modals.transferring_funds_to_user.label')
-                    }
-                </div>
-                <div className={bem.element('inner')}>
-                    <div
-                        className={bem.element('form', {
-                            'd-none': this.state.isSuccess,
+            <Translation>
+                {t => (
+                    <Modal
+                        {...this.props.modalProps}
+                        className={bem.block({
+                            'is-success': this.state.isSuccess,
                         })}
                     >
-                        <TransferForm
-                            formId={FORM_ID}
-                            onSubmit={this._onSubmit}
-                            currency={this.props.currency}
-                        />
-                    </div>
-                    <div
-                        className={bem.element('success', {
-                            'd-none': !this.state.isSuccess,
-                        })}
-                    >
-                        <div className={bem.element('success-icon')}>
-                            <span className={'Icon Icon__successful'} />
+                        <div className={bem.element('header')}>
+                            {this.state.isSuccess
+                                ? t('modals.successful_transfer.label')
+                                : t('modals.transferring_funds_to_user.label')}
                         </div>
-                        <TransferInfo
-                            {...formValues}
-                            onClose={this.state.isSuccess && this.props.onClose}
-                            currency={currency}
-                            onSubmit={() => {
-                                this.setState({ isSuccess: false });
-                                this.props.dispatch(reset(FORM_ID));
-                            }}
-                        />
-                    </div>
-                </div>
-            </Modal>
+                        <div className={bem.element('inner')}>
+                            <div
+                                className={bem.element('form', {
+                                    'd-none': this.state.isSuccess,
+                                })}
+                            >
+                                <TransferForm
+                                    formId={FORM_ID}
+                                    onSubmit={(address, amount) => this._onSubmit(address, amount, t)}
+                                    currency={this.props.currency}
+                                />
+                            </div>
+                            <div
+                                className={bem.element('success', {
+                                    'd-none': !this.state.isSuccess,
+                                })}
+                            >
+                                <div className={bem.element('success-icon')}>
+                                    <span className={'Icon Icon__successful'} />
+                                </div>
+                                <TransferInfo
+                                    {...formValues}
+                                    onClose={this.state.isSuccess && this.props.onClose}
+                                    currency={currency}
+                                    onSubmit={() => {
+                                        this.setState({ isSuccess: false });
+                                        this.props.dispatch(reset(FORM_ID));
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 
-    _onSubmit(address, amount) {
+    _onSubmit(address, amount, t) {
         validate(address, [
             [
                 'address',

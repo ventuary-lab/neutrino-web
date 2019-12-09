@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Translation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import queryString from 'query-string';
@@ -381,7 +380,6 @@ export default class Layout extends React.PureComponent {
                                         onClose={this.userCongratsModalContextValue.onClose}
                                         onOpen={this.userCongratsModalContextValue.onOpen}
                                     />
-                                    {/* <Translation>{t => <h1>{t('age.label')}</h1>}</Translation> */}
                                     {children}
                                 </ConfigContext.Provider>
                                 <ModalWrapper />

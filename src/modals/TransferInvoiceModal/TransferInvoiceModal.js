@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'yii-steroids/ui/modal/Modal';
-import { t } from 'locales/config';
+import { Translation } from 'react-i18next';
 
 import { html, dal } from 'components';
 import TransferInfo from 'shared/TransferInfo';
@@ -31,32 +31,42 @@ export default class TransferInvoiceModal extends React.PureComponent {
 
     render() {
         return (
-            <Modal
-                {...this.props.modalProps}
-                header={
-                    this.state.isSuccess
-                        ? t('modals.successful_transfer.label')
-                        : t('modals.please_transfer_funds_message.label')
-                }
-                className={bem.block({
-                    // 'is-success': this.state.isSuccess,
-                })}
-            >
-                <div className={bem.element('inner')}>
-                    {this.state.isSuccess && (
-                        <div className={bem.element('success-icon')}>
-                            <span className={'Icon Icon__successful'} />
+            <Translation>
+                {t => (
+                    <Modal
+                        {...this.props.modalProps}
+                        header={
+                            this.state.isSuccess
+                                ? t('modals.successful_transfer.label')
+                                : t('modals.please_transfer_funds_message.label')
+                        }
+                        className={bem.block({
+                            // 'is-success': this.state.isSuccess,
+                        })}
+                    >
+                        <div className={bem.element('inner')}>
+                            {this.state.isSuccess && (
+                                <div className={bem.element('success-icon')}>
+                                    <span className={'Icon Icon__successful'} />
+                                </div>
+                            )}
+                            <TransferInfo
+                                amount={this.props.amount}
+                                address={this.props.address}
+                                currency={this.props.currency}
+                                onSubmit={
+                                    this.state.isSuccess ? this.props.onClose : this._onSubmit
+                                }
+                                buttonLabel={
+                                    this.state.isSuccess
+                                        ? t('common.ok.label')
+                                        : t('common.transfer.label')
+                                }
+                            />
                         </div>
-                    )}
-                    <TransferInfo
-                        amount={this.props.amount}
-                        address={this.props.address}
-                        currency={this.props.currency}
-                        onSubmit={this.state.isSuccess ? this.props.onClose : this._onSubmit}
-                        buttonLabel={this.state.isSuccess ? t('common.ok.label') : t('common.transfer.label')}
-                    />
-                </div>
-            </Modal>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 
