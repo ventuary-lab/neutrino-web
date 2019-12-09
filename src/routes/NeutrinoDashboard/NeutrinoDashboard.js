@@ -19,6 +19,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
+import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -428,7 +429,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     })}
                                 </span>
                             </div>
-                            <span>{this.getTotalIssued()}</span>
+                            <span>{prettyPrintNumber(this.getTotalIssued())}</span>
                         </div>
                         <div className={bem.element('info-row')}>
                             <div className={bem.element('info-string')}>
