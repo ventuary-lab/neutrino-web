@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, reset } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
+import { t } from 'locales/config';
 
 import { html, dal } from 'components';
 import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
-import { getPairName } from 'reducers/currency';
 import PairsEnum from 'enums/PairsEnum';
 // import {getPairName} from 'reducers/currency';
 
@@ -17,23 +17,20 @@ import './TransferModal.scss';
 const bem = html.bem('TransferModal');
 const FORM_ID = 'TransferModalForm';
 
-
-@connect(
-    state => ({
-        // pairName: getPairName(state),
-        formValues: getFormValues(FORM_ID)(state),
-    })
-)
+@connect(state => ({
+    // pairName: getPairName(state),
+    formValues: getFormValues(FORM_ID)(state),
+}))
 export default class TransferModal extends React.PureComponent {
     static propTypes = {
-        currency: PropTypes.string
+        currency: PropTypes.string,
     };
 
     constructor() {
         super(...arguments);
 
         this.state = {
-            isSuccess: false
+            isSuccess: false,
         };
 
         this._onSubmit = this._onSubmit.bind(this);
@@ -46,18 +43,19 @@ export default class TransferModal extends React.PureComponent {
             <Modal
                 {...this.props.modalProps}
                 className={bem.block({
-                    'is-success': this.state.isSuccess
+                    'is-success': this.state.isSuccess,
                 })}
             >
                 <div className={bem.element('header')}>
                     {this.state.isSuccess
-                        ? __('Transferring was successful!')
-                        : __('Transferring funds to a user')}
+                        ? t('modals.successful_transfer.label')
+                        : t('modals.transferring_funds_to_user.label')
+                    }
                 </div>
                 <div className={bem.element('inner')}>
                     <div
                         className={bem.element('form', {
-                            'd-none': this.state.isSuccess
+                            'd-none': this.state.isSuccess,
                         })}
                     >
                         <TransferForm
@@ -68,7 +66,7 @@ export default class TransferModal extends React.PureComponent {
                     </div>
                     <div
                         className={bem.element('success', {
-                            'd-none': !this.state.isSuccess
+                            'd-none': !this.state.isSuccess,
                         })}
                     >
                         <div className={bem.element('success-icon')}>
@@ -95,10 +93,10 @@ export default class TransferModal extends React.PureComponent {
                 'address',
                 function(address) {
                     if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
-                        return __('Recipient address is not valid');
+                        return t('modals.recipient_address_is_invalid.label');
                     }
-                }
-            ]
+                },
+            ],
         ]);
 
         dal.transferFunds(
@@ -109,9 +107,9 @@ export default class TransferModal extends React.PureComponent {
         )
             .then(() => {
                 this.setState({
-                    isSuccess: true
+                    isSuccess: true,
                 });
             })
-            .catch((err) => console.log('Transfer error: ', err));
+            .catch(err => console.log('Transfer error: ', err));
     }
 }

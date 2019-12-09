@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Translation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
 import queryString from 'query-string';
@@ -43,10 +44,7 @@ import {
     LearnLinksContext,
     GlobalLinksContext,
 } from './context';
-import {
-    defaultLearnLinks as links,
-    defaultProductLinks as product,
-} from './defaults';
+import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
@@ -177,7 +175,7 @@ export default class Layout extends React.PureComponent {
         this.handleQueryParams();
     }
 
-    handleQueryParams () {
+    handleQueryParams() {
         const url = new URL(window.location.href);
 
         if (url.searchParams.get('openKeeperWarning')) {
@@ -383,6 +381,7 @@ export default class Layout extends React.PureComponent {
                                         onClose={this.userCongratsModalContextValue.onClose}
                                         onOpen={this.userCongratsModalContextValue.onOpen}
                                     />
+                                    {/* <Translation>{t => <h1>{t('age.label')}</h1>}</Translation> */}
                                     {children}
                                 </ConfigContext.Provider>
                                 <ModalWrapper />

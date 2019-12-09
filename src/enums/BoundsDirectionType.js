@@ -1,21 +1,17 @@
 import Enum from './Enum';
-
+import { t } from 'locales/config';
 export default class UserRole extends Enum {
-
     static BUY = 'buy';
     static LIQUIDATE = 'liquidate';
 
     static getKeys() {
-        return [
-            this.BUY,
-            this.LIQUIDATE,
-        ];
+        return [this.BUY, this.LIQUIDATE];
     }
 
     static getLabels() {
         return {
-            [this.BUY]: __('Buy'),
-            [this.LIQUIDATE]: __('Liquidate'),
+            [this.BUY]: t('enums.buy.label'),
+            [this.LIQUIDATE]: t('enums.liquidate.label'),
         };
     }
 }

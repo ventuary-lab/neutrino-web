@@ -1,5 +1,5 @@
 import Enum from './Enum';
-
+import i18n, { t } from 'locales/config';
 export default class CurrencyEnum extends Enum {
 
     static WAVES = 'waves';
@@ -63,13 +63,11 @@ export default class CurrencyEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.WAVES]: __('WAVES'),
-            [this.USD_N]: __('USD-N'),
-            [this.USD_NB]: __('USD-NB'),
-            [this.EUR_N]: __('EUR-N'),
-            [this.EUR_NB]: __('EUR-NB'),
-            //[this.BTC_N]: __('BTC-N'),
-            //[this.BTC_NB]: __('BTC-NB'),
+            [this.WAVES]: t('enums.currency.waves.label'),
+            [this.USD_N]: t('enums.currency.usdn.label'),
+            [this.USD_NB]: t('enums.currency.usdnb.label'),
+            [this.EUR_N]: t('enums.currency.eurn.label'),
+            [this.EUR_NB]: t('enums.currency.eurnb.label'),
         };
     }
 

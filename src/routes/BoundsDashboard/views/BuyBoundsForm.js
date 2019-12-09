@@ -13,6 +13,7 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 // import CollectionEnum from 'enums/CollectionEnum';
 import MessageModal from 'modals/MessageModal';
 import { getControlPrice } from 'reducers/contract/selectors';
+import { t } from 'locales/config';
 
 import { dal, html, store } from 'components';
 
@@ -111,7 +112,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inputProps={{
                             autoComplete: 'off',
                         }}
-                        label={__('Bonds discount')}
+                        label={t('bonds.bonds_discount.label')}
                         layoutClassName={bem.element('input')}
                         attribute={'discount'}
                         inners={{
@@ -125,7 +126,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inputProps={{
                             autoComplete: 'off',
                         }}
-                        label={__('Amount')}
+                        label={t('common.amount.label')}
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
                         inners={{
@@ -135,12 +136,13 @@ export default class BuyBoundsForm extends React.PureComponent {
                         hint={
                             _get(this.props, 'formValues.bounds')
                                 ? `${_round(
-                                    _get(this.props, 'formValues.neutrino') / (controlPrice / 100),
-                                    2
-                                )} WAVES`
+                                      _get(this.props, 'formValues.neutrino') /
+                                          (controlPrice / 100),
+                                      2
+                                  )} WAVES`
                                 : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
-                                // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
-                                ' '
+                                  // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
+                                  ' '
                         }
                     />
                     <NumberField
@@ -149,7 +151,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inputProps={{
                             autoComplete: 'off',
                         }}
-                        label={__('Total')}
+                        label={t('common.total.label')}
                         layoutClassName={bem.element('input')}
                         attribute={'neutrino'}
                         inners={{
@@ -162,9 +164,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
-                        label={__('Buy {bounds}', {
-                            bounds: CurrencyEnum.getLabel(this.props.baseCurrency),
-                        })}
+                        label={`${t('enums.buy.label')} ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
                     />
                 </Form>
             </div>
@@ -188,15 +188,13 @@ export default class BuyBoundsForm extends React.PureComponent {
                 if (err && err.code === '10') {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('You have canceled the order'),
+                            test: t('bonds.cancel_order.label')
                         })
                     );
                 } else if (err) {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('The order was canceled.\n Error: {err}', {
-                                err: err.message,
-                            }),
+                            test: `${t('bonds.order_was_canceled.label')}. ${err.message}`
                         })
                     );
                 }
