@@ -27,7 +27,7 @@ export default class SwapLoader extends React.PureComponent {
         wavesBlocked: PropTypes.number,
         unblockBlock: PropTypes.number,
         height: PropTypes.number,
-    };
+    }; 
 
     constructor(props) {
         super(props);

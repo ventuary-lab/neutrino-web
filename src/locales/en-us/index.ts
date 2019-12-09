@@ -53,6 +53,12 @@ export default {
             discount_with_percent: {
                 label: 'Discount (%)',
             },
+            send: {
+                label: 'Send',
+            },
+            receive: {
+                label: 'Receive',
+            },
             amount: {
                 label: 'Amount',
             },
@@ -60,28 +66,46 @@ export default {
                 label: 'Total',
             },
             exchange: {
-                label: 'Exchange'
+                label: 'Exchange',
             },
             white_paper: {
-                label: 'White paper'
+                label: 'White paper',
             },
             faq: {
-                label: 'FAQ'
+                label: 'FAQ',
             },
             blog: {
-                label: 'Blog'
+                label: 'Blog',
             },
             discussions: {
-                label: 'Discussions'
+                label: 'Discussions',
             },
             github: {
-                label: 'GitHub'
+                label: 'GitHub',
             },
             smart_contract: {
-                label: 'Smart Contract'
+                label: 'Smart Contract',
             },
             terms_of_use: {
-                label: 'Terms of Use'
+                label: 'Terms of Use',
+            },
+            asset_id: {
+                label: 'Asset ID',
+            },
+            redeem_waves: {
+                label: 'Redeem WAVES',
+            },
+            confirm: {
+                label: 'Confirm'
+            },
+            go_back: {
+                label: 'Go back'
+            },
+            tokens_swap: {
+                label: 'Tokens swap'
+            },
+            confirm_details: {
+                label: 'Confirm details'
             }
         },
         modals: {
@@ -109,6 +133,12 @@ export default {
                 label:
                     'Sorry, Neutrino is currently unavailable on mobile devices. Please switch to your desktop for the best experience.',
             },
+            have_read_and_accept: {
+                label: 'I have read and accept the',
+            },
+            please_confirm_the_swap: {
+                label: 'Please confirm the assets swap'
+            }
         },
         bonds: {
             bonds_discount: {
@@ -121,30 +151,30 @@ export default {
                 label: 'The order was canceled',
             },
             set_liquidate_bonds_order: {
-                label: 'Set liquidate order'
-            }
+                label: 'Set liquidate order',
+            },
         },
         order_book: {
             order_book: {
-                label: 'Order book'
-            }
+                label: 'Order book',
+            },
         },
         heading: {
             neutrino_dashboard: {
-                label: 'Neutrino dashboard'
+                label: 'Neutrino dashboard',
             },
             staking_dashboard: {
-                label: 'Staking dashboard'
+                label: 'Staking dashboard',
             },
             bonds_dashboard: {
-                label: 'Bonds dashboard'
+                label: 'Bonds dashboard',
             },
             transfers: {
-                label: 'Transfers'
+                label: 'Transfers',
             },
             invoice_generator: {
-                label: 'Invoice Generator'
+                label: 'Invoice Generator',
             },
-        }
+        },
     },
 };
