@@ -68,9 +68,10 @@ img {
 a {
   text-decoration: none;
   cursor: pointer;
+  color: inherit;
 
   &:visited {
-    color: unset;
+    color: inherit;
   }
 
   &:hover {
