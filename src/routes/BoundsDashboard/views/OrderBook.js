@@ -52,7 +52,7 @@ export default class OrderBook extends React.PureComponent {
                 )}
             </div>
         );
-        const groupedOrders = _groupBy(this.props.orders, 'discountPercent');
+        const groupedOrders = _groupBy(this.props.orders, 'price');
         return (
             <div className={bem.block()}>
                 <div className={bem.element('title')}>
@@ -65,7 +65,7 @@ export default class OrderBook extends React.PureComponent {
                     {this.props.formTab === 'buy' && (
                         <>
                             <div className={bem.element('header-column')}>
-                                % {__('discount')}
+                                {__('Price')}
                             </div>
                             <div className={bem.element('header-column', 'upper-case')}>
                                 {CurrencyEnum.getLabel(this.props.quoteCurrency)}
@@ -76,21 +76,21 @@ export default class OrderBook extends React.PureComponent {
                 {headerRow}
                 {this.props.formTab === 'buy' && (
                     <div className={bem.element('columns')}>
-                        {Object.keys(groupedOrders).map(discountPercent => (
+                        {Object.keys(groupedOrders).map(price => (
                             <div
-                                key={discountPercent}
+                                key={price}
                                 className={bem.element('body-row', {
-                                    my: this.props.user && groupedOrders[discountPercent].map(order => order.owner).includes(this.props.user.address),
+                                    my: this.props.user && groupedOrders[price].map(order => order.owner).includes(this.props.user.address),
                                 })}
                             >
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(_sum(groupedOrders[discountPercent].map(order => order.restAmount)))}
+                                    {_round(_sum(groupedOrders[price].map(order => order.restAmount)))}
                                 </div>
                                 <div className={bem.element('body-column')}>
-                                    {discountPercent}%
+                                    {price}
                                 </div>
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(_sum(groupedOrders[discountPercent].map(order => order.restTotal)), 2)}
+                                    {_round(_sum(groupedOrders[price].map(order => order.restTotal)), 2)}
                                 </div>
                             </div>
                         ))}

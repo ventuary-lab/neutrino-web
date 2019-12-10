@@ -42,7 +42,6 @@ export default class BuyBoundsForm extends React.PureComponent {
     constructor() {
         super(...arguments);
 
-        this._onDiscountChange = this._onDiscountChange.bind(this);
         this._onSubmit = this._onSubmit.bind(this);
         this._isProgramChange = false;
 
@@ -52,38 +51,33 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        const isChangeDiscountAmount =
-            _get(this.props.formValues, 'discount') !== _get(nextProps.formValues, 'discount');
+        const isChangePriceAmount =
+            _get(this.props.formValues, 'price') !== _get(nextProps.formValues, 'price');
         const isChangeBoundsAmount =
             _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
         const isChangeNeutrinoAmount =
             _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
 
-        //discount validate
-        if (_get(this.props.formValues, 'discount')) {
-            const nextDiscount = _get(nextProps.formValues, 'discount');
-            this._onDiscountChange(nextDiscount);
+        //price validate
+        if (_get(this.props.formValues, 'price')) {
+            const nextPrice = _get(nextProps.formValues, 'price');
 
-            if (nextDiscount && nextDiscount < 0) {
-                store.dispatch(change(FORM_ID, 'discount', Math.abs(nextDiscount)));
+            if (nextPrice && nextPrice < 0) {
+                store.dispatch(change(FORM_ID, 'price', Math.abs(nextPrice)));
             }
 
-            if (nextDiscount && nextDiscount.length > 2) {
-                store.dispatch(change(FORM_ID, 'discount', nextDiscount.slice(0, -1)));
+            if (nextPrice && nextPrice.length > 2) {
+                store.dispatch(change(FORM_ID, 'price', Math.round(nextPrice*100)/100));
             }
         }
 
-        if (isChangeDiscountAmount || isChangeBoundsAmount || isChangeNeutrinoAmount) {
-            this._refreshAmount(nextProps, false, isChangeBoundsAmount || isChangeDiscountAmount);
+        if (isChangePriceAmount || isChangeBoundsAmount || isChangeNeutrinoAmount) {
+            this._refreshAmount(nextProps, false, isChangeBoundsAmount || isChangePriceAmount);
         } else {
             this._isProgramChange = false;
         }
     }
 
-    _onDiscountChange(value) {
-        const parsed = _.toNumber(value);
-        this.setState({ isButtonDisabled: parsed > 50 });
-    }
 
     render() {
         const { isButtonDisabled } = this.state;
@@ -95,27 +89,26 @@ export default class BuyBoundsForm extends React.PureComponent {
                     className={bem.element('form')}
                     formId={FORM_ID}
                     initialValues={{
-                        discount: 15,
+                        price: 0.01,
                     }}
                     onSubmit={this._onSubmit}
                     validators={[
-                        [['discount', 'bounds'], 'required'],
-                        [['discount', 'bounds'], 'integer'],
+                        [['price', 'bounds'], 'required'],
+                        [['bounds'], 'integer'],
                     ]}
                 >
                     <NumberField
-                        min={1}
-                        max={99}
+                        min={0}
                         step="any"
                         required
                         inputProps={{
                             autoComplete: 'off',
                         }}
-                        label={__('Bonds discount')}
+                        label={__('Price')}
                         layoutClassName={bem.element('input')}
-                        attribute={'discount'}
+                        attribute={'price'}
                         inners={{
-                            label: '%',
+                            label: '',
                         }}
                     />
                     <NumberField
@@ -135,16 +128,16 @@ export default class BuyBoundsForm extends React.PureComponent {
                         hint={
                             _get(this.props, 'formValues.bounds')
                                 ? `${_round(
-                                    _get(this.props, 'formValues.neutrino') / (controlPrice / 100),
+                                    _get(this.props, 'formValues.neutrino') * (controlPrice / 100),
                                     2
-                                )} WAVES`
+                                )} USDN`
                                 : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
                                 // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
                                 ' '
                         }
                     />
                     <NumberField
-                        min={0}
+                        min={10}
                         step="any"
                         inputProps={{
                             autoComplete: 'off',
@@ -153,8 +146,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                         layoutClassName={bem.element('input')}
                         attribute={'neutrino'}
                         inners={{
-                            label: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.quoteCurrency),
+                            label: CurrencyEnum.getLabel(CurrencyEnum.WAVES),
+                            icon: CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
                         }}
                     />
                     <Button
@@ -172,12 +165,11 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     _onSubmit(values) {
-        const price = 1 - values.discount / 100;
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
         const wavesToUsdPrice = this.props.controlPrice;
 
         return dal
-            .setBondOrder(this.props.pairName, price, this.props.quoteCurrency, values.bounds)
+            .setBondOrder(this.props.pairName, values.price, this.props.quoteCurrency, values.bounds)
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console
             })
@@ -203,7 +195,7 @@ export default class BuyBoundsForm extends React.PureComponent {
             });
     }
 
-    _refreshAmount(props, isRefreshDiscount = false, isRefreshNeutrino = false) {
+    _refreshAmount(props, isRefreshPrice = false, isRefreshNeutrino = false) {
         props = props || this.props;
 
         if (this._isProgramChange) {
@@ -212,21 +204,21 @@ export default class BuyBoundsForm extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const discount = _get(props, 'formValues.discount');
+        const price = _get(props, 'formValues.price');
         const bounds = _get(props.formValues, 'bounds');
         const neutrino = _get(props.formValues, 'neutrino');
 
         let amount;
 
-        if (isRefreshDiscount) {
+        if (isRefreshPrice) {
             amount = this._parseAmount(((bounds - neutrino) * 100) / bounds);
 
-            store.dispatch(change(FORM_ID, 'discount', this._toFixedSpecial(amount, 2)));
+            store.dispatch(change(FORM_ID, 'price', this._toFixedSpecial(amount, 2)));
         } else {
             amount = this._parseAmount(
                 isRefreshNeutrino
-                    ? (bounds / 100) * (100 - discount)
-                    : (neutrino / (100 - discount)) * 100
+                    ? (bounds * price)
+                    : (neutrino / price)
             );
 
             store.dispatch(

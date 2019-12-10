@@ -84,7 +84,7 @@ export default class OrdersTable extends React.PureComponent {
                                 </div>
                             </th>
                             <th>
-                                % {__('discount')}
+                                {__('Price')}
                             </th>
                             <th>
                                 {__('Total')}
@@ -133,7 +133,7 @@ export default class OrdersTable extends React.PureComponent {
                                             {item.restAmount || '--'}
                                         </td>
                                         <td>
-                                            {item.discountPercent ? item.discountPercent + '%' : '--'}
+                                            {item.price ? item.price/100 : '--'}
                                         </td>
                                         <td>
                                             {_isInteger(item.restTotal)

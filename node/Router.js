@@ -223,12 +223,16 @@ module.exports = class Router {
 
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
-                return orders.map(order => [timestamps[order.height], order.discountPercent]);
+                return orders.map(order => [timestamps[order.height], order.price]);
             },
             '/api/v1/bonds/:pairName/orders': async request => {
-                return await this.app
+                var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+                orders = Utils.orderBy(orders, 'price', 'desc', {
+                    toNumber: true,
+                });
+                return orders;
             },
             '/api/v1/liquidate/:pairName/orders': async request => {
                 return await this.app

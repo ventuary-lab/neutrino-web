@@ -181,6 +181,7 @@ export default class Keeper {
         };
         if (process.env.NODE_ENV !== 'production') {
             console.log('Transaction:', transaction); // eslint-disable-line no-console
+            console.log('Transaction:', JSON.stringify(transaction));
         }
         return transaction;
     }

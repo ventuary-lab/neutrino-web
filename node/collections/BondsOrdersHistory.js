@@ -17,7 +17,7 @@ module.exports = class BondsOrdersHistory extends BaseCollection {
 
         return {
             price: _round(price / 100, 2),
-            discountPercent: 100 - price,
+            price: price,
             height,
         };
     }
