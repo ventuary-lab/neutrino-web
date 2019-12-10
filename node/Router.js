@@ -218,8 +218,9 @@ module.exports = class Router {
                 );
 
                 orders = Utils.orderBy(orders, 'height', 'desc', {
-                    toNumber: true,
+                    isNumber: true,
                 });
+                orders = Utils.mapFieldsByPredicate(orders, ['height'], Utils.mapToNumber);
 
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
@@ -230,8 +231,10 @@ module.exports = class Router {
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
                 orders = Utils.orderBy(orders, 'price', 'desc', {
-                    toNumber: true,
+                    isNumber: true,
                 });
+                orders = Utils.mapFieldsByPredicate(orders, ['price'], Utils.mapToNumber);
+
                 return orders;
             },
             '/api/v1/liquidate/:pairName/orders': async request => {
