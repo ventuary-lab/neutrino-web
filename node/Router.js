@@ -6,7 +6,7 @@ const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
 const moment = require('moment');
-const Utils = require('./utils');
+const { default: Utils } = require('./utils');
 
 module.exports = class Router {
     constructor(contractApp, expressApp) {
@@ -230,6 +230,7 @@ module.exports = class Router {
                 var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+
                 orders = Utils.orderBy(orders, 'price', 'desc', {
                     isNumber: true,
                 });
