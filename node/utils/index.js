@@ -7,9 +7,9 @@ class Utils {
 
         switch (order) {
             case 'asc':
-                return a > b;
+                return a > b ? (a < b ? 1 : 0) : -1;
             case 'desc':
-                return a < b;
+                return a < b ? (a > b ? 1 : 0) : -1;
         }
     }
 
