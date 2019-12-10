@@ -44,14 +44,14 @@ class Utils {
         });
     }
 
-    static mapFieldsByPredicate<T extends { [key: string]: any }>(
+    static mapFieldsByPredicate<T = { [key: string]: any }>(
         array: T[],
         fields: string[],
         callback: (item: T) => any
     ) {
         return array.map(item => {
             for (const field of fields) {
-                array[field] = callback(array[field]);
+                item[field] = callback(item[field]);
             }
             return item;
         });
