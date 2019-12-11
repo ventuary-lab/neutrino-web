@@ -220,7 +220,6 @@ module.exports = class Router {
                 orders = Utils.orderBy(orders, 'height', 'desc', {
                     isNumber: true,
                 });
-                orders = Utils.mapFieldsByPredicate(orders, ['height'], Utils.mapToNumber);
 
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
@@ -234,7 +233,6 @@ module.exports = class Router {
                 orders = Utils.orderBy(orders, 'price', 'desc', {
                     isNumber: true,
                 });
-                orders = Utils.mapFieldsByPredicate(orders, ['price'], Utils.mapToNumber);
 
                 return orders;
             },

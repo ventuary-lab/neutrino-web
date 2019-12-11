@@ -62,7 +62,7 @@ module.exports = class BondsOrders extends BaseCollection {
             height,
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
-            price,
+            price: Number(price),
             total: _round(total / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),
             filledTotal: _round(filledTotal / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),
             restTotal: _round((total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),

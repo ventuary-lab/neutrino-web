@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _round from 'lodash/round';
 import _sum from 'lodash/sum';
 import _groupBy from 'lodash/groupBy';
+import _orderBy from 'lodash/orderBy';
 
 import {html} from 'components';
 
@@ -10,6 +11,7 @@ import './OrderBook.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
+import { Utils  } from 'ui/global/utils';
 
 const bem = html.bem('OrderBook');
 
@@ -53,6 +55,8 @@ export default class OrderBook extends React.PureComponent {
             </div>
         );
         const groupedOrders = _groupBy(this.props.orders, 'price');
+        const sortedKeys = _orderBy(Object.keys(groupedOrders), null, "desc")
+        console.log(sortedKeys)
         return (
             <div className={bem.block()}>
                 <div className={bem.element('title')}>
@@ -68,7 +72,7 @@ export default class OrderBook extends React.PureComponent {
                                 {__('Price')}
                             </div>
                             <div className={bem.element('header-column', 'upper-case')}>
-                                {CurrencyEnum.getLabel(this.props.quoteCurrency)}
+                                {CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
                             </div>
                         </>
                     )}
@@ -76,7 +80,7 @@ export default class OrderBook extends React.PureComponent {
                 {headerRow}
                 {this.props.formTab === 'buy' && (
                     <div className={bem.element('columns')}>
-                        {Object.keys(groupedOrders).map(price => (
+                        {sortedKeys.map(price => (
                             <div
                                 key={price}
                                 className={bem.element('body-row', {
@@ -87,7 +91,7 @@ export default class OrderBook extends React.PureComponent {
                                     {_round(_sum(groupedOrders[price].map(order => order.restAmount)))}
                                 </div>
                                 <div className={bem.element('body-column')}>
-                                    {price}
+                                    {price/100}
                                 </div>
                                 <div className={bem.element('body-column', 'bg')}>
                                     {_round(_sum(groupedOrders[price].map(order => order.restTotal)), 2)}
