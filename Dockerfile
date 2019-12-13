@@ -16,7 +16,7 @@ COPY src/style /app/public/style
 COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 
-RUN yarn install
+RUN npm install
 RUN npm install -g npm
 RUN npm run build
 RUN npm run next-build
