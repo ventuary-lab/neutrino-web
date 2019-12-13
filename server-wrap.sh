@@ -8,12 +8,11 @@ restart_timeout=1 # in seconds
 current_pid=?;
 
 function run_with_restarts {
-
     if [ $command != "?" ]
     then
         npm run $command &
         current_pid=$!;
-        echo "Pid IS $current_pid"
+        echo "PID is $current_pid"
     elif [ $script_name != "?" ]
     then
         $("node $script_name $args")
@@ -23,7 +22,7 @@ function run_with_restarts {
 
     kill -9 $current_pid;
 
-    sleep 3;
+    sleep 1;
 
     run_with_restarts $@;
 }
