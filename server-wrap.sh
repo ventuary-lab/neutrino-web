@@ -20,7 +20,10 @@ function run_with_restarts {
     fi
 
     sleep $restart_timeout;
+
     kill -9 $current_pid;
+
+    sleep 3;
 
     run_with_restarts $@;
 }
@@ -38,8 +41,6 @@ function parse_time {
     esac
 
     restart_timeout=$res;
-
-    echo $res;
 }
 
 function main {

@@ -21,4 +21,4 @@ RUN npm run next-build
 RUN npm run next-export
 
 # ENTRYPOINT [ "ts-node", "--project", "tsconfig-node.json", "--log-error", "server.js" ]
-ENTRYPOINT [ "bash", "server-wrap", "--script", "serve", "--timeout", "10h" ]
+ENTRYPOINT [ "bash", "server-wrap", "--script", "serve", "--timeout", "1m" ]
