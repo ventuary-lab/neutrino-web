@@ -1,4 +1,5 @@
 FROM node:12-alpine
+FROM bash:4.4
 
 COPY package.json yarn.lock \
 .env.dev .env.example server-wrap.sh \
@@ -16,6 +17,7 @@ COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 
 RUN yarn install
+RUN npm install -g npm
 RUN npm run build
 RUN npm run next-build
 RUN npm run next-export
