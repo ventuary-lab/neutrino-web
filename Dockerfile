@@ -1,7 +1,7 @@
 FROM node:12-alpine
 
 COPY package.json yarn.lock \
-.env.dev .env.example \
+.env.dev .env.example server-wrap.sh \
 babel.config.js next-env.d.ts next.config.js \
 tsconfig.json tsconfig-node.json /app/
 
@@ -21,4 +21,4 @@ RUN npm run next-build
 RUN npm run next-export
 
 # ENTRYPOINT [ "ts-node", "--project", "tsconfig-node.json", "--log-error", "server.js" ]
-ENTRYPOINT [ "npm", "run", "serve" ]
+ENTRYPOINT [ "bash", "server-wrap", "--script", "serve", "--timeout", "10h" ]
