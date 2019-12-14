@@ -1,7 +1,7 @@
 # !/bin/bash
 
 # Globals
-args=();
+args=?;
 command=?; # - run script from package.json. Only command or script_name should be provided but not both
 script_name=?;
 restart_timeout=1 # in seconds

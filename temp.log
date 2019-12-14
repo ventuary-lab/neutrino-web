@@ -1,0 +1,1501 @@
+2019-12-14T06:53:33+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.225 sample#load-avg-5m=0.16 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927756kB sample#memory-cached=701752kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T06:53:33+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.19 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928244kB sample#memory-cached=701760kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T06:56:38+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.24 sample#load-avg-5m=0.19 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927648kB sample#memory-cached=701764kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T06:56:38+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.16 sample#load-avg-5m=0.175 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928288kB sample#memory-cached=701764kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T06:59:41+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.145 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927960kB sample#memory-cached=701776kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:02:58+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.11 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928480kB sample#memory-cached=701776kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:02:58+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.165 sample#load-avg-5m=0.135 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928856kB sample#memory-cached=701784kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:06:18+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.135 sample#load-avg-5m=0.135 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927224kB sample#memory-cached=701784kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:06:18+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.28 sample#load-avg-5m=0.19 sample#load-avg-15m=0.155 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12926852kB sample#memory-cached=701784kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:09:19+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.29 sample#load-avg-5m=0.215 sample#load-avg-15m=0.165 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927096kB sample#memory-cached=701788kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:12:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.16 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928448kB sample#memory-cached=701792kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:12:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.125 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928564kB sample#memory-cached=701800kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:15:02+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.035 sample#load-avg-5m=0.11 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929132kB sample#memory-cached=701800kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:18:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.205 sample#load-avg-5m=0.15 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929324kB sample#memory-cached=701800kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:18:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.11 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929464kB sample#memory-cached=701808kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:20:49+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.11 sample#load-avg-5m=0.1 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929736kB sample#memory-cached=701808kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:23:37+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.22 sample#load-avg-5m=0.15 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929528kB sample#memory-cached=701820kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:23:37+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.15 sample#load-avg-5m=0.13 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928564kB sample#memory-cached=701824kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:26:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.1 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930048kB sample#memory-cached=701824kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:29:21+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.085 sample#load-avg-5m=0.085 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928728kB sample#memory-cached=701836kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:29:21+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.075 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929864kB sample#memory-cached=701836kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:32:12+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.21 sample#load-avg-5m=0.115 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929644kB sample#memory-cached=701840kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:35:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.145 sample#load-avg-5m=0.125 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929856kB sample#memory-cached=701844kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:35:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.22 sample#load-avg-5m=0.17 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928808kB sample#memory-cached=701852kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:38:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.06 sample#load-avg-5m=0.125 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930032kB sample#memory-cached=701856kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:41:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.13 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929384kB sample#memory-cached=701860kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:41:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.11 sample#load-avg-5m=0.12 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929528kB sample#memory-cached=701860kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:44:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.125 sample#load-avg-5m=0.125 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929436kB sample#memory-cached=701864kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:44:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.125 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928444kB sample#memory-cached=701872kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:47:06+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.11 sample#load-avg-5m=0.115 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930012kB sample#memory-cached=701848kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:49:56+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.085 sample#load-avg-5m=0.105 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930052kB sample#memory-cached=701856kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:49:56+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.1 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929656kB sample#memory-cached=701856kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:52:51+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.015 sample#load-avg-5m=0.07 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930052kB sample#memory-cached=701860kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:55:40+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.12 sample#load-avg-5m=0.09 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929772kB sample#memory-cached=701864kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:55:40+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.075 sample#load-avg-15m=0.09 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929892kB sample#memory-cached=701872kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T07:58:36+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.145 sample#load-avg-5m=0.105 sample#load-avg-15m=0.095 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929564kB sample#memory-cached=701876kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:01:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.135 sample#load-avg-5m=0.115 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929096kB sample#memory-cached=701888kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:01:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.25 sample#load-avg-5m=0.18 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929396kB sample#memory-cached=701896kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:04:38+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.165 sample#load-avg-5m=0.16 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929880kB sample#memory-cached=701900kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:07:42+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.18 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929624kB sample#memory-cached=701904kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:07:42+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.155 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12930060kB sample#memory-cached=701904kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:10:42+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.18 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929664kB sample#memory-cached=701912kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:10:42+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.16 sample#load-avg-5m=0.16 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929996kB sample#memory-cached=701920kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:13:35+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.16 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928788kB sample#memory-cached=701944kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:16:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929400kB sample#memory-cached=701948kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:16:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.09 sample#load-avg-5m=0.13 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929544kB sample#memory-cached=701956kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:19:18+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.095 sample#load-avg-5m=0.13 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928136kB sample#memory-cached=701960kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:22:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.085 sample#load-avg-5m=0.13 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928580kB sample#memory-cached=701972kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:22:11+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.045 sample#load-avg-5m=0.115 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928836kB sample#memory-cached=701980kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:25:06+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.21 sample#load-avg-5m=0.125 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927128kB sample#memory-cached=701984kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:28:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.17 sample#load-avg-5m=0.13 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928176kB sample#memory-cached=701988kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:28:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.11 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928284kB sample#memory-cached=701996kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:30:53+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.22 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927276kB sample#memory-cached=701996kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:33:45+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928524kB sample#memory-cached=702004kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:33:45+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.17 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928680kB sample#memory-cached=702004kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:36:36+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.26 sample#load-avg-5m=0.215 sample#load-avg-15m=0.16 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928936kB sample#memory-cached=702004kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:39:30+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.16 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928740kB sample#memory-cached=702012kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:39:30+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.145 sample#load-avg-5m=0.16 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928500kB sample#memory-cached=702016kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:42:20+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.12 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928516kB sample#memory-cached=702000kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:45:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.12 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928368kB sample#memory-cached=702000kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:45:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.115 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928584kB sample#memory-cached=702004kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:48:02+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.3 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928268kB sample#memory-cached=702012kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:50:57+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928908kB sample#memory-cached=702016kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:50:57+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.115 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928640kB sample#memory-cached=702020kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:53:50+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.095 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928796kB sample#memory-cached=702028kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:56:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.035 sample#load-avg-5m=0.08 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928928kB sample#memory-cached=702032kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:56:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.025 sample#load-avg-5m=0.065 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928068kB sample#memory-cached=702040kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:59:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.105 sample#load-avg-5m=0.075 sample#load-avg-15m=0.095 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928416kB sample#memory-cached=702052kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T08:59:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.04 sample#load-avg-5m=0.06 sample#load-avg-15m=0.09 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928460kB sample#memory-cached=702060kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:02:50+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.28 sample#load-avg-5m=0.125 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928400kB sample#memory-cached=702064kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:05:53+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.12 sample#load-avg-5m=0.115 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928400kB sample#memory-cached=702068kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:05:53+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.11 sample#load-avg-5m=0.115 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928188kB sample#memory-cached=702072kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:08:44+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.265 sample#load-avg-5m=0.155 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929068kB sample#memory-cached=702076kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:11:19+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.145 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928904kB sample#memory-cached=702076kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:13:55+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.18 sample#load-avg-5m=0.155 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12924436kB sample#memory-cached=702084kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:13:55+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.125 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12925804kB sample#memory-cached=702092kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:16:34+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.21 sample#load-avg-5m=0.15 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927804kB sample#memory-cached=702096kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:19:24+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.16 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928648kB sample#memory-cached=702100kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:19:24+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.215 sample#load-avg-5m=0.175 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927796kB sample#memory-cached=702100kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:22:00+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.155 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928660kB sample#memory-cached=702104kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:24:38+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.13 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927216kB sample#memory-cached=702104kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:27:21+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.125 sample#load-avg-5m=0.135 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928444kB sample#memory-cached=702112kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:27:21+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.18 sample#load-avg-5m=0.16 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927504kB sample#memory-cached=702104kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:29:56+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.135 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12926820kB sample#memory-cached=702108kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:32:29+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.115 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927956kB sample#memory-cached=702108kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:32:29+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.065 sample#load-avg-5m=0.105 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927764kB sample#memory-cached=702112kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:35:00+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.115 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927792kB sample#memory-cached=702112kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:37:44+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.135 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928896kB sample#memory-cached=702116kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:40:19+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.095 sample#load-avg-5m=0.135 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928800kB sample#memory-cached=702120kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:40:19+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.065 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928328kB sample#memory-cached=702128kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:42:55+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.18 sample#load-avg-5m=0.13 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927856kB sample#memory-cached=702124kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:45:31+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.125 sample#load-avg-5m=0.14 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927368kB sample#memory-cached=702124kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:45:31+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.155 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928012kB sample#memory-cached=702124kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:48:25+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.25 sample#load-avg-5m=0.165 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928236kB sample#memory-cached=702124kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:51:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.285 sample#load-avg-5m=0.18 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928044kB sample#memory-cached=702124kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:53:47+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.17 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928688kB sample#memory-cached=702136kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:53:47+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.04 sample#load-avg-5m=0.14 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928604kB sample#memory-cached=702136kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:56:27+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.035 sample#load-avg-5m=0.11 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928416kB sample#memory-cached=702136kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:59:13+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.09 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928348kB sample#memory-cached=702148kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T09:59:13+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.1 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927936kB sample#memory-cached=702152kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:02:07+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.045 sample#load-avg-5m=0.085 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928260kB sample#memory-cached=702156kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:04:58+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.085 sample#load-avg-5m=0.095 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928608kB sample#memory-cached=702156kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:04:58+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.09 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928244kB sample#memory-cached=702164kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:07:57+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.07 sample#load-avg-15m=0.09 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928160kB sample#memory-cached=702172kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:10:46+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.095 sample#load-avg-15m=0.095 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928564kB sample#memory-cached=702172kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:10:46+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.275 sample#load-avg-5m=0.145 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928228kB sample#memory-cached=702176kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:13:30+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.14 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927840kB sample#memory-cached=702184kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:16:15+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.15 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927984kB sample#memory-cached=702188kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:16:15+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.12 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927688kB sample#memory-cached=702196kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:19:00+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.095 sample#load-avg-5m=0.11 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929268kB sample#memory-cached=702196kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:21:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.115 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927540kB sample#memory-cached=702196kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:21:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.035 sample#load-avg-5m=0.085 sample#load-avg-15m=0.09 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928532kB sample#memory-cached=702200kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:24:25+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.14 sample#load-avg-5m=0.11 sample#load-avg-15m=0.095 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928376kB sample#memory-cached=702204kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:27:10+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.12 sample#load-avg-5m=0.125 sample#load-avg-15m=0.1 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928392kB sample#memory-cached=702212kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:27:10+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.015 sample#load-avg-5m=0.08 sample#load-avg-15m=0.085 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928836kB sample#memory-cached=702212kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:29:53+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.075 sample#load-avg-15m=0.085 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928236kB sample#memory-cached=702212kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:32:37+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.12 sample#load-avg-5m=0.085 sample#load-avg-15m=0.085 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928968kB sample#memory-cached=702216kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:35:18+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.275 sample#load-avg-5m=0.145 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928664kB sample#memory-cached=702216kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:35:18+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.155 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928836kB sample#memory-cached=702216kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:38:06+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.145 sample#load-avg-15m=0.115 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928844kB sample#memory-cached=702216kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:41:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.31 sample#load-avg-5m=0.19 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928580kB sample#memory-cached=702228kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:41:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.215 sample#load-avg-5m=0.195 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928572kB sample#memory-cached=702236kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:44:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.19 sample#load-avg-5m=0.2 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928508kB sample#memory-cached=702232kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:46:55+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.195 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928228kB sample#memory-cached=702236kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:46:55+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.15 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928664kB sample#memory-cached=702236kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:49:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928864kB sample#memory-cached=702236kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:52:31+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.015 sample#load-avg-5m=0.1 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928880kB sample#memory-cached=702244kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:52:31+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.115 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927820kB sample#memory-cached=702248kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:55:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.125 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928584kB sample#memory-cached=702252kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:58:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.11 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928672kB sample#memory-cached=702260kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T10:58:03+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.155 sample#load-avg-5m=0.15 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928696kB sample#memory-cached=702268kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:00:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.155 sample#load-avg-5m=0.155 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927252kB sample#memory-cached=702272kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:03:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.19 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928748kB sample#memory-cached=702272kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:03:43+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.215 sample#load-avg-5m=0.215 sample#load-avg-15m=0.165 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928244kB sample#memory-cached=702284kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:06:36+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.145 sample#load-avg-5m=0.175 sample#load-avg-15m=0.155 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928168kB sample#memory-cached=702284kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:09:35+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.255 sample#load-avg-5m=0.2 sample#load-avg-15m=0.165 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928392kB sample#memory-cached=702288kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:09:35+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.075 sample#load-avg-5m=0.16 sample#load-avg-15m=0.155 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928568kB sample#memory-cached=702288kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:12:20+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.12 sample#load-avg-5m=0.15 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928528kB sample#memory-cached=702296kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:15:05+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.165 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927912kB sample#memory-cached=702304kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:15:05+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.26 sample#load-avg-5m=0.19 sample#load-avg-15m=0.165 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927928kB sample#memory-cached=702316kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:17:54+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.155 sample#load-avg-5m=0.2 sample#load-avg-15m=0.17 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928056kB sample#memory-cached=702324kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:20:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.155 sample#load-avg-15m=0.16 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928364kB sample#memory-cached=702324kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:20:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.08 sample#load-avg-5m=0.135 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12929024kB sample#memory-cached=702328kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:23:27+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.12 sample#load-avg-15m=0.14 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928564kB sample#memory-cached=702328kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:26:13+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.195 sample#load-avg-5m=0.14 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928152kB sample#memory-cached=702336kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:26:13+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.28 sample#load-avg-5m=0.17 sample#load-avg-15m=0.15 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928104kB sample#memory-cached=702344kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:29:04+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.27 sample#load-avg-5m=0.21 sample#load-avg-15m=0.165 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12926816kB sample#memory-cached=702336kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:31:50+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.055 sample#load-avg-5m=0.145 sample#load-avg-15m=0.145 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928648kB sample#memory-cached=702344kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:33:14.446559+00:00 heroku[web.1]: State changed from crashed to starting
+2019-12-14T11:33:15.671318+00:00 heroku[web.1]: Starting process with command `/bin/sh -c bash\ deploy.sh`
+2019-12-14T11:33:17.659907+00:00 heroku[web.1]: State changed from starting to crashed
+2019-12-14T11:33:17.645498+00:00 heroku[web.1]: Process exited with status 127
+2019-12-14T11:33:17.594395+00:00 app[web.1]: bash: server-wrap.sh: No such file or directory
+2019-12-14T11:31:50+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.07 sample#load-avg-5m=0.115 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928776kB sample#memory-cached=702348kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:34:35+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.03 sample#load-avg-5m=0.09 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927284kB sample#memory-cached=702356kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:37:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.205 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928748kB sample#memory-cached=702356kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:37:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.115 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928568kB sample#memory-cached=702356kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:40:17+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.14 sample#load-avg-15m=0.135 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927936kB sample#memory-cached=702368kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:43:10+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.11 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928076kB sample#memory-cached=702356kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:43:10+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.13 sample#load-avg-5m=0.125 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927844kB sample#memory-cached=702356kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:45:57+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.05 sample#load-avg-5m=0.1 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928416kB sample#memory-cached=702360kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:48:56+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.115 sample#load-avg-5m=0.105 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928696kB sample#memory-cached=702368kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:48:56+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.015 sample#load-avg-5m=0.07 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927796kB sample#memory-cached=702368kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:51:48+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.185 sample#load-avg-5m=0.105 sample#load-avg-15m=0.11 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928876kB sample#memory-cached=702372kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:54:21.000000+00:00 app[api]: Build started by user shamfama@gmail.com
+2019-12-14T11:55:04.573527+00:00 app[api]: Deploy 047b800e by user shamfama@gmail.com
+2019-12-14T11:55:04.573527+00:00 app[api]: Release v226 created by user shamfama@gmail.com
+2019-12-14T11:55:04.000000+00:00 app[api]: Build succeeded
+2019-12-14T11:55:05.584928+00:00 heroku[web.1]: State changed from crashed to starting
+2019-12-14T11:55:10.439461+00:00 heroku[web.1]: Starting process with command `/bin/sh -c bash\ deploy.sh`
+2019-12-14T11:55:12.084252+00:00 app[web.1]: awk: line 1: illegal reference to array a
+2019-12-14T11:55:12.085217+00:00 app[web.1]: PID is 10
+2019-12-14T11:55:12.463213+00:00 app[web.1]: 
+2019-12-14T11:55:12.463221+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:12.463224+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:12.463226+00:00 app[web.1]: 
+2019-12-14T11:55:12.473548+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:12.477580+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:12.481491+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:12.481494+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:12.481496+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:12.481501+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:12.481504+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:12.481506+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:12.481508+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:12.481511+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:12.489222+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:12.490336+00:00 app[web.1]: 
+2019-12-14T11:55:12.490657+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:12.490860+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_12_480Z-debug.log
+2019-12-14T11:55:13.087513+00:00 app[web.1]: server-wrap.sh: line 23: kill: (10) - No such process
+2019-12-14T11:54:36+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.1 sample#load-avg-5m=0.1 sample#load-avg-15m=0.105 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928524kB sample#memory-cached=702380kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:55:14.089556+00:00 app[web.1]: PID is 24
+2019-12-14T11:55:14.401135+00:00 app[web.1]: 
+2019-12-14T11:55:14.401155+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:14.401157+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:14.401160+00:00 app[web.1]: 
+2019-12-14T11:55:14.415530+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:14.420531+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:14.420913+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:14.421338+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:14.421736+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:14.422911+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:14.423120+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:14.423345+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:14.423555+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:14.423805+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:14.431065+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:14.431912+00:00 app[web.1]: 
+2019-12-14T11:55:14.432083+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:14.432215+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_14_425Z-debug.log
+2019-12-14T11:55:15.091492+00:00 app[web.1]: server-wrap.sh: line 23: kill: (24) - No such process
+2019-12-14T11:55:16.093541+00:00 app[web.1]: PID is 38
+2019-12-14T11:55:16.495994+00:00 app[web.1]: 
+2019-12-14T11:55:16.496008+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:16.496012+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:16.496014+00:00 app[web.1]: 
+2019-12-14T11:55:16.503427+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:16.509109+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:16.509406+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:16.509727+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:16.510029+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:16.511263+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:16.511475+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:16.511699+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:16.511899+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:16.512103+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:16.519307+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:16.520361+00:00 app[web.1]: 
+2019-12-14T11:55:16.520545+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:16.520655+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_16_512Z-debug.log
+2019-12-14T11:55:16.000000+00:00 app[api]: Build started by user shamfama@gmail.com
+2019-12-14T11:55:17.095281+00:00 app[web.1]: server-wrap.sh: line 23: kill: (38) - No such process
+2019-12-14T11:55:18.098069+00:00 app[web.1]: PID is 52
+2019-12-14T11:55:18.501071+00:00 app[web.1]: 
+2019-12-14T11:55:18.501096+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:18.501099+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:18.501101+00:00 app[web.1]: 
+2019-12-14T11:55:18.512616+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:18.519442+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:18.519976+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:18.520418+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:18.520820+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:18.522529+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:18.522821+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:18.523179+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:18.523477+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:18.523771+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:18.533620+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:18.534339+00:00 app[web.1]: 
+2019-12-14T11:55:18.534505+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:18.534634+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_18_525Z-debug.log
+2019-12-14T11:55:19.100018+00:00 app[web.1]: server-wrap.sh: line 23: kill: (52) - No such process
+2019-12-14T11:55:20.102035+00:00 app[web.1]: PID is 66
+2019-12-14T11:55:20.421705+00:00 app[web.1]: 
+2019-12-14T11:55:20.421723+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:20.421725+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:20.421727+00:00 app[web.1]: 
+2019-12-14T11:55:20.427726+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:20.432664+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:20.433131+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:20.433571+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:20.433987+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:20.435075+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:20.435204+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:20.435365+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:20.435502+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:20.435641+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:20.441272+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:20.441991+00:00 app[web.1]: 
+2019-12-14T11:55:20.442102+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:20.442277+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_20_436Z-debug.log
+2019-12-14T11:55:21.103359+00:00 app[web.1]: server-wrap.sh: line 23: kill: (66) - No such process
+2019-12-14T11:55:22.105232+00:00 app[web.1]: PID is 80
+2019-12-14T11:55:22.403812+00:00 app[web.1]: 
+2019-12-14T11:55:22.403827+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:22.403829+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:22.403832+00:00 app[web.1]: 
+2019-12-14T11:55:22.411924+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:22.416474+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:22.416873+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:22.417201+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:22.417581+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:22.418767+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:22.418944+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:22.419169+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:22.419365+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:22.419579+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:22.429116+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:22.429825+00:00 app[web.1]: 
+2019-12-14T11:55:22.429991+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:22.430122+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_22_420Z-debug.log
+2019-12-14T11:55:23.107091+00:00 app[web.1]: server-wrap.sh: line 23: kill: (80) - No such process
+2019-12-14T11:55:24.109193+00:00 app[web.1]: PID is 94
+2019-12-14T11:55:24.416128+00:00 app[web.1]: 
+2019-12-14T11:55:24.416147+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:24.416150+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:24.416152+00:00 app[web.1]: 
+2019-12-14T11:55:24.422230+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:24.426179+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:24.426444+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:24.426660+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:24.426865+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:24.427921+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:24.428039+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:24.428190+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:24.428319+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:24.428460+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:24.433993+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:24.434625+00:00 app[web.1]: 
+2019-12-14T11:55:24.434738+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:24.434812+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_24_429Z-debug.log
+2019-12-14T11:55:25.111404+00:00 app[web.1]: server-wrap.sh: line 23: kill: (94) - No such process
+2019-12-14T11:55:26.113428+00:00 app[web.1]: PID is 108
+2019-12-14T11:55:26.410011+00:00 app[web.1]: 
+2019-12-14T11:55:26.410026+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:26.410029+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:26.410031+00:00 app[web.1]: 
+2019-12-14T11:55:26.418374+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:26.422509+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:26.422771+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:26.422984+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:26.423192+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:26.424208+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:26.424355+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:26.424509+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:26.424642+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:26.424780+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:26.431080+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:26.432098+00:00 app[web.1]: 
+2019-12-14T11:55:26.432306+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:26.432467+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_26_425Z-debug.log
+2019-12-14T11:55:27.118806+00:00 app[web.1]: server-wrap.sh: line 23: kill: (108) - No such process
+2019-12-14T11:55:28.121925+00:00 app[web.1]: PID is 122
+2019-12-14T11:55:28.470250+00:00 app[web.1]: 
+2019-12-14T11:55:28.470310+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:28.470313+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:28.470315+00:00 app[web.1]: 
+2019-12-14T11:55:28.482578+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:28.489139+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:28.489637+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:28.490071+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:28.490448+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:28.492177+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:28.492468+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:28.492769+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:28.493043+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:28.493332+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:28.500941+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:28.501980+00:00 app[web.1]: 
+2019-12-14T11:55:28.502191+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:28.502355+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_28_494Z-debug.log
+2019-12-14T11:55:29.127208+00:00 app[web.1]: server-wrap.sh: line 23: kill: (122) - No such process
+2019-12-14T11:55:30.129632+00:00 app[web.1]: PID is 136
+2019-12-14T11:55:30.443278+00:00 app[web.1]: 
+2019-12-14T11:55:30.443293+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:30.443334+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:30.443336+00:00 app[web.1]: 
+2019-12-14T11:55:30.459038+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:30.463687+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:30.463941+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:30.464189+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:30.464557+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:30.465735+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:30.465883+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:30.466069+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:30.466194+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:30.466322+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:30.472045+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:30.472724+00:00 app[web.1]: 
+2019-12-14T11:55:30.472808+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:30.472871+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_30_467Z-debug.log
+2019-12-14T11:55:31.131146+00:00 app[web.1]: server-wrap.sh: line 23: kill: (136) - No such process
+2019-12-14T11:55:32.133364+00:00 app[web.1]: PID is 150
+2019-12-14T11:55:32.527986+00:00 app[web.1]: 
+2019-12-14T11:55:32.528001+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:32.528003+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:32.528005+00:00 app[web.1]: 
+2019-12-14T11:55:32.534206+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:32.538343+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:32.538606+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:32.538844+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:32.539058+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:32.540073+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:32.540226+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:32.540458+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:32.540706+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:32.540983+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:32.546827+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:32.547507+00:00 app[web.1]: 
+2019-12-14T11:55:32.547625+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:32.547702+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_32_542Z-debug.log
+2019-12-14T11:55:33.135161+00:00 app[web.1]: server-wrap.sh: line 23: kill: (150) - No such process
+2019-12-14T11:55:34.137288+00:00 app[web.1]: PID is 164
+2019-12-14T11:55:34.452786+00:00 app[web.1]: 
+2019-12-14T11:55:34.452801+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:34.452803+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:34.452823+00:00 app[web.1]: 
+2019-12-14T11:55:34.463053+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:34.468297+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:34.468695+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:34.469081+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:34.469465+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:34.470795+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:34.471071+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:34.471304+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:34.471509+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:34.471740+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:34.477448+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:34.478136+00:00 app[web.1]: 
+2019-12-14T11:55:34.478292+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:34.478417+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_34_472Z-debug.log
+2019-12-14T11:55:35.139184+00:00 app[web.1]: server-wrap.sh: line 23: kill: (164) - No such process
+2019-12-14T11:55:36.142682+00:00 app[web.1]: PID is 178
+2019-12-14T11:55:36.510757+00:00 app[web.1]: 
+2019-12-14T11:55:36.510772+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:36.510776+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:36.510778+00:00 app[web.1]: 
+2019-12-14T11:55:36.516935+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:36.522245+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:36.522616+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:36.522981+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:36.523370+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:36.524690+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:36.524916+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:36.525076+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:36.525208+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:36.525350+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:36.531325+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:36.532150+00:00 app[web.1]: 
+2019-12-14T11:55:36.532299+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:36.532400+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_36_526Z-debug.log
+2019-12-14T11:55:37.143928+00:00 app[web.1]: server-wrap.sh: line 23: kill: (178) - No such process
+2019-12-14T11:55:38.146051+00:00 app[web.1]: PID is 192
+2019-12-14T11:55:38.551469+00:00 app[web.1]: 
+2019-12-14T11:55:38.551482+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:38.551485+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:38.551487+00:00 app[web.1]: 
+2019-12-14T11:55:38.559362+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:38.565444+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:38.565874+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:38.566126+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:38.566369+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:38.567548+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:38.567772+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:38.567937+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:38.568071+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:38.568211+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:38.574088+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:38.574852+00:00 app[web.1]: 
+2019-12-14T11:55:38.575030+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:38.575143+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_38_569Z-debug.log
+2019-12-14T11:55:39.147584+00:00 app[web.1]: server-wrap.sh: line 23: kill: (192) - No such process
+2019-12-14T11:55:40.149522+00:00 app[web.1]: PID is 206
+2019-12-14T11:55:40.468141+00:00 app[web.1]: 
+2019-12-14T11:55:40.468160+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:40.468163+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:40.468165+00:00 app[web.1]: 
+2019-12-14T11:55:40.478298+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:40.482718+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:40.483096+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:40.483409+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:40.483713+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:40.484886+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:40.485141+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:40.485374+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:40.485598+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:40.485803+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:40.491152+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:40.491812+00:00 app[web.1]: 
+2019-12-14T11:55:40.491980+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:40.492106+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_40_486Z-debug.log
+2019-12-14T11:55:41.150942+00:00 app[web.1]: server-wrap.sh: line 23: kill: (206) - No such process
+2019-12-14T11:55:42.152966+00:00 app[web.1]: PID is 220
+2019-12-14T11:55:42.455198+00:00 app[web.1]: 
+2019-12-14T11:55:42.455216+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:42.455219+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:42.455221+00:00 app[web.1]: 
+2019-12-14T11:55:42.461049+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:42.466417+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:42.466692+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:42.466917+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:42.467135+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:42.468184+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:42.468332+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:42.468490+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:42.468631+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:42.468776+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:42.482317+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:42.483005+00:00 app[web.1]: 
+2019-12-14T11:55:42.483158+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:42.483162+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_42_469Z-debug.log
+2019-12-14T11:55:43.154414+00:00 app[web.1]: server-wrap.sh: line 23: kill: (220) - No such process
+2019-12-14T11:55:44.156397+00:00 app[web.1]: PID is 234
+2019-12-14T11:55:44.442855+00:00 app[web.1]: 
+2019-12-14T11:55:44.442870+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:44.442872+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:44.442873+00:00 app[web.1]: 
+2019-12-14T11:55:44.452537+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:44.456648+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:44.456912+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:44.457134+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:44.457345+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:44.458423+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:44.458569+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:44.458725+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:44.458934+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:44.459074+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:44.467826+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:44.468529+00:00 app[web.1]: 
+2019-12-14T11:55:44.468646+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:44.468692+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_44_459Z-debug.log
+2019-12-14T11:55:45.157835+00:00 app[web.1]: server-wrap.sh: line 23: kill: (234) - No such process
+2019-12-14T11:55:46.159934+00:00 app[web.1]: PID is 248
+2019-12-14T11:55:46.465644+00:00 app[web.1]: 
+2019-12-14T11:55:46.465666+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:46.465669+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:46.465672+00:00 app[web.1]: 
+2019-12-14T11:55:46.474838+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:46.480913+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:46.481380+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:46.481764+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:46.482076+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:46.483217+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:46.483429+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:46.483681+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:46.483884+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:46.484090+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:46.490877+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:46.491643+00:00 app[web.1]: 
+2019-12-14T11:55:46.491818+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:46.491957+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_46_485Z-debug.log
+2019-12-14T11:55:47.161290+00:00 app[web.1]: server-wrap.sh: line 23: kill: (248) - No such process
+2019-12-14T11:55:48.163329+00:00 app[web.1]: PID is 262
+2019-12-14T11:55:48.500558+00:00 app[web.1]: 
+2019-12-14T11:55:48.500587+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:48.500590+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:48.500592+00:00 app[web.1]: 
+2019-12-14T11:55:48.510296+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:48.515168+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:48.515452+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:48.515671+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:48.515878+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:48.516997+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:48.517138+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:48.517302+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:48.517435+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:48.517646+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:48.524311+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:48.525191+00:00 app[web.1]: 
+2019-12-14T11:55:48.525305+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:48.525424+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_48_518Z-debug.log
+2019-12-14T11:55:49.164856+00:00 app[web.1]: server-wrap.sh: line 23: kill: (262) - No such process
+2019-12-14T11:55:50.166884+00:00 app[web.1]: PID is 276
+2019-12-14T11:55:50.473071+00:00 app[web.1]: 
+2019-12-14T11:55:50.473091+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:50.473093+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:50.473095+00:00 app[web.1]: 
+2019-12-14T11:55:50.483343+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:50.487579+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:50.487838+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:50.488060+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:50.488260+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:50.489292+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:50.489434+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:50.489624+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:50.489778+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:50.489919+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:50.496346+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:50.496996+00:00 app[web.1]: 
+2019-12-14T11:55:50.497102+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:50.497179+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_50_490Z-debug.log
+2019-12-14T11:55:51.168238+00:00 app[web.1]: server-wrap.sh: line 23: kill: (276) - No such process
+2019-12-14T11:55:52.170771+00:00 app[web.1]: PID is 290
+2019-12-14T11:55:52.522224+00:00 app[web.1]: 
+2019-12-14T11:55:52.522237+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:52.522239+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:52.522241+00:00 app[web.1]: 
+2019-12-14T11:55:52.532343+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:52.536677+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:52.537055+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:52.537380+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:52.537714+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:52.538807+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:52.539053+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:52.539286+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:52.539491+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:52.539703+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:52.545199+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:52.545933+00:00 app[web.1]: 
+2019-12-14T11:55:52.546040+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:52.546106+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_52_540Z-debug.log
+2019-12-14T11:55:53.173308+00:00 app[web.1]: server-wrap.sh: line 23: kill: (290) - No such process
+2019-12-14T11:55:54.175429+00:00 app[web.1]: PID is 304
+2019-12-14T11:55:54.490323+00:00 app[web.1]: 
+2019-12-14T11:55:54.490337+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:54.490339+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:54.490340+00:00 app[web.1]: 
+2019-12-14T11:55:54.500839+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:54.505052+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:54.505312+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:54.505557+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:54.505773+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:54.506813+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:54.506957+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:54.507129+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:54.507273+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:54.507405+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:54.512543+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:54.513305+00:00 app[web.1]: 
+2019-12-14T11:55:54.513463+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:54.513602+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_54_508Z-debug.log
+2019-12-14T11:55:55.176744+00:00 app[web.1]: server-wrap.sh: line 23: kill: (304) - No such process
+2019-12-14T11:55:56.178899+00:00 app[web.1]: PID is 318
+2019-12-14T11:55:56.546377+00:00 app[web.1]: 
+2019-12-14T11:55:56.546409+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:56.546412+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:56.546415+00:00 app[web.1]: 
+2019-12-14T11:55:56.552224+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:56.556179+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:56.556447+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:56.556654+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:56.556865+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:56.557927+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:56.558071+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:56.558220+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:56.558356+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:56.558489+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:56.564594+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:56.565617+00:00 app[web.1]: 
+2019-12-14T11:55:56.565809+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:56.565949+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_56_559Z-debug.log
+2019-12-14T11:55:57.180581+00:00 app[web.1]: server-wrap.sh: line 23: kill: (318) - No such process
+2019-12-14T11:55:58.182646+00:00 app[web.1]: PID is 332
+2019-12-14T11:55:58.553035+00:00 app[web.1]: 
+2019-12-14T11:55:58.553051+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:55:58.553054+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:55:58.553056+00:00 app[web.1]: 
+2019-12-14T11:55:58.566520+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:55:58.574306+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:55:58.574676+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:55:58.574987+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:55:58.575524+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:55:58.577162+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:55:58.577303+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:55:58.577488+00:00 app[web.1]: npm ERR!
+2019-12-14T11:55:58.577614+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:55:58.577833+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:55:58.584579+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:55:58.585629+00:00 app[web.1]: 
+2019-12-14T11:55:58.585846+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:55:58.585974+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_55_58_578Z-debug.log
+2019-12-14T11:55:59.185023+00:00 app[web.1]: server-wrap.sh: line 23: kill: (332) - No such process
+2019-12-14T11:56:00.187036+00:00 app[web.1]: PID is 346
+2019-12-14T11:56:00.474355+00:00 app[web.1]: 
+2019-12-14T11:56:00.474377+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:00.474379+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:00.474381+00:00 app[web.1]: 
+2019-12-14T11:56:00.486852+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:00.492021+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:00.492287+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:00.492516+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:00.492820+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:00.493788+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:00.493942+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:00.494095+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:00.494254+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:00.494399+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:00.500002+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:00.500677+00:00 app[web.1]: 
+2019-12-14T11:56:00.500801+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:00.500882+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_00_495Z-debug.log
+2019-12-14T11:56:01.188323+00:00 app[web.1]: server-wrap.sh: line 23: kill: (346) - No such process
+2019-12-14T11:56:02.190362+00:00 app[web.1]: PID is 360
+2019-12-14T11:56:02.495986+00:00 app[web.1]: 
+2019-12-14T11:56:02.496012+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:02.496015+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:02.496017+00:00 app[web.1]: 
+2019-12-14T11:56:02.507078+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:02.511220+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:02.511534+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:02.511809+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:02.512053+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:02.513212+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:02.513385+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:02.513623+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:02.513785+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:02.513958+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:02.519540+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:02.520250+00:00 app[web.1]: 
+2019-12-14T11:56:02.520372+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:02.520481+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_02_514Z-debug.log
+2019-12-14T11:56:03.194668+00:00 app[web.1]: server-wrap.sh: line 23: kill: (360) - No such process
+2019-12-14T11:56:04.196560+00:00 app[web.1]: PID is 374
+2019-12-14T11:56:04.591940+00:00 app[web.1]: 
+2019-12-14T11:56:04.591999+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:04.592001+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:04.592003+00:00 app[web.1]: 
+2019-12-14T11:56:04.603431+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:04.607572+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:04.607882+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:04.608201+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:04.608405+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:04.609561+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:04.609816+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:04.610104+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:04.610286+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:04.610487+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:04.616691+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:04.617793+00:00 app[web.1]: 
+2019-12-14T11:56:04.617990+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:04.618143+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_04_611Z-debug.log
+2019-12-14T11:56:05.198039+00:00 app[web.1]: server-wrap.sh: line 23: kill: (374) - No such process
+2019-12-14T11:56:06.200095+00:00 app[web.1]: PID is 388
+2019-12-14T11:56:06.527248+00:00 app[web.1]: 
+2019-12-14T11:56:06.527267+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:06.527271+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:06.527274+00:00 app[web.1]: 
+2019-12-14T11:56:06.537524+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:06.543639+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:06.544061+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:06.544457+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:06.544831+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:06.546604+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:06.546857+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:06.547123+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:06.547362+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:06.547614+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:06.553054+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:06.553811+00:00 app[web.1]: 
+2019-12-14T11:56:06.553932+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:06.554004+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_06_548Z-debug.log
+2019-12-14T11:56:07.202060+00:00 app[web.1]: server-wrap.sh: line 23: kill: (388) - No such process
+2019-12-14T11:56:08.204209+00:00 app[web.1]: PID is 402
+2019-12-14T11:56:08.546739+00:00 app[web.1]: 
+2019-12-14T11:56:08.546763+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:08.546766+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:08.546768+00:00 app[web.1]: 
+2019-12-14T11:56:08.554564+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:08.558601+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:08.558883+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:08.559171+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:08.559419+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:08.560460+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:08.560625+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:08.560813+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:08.560939+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:08.561126+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:08.566644+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:08.567302+00:00 app[web.1]: 
+2019-12-14T11:56:08.567412+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:08.567491+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_08_562Z-debug.log
+2019-12-14T11:56:09.206686+00:00 app[web.1]: server-wrap.sh: line 23: kill: (402) - No such process
+2019-12-14T11:56:10.208780+00:00 app[web.1]: PID is 416
+2019-12-14T11:56:10.557757+00:00 app[web.1]: 
+2019-12-14T11:56:10.557775+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:10.557778+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:10.557780+00:00 app[web.1]: 
+2019-12-14T11:56:10.574588+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:10.581349+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:10.581914+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:10.582337+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:10.582737+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:10.584442+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:10.584752+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:10.585045+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:10.585326+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:10.585644+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:10.592402+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:10.593032+00:00 app[web.1]: 
+2019-12-14T11:56:10.593142+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:10.593219+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_10_587Z-debug.log
+2019-12-14T11:56:11.027971+00:00 heroku[web.1]: Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
+2019-12-14T11:56:11.027971+00:00 heroku[web.1]: Stopping process with SIGKILL
+2019-12-14T11:56:11.101058+00:00 heroku[web.1]: Process exited with status 137
+2019-12-14T11:56:11.117370+00:00 heroku[web.1]: State changed from starting to crashed
+2019-12-14T11:56:11.121603+00:00 heroku[web.1]: State changed from crashed to starting
+2019-12-14T11:56:15.673635+00:00 heroku[web.1]: Starting process with command `/bin/sh -c bash\ deploy.sh`
+2019-12-14T11:56:17.260986+00:00 app[web.1]: awk: line 1: illegal reference to array a
+2019-12-14T11:56:17.261929+00:00 app[web.1]: PID is 10
+2019-12-14T11:56:17.628161+00:00 app[web.1]: 
+2019-12-14T11:56:17.628182+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:17.628185+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:17.628187+00:00 app[web.1]: 
+2019-12-14T11:56:17.652775+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:17.658527+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:17.659180+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:17.659695+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:17.660194+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:17.662110+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:17.662475+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:17.662845+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:17.663218+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:17.663608+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:17.670959+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:17.671911+00:00 app[web.1]: 
+2019-12-14T11:56:17.672080+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:17.672222+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_17_664Z-debug.log
+2019-12-14T11:56:18.264194+00:00 app[web.1]: server-wrap.sh: line 23: kill: (10) - No such process
+2019-12-14T11:56:19.266141+00:00 app[web.1]: PID is 24
+2019-12-14T11:56:19.579298+00:00 app[web.1]: 
+2019-12-14T11:56:19.579317+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:19.579319+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:19.579321+00:00 app[web.1]: 
+2019-12-14T11:56:19.623960+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:19.628018+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:19.628387+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:19.628690+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:19.628983+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:19.630056+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:19.630261+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:19.630468+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:19.630659+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:19.630855+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:19.635139+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:19.635807+00:00 app[web.1]: 
+2019-12-14T11:56:19.635954+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:19.636079+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_19_631Z-debug.log
+2019-12-14T11:56:20.268009+00:00 app[web.1]: server-wrap.sh: line 23: kill: (24) - No such process
+2019-12-14T11:56:21.269778+00:00 app[web.1]: PID is 38
+2019-12-14T11:56:21.537778+00:00 app[web.1]: 
+2019-12-14T11:56:21.537790+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:21.537794+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:21.537796+00:00 app[web.1]: 
+2019-12-14T11:56:21.601994+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:21.606163+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:21.606516+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:21.606743+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:21.606945+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:21.607981+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:21.608119+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:21.608300+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:21.608422+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:21.608663+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:21.613525+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:21.614168+00:00 app[web.1]: 
+2019-12-14T11:56:21.614281+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:21.614370+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_21_609Z-debug.log
+2019-12-14T11:56:22.271676+00:00 app[web.1]: server-wrap.sh: line 23: kill: (38) - No such process
+2019-12-14T11:56:23.273637+00:00 app[web.1]: PID is 52
+2019-12-14T11:56:23.590521+00:00 app[web.1]: 
+2019-12-14T11:56:23.590540+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:23.590542+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:23.590543+00:00 app[web.1]: 
+2019-12-14T11:56:23.612565+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:23.616886+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:23.617267+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:23.617592+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:23.617921+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:23.619117+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:23.619327+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:23.619589+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:23.619776+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:23.619922+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:23.624347+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:23.624965+00:00 app[web.1]: 
+2019-12-14T11:56:23.625062+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:23.625137+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_23_620Z-debug.log
+2019-12-14T11:56:24.275577+00:00 app[web.1]: server-wrap.sh: line 23: kill: (52) - No such process
+2019-12-14T11:56:25.277247+00:00 app[web.1]: PID is 66
+2019-12-14T11:56:25.595391+00:00 app[web.1]: 
+2019-12-14T11:56:25.595447+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:25.595451+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:25.595453+00:00 app[web.1]: 
+2019-12-14T11:56:25.629204+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:25.633436+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:25.633899+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:25.634234+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:25.634529+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:25.635661+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:25.635863+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:25.636076+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:25.636283+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:25.636478+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:25.641721+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:25.642384+00:00 app[web.1]: 
+2019-12-14T11:56:25.642506+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:25.642596+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_25_637Z-debug.log
+2019-12-14T11:56:26.279161+00:00 app[web.1]: server-wrap.sh: line 23: kill: (66) - No such process
+2019-12-14T11:56:27.281156+00:00 app[web.1]: PID is 80
+2019-12-14T11:56:27.616609+00:00 app[web.1]: 
+2019-12-14T11:56:27.616655+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:27.616658+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:27.616660+00:00 app[web.1]: 
+2019-12-14T11:56:27.627328+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:27.633439+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:27.633925+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:27.634333+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:27.634680+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:27.636398+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:27.636660+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:27.636950+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:27.637193+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:27.637450+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:27.643522+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:27.644325+00:00 app[web.1]: 
+2019-12-14T11:56:27.644511+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:27.644565+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_27_638Z-debug.log
+2019-12-14T11:56:28.282575+00:00 app[web.1]: server-wrap.sh: line 23: kill: (80) - No such process
+2019-12-14T11:56:29.285165+00:00 app[web.1]: PID is 94
+2019-12-14T11:56:29.556696+00:00 app[web.1]: 
+2019-12-14T11:56:29.556716+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:29.556719+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:29.556721+00:00 app[web.1]: 
+2019-12-14T11:56:29.562498+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:29.566099+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:29.566356+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:29.566572+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:29.566775+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:29.567820+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:29.567963+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:29.568117+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:29.568247+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:29.568386+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:29.572602+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:29.573196+00:00 app[web.1]: 
+2019-12-14T11:56:29.573310+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:29.573389+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_29_569Z-debug.log
+2019-12-14T11:56:30.287175+00:00 app[web.1]: server-wrap.sh: line 23: kill: (94) - No such process
+2019-12-14T11:56:31.289053+00:00 app[web.1]: PID is 108
+2019-12-14T11:56:31.559083+00:00 app[web.1]: 
+2019-12-14T11:56:31.559105+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:31.559107+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:31.559109+00:00 app[web.1]: 
+2019-12-14T11:56:31.574697+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:31.579279+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:31.579692+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:31.580056+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:31.580417+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:31.581528+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:31.581760+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:31.582033+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:31.582260+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:31.582494+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:31.587225+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:31.587860+00:00 app[web.1]: 
+2019-12-14T11:56:31.587970+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:31.588047+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_31_583Z-debug.log
+2019-12-14T11:56:32.290653+00:00 app[web.1]: server-wrap.sh: line 23: kill: (108) - No such process
+2019-12-14T11:56:33.292994+00:00 app[web.1]: PID is 122
+2019-12-14T11:56:33.571514+00:00 app[web.1]: 
+2019-12-14T11:56:33.571533+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:33.571536+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:33.571538+00:00 app[web.1]: 
+2019-12-14T11:56:33.586305+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:33.590344+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:33.590597+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:33.590811+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:33.591037+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:33.592156+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:33.592367+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:33.592588+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:33.592784+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:33.592984+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:33.597540+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:33.598283+00:00 app[web.1]: 
+2019-12-14T11:56:33.598440+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:33.598564+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_33_593Z-debug.log
+2019-12-14T11:56:34.294210+00:00 app[web.1]: server-wrap.sh: line 23: kill: (122) - No such process
+2019-12-14T11:56:35.296169+00:00 app[web.1]: PID is 136
+2019-12-14T11:56:35.601150+00:00 app[web.1]: 
+2019-12-14T11:56:35.601167+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:35.601170+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:35.601172+00:00 app[web.1]: 
+2019-12-14T11:56:35.616059+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:35.620027+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:35.620341+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:35.620647+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:35.620975+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:35.622022+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:35.622229+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:35.622447+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:35.622653+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:35.622852+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:35.627805+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:35.628439+00:00 app[web.1]: 
+2019-12-14T11:56:35.628550+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:35.628637+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_35_623Z-debug.log
+2019-12-14T11:56:36.300622+00:00 app[web.1]: server-wrap.sh: line 23: kill: (136) - No such process
+2019-12-14T11:56:37.302361+00:00 app[web.1]: PID is 150
+2019-12-14T11:56:37.586397+00:00 app[web.1]: 
+2019-12-14T11:56:37.586413+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:37.586415+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:37.586417+00:00 app[web.1]: 
+2019-12-14T11:56:37.590830+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:37.594378+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:37.594631+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:37.594849+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:37.595048+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:37.596075+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:37.596213+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:37.596362+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:37.596491+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:37.596620+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:37.606286+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:37.606933+00:00 app[web.1]: 
+2019-12-14T11:56:37.607057+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:37.607157+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_37_597Z-debug.log
+2019-12-14T11:56:38.307062+00:00 app[web.1]: server-wrap.sh: line 23: kill: (150) - No such process
+2019-12-14T11:56:39.308826+00:00 app[web.1]: PID is 164
+2019-12-14T11:56:39.594848+00:00 app[web.1]: 
+2019-12-14T11:56:39.594862+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:39.594865+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:39.594868+00:00 app[web.1]: 
+2019-12-14T11:56:39.599187+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:39.602680+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:39.602940+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:39.603158+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:39.603424+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:39.604424+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:39.604563+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:39.604713+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:39.604842+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:39.604973+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:39.609051+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:39.609647+00:00 app[web.1]: 
+2019-12-14T11:56:39.609760+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:39.609836+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_39_605Z-debug.log
+2019-12-14T11:56:40.310041+00:00 app[web.1]: server-wrap.sh: line 23: kill: (164) - No such process
+2019-12-14T11:56:41.311835+00:00 app[web.1]: PID is 178
+2019-12-14T11:56:41.609043+00:00 app[web.1]: 
+2019-12-14T11:56:41.609055+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:41.609057+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:41.609059+00:00 app[web.1]: 
+2019-12-14T11:56:41.613772+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:41.617231+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:41.617490+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:41.617706+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:41.617981+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:41.618987+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:41.619126+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:41.619273+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:41.619438+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:41.619569+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:41.623535+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:41.624111+00:00 app[web.1]: 
+2019-12-14T11:56:41.624230+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:41.624307+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_41_620Z-debug.log
+2019-12-14T11:56:42.313842+00:00 app[web.1]: server-wrap.sh: line 23: kill: (178) - No such process
+2019-12-14T11:56:43.315761+00:00 app[web.1]: PID is 192
+2019-12-14T11:56:43.605840+00:00 app[web.1]: 
+2019-12-14T11:56:43.605855+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:43.605857+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:43.605859+00:00 app[web.1]: 
+2019-12-14T11:56:43.620470+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:43.624116+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:43.624365+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:43.624578+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:43.624778+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:43.625774+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:43.625915+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:43.626064+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:43.626192+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:43.626321+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:43.630853+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:43.631506+00:00 app[web.1]: 
+2019-12-14T11:56:43.631611+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:43.631686+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_43_627Z-debug.log
+2019-12-14T11:56:44.317063+00:00 app[web.1]: server-wrap.sh: line 23: kill: (192) - No such process
+2019-12-14T11:56:45.318912+00:00 app[web.1]: PID is 206
+2019-12-14T11:56:45.622980+00:00 app[web.1]: 
+2019-12-14T11:56:45.622995+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:45.623001+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:45.623003+00:00 app[web.1]: 
+2019-12-14T11:56:45.637514+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:45.641579+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:45.641854+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:45.642059+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:45.642265+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:45.643246+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:45.643436+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:45.643591+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:45.643719+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:45.643852+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:45.648142+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:45.649023+00:00 app[web.1]: 
+2019-12-14T11:56:45.649192+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:45.649327+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_45_644Z-debug.log
+2019-12-14T11:56:46.320327+00:00 app[web.1]: server-wrap.sh: line 23: kill: (206) - No such process
+2019-12-14T11:56:47.322075+00:00 app[web.1]: PID is 220
+2019-12-14T11:56:47.643736+00:00 app[web.1]: 
+2019-12-14T11:56:47.643758+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:47.643761+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:47.643763+00:00 app[web.1]: 
+2019-12-14T11:56:47.652421+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:47.658342+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:47.658822+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:47.659244+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:47.659668+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:47.661402+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:47.661693+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:47.662017+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:47.662339+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:47.662611+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:47.669005+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:47.669986+00:00 app[web.1]: 
+2019-12-14T11:56:47.670201+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:47.670364+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_47_663Z-debug.log
+2019-12-14T11:56:48.323981+00:00 app[web.1]: server-wrap.sh: line 23: kill: (220) - No such process
+2019-12-14T11:56:49.325740+00:00 app[web.1]: PID is 234
+2019-12-14T11:56:49.620652+00:00 app[web.1]: 
+2019-12-14T11:56:49.620674+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:49.620678+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:49.620681+00:00 app[web.1]: 
+2019-12-14T11:56:49.625463+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:49.629560+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:49.629940+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:49.630254+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:49.630560+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:49.631651+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:49.631858+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:49.632078+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:49.632289+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:49.632500+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:49.636949+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:49.637747+00:00 app[web.1]: 
+2019-12-14T11:56:49.637886+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:49.637981+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_49_633Z-debug.log
+2019-12-14T11:56:50.327992+00:00 app[web.1]: server-wrap.sh: line 23: kill: (234) - No such process
+2019-12-14T11:56:51.329898+00:00 app[web.1]: PID is 248
+2019-12-14T11:56:51.637974+00:00 app[web.1]: 
+2019-12-14T11:56:51.637990+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:51.637992+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:51.637994+00:00 app[web.1]: 
+2019-12-14T11:56:51.643874+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:51.647873+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:51.648234+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:51.648548+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:51.648847+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:51.649889+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:51.650100+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:51.650320+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:51.650519+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:51.650718+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:51.654808+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:51.655442+00:00 app[web.1]: 
+2019-12-14T11:56:51.655594+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:51.655701+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_51_651Z-debug.log
+2019-12-14T11:56:52.331425+00:00 app[web.1]: server-wrap.sh: line 23: kill: (248) - No such process
+2019-12-14T11:56:53.333237+00:00 app[web.1]: PID is 262
+2019-12-14T11:56:53.719807+00:00 app[web.1]: 
+2019-12-14T11:56:53.719824+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:53.719827+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:53.719829+00:00 app[web.1]: 
+2019-12-14T11:56:53.725828+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:53.730725+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:53.731147+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:53.731564+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:53.731893+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:53.733508+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:53.733747+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:53.734008+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:53.734236+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:53.734465+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:53.740604+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:53.741531+00:00 app[web.1]: 
+2019-12-14T11:56:53.741693+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:53.741813+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_53_735Z-debug.log
+2019-12-14T11:56:54.335132+00:00 app[web.1]: server-wrap.sh: line 23: kill: (262) - No such process
+2019-12-14T11:56:55.337154+00:00 app[web.1]: PID is 276
+2019-12-14T11:56:55.693389+00:00 app[web.1]: 
+2019-12-14T11:56:55.693409+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:55.693412+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:55.693414+00:00 app[web.1]: 
+2019-12-14T11:56:55.697833+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:55.709086+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:55.709092+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:55.709094+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:55.709097+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:55.709099+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:55.709102+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:55.709104+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:55.709107+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:55.709109+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:55.711079+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:55.712027+00:00 app[web.1]: 
+2019-12-14T11:56:55.712222+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:55.712365+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_55_706Z-debug.log
+2019-12-14T11:56:56.339492+00:00 app[web.1]: server-wrap.sh: line 23: kill: (276) - No such process
+2019-12-14T11:56:57.341226+00:00 app[web.1]: PID is 290
+2019-12-14T11:56:57.633888+00:00 app[web.1]: 
+2019-12-14T11:56:57.633900+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:57.633902+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:57.633903+00:00 app[web.1]: 
+2019-12-14T11:56:57.639036+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:57.642707+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:57.642959+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:57.643254+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:57.643501+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:57.644490+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:57.644632+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:57.644783+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:57.644912+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:57.645044+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:57.649011+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:57.649596+00:00 app[web.1]: 
+2019-12-14T11:56:57.649708+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:57.649770+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_57_645Z-debug.log
+2019-12-14T11:56:58.342643+00:00 app[web.1]: server-wrap.sh: line 23: kill: (290) - No such process
+2019-12-14T11:56:59.344459+00:00 app[web.1]: PID is 304
+2019-12-14T11:56:59.654039+00:00 app[web.1]: 
+2019-12-14T11:56:59.654057+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:56:59.654059+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:56:59.654061+00:00 app[web.1]: 
+2019-12-14T11:56:59.660693+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:56:59.666035+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:56:59.666488+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:56:59.666857+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:56:59.667126+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:56:59.668252+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:56:59.668396+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:56:59.668545+00:00 app[web.1]: npm ERR!
+2019-12-14T11:56:59.668676+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:56:59.668832+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:56:59.673847+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:56:59.674847+00:00 app[web.1]: 
+2019-12-14T11:56:59.675040+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:56:59.675183+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_56_59_669Z-debug.log
+2019-12-14T11:57:00.346377+00:00 app[web.1]: server-wrap.sh: line 23: kill: (304) - No such process
+2019-12-14T11:57:01.348658+00:00 app[web.1]: PID is 318
+2019-12-14T11:57:01.647855+00:00 app[web.1]: 
+2019-12-14T11:57:01.647889+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:01.647893+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:01.647895+00:00 app[web.1]: 
+2019-12-14T11:57:01.652464+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:01.656573+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:01.656873+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:01.657110+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:01.657336+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:01.658405+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:01.658544+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:01.658693+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:01.658856+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:01.658983+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:01.663919+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:01.664867+00:00 app[web.1]: 
+2019-12-14T11:57:01.665068+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:01.665212+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_01_659Z-debug.log
+2019-12-14T11:57:02.350563+00:00 app[web.1]: server-wrap.sh: line 23: kill: (318) - No such process
+2019-12-14T11:57:03.352733+00:00 app[web.1]: PID is 332
+2019-12-14T11:57:03.696914+00:00 app[web.1]: 
+2019-12-14T11:57:03.696935+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:03.696938+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:03.696940+00:00 app[web.1]: 
+2019-12-14T11:57:03.703492+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:03.709391+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:03.709792+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:03.710130+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:03.710449+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:03.712040+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:03.712266+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:03.712510+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:03.712727+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:03.712957+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:03.718624+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:03.719254+00:00 app[web.1]: 
+2019-12-14T11:57:03.719407+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:03.719481+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_03_714Z-debug.log
+2019-12-14T11:57:04.354409+00:00 app[web.1]: server-wrap.sh: line 23: kill: (332) - No such process
+2019-12-14T11:57:05.356440+00:00 app[web.1]: PID is 346
+2019-12-14T11:57:05.759321+00:00 app[web.1]: 
+2019-12-14T11:57:05.759342+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:05.759344+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:05.759346+00:00 app[web.1]: 
+2019-12-14T11:57:05.764215+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:05.768500+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:05.768855+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:05.769177+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:05.769513+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:05.771030+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:05.771285+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:05.771614+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:05.771804+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:05.772003+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:05.776451+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:05.777097+00:00 app[web.1]: 
+2019-12-14T11:57:05.777259+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:05.777379+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_05_772Z-debug.log
+2019-12-14T11:57:06.358727+00:00 app[web.1]: server-wrap.sh: line 23: kill: (346) - No such process
+2019-12-14T11:57:07.361013+00:00 app[web.1]: PID is 360
+2019-12-14T11:57:07.851655+00:00 app[web.1]: 
+2019-12-14T11:57:07.851675+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:07.851680+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:07.851682+00:00 app[web.1]: 
+2019-12-14T11:57:07.871973+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:07.878285+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:07.878720+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:07.879094+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:07.879522+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:07.881469+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:07.881724+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:07.881992+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:07.882230+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:07.882476+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:07.888504+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:07.889216+00:00 app[web.1]: 
+2019-12-14T11:57:07.889375+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:07.889488+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_07_884Z-debug.log
+2019-12-14T11:57:08.363731+00:00 app[web.1]: server-wrap.sh: line 23: kill: (360) - No such process
+2019-12-14T11:54:36+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.225 sample#load-avg-5m=0.145 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928656kB sample#memory-cached=702388kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T11:57:09.373989+00:00 app[web.1]: PID is 374
+2019-12-14T11:57:09.659987+00:00 app[web.1]: 
+2019-12-14T11:57:09.660007+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:09.660010+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:09.660012+00:00 app[web.1]: 
+2019-12-14T11:57:09.667503+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:09.671578+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:09.671857+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:09.672119+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:09.672356+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:09.673549+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:09.673722+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:09.673904+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:09.674054+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:09.674209+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:09.679666+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:09.680297+00:00 app[web.1]: 
+2019-12-14T11:57:09.680392+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:09.680456+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_09_675Z-debug.log
+2019-12-14T11:57:10.378996+00:00 app[web.1]: server-wrap.sh: line 23: kill: (374) - No such process
+2019-12-14T11:57:11.380972+00:00 app[web.1]: PID is 388
+2019-12-14T11:57:11.690271+00:00 app[web.1]: 
+2019-12-14T11:57:11.690292+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:11.690295+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:11.690298+00:00 app[web.1]: 
+2019-12-14T11:57:11.696385+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:11.701767+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:11.702228+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:11.702613+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:11.702994+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:11.704699+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:11.704953+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:11.705234+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:11.705492+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:11.705745+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:11.711936+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:11.712850+00:00 app[web.1]: 
+2019-12-14T11:57:11.713013+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:11.713132+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_11_706Z-debug.log
+2019-12-14T11:57:12.382812+00:00 app[web.1]: server-wrap.sh: line 23: kill: (388) - No such process
+2019-12-14T11:57:13.385578+00:00 app[web.1]: PID is 402
+2019-12-14T11:57:13.719552+00:00 app[web.1]: 
+2019-12-14T11:57:13.719575+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:13.719577+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:13.719579+00:00 app[web.1]: 
+2019-12-14T11:57:13.724602+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:13.728947+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:13.729295+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:13.729668+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:13.729963+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:13.731024+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:13.731244+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:13.731474+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:13.731676+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:13.731872+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:13.736362+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:13.736993+00:00 app[web.1]: 
+2019-12-14T11:57:13.737153+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:13.737277+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_13_732Z-debug.log
+2019-12-14T11:57:14.388718+00:00 app[web.1]: server-wrap.sh: line 23: kill: (402) - No such process
+2019-12-14T11:57:15.390637+00:00 app[web.1]: PID is 416
+2019-12-14T11:57:15.697506+00:00 app[web.1]: 
+2019-12-14T11:57:15.697523+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T11:57:15.697543+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T11:57:15.697547+00:00 app[web.1]: 
+2019-12-14T11:57:15.703725+00:00 app[web.1]: sh: 1: ts-node: not found
+2019-12-14T11:57:15.709356+00:00 app[web.1]: npm ERR! code ELIFECYCLE
+2019-12-14T11:57:15.709798+00:00 app[web.1]: npm ERR! syscall spawn
+2019-12-14T11:57:15.710167+00:00 app[web.1]: npm ERR! file sh
+2019-12-14T11:57:15.710532+00:00 app[web.1]: npm ERR! errno ENOENT
+2019-12-14T11:57:15.712262+00:00 app[web.1]: npm ERR! neutrino@0.1.0 serve: `ts-node --project tsconfig-node.json --log-error server.js`
+2019-12-14T11:57:15.712577+00:00 app[web.1]: npm ERR! spawn ENOENT
+2019-12-14T11:57:15.712868+00:00 app[web.1]: npm ERR!
+2019-12-14T11:57:15.713146+00:00 app[web.1]: npm ERR! Failed at the neutrino@0.1.0 serve script.
+2019-12-14T11:57:15.713446+00:00 app[web.1]: npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+2019-12-14T11:57:15.719542+00:00 app[web.1]: npm WARN Local package.json exists, but node_modules missing, did you mean to install?
+2019-12-14T11:57:15.720506+00:00 app[web.1]: 
+2019-12-14T11:57:15.720721+00:00 app[web.1]: npm ERR! A complete log of this run can be found in:
+2019-12-14T11:57:15.720899+00:00 app[web.1]: npm ERR!     /app/.npm/_logs/2019-12-14T11_57_15_714Z-debug.log
+2019-12-14T11:57:15.799589+00:00 heroku[web.1]: State changed from starting to crashed
+2019-12-14T11:57:15.719312+00:00 heroku[web.1]: Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
+2019-12-14T11:57:15.719312+00:00 heroku[web.1]: Stopping process with SIGKILL
+2019-12-14T11:57:15.778415+00:00 heroku[web.1]: Process exited with status 137
+2019-12-14T11:57:26+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.145 sample#load-avg-5m=0.145 sample#load-avg-15m=0.12 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12928924kB sample#memory-cached=702392kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T12:00:06.281734+00:00 heroku[web.1]: State changed from crashed to starting
+2019-12-14T12:00:06.075873+00:00 app[api]: Deploy cb52ce9f by user shamfama@gmail.com
+2019-12-14T12:00:06.075873+00:00 app[api]: Release v227 created by user shamfama@gmail.com
+2019-12-14T12:00:06.000000+00:00 app[api]: Build succeeded
+2019-12-14T12:00:33.306250+00:00 heroku[web.1]: Starting process with command `/bin/sh -c bash\ deploy.sh`
+2019-12-14T12:00:35.008552+00:00 app[web.1]: awk: line 1: illegal reference to array a
+2019-12-14T12:00:35.009732+00:00 app[web.1]: PID is 10
+2019-12-14T12:00:35.361957+00:00 app[web.1]: 
+2019-12-14T12:00:35.362003+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:35.362006+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:35.362008+00:00 app[web.1]: 
+2019-12-14T12:00:37.014740+00:00 app[web.1]: server-wrap.sh: line 10:    10 Killed                  npm run $command
+2019-12-14T12:00:37.017902+00:00 app[web.1]: PID is 31
+2019-12-14T12:00:37.454716+00:00 app[web.1]: 
+2019-12-14T12:00:37.454742+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:37.454745+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:37.454747+00:00 app[web.1]: 
+2019-12-14T12:00:39.029318+00:00 app[web.1]: server-wrap.sh: line 10:    31 Killed                  npm run $command
+2019-12-14T12:00:39.030199+00:00 app[web.1]: PID is 52
+2019-12-14T12:00:41.039961+00:00 app[web.1]: server-wrap.sh: line 10:    52 Killed                  npm run $command
+2019-12-14T12:00:41.040700+00:00 app[web.1]: PID is 65
+2019-12-14T12:00:41.672071+00:00 app[web.1]: 
+2019-12-14T12:00:41.672088+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:41.672090+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:41.672093+00:00 app[web.1]: 
+2019-12-14T12:00:43.053521+00:00 app[web.1]: server-wrap.sh: line 10:    65 Killed                  npm run $command
+2019-12-14T12:00:43.054125+00:00 app[web.1]: PID is 86
+2019-12-14T12:00:45.068660+00:00 app[web.1]: server-wrap.sh: line 10:    86 Killed                  npm run $command
+2019-12-14T12:00:45.070258+00:00 app[web.1]: PID is 99
+2019-12-14T12:00:46.079956+00:00 app[web.1]: 
+2019-12-14T12:00:46.079966+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:46.079968+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:46.079970+00:00 app[web.1]: 
+2019-12-14T12:00:47.105994+00:00 app[web.1]: server-wrap.sh: line 10:    99 Killed                  npm run $command
+2019-12-14T12:00:47.107111+00:00 app[web.1]: PID is 120
+2019-12-14T12:00:47.234599+00:00 heroku[web.1]: Process running mem=516M(100.8%)
+2019-12-14T12:00:47.234599+00:00 heroku[web.1]: Error R14 (Memory quota exceeded)
+2019-12-14T12:00:49.173504+00:00 app[web.1]: server-wrap.sh: line 10:   120 Killed                  npm run $command
+2019-12-14T12:00:49.177669+00:00 app[web.1]: PID is 129
+2019-12-14T12:00:50.690824+00:00 app[web.1]: 2019-12-14T12:00:50.687Z [32minfo[39m WebSocketServer started...
+2019-12-14T12:00:50.719878+00:00 app[web.1]: /app/node
+2019-12-14T12:00:50.720394+00:00 app[web.1]: Listening Port 14429
+2019-12-14T12:00:50.903616+00:00 app[web.1]: ---createContract neutrino:3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo
+2019-12-14T12:00:51.161648+00:00 heroku[web.1]: State changed from starting to up
+2019-12-14T12:00:51.213349+00:00 app[web.1]: server-wrap.sh: line 10:   129 Killed                  npm run $command
+2019-12-14T12:00:51.214217+00:00 app[web.1]: PID is 146
+2019-12-14T12:00:51.342264+00:00 app[web.1]: ---createContract auction:3PG2vMhK5CPqsCDodvLGzQ84QkoHXCJ3oNP
+2019-12-14T12:00:51.820713+00:00 app[web.1]: ---createContract rpd:3PNikM6yp4NqcSU8guxQtmR5onr2D4e8yTJ
+2019-12-14T12:00:51.882349+00:00 app[web.1]: 
+2019-12-14T12:00:51.882353+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:51.882356+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:51.882358+00:00 app[web.1]: 
+2019-12-14T12:00:52.239342+00:00 app[web.1]: ---createContract control:3P5Bfd58PPfNvBM2Hy8QfbcDqMeNtzg7KfP
+2019-12-14T12:00:52.706371+00:00 app[web.1]: ---createContract liquidation:3P4PCxsJqMzQBALo8zANHtBDZRRquobHQp7
+2019-12-14T12:00:52.879898+00:00 app[web.1]: {
+2019-12-14T12:00:52.879903+00:00 app[web.1]: key: 'bond_asset_id',
+2019-12-14T12:00:52.879906+00:00 app[web.1]: assetCurrencyValue: '975akZBfnMj513U7MZaHKzQrmsEx5aE3wdWKTrHBhbjF'
+2019-12-14T12:00:52.879908+00:00 app[web.1]: }
+2019-12-14T12:00:53.261562+00:00 app[web.1]: server-wrap.sh: line 10:   146 Killed                  npm run $command
+2019-12-14T12:00:53.262322+00:00 app[web.1]: PID is 167
+2019-12-14T12:00:53.286734+00:00 app[web.1]: {
+2019-12-14T12:00:53.286738+00:00 app[web.1]: key: 'neutrino_asset_id',
+2019-12-14T12:00:53.286740+00:00 app[web.1]: assetCurrencyValue: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p'
+2019-12-14T12:00:53.286743+00:00 app[web.1]: }
+2019-12-14T12:00:53.934284+00:00 app[web.1]: 
+2019-12-14T12:00:53.934326+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:53.934329+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:53.934331+00:00 app[web.1]: 
+2019-12-14T12:00:54.216612+00:00 app[web.1]: 2019-12-14T12:00:54.205Z [32minfo[39m Update all data in collection... bonds_orders
+2019-12-14T12:00:54.781004+00:00 app[web.1]: 2019-12-14T12:00:54.731Z [32minfo[39m WebSocketServer started...
+2019-12-14T12:00:54.890856+00:00 app[web.1]: Error: listen EADDRINUSE: address already in use :::14429
+2019-12-14T12:00:54.890859+00:00 app[web.1]: at Server.setupListenHandle [as _listen2] (net.js:1301:14)
+2019-12-14T12:00:54.890864+00:00 app[web.1]: at listenInCluster (net.js:1349:12)
+2019-12-14T12:00:54.890866+00:00 app[web.1]: at Server.listen (net.js:1437:7)
+2019-12-14T12:00:54.890869+00:00 app[web.1]: at Function.listen (/app/node_modules/express/lib/application.js:618:24)
+2019-12-14T12:00:54.890871+00:00 app[web.1]: at Object.<anonymous> (/app/node/index.js:25:31)
+2019-12-14T12:00:54.890873+00:00 app[web.1]: at Module._compile (internal/modules/cjs/loader.js:959:30)
+2019-12-14T12:00:54.890875+00:00 app[web.1]: at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
+2019-12-14T12:00:54.890877+00:00 app[web.1]: at Module.load (internal/modules/cjs/loader.js:815:32)
+2019-12-14T12:00:54.890880+00:00 app[web.1]: at Function.Module._load (internal/modules/cjs/loader.js:727:14)
+2019-12-14T12:00:54.890882+00:00 app[web.1]: at Module.require (internal/modules/cjs/loader.js:852:19)
+2019-12-14T12:00:55.329414+00:00 app[web.1]: server-wrap.sh: line 10:   167 Killed                  npm run $command
+2019-12-14T12:00:55.341349+00:00 app[web.1]: PID is 192
+2019-12-14T12:00:55.419437+00:00 app[web.1]: ---createContract neutrino:3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo
+2019-12-14T12:00:56.344290+00:00 app[web.1]: 
+2019-12-14T12:00:56.344310+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:56.344315+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:56.344316+00:00 app[web.1]: 
+2019-12-14T12:00:57.380383+00:00 app[web.1]: server-wrap.sh: line 10:   192 Killed                  npm run $command
+2019-12-14T12:00:57.385119+00:00 app[web.1]: PID is 213
+2019-12-14T12:00:58.157623+00:00 app[web.1]: 
+2019-12-14T12:00:58.157670+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:00:58.157673+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:00:58.157675+00:00 app[web.1]: 
+2019-12-14T12:00:59.426949+00:00 app[web.1]: server-wrap.sh: line 10:   213 Killed                  npm run $command
+2019-12-14T12:00:59.427568+00:00 app[web.1]: PID is 234
+2019-12-14T12:01:01.473485+00:00 app[web.1]: server-wrap.sh: line 10:   234 Killed                  npm run $command
+2019-12-14T12:01:01.475123+00:00 app[web.1]: PID is 243
+2019-12-14T12:01:03.504327+00:00 app[web.1]: server-wrap.sh: line 10:   243 Killed                  npm run $command
+2019-12-14T12:01:03.504964+00:00 app[web.1]: PID is 252
+2019-12-14T12:01:05.549516+00:00 app[web.1]: server-wrap.sh: line 10:   252 Killed                  npm run $command
+2019-12-14T12:01:05.568280+00:00 app[web.1]: PID is 265
+2019-12-14T12:01:06.749210+00:00 app[web.1]: 
+2019-12-14T12:01:06.749234+00:00 app[web.1]: > neutrino@0.1.0 serve /app
+2019-12-14T12:01:06.749237+00:00 app[web.1]: > ts-node --project tsconfig-node.json --log-error server.js
+2019-12-14T12:01:06.749239+00:00 app[web.1]: 
+2019-12-14T12:00:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.21 sample#load-avg-5m=0.145 sample#load-avg-15m=0.125 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12927592kB sample#memory-cached=702392kB sample#memory-redis=1727144bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T12:01:07.859371+00:00 app[web.1]: server-wrap.sh: line 10:   265 Killed                  npm run $command
+2019-12-14T12:01:07.906599+00:00 app[web.1]: PID is 286
+2019-12-14T12:01:09.318681+00:00 heroku[web.1]: Process running mem=1050M(205.3%)
+2019-12-14T12:01:09.318924+00:00 heroku[web.1]: Error R15 (Memory quota vastly exceeded)
+2019-12-14T12:01:09.319162+00:00 heroku[web.1]: Stopping process with SIGKILL
+2019-12-14T12:01:09.568758+00:00 heroku[web.1]: State changed from up to crashed
+2019-12-14T12:01:09.546224+00:00 heroku[web.1]: Process exited with status 0
+2019-12-14T12:00:39+00:00 app[heroku-redis]: source=REDIS addon=redis-shaped-21295 sample#active-connections=1 sample#load-avg-1m=0.175 sample#load-avg-5m=0.16 sample#load-avg-15m=0.13 sample#read-iops=0 sample#write-iops=0 sample#memory-total=15664264kB sample#memory-free=12907420kB sample#memory-cached=702400kB sample#memory-redis=1522248bytes sample#hit-rate=0.99995 sample#evicted-keys=0
+2019-12-14T12:03:40.725495+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=alpha-neutrino.herokuapp.com request_id=82fc6034-283b-40fe-9d0c-0faf75345a35 fwd="195.19.37.188" dyno= connect= service= status=503 bytes= protocol=https
+2019-12-14T12:03:42.507147+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=alpha-neutrino.herokuapp.com request_id=1985fc03-189a-4b5b-8429-93e417c8e832 fwd="195.19.37.188" dyno= connect= service= status=503 bytes= protocol=https

@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:12-stretch-slim
 
 COPY package.json yarn.lock \
 .env.dev .env.example server-wrap.sh \
@@ -16,11 +16,12 @@ COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 
 RUN yarn install
-RUN npm install -g npm
+RUN npm i ts-node -g
 RUN npm run build
 RUN npm run next-build
 RUN npm run next-export
 
+# ENTRYPOINT [ "npm", "run", "serve" ]
 # ENTRYPOINT [ "ts-node", "--project", "tsconfig-node.json", "--log-error", "server.js" ]
-FROM bash:4.4
-ENTRYPOINT [ "bash", "server-wrap.sh", "--command", "serve", "--timeout", "1m" ]
+ENTRYPOINT [ "bash", "server-wrap.sh", "--command", "serve", "--timeout", "5m" ]
+# ENTRYPOINT [ "ts-node", "--project", "tsconfig-node.json", "server-wrap.ts", "--command", "serve", "--timeout", "1m" ]
