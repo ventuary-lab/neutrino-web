@@ -35,7 +35,7 @@ function parse_time {
     local tm=$1;
     local amount=$(echo $tm | sed 's/[^0-9]//');
     local unit=$(echo $tm | awk '{ split($0,a,""); print a[length(a)] }');
-    local res=1;
+    local res=14400;
 
     case "$unit" in
         m) res=$(echo "60 * $amount" | bc) ;;
