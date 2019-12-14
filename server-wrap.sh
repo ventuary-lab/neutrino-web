@@ -43,7 +43,7 @@ function parse_time {
         s) res=$amount ;;
     esac
 
-    restart_timeout=$res;
+    echo $res;
 }
 
 function main {
@@ -53,7 +53,7 @@ function main {
     do
         case "$1" in
             --script) script_name=$2 ;;
-            --timeout) parse_time $2 ;;
+            --timeout) restart_timeout=$(parse_time $2) ;;
             --command) command=$2 ;;
         esac
         shift
