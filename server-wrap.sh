@@ -4,7 +4,7 @@
 args=?;
 command=?; # - run script from package.json. Only command or script_name should be provided but not both
 script_name=?;
-restart_timeout=1 # in seconds
+restart_timeout=14400 # in seconds
 current_pid=?;
 
 function run_with_restarts {
