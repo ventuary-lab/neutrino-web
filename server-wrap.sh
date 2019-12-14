@@ -18,11 +18,15 @@ function run_with_restarts {
         $("node $script_name $args")
     fi
 
+    echo "Restart timeout cycle is $restart_timeout seconds"
+
     sleep $restart_timeout;
 
     kill -9 $current_pid;
 
-    sleep 1;
+    echo 'Restart app in 10 seconds...'
+
+    sleep 10;
 
     run_with_restarts $@;
 }
