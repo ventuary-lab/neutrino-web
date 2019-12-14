@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { round as _round, isEqual as _isEqual, get as _get } from 'lodash';
+import { round as _round, isEqual as _isEqual, get as _get, floor as _floor } from 'lodash';
 
 import CurrencyEnum from '../enums/CurrencyEnum';
 import DalComponent from '../components/DalComponent';
@@ -93,14 +93,10 @@ export default class BalanceController {
 
         const wavesBalanceRes = await getAddressDefaultBalance({
             nodeUrl: this.dal.nodeUrl,
-            address
+            address,
         });
 
-        balanceDict[CurrencyEnum.WAVES] = _get(
-            wavesBalanceRes.data,
-            'balance',
-            null
-        );
+        balanceDict[CurrencyEnum.WAVES] = _get(wavesBalanceRes.data, 'balance', null);
 
         for (const currency in this.dal.assets) {
             if (this.dal.assets.hasOwnProperty(currency)) {
@@ -108,7 +104,7 @@ export default class BalanceController {
                 const newBalanceRes = await getAssetBalanceInfo({
                     nodeUrl: this.dal.nodeUrl,
                     address,
-                    assetId
+                    assetId,
                 });
 
                 balanceDict[currency] = newBalanceRes.data.balance || null;
@@ -116,8 +112,8 @@ export default class BalanceController {
         }
 
         // Normalize
-        Object.keys(balanceDict).forEach((currency) => {
-            balanceDict[currency] = _round(
+        Object.keys(balanceDict).forEach(currency => {
+            balanceDict[currency] = _floor(
                 balanceDict[currency] / CurrencyEnum.getContractPow(currency),
                 2
             );
