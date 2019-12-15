@@ -220,11 +220,11 @@ export default {
                 label: 'Staking balance',
             },
             staking_increase_button: {
-                label: 'Increase'
+                label: 'Increase',
             },
             staking_decrease_button: {
-                label: 'Cancel'
-            }
+                label: 'Cancel',
+            },
         },
     },
 };

@@ -1,4 +1,7 @@
-export default {
+import { merge } from 'lodash';
+import { defaultLocale } from 'locales/helpers';
+
+export default merge(defaultLocale, {
     translation: {
         enums: {
             buy: {
@@ -177,4 +180,4 @@ export default {
             },
         },
     },
-};
+});

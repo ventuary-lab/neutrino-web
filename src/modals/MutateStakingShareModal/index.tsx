@@ -9,6 +9,7 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
 import { onlyDecimalRegex2 } from 'ui/global/helpers';
+import { Translation } from 'react-i18next';
 
 import './style.scss';
 
@@ -141,41 +142,54 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         const { usdnValue } = this.state;
 
         return (
-            <Modal
-                className={bem.block()}
-                isOpen={this.props.isOpened}
-                onRequestClose={this.props.onClose}
-                parentSelector={this.getParentSelector}
-            >
-                <div>
-                    <div className={bem.element('body')}>
-                        <span className={bem.element('title')}>{title}</span>
-                        <div className={bem.element('balances')}>
-                            <AccountBalanceTitle title="Account balance:" amount={accountBalance} />
-                            <AccountBalanceTitle title="Staking balance:" amount={stakingBalance} />
-                        </div>
-                        <div className={bem.element('actions')}>
-                            <div className={bem.element('percents')}>
-                                {this.getPercentButtons()}
+            <Translation>
+                {t => (
+                    <Modal
+                        className={bem.block()}
+                        isOpen={this.props.isOpened}
+                        onRequestClose={this.props.onClose}
+                        parentSelector={this.getParentSelector}
+                    >
+                        <div>
+                            <div className={bem.element('body')}>
+                                <span className={bem.element('title')}>{title}</span>
+                                <div className={bem.element('balances')}>
+                                    <AccountBalanceTitle
+                                        title={`${t('staking_dashboard.account_balance.label')}:`}
+                                        amount={accountBalance}
+                                    />
+                                    <AccountBalanceTitle
+                                        title={`${t('staking_dashboard.staking_balance.label')}:`}
+                                        amount={stakingBalance}
+                                    />
+                                </div>
+                                <div className={bem.element('actions')}>
+                                    <div className={bem.element('percents')}>
+                                        {this.getPercentButtons()}
+                                    </div>
+                                    <div
+                                        className={bem.element(
+                                            'buttons',
+                                            this.props.isDecrease && 'decrease'
+                                        )}
+                                    >
+                                        <BaseInput
+                                            iconLabel={CurrencyEnum.USD_N.toUpperCase()}
+                                            icon={usdnLogo}
+                                            value={usdnValue}
+                                            onChange={this.onChangeUsdn}
+                                        />
+                                        <Button
+                                            label={buttonLabel}
+                                            onClick={this.onMutateStaking}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div
-                                className={bem.element(
-                                    'buttons',
-                                    this.props.isDecrease && 'decrease'
-                                )}
-                            >
-                                <BaseInput
-                                    iconLabel="USD-N"
-                                    icon={usdnLogo}
-                                    value={usdnValue}
-                                    onChange={this.onChangeUsdn}
-                                />
-                                <Button label={buttonLabel} onClick={this.onMutateStaking} />
-                            </div>
                         </div>
-                    </div>
-                </div>
-            </Modal>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 }
