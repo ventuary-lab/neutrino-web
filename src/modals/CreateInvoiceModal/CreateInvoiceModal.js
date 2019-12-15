@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
 import { Translation } from 'react-i18next';
+import { ROUTE_NEUTRINO } from 'routes';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 import { html } from 'components';
 import CopyToClipboard from 'shared/CopyToClipboard';
@@ -80,7 +82,7 @@ export default class CreateInvoiceModal extends React.PureComponent {
             ],
         ]);
 
-        const link = `${location.origin}?invoiceAddress=${address}&invoiceAmount=${amount}&invoiceCurrency=${this.props.currency}`;
+        const link = `${location.origin}/${ROUTE_NEUTRINO}/${CurrencyEnum.USD_N}?invoiceAddress=${address}&invoiceAmount=${amount}&invoiceCurrency=${this.props.currency}`;
 
         this.setState({ invoiceLink: link });
     }

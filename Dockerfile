@@ -1,7 +1,7 @@
-FROM node:12-alpine
+FROM node:12-stretch-slim
 
 COPY package.json yarn.lock \
-.env.dev .env.example \
+.env.dev .env.example server-wrap.sh \
 babel.config.js next-env.d.ts next.config.js \
 tsconfig.json tsconfig-node.json /app/
 
@@ -16,9 +16,9 @@ COPY webpack.js /app/webpack.js
 COPY server.js /app/server.js
 
 RUN yarn install
+RUN npm i ts-node -g
 RUN npm run build
 RUN npm run next-build
 RUN npm run next-export
 
-# ENTRYPOINT [ "ts-node", "--project", "tsconfig-node.json", "--log-error", "server.js" ]
-ENTRYPOINT [ "npm", "run", "serve" ]
+ENTRYPOINT [ "bash", "server-wrap.sh", "--command", "serve", "--timeout", "2h" ]

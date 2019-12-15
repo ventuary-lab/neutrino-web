@@ -49,7 +49,7 @@ class WebSocketServer implements WebSocketParams {
             return;
         }
 
-        this.logger.info('Send message to WebSocket connections... ' + message);
+        // this.logger.info('Send message to WebSocket connections... ' + message);
 
         this._wsServer.connections.forEach(connection => {
             connection.send(message);
