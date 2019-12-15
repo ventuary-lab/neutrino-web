@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { html } from 'components';
 import axios, { AxiosResponse } from 'axios';
+import { Translation } from 'react-i18next';
 
 const bem = html.bem('AnnualYieldInfo');
 
@@ -17,19 +18,19 @@ class AnnualYieldInfo extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            yieldPercent: 6.85
-        }
+            yieldPercent: 6.85,
+        };
     }
 
-    async updateYieldPercent () {
-        const res = await axios.get('/api/explorer/get_annual_yield') as AxiosResponse<number>;
+    async updateYieldPercent() {
+        const res = (await axios.get('/api/explorer/get_annual_yield')) as AxiosResponse<number>;
 
         if (res.statusText === 'OK') {
             this.setState({ yieldPercent: _.round(res.data, 2) });
         }
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         await this.updateYieldPercent();
     }
 
@@ -37,20 +38,25 @@ class AnnualYieldInfo extends React.Component<Props, State> {
         const { yieldPercent } = this.state;
 
         return (
-            <div className={bem.block()}>
-                <span>Info</span>
-                <div className={bem.element('main')}>
-                    <div className={bem.element('yield-percent')}>
-                        <span>{yieldPercent}</span>
-                        <span>%</span>
+            <Translation>
+                {t => (
+                    <div className={bem.block()}>
+                        <span>{t('common.info.label')}</span>
+                        <div className={bem.element('main')}>
+                            <div className={bem.element('yield-percent')}>
+                                <span>{yieldPercent}</span>
+                                <span>%</span>
+                            </div>
+                            <span className={bem.element('title')}>
+                                {t('staking_dashboard.aeay.label')}
+                            </span>
+                            <span className={bem.element('body')}>
+                                {t('staking_dashboard.annual_yield_info.label')}
+                            </span>
+                        </div>
                     </div>
-                    <span className={bem.element('title')}>Average Estimated Annual Yield</span>
-                    <span className={bem.element('body')}>
-                        Estimated Annual Yield is depending on waves token price, can be 1%-20%
-                        based on market situation
-                    </span>
-                </div>
-            </div>
+                )}
+            </Translation>
         );
     }
 }

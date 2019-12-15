@@ -4,6 +4,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import AccountBalanceTitle from './../AccountBalanceTitle';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import { Translation } from 'react-i18next';
 
 import './style.scss';
 
@@ -19,16 +20,21 @@ class AccountBalance extends React.Component<Props> {
     }
 
     render() {
-        const onClick = () => store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
+        const onClick = () =>
+            store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
         const { accountBalance } = this.props;
 
         return (
-            <div className={bem.block()}>
-                <AccountBalanceTitle title="Account balance" amount={accountBalance}/>
-                <div className={bem.element('buy-btn')}>
-                    <Button type={'submit'} block label={'Buy'} onClick={onClick}/>
-                </div>
-            </div>
+            <Translation>
+                {t => (
+                    <div className={bem.block()}>
+                        <AccountBalanceTitle title={t('staking_dashboard.account_balance.label')} amount={accountBalance} />
+                        <div className={bem.element('buy-btn')}>
+                            <Button type={'submit'} block label={'Buy'} onClick={onClick} />
+                        </div>
+                    </div>
+                )}
+            </Translation>
         );
     }
 }

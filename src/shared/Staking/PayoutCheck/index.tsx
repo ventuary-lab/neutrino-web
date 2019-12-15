@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import { html, dal } from 'components';
-// import Button from 'yii-steroids/ui/form/Button';
 import logo from 'static/images/logo.svg';
+import { Translation } from 'react-i18next';
 
 import './style.scss';
 
@@ -20,24 +20,32 @@ const PayoutCheck = (props: Props) => {
     const prefix = dal && dal.network === 'testnet' ? 'testnet/' : '';
 
     return (
-        <div className={bem.block()}>
-            <div className={bem.element('body')}>
-                <div className={bem.element('date')}>
-                    <span>Check № {checkNumber}</span>
-                    <span>
-                        {moment(date).format('DD.MM.YY')} | {moment(date).format('hh:mm')}
-                    </span>
+        <Translation>
+            {t => (
+                <div className={bem.block()}>
+                    <div className={bem.element('body')}>
+                        <div className={bem.element('date')}>
+                            <span>
+                                {t('staking_dashboard.payout_check.label')} {checkNumber}
+                            </span>
+                            <span>
+                                {moment(date).format('DD.MM.YY')} | {moment(date).format('hh:mm')}
+                            </span>
+                        </div>
+                        <div className={bem.element('profit')}>{t('common.profit.label')}: {profit}</div>
+                        <div className={bem.element('see-tx')}>
+                            <img src={logo} />
+                            <a
+                                href={`https://wavesexplorer.com/tx/${prefix}${transactionUrl}`}
+                                target="_blank"
+                            >
+                                {t('staking_dashboard.see_tx.label')}
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div className={bem.element('profit')}>Profit: {profit}</div>
-                <div className={bem.element('see-tx')}>
-                    <img src={logo} />
-                    {/* <Button label="See transaction" onClick={onSeeTransaction}/> */}
-                    <a href={`https://wavesexplorer.com/tx/${prefix}${transactionUrl}`} target="_blank">
-                        See transaction
-                    </a>
-                </div>
-            </div>
-        </div>
+            )}
+        </Translation>
     );
 };
 

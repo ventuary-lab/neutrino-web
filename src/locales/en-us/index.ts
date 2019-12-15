@@ -38,6 +38,16 @@ export default {
             },
         },
         common: {
+            profit: {
+                label: 'Profit',
+            },
+            info: {
+                label: 'Info',
+            },
+            check: {
+                label: 'Check',
+                verb: 'Check',
+            },
             ok: {
                 label: 'Ok',
             },
@@ -96,17 +106,17 @@ export default {
                 label: 'Redeem WAVES',
             },
             confirm: {
-                label: 'Confirm'
+                label: 'Confirm',
             },
             go_back: {
-                label: 'Go back'
+                label: 'Go back',
             },
             tokens_swap: {
-                label: 'Tokens swap'
+                label: 'Tokens swap',
             },
             confirm_details: {
-                label: 'Confirm details'
-            }
+                label: 'Confirm details',
+            },
         },
         modals: {
             create_invoice: {
@@ -137,8 +147,8 @@ export default {
                 label: 'I have read and accept the',
             },
             please_confirm_the_swap: {
-                label: 'Please confirm the assets swap'
-            }
+                label: 'Please confirm the assets swap',
+            },
         },
         bonds: {
             bonds_discount: {
@@ -175,6 +185,46 @@ export default {
             invoice_generator: {
                 label: 'Invoice Generator',
             },
+        },
+        staking_dashboard: {
+            account_balance: {
+                label: 'Account balance',
+            },
+            aeay: {
+                label: 'Average Estimated Annual Yield',
+            },
+            annual_yield_info: {
+                label: `
+                    Estimated Annual Yield is depending on waves token price, can be
+                    1%-20% based on market situation
+                `,
+            },
+            see_tx: {
+                label: 'See transaction',
+            },
+            payout_check: {
+                label: 'Check №',
+            },
+            no_payout_checks: {
+                label: 'No Payout checks',
+            },
+            staking_description: {
+                label: `
+                    Neutrino dApp will distribute staking rewards proportionately to users
+                    each week based on their daily average USD-N staking share from total
+                    amount of stacked USD-N. These rewards are coming from waves lPoS
+                    decentralized monetary policy.
+                `,
+            },
+            staking_balance: {
+                label: 'Staking balance',
+            },
+            staking_increase_button: {
+                label: 'Increase'
+            },
+            staking_decrease_button: {
+                label: 'Cancel'
+            }
         },
     },
 };
