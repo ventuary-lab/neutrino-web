@@ -3,9 +3,13 @@
 @import 'style/helpers/mixins';
 
 .StakingLanding {
+    $hd-col: #FF4F0F;
+    $bd-col: #E0CDB8;
     
     &__main {
         font-size: 28.8px;
+        background: linear-gradient(1deg, #F8F2FD -2.36%, #FFFBED 49.5%, #F4F9FF 84.02%);
+        height: 100vh;
 
         & button {
             cursor: pointer;
@@ -26,6 +30,28 @@
                 background-color: #fff;
                 border: 1px solid rgba(97, 33, 161, 1);
             }
+        }
+    }
+
+    &__yield-section {
+        font-size: 33px;
+        line-height: 38px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        &_heading {
+            color: $hd-col;
+            font-size: 1em;
+            line-height: 1em;
+            font-weight: 600;
+        }
+
+        &_body {
+            font-size: .5em;
+            line-height: .76em;
+            padding: 16px 0;
         }
     }
 }
