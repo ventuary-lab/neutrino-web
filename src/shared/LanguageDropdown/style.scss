@@ -1,0 +1,48 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.LanguageDropdown {
+    $li-pd: 24px;
+
+    &__main {
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        background-color: rgb(41, 32, 95);
+        border: 2px solid rgb(14, 8, 66);
+        font-size: 18px;
+        font-weight: 600;
+        width: 250px;
+        z-index: 20;
+
+        & > :first-child {
+            padding: $li-pd;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+
+            & > * {
+                &:not(:first-child) {
+                    padding-top: $li-pd;
+                }
+
+                &:first-child {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                }
+            }
+        }
+    }
+
+    &__dp-icon {
+        margin-left: auto;
+        transition: transform .2s linear;
+
+        &_opened {
+            transform: rotate(180deg);
+        }
+    }
+}
+

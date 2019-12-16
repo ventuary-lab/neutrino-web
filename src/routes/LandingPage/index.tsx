@@ -1,6 +1,6 @@
 import React from 'react';
 // import { html, dal } from 'components';
-import { buildBem } from './helpers';
+import { buildBem } from 'ui/global/helpers';
 import LandingHeader from './LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { buildBem } from '../helpers';
-import { goToPage } from 'yii-steroids/actions/navigation';
+import { buildBem } from 'ui/global/helpers';
+// import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';

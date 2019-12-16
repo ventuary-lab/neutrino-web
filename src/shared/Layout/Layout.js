@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _get from 'lodash-es/get';
+import { html, http, dal, ws, store } from 'components';
 import { Translation } from 'react-i18next';
 import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
@@ -21,8 +22,8 @@ import WarningMobileModal from 'modals/WarningMobileModal';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
+import LanguageDropdown from 'shared/LanguageDropdown';
 
-import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -388,14 +389,35 @@ export default class Layout extends React.PureComponent {
                                                 onOpen={this.userCongratsModalContextValue.onOpen}
                                             />
                                             <div>
-                                                <div>
+                                                {/* <div>
                                                     <a onClick={() => i18n.changeLanguage('en-us')}>
                                                         🇬🇧
                                                     </a>
                                                     <a onClick={() => i18n.changeLanguage('ru-ru')}>
                                                         🇷🇺
                                                     </a>
-                                                </div>
+                                                </div> */}
+                                                <LanguageDropdown
+                                                    default={{
+                                                        label: 'English',
+                                                        flag: '🇬🇧',
+                                                        onClick: () => i18n.changeLanguage('en-us'),
+                                                    }}
+                                                    langs={[
+                                                        {
+                                                            label: 'English',
+                                                            flag: '🇬🇧',
+                                                            onClick: () =>
+                                                                i18n.changeLanguage('en-us'),
+                                                        },
+                                                        {
+                                                            label: 'Russian',
+                                                            flag: '🇷🇺',
+                                                            onClick: () =>
+                                                                i18n.changeLanguage('ru-ru'),
+                                                        },
+                                                    ]}
+                                                />
                                             </div>
                                             {children}
                                         </ConfigContext.Provider>
