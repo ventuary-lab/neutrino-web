@@ -1,7 +1,7 @@
 import React from 'react';
 // import { html, store, dal } from 'components';
 import { buildBem } from '../helpers';
-import { goToPage } from 'yii-steroids/actions/navigation';
+// import { goToPage } from 'yii-steroids/actions/navigation';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';

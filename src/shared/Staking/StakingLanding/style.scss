@@ -1,0 +1,32 @@
+
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.StakingLanding {
+    
+    &__main {
+        font-size: 28.8px;
+
+        & button {
+            cursor: pointer;
+        }
+
+        .base-button {
+            font-style: normal;
+            font-weight: bold;
+            font-size: 17px;
+            line-height: 21px;
+            border: none;
+            width: 220px;
+            border-radius: 30px;
+            padding: 18px 0;
+            background-color: #00FFB4;
+
+            &.alt {
+                background-color: #fff;
+                border: 1px solid rgba(97, 33, 161, 1);
+            }
+        }
+    }
+}
+
