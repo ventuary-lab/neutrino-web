@@ -87,13 +87,17 @@ body {
                 padding: 60px 0;
                 text-align: unset;
             }
+
+            a {
+                margin: auto;
+            }
         }
 
         @media screen and (max-width: 768px) {
             text-align: left;
             padding: 0 20px;
             max-width: unset;
-        
+
             &_right {
                 display: flex;
                 flex-direction: column-reverse;
