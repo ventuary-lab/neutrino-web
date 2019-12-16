@@ -173,7 +173,7 @@ export default class Layout extends React.PureComponent {
     }
 
     async componentDidMount() {
-        this.attachResizeObserver();
+        // this.attachResizeObserver();
         this.openWarningModal();
 
         this.handleQueryParams();

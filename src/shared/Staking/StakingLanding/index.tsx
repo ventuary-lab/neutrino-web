@@ -47,15 +47,36 @@ class StakingLanding extends React.Component<Props> {
                     <LandingHeader />
                 </div>
                 <div className={bem.element('yield-section')}>
-                    <div>
-                        <h1>Earn staking rewards with us dollar neutrino stablecoin</h1>
-                        <p>
-                            Neutrino dApp distributes staking rewards in USD-N tokens derived from
-                            Waves LPoS decentralized monetary policy.
+                    <div className={bem.element('yield-section-item')}>
+                        <span className={bem.element('yield-section-item-head')}>
+                            Earn staking rewards with us dollar neutrino stablecoin
+                        </span>
+                        <p className={bem.element('yield-section-item-body')}>
+                            <span className="bold">Neutrino dApp</span> distributes staking rewards
+                            in <span className="bold">USD-N</span> tokens derived from Waves LPoS
+                            decentralized monetary policy.
                         </p>
-                        <button className={bem.element('start-staking-btn')}>Start staking</button>
+                        <button className="base-button">Start staking</button>
                     </div>
-                    <div></div>
+                    <div className={bem.element('delim')}></div>
+                    <div className={bem.element('yield-section-item', 'right')}>
+                        <span className={bem.element('yield-section-romb')}>
+                            <div></div>
+                            <span>52.51%</span>
+                        </span>
+                        <div>
+                            <span className={bem.element('yield-section-item-head')}>
+                                Average estimated annual yield
+                            </span>
+                            <p className={bem.element('yield-section-item-body')}>
+                                This value comprises <span className="bold">6.7%</span> annual yield
+                                from leasing of Waves tokens on the smart contract and{' '}
+                                <span className="bold">~10%</span> of total{' '}
+                                <span className="bold">USD-N</span> supply in staking: *[71k from
+                                659k]
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <GlobalLinksContext.Consumer>
                     {context => {
@@ -71,7 +92,9 @@ class StakingLanding extends React.Component<Props> {
                         );
                     }}
                 </GlobalLinksContext.Consumer>
-                <LandingFooter links={socLinks} />
+                <div>
+                    <LandingFooter links={socLinks} />
+                </div>
             </div>
         );
     }
