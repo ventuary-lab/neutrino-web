@@ -331,30 +331,31 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
 
-        const children =
-            this.props.currentItem.id !== ROUTE_ROOT ? (
-                <div className={bem.element('inner')}>
-                    {this.props.isShowLeftSidebar && (
-                        <aside className={bem.element('left')}>
-                            <LeftSidebar />
-                        </aside>
-                    )}
-                    <div className={bem.element('center')}>
-                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
-                        <header className={bem.element('header')}>
-                            <Header />
-                        </header>
-                        <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
-                            {this.props.status !== STATUS_LOADING && this.props.children}
-                        </main>
-                    </div>
-                    <aside className={bem.element('right')}>
-                        <RightSidebar />
+        const isRootPage = this.props.currentItem.id === ROUTE_ROOT;
+
+        const children = !isRootPage ? (
+            <div className={bem.element('inner')}>
+                {this.props.isShowLeftSidebar && (
+                    <aside className={bem.element('left')}>
+                        <LeftSidebar />
                     </aside>
+                )}
+                <div className={bem.element('center')}>
+                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                    <header className={bem.element('header')}>
+                        <Header />
+                    </header>
+                    <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                        {this.props.status !== STATUS_LOADING && this.props.children}
+                    </main>
                 </div>
-            ) : (
-                this.props.children
-            );
+                <aside className={bem.element('right')}>
+                    <RightSidebar />
+                </aside>
+            </div>
+        ) : (
+            this.props.children
+        );
 
         return (
             <Translation>
@@ -388,37 +389,32 @@ export default class Layout extends React.PureComponent {
                                                 onClose={this.userCongratsModalContextValue.onClose}
                                                 onOpen={this.userCongratsModalContextValue.onOpen}
                                             />
-                                            <div>
-                                                {/* <div>
-                                                    <a onClick={() => i18n.changeLanguage('en-us')}>
-                                                        🇬🇧
-                                                    </a>
-                                                    <a onClick={() => i18n.changeLanguage('ru-ru')}>
-                                                        🇷🇺
-                                                    </a>
-                                                </div> */}
-                                                <LanguageDropdown
-                                                    default={{
-                                                        label: 'English',
-                                                        flag: '🇬🇧',
-                                                        onClick: () => i18n.changeLanguage('en-us'),
-                                                    }}
-                                                    langs={[
-                                                        {
+                                            {/* <div>
+                                                {isRootPage && (
+                                                    <LanguageDropdown
+                                                        default={{
                                                             label: 'English',
                                                             flag: '🇬🇧',
                                                             onClick: () =>
                                                                 i18n.changeLanguage('en-us'),
-                                                        },
-                                                        {
-                                                            label: 'Russian',
-                                                            flag: '🇷🇺',
-                                                            onClick: () =>
-                                                                i18n.changeLanguage('ru-ru'),
-                                                        },
-                                                    ]}
-                                                />
-                                            </div>
+                                                        }}
+                                                        langs={[
+                                                            {
+                                                                label: 'English',
+                                                                flag: '🇬🇧',
+                                                                onClick: () =>
+                                                                    i18n.changeLanguage('en-us'),
+                                                            },
+                                                            {
+                                                                label: 'Russian',
+                                                                flag: '🇷🇺',
+                                                                onClick: () =>
+                                                                    i18n.changeLanguage('ru-ru'),
+                                                            },
+                                                        ]}
+                                                    />
+                                                )}
+                                            </div> */}
                                             {children}
                                         </ConfigContext.Provider>
                                         <ModalWrapper />

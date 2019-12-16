@@ -1,6 +1,7 @@
 import React from 'react';
 import { buildBem } from 'ui/global/helpers';
 // import { goToPage } from 'yii-steroids/actions/navigation';
+import LanguageDropdown from 'shared/LanguageDropdown';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
@@ -47,7 +48,7 @@ class LandingHeader extends React.Component<Props, State> {
         };
     }
 
-    getLinks (t): Link[] {
+    getLinks(t): Link[] {
         return [
             {
                 label: t('common.product.label'),
@@ -123,9 +124,29 @@ class LandingHeader extends React.Component<Props, State> {
         // const productLinks = this.productLinks.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
 
+        const getLanguageDropdownProps = i18n => ({
+            default: {
+                label: 'English',
+                flag: '🇬🇧',
+                onClick: () => i18n.changeLanguage('en-us'),
+            },
+            langs: [
+                {
+                    label: 'English',
+                    flag: '🇬🇧',
+                    onClick: () => i18n.changeLanguage('en-us'),
+                },
+                {
+                    label: 'Russian',
+                    flag: '🇷🇺',
+                    onClick: () => i18n.changeLanguage('ru-ru'),
+                },
+            ],
+        });
+
         return (
             <Translation>
-                {t => (
+                {(t, { i18n }) => (
                     <div className={bem.element('main')}>
                         <GlobalLinksContext.Consumer>
                             {context => (
@@ -175,6 +196,7 @@ class LandingHeader extends React.Component<Props, State> {
                                                         {context.links.map(this.mapLink)}
                                                     </ul>
                                                 </div>
+                                                <LanguageDropdown {...getLanguageDropdownProps(i18n)} />
                                                 <OutsideAlerter
                                                     handler={this.outsideHandler}
                                                     className={bem.element('actions')}
