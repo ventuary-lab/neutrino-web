@@ -56,7 +56,7 @@ class StakingLanding extends React.Component<Props> {
                             in <span className="bold">USD-N</span> tokens derived from Waves LPoS
                             decentralized monetary policy.
                         </p>
-                        <button className="base-button">Start staking</button>
+                        <a className="base-button" href='/rpd/usd-n'>Start staking</a>
                     </div>
                     <div className={bem.element('delim')}></div>
                     <div className={bem.element('yield-section-item', 'right')}>

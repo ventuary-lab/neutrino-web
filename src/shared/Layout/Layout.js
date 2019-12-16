@@ -362,6 +362,7 @@ export default class Layout extends React.PureComponent {
             <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
+                    'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
                 })}
             >
                 <InstallKeeperModal

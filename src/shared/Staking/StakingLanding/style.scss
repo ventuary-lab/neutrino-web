@@ -3,7 +3,7 @@
 @import 'style/helpers/mixins';
 
 body {
-    background-color: #fff !important;
+    background-color: #fff;
 }
 
 .StakingLanding {
@@ -31,7 +31,9 @@ body {
             border: none;
             width: 220px;
             border-radius: 30px;
-            padding: 18px 0;
+            padding: 18px;
+            text-align: center;
+            display: block;
             background-color: #00C38F;
             color: #fff;
 
