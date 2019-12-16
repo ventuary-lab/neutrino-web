@@ -22,7 +22,7 @@ require('yii-steroids/webpack')
                     '**': null,
                 },
                 {
-                    context: ['/api'],
+                    context: ['/api', '/static'],
                     target: 'http://localhost:5000',
                 },
             ]

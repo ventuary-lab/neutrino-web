@@ -1,7 +1,8 @@
 import { merge } from 'lodash';
-import { defaultLocale } from 'locales/helpers';
+// import { getDefaultLocale } from 'locales/helpers';
 
-export default merge(defaultLocale, {
+// export default merge(Object.assign({}, getDefaultLocale()), {
+export default {
     translation: {
         enums: {
             buy: {
@@ -180,4 +181,4 @@ export default merge(defaultLocale, {
             },
         },
     },
-});
+};

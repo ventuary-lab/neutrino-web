@@ -5,6 +5,8 @@ const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
+const fs = require('fs');
+const path = require('path');
 const moment = require('moment');
 const Utils = require('./utils');
 
@@ -38,8 +40,8 @@ module.exports = class Router {
                             contracts,
                         },
                         env: {
-                            google_tag_id: process.env.G_TAG_ID || '?'
-                        }
+                            google_tag_id: process.env.G_TAG_ID || '?',
+                        },
                     },
                 };
             },
@@ -266,6 +268,9 @@ module.exports = class Router {
                     methods: Object.keys(this._routes),
                 };
             },
+            '/static/*': async (req, res) => {
+                res.sendFile( path.join(__dirname, `../src${req.originalUrl}`));
+            },
             '/whitepaper': async (req, res) => {
                 res.redirect(
                     'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit'
@@ -276,10 +281,14 @@ module.exports = class Router {
 
     async start() {
         Object.keys(this._routes).forEach(url => {
-            this.expressApp.get(url, async (request, response) => {
+            this.expressApp.get(url, async (request, response, next) => {
                 let content = {};
                 try {
-                    content = await this._routes[url](request, response);
+                    content = await this._routes[url](request, response, next);
+
+                    if (url.indexOf('static') !== -1) {
+                        return;
+                    }
                 } catch (err) {
                     this.app.logger.error(`Router build Error: ${String(err.stack || err)}`);
                     content = {
@@ -301,11 +310,11 @@ module.exports = class Router {
             const currency = PairsEnum.getSource(pairName);
             if (!result[currency]) {
                 const collection = this.app.getCollection(pairName, CollectionEnum.NEUTRINO_PRICES);
-                
+
                 try {
                     result[currency] = await collection.getPrices();
                 } catch (err) {
-                    console.log('Error occured on getPrices call')
+                    console.log('Error occured on getPrices call');
                 }
             }
         }

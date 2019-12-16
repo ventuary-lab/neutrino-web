@@ -7,12 +7,21 @@
         font-size: 14px;
         line-height: 17px;
         font-weight: normal;
-        display: block;
         position: relative;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        & > :first-child {
+            position: relative;
+            display: block;
+            margin-bottom: 8px;
+        }
     }
 
     &__balance {
-        position: absolute;
+        position: relative;
         right: 0;
         top: 0;
         display: block !important;

@@ -41,10 +41,10 @@ import {
     InstallKeeperModalContext,
     BlurContext,
     UserCongratsModalContext,
-    LearnLinksContext,
+    // LearnLinksContext,
     GlobalLinksContext,
 } from './context';
-import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
+import { getDefaultProductLinks, getDefaultLearnLinks } from 'shared/Layout/defaults';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
@@ -105,6 +105,7 @@ export default class Layout extends React.PureComponent {
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
+        this.getGlobalLinksContextValue = this.getGlobalLinksContextValue.bind(this);
 
         this.resizeObserver = null;
         this.wcc = null;
@@ -113,12 +114,10 @@ export default class Layout extends React.PureComponent {
             unblur: () => this.setState({ isBlurred: false }),
             checkIsBlurred: () => this.state.isBlurred,
         };
-        this.learnLinksContextValue = { links };
         this.userCongratsModalContextValue = {
             onClose: () => this.setState({ isUserCongratsModalOpened: false }),
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
-        this.globalLinksContextValue = { links, product };
 
         this.state = {
             shouldShowInviteModal: false,
@@ -316,6 +315,10 @@ export default class Layout extends React.PureComponent {
         }
     }
 
+    getGlobalLinksContextValue(t) {
+        return { links: getDefaultLearnLinks(t), product: getDefaultProductLinks(t) };
+    }
+
     render() {
         const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
 
@@ -353,52 +356,57 @@ export default class Layout extends React.PureComponent {
             );
 
         return (
-            <div
-                className={bem.block({
-                    'is-show-left-sidebar': this.props.isShowLeftSidebar,
-                })}
-            >
-                <InstallKeeperModal
-                    isOpened={shouldShowInviteModal}
-                    onClose={() => this.triggerInstallKeeperModalVisibility(false)}
-                />
-                <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
-                    <BlurContext.Provider value={this.blurContextValue}>
-                        <UserCongratsModalContext.Provider
-                            value={this.userCongratsModalContextValue}
-                        >
-                            <InstallKeeperModalContext.Provider
-                                value={{
-                                    onLogin: this.onWavesKeeperLogin,
-                                    onLogout: this.onWavesKeeperLogout,
-                                    isVisible: shouldShowInviteModal,
-                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
-                                }}
-                            >
-                                <ConfigContext.Provider value={configValue}>
-                                    <UserCongratsModal
-                                        isOpened={isUserCongratsModalOpened}
-                                        onClose={this.userCongratsModalContextValue.onClose}
-                                        onOpen={this.userCongratsModalContextValue.onOpen}
-                                    />
-                                    <div>
-                                        <Translation>
-                                            {(t, { i18n }) => (
+            <Translation>
+                {(t, { i18n }) => (
+                    <div
+                        className={bem.block({
+                            'is-show-left-sidebar': this.props.isShowLeftSidebar,
+                        })}
+                    >
+                        <InstallKeeperModal
+                            isOpened={shouldShowInviteModal}
+                            onClose={() => this.triggerInstallKeeperModalVisibility(false)}
+                        />
+                        <GlobalLinksContext.Provider value={this.getGlobalLinksContextValue(t)}>
+                            <BlurContext.Provider value={this.blurContextValue}>
+                                <UserCongratsModalContext.Provider
+                                    value={this.userCongratsModalContextValue}
+                                >
+                                    <InstallKeeperModalContext.Provider
+                                        value={{
+                                            onLogin: this.onWavesKeeperLogin,
+                                            onLogout: this.onWavesKeeperLogout,
+                                            isVisible: shouldShowInviteModal,
+                                            openModal: () =>
+                                                this.triggerInstallKeeperModalVisibility(true),
+                                        }}
+                                    >
+                                        <ConfigContext.Provider value={configValue}>
+                                            <UserCongratsModal
+                                                isOpened={isUserCongratsModalOpened}
+                                                onClose={this.userCongratsModalContextValue.onClose}
+                                                onOpen={this.userCongratsModalContextValue.onOpen}
+                                            />
+                                            <div>
                                                 <div>
-                                                    <button onClick={() => i18n.changeLanguage('en-us')}>Trigger To English</button>
-                                                    <button onClick={() => i18n.changeLanguage('ru-ru')}>Trigger To Russian</button>
+                                                    <a onClick={() => i18n.changeLanguage('en-us')}>
+                                                        🇬🇧
+                                                    </a>
+                                                    <a onClick={() => i18n.changeLanguage('ru-ru')}>
+                                                        🇷🇺
+                                                    </a>
                                                 </div>
-                                            )}
-                                        </Translation>
-                                    </div>
-                                    {children}
-                                </ConfigContext.Provider>
-                                <ModalWrapper />
-                            </InstallKeeperModalContext.Provider>
-                        </UserCongratsModalContext.Provider>
-                    </BlurContext.Provider>
-                </GlobalLinksContext.Provider>
-            </div>
+                                            </div>
+                                            {children}
+                                        </ConfigContext.Provider>
+                                        <ModalWrapper />
+                                    </InstallKeeperModalContext.Provider>
+                                </UserCongratsModalContext.Provider>
+                            </BlurContext.Provider>
+                        </GlobalLinksContext.Provider>
+                    </div>
+                )}
+            </Translation>
         );
     }
 

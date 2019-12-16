@@ -50,6 +50,10 @@
             font-size: .77em;
             line-height: 17px;
         }
+
+        & > :nth-child(2) {
+            justify-content: center;
+        }
     }
 
     &__percents {

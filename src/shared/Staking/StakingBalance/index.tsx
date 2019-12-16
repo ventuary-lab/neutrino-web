@@ -72,7 +72,7 @@ class StakingBalance extends React.Component<Props, State> {
                             onClose={() => this.triggerStakingShareModal(false)}
                             isDecrease={isStakingShareDecreaseSelected}
                         />
-                        <AccountBalanceTitle title={t('staking_dashboard.staking_balance')} amount={stakingBalance} />
+                        <AccountBalanceTitle title={t('staking_dashboard.staking_balance.label')} amount={stakingBalance} />
                         <div className={bem.element('main')}>
                             <div className={bem.element('action-buttons')}>
                                 <Button

@@ -41,6 +41,7 @@ class LandingPage extends React.Component<{}, State> {
         return (
             <div>
                 <Head>
+                    <title>Neutrino</title>
                     <link rel="icon" href={'static/images/favicon.ico'} />
                 </Head>
                 <div className="Layout">

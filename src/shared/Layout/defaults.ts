@@ -1,82 +1,68 @@
-import {
-    NEUTRINO_DASHBOARD_LABEL,
-    STAKING_DASHBOARD_LABEL,
-    TRANSFERS_LABEL,
-    INVOICES_LABEL,
-    BONDS_DASHBOARD_LABEL,
-    WHITEPAPER_LABEL,
-    EXCHANGE_LABEL,
-    FAQ_LABEL,
-    BLOG_LABEL,
-    DISCUSSIONS_LABEL,
-    GITHUB_LABEL,
-    SMART_CONTRACT_LABEL,
-    TERMS_OF_USE_LABEL,
-} from './constants';
+import { t as translateGetter } from 'locales/config';
 
-export const defaultProductLinks = [
+export const getDefaultProductLinks = (t = translateGetter) => [
     {
-        label: NEUTRINO_DASHBOARD_LABEL,
+        label: t('heading.neutrino_dashboard.label'),
         url: '/neutrino/usd-n',
     },
     {
-        label: STAKING_DASHBOARD_LABEL,
+        label: t('heading.staking_dashboard.label'),
         url: 'rpd/usd-n',
     },
     {
-        label: EXCHANGE_LABEL,
+        label: t('common.exchange.label'),
         url: `
             https://waves.exchange/dex?assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS
         `.trim(),
         target: '_blank',
     },
     {
-        label: TRANSFERS_LABEL,
+        label: t('heading.transfers.label'),
         url: '/transfers/usd-n',
     },
     {
-        label: INVOICES_LABEL,
+        label: t('heading.invoice_generator.label'),
         url: '/invoices/usd-n',
     },
     {
-        label: BONDS_DASHBOARD_LABEL,
+        label: t('heading.bonds_dashboard.label'),
         url: '/bonds/usd-n',
     },
 ];
 
-export const defaultLearnLinks = [
+export const getDefaultLearnLinks = (t = translateGetter) => [
     {
-        label: WHITEPAPER_LABEL,
+        label:  t('common.white_paper.label'),
         url: 'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit',
         target: '_blank',
     },
     {
-        label: FAQ_LABEL,
+        label: t('common.faq.label'),
         url: 'https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354',
         target: '_blank',
     },
     {
-        label: BLOG_LABEL,
+        label: t('common.blog.label'),
         url: 'https://twitter.com/neutrino_proto',
         target: '_blank',
     },
     {
-        label: DISCUSSIONS_LABEL,
+        label: t('common.discussions.label'),
         url: 'https://t.me/neutrino_protocol_group',
         target: '_blank',
     },
     {
-        label: GITHUB_LABEL,
+        label: t('common.github.label'),
         url: 'https://github.com/ventuary-lab',
         target: '_blank',
     },
     {
-        label: SMART_CONTRACT_LABEL,
+        label: t('common.smart_contract.label'),
         url: 'https://wavesexplorer.com/address/3PC9BfRwJWWiw9AREE2B3eWzCks3CYtg4yo/script',
         target: '_blank',
     },
     {
-        label: TERMS_OF_USE_LABEL,
+        label: t('common.terms_of_use.label'),
         url:
             'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
         target: '_blank',

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import {
-    defaultLearnLinks,
-    defaultProductLinks
+    getDefaultLearnLinks,
+    getDefaultProductLinks
 } from './defaults';
 
 import { Link } from 'ui/global/types';
@@ -25,6 +25,6 @@ export const InstallKeeperModalContext = createContext<{
 export const BlurContext = createContext({ blur: null, unblur: null, checkIsBlurred: null });
 
 export const GlobalLinksContext = createContext<{ links: Link[]; product: Link[] }>({
-    links: defaultLearnLinks,
-    product: defaultProductLinks,
+    links: getDefaultLearnLinks(),
+    product: getDefaultProductLinks(),
 });

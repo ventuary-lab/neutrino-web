@@ -1,11 +1,10 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router';
-import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import LandingPage from './LandingPage';
-import { defaultProductLinks } from 'shared/Layout/defaults';
+import { getDefaultProductLinks } from 'shared/Layout/defaults';
 import { getExchangeLink } from 'shared/Layout/helpers';
 import {
     INVOICES_LABEL,
@@ -117,7 +116,7 @@ export default {
             label: EXCHANGE_LABEL,
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
-            url: getExchangeLink(defaultProductLinks),
+            url: getExchangeLink(getDefaultProductLinks()),
         },
         [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
             exact: true,

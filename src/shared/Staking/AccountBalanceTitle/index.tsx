@@ -20,7 +20,6 @@ const AccountBalanceTitle: React.FC<Props> = ({ title, amount }) => (
                 <img src={usdnLogo} />
             </span>
             <span>{amount}</span>
-            {/* <span>USD-N</span> */}
             <span>{CurrencyEnum.USD_N.toUpperCase()}</span>
         </div>
     </div>
