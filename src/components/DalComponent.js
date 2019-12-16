@@ -125,6 +125,7 @@ export default class DalComponent {
         }
         // price = Math.round(price * 100) / 100;
         const contractPrice = Math.round(price * 100);
+
         let position = _get(
             await axios.get(`/api/v1/bonds/${pairName}/position`, {
                 params: { price: contractPrice },
