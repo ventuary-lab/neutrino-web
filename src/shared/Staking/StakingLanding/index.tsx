@@ -6,6 +6,7 @@ import LandingFooter from 'routes/LandingPage/LandingFooter';
 import LandingHeader from 'routes/LandingPage/LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
+import { omitThousandsNumber } from 'ui/global/helpers';
 
 import {
     NEUTRINO_FACEBOOK_LINK,
@@ -70,7 +71,10 @@ class StakingLanding extends React.Component<Props, State> {
         annualYield = _round(annualYield, 2);
         totalIssued = _round(totalIssued, 2);
         totalStaked = _round(totalStaked, 2);
+
         const stakedFromIssuedPercent = _round(1 - ((totalIssued - totalStaked) / totalIssued), 2) * 100;
+
+        const mapBigNumber = (num: number) => omitThousandsNumber(_round(num));
 
         return (
             <div className={bem.element('main')}>
@@ -83,7 +87,7 @@ class StakingLanding extends React.Component<Props, State> {
                 <div className={bem.element('yield-section')}>
                     <div className={bem.element('yield-section-item')}>
                         <span className={bem.element('yield-section-item-head')}>
-                            Earn staking rewards with us dollar neutrino stablecoin
+                            Earn staking rewards with US dollar neutrino stablecoin
                         </span>
                         <p className={bem.element('yield-section-item-body')}>
                             <span className="bold">Neutrino dApp</span> distributes staking rewards
@@ -108,7 +112,9 @@ class StakingLanding extends React.Component<Props, State> {
                                 This value comprises <span className="bold">6.7%</span> annual yield
                                 from leasing of Waves tokens on the smart contract and{' '}
                                 <span className="bold">~{stakedFromIssuedPercent}%</span> of total{' '}
-                                <span className="bold">USD-N</span> supply in staking: *[{totalStaked} from {totalIssued}]
+                                <span className="bold">USD-N</span> supply in staking: *[
+                                    {mapBigNumber(totalStaked)} from {mapBigNumber(totalIssued)}
+                                ]
                             </p>
                         </div>
                     </div>
