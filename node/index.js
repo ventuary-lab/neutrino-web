@@ -41,8 +41,10 @@ mainApp.start();
 expressApp.use(express.static(__dirname + '/../out'));
 expressApp.use(express.static(__dirname + '/../dist'));
 
+const staticPages = ['/', '/staking'];
+
 expressApp.get('/*', (req, res) => {
-    if (req.originalUrl === '/') {
+    if (staticPages.includes(req.originalUrl)) {
         res.sendFile('index.html', { root: __dirname + '/../out' });
     }
     if (req.originalUrl.indexOf('_next') !== -1) {
