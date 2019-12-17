@@ -42,12 +42,19 @@ expressApp.use(express.static(__dirname + '/../out'));
 expressApp.use(express.static(__dirname + '/../dist'));
 
 expressApp.get('/*', (req, res) => {
-    if (req.originalUrl === '/') {
-        res.sendFile('index.html', { root: __dirname + '/../out' });
-    }
+    const { '0': firstRoute } = req.params;
+
+    const staticRoutes = ['staking'];
+
     if (req.originalUrl.indexOf('_next') !== -1) {
         res.sendFile(req.originalUrl, { root: __dirname + '/../out' });
-    };
+    } else {
+        if (staticRoutes.includes(firstRoute)) {
+            res.sendFile(`${firstRoute}.html`, { root: __dirname + '/../out' });
 
-    res.sendFile('index.html', { root: __dirname + '/../dist' });
+            return;
+        }
+
+        res.sendFile('index.html', { root: __dirname + '/../dist' });
+    }
 });

@@ -1,4 +1,6 @@
 import React from 'react';
+import { round as _round } from 'lodash';
+import axios from 'axios';
 import { buildBem } from 'routes/LandingPage/helpers';
 import LandingFooter from 'routes/LandingPage/LandingFooter';
 import LandingHeader from 'routes/LandingPage/LandingHeader';
@@ -23,11 +25,37 @@ import './style.scss';
 const bem = buildBem('StakingLanding');
 
 interface Props {}
-// interface State {}
+interface State {
+    annualYield?: number;
+    totalIssued?: number;
+    totalStaked?: number;
+}
 
-class StakingLanding extends React.Component<Props> {
+class StakingLanding extends React.Component<Props, State> {
     constructor(props) {
         super(props);
+
+        this.state = {};
+    }
+
+    async loadExplorerData() {
+        const annualYieldRes = await axios.get<number>('/api/explorer/get_annual_yield');
+        const totalStaked = await axios.get<number>('/api/explorer/get_staked');
+        const totalIssued = await axios.get<number>('/api/explorer/get_total_issued');
+
+        try {
+            this.setState({
+                annualYield: annualYieldRes.data,
+                totalStaked: totalStaked.data,
+                totalIssued: totalIssued.data,
+            });
+        } catch (err) {
+            console.warn('Error occured on props fetch');
+        }
+    }
+
+    componentWillMount() {
+        this.loadExplorerData();
     }
 
     render() {
@@ -37,6 +65,12 @@ class StakingLanding extends React.Component<Props> {
             { icon: tgIcon, route: NEUTRINO_TELEGRAM_LINK },
             { icon: twitterIcon, route: NEUTRINO_TWITTER_LINK },
         ];
+
+        let { annualYield = 52.51, totalIssued = 100000, totalStaked = 10000 } = this.state;
+        annualYield = _round(annualYield, 2);
+        totalIssued = _round(totalIssued, 2);
+        totalStaked = _round(totalStaked, 2);
+        const stakedFromIssuedPercent = _round((totalIssued - totalStaked) / totalIssued, 2) * 100;
 
         return (
             <div className={bem.element('main')}>
@@ -56,13 +90,15 @@ class StakingLanding extends React.Component<Props> {
                             in <span className="bold">USD-N</span> tokens derived from Waves LPoS
                             decentralized monetary policy.
                         </p>
-                        <a className="base-button" href='/rpd/usd-n'>Start staking</a>
+                        <a className="base-button" href="/rpd/usd-n">
+                            Start staking
+                        </a>
                     </div>
                     <div className={bem.element('delim')}></div>
                     <div className={bem.element('yield-section-item', 'right')}>
                         <span className={bem.element('yield-section-romb')}>
                             <div></div>
-                            <span>52.51%</span>
+                            <span>{annualYield}%</span>
                         </span>
                         <div>
                             <span className={bem.element('yield-section-item-head')}>
@@ -71,29 +107,30 @@ class StakingLanding extends React.Component<Props> {
                             <p className={bem.element('yield-section-item-body')}>
                                 This value comprises <span className="bold">6.7%</span> annual yield
                                 from leasing of Waves tokens on the smart contract and{' '}
-                                <span className="bold">~10%</span> of total{' '}
-                                <span className="bold">USD-N</span> supply in staking: *[71k from
-                                659k]
+                                <span className="bold">~{stakedFromIssuedPercent}%</span> of total{' '}
+                                <span className="bold">USD-N</span> supply in staking: *[{totalStaked} from {totalIssued}]
                             </p>
                         </div>
                     </div>
                 </div>
-                <GlobalLinksContext.Consumer>
-                    {context => {
-                        const tosLink = context.links.find(
-                            link => link.label === TERMS_OF_USE_LABEL
-                        ).url;
-                        return (
-                            <div className="tos-link">
-                                <a href={tosLink} target="_blank">
-                                    {TERMS_OF_USE_LABEL}
-                                </a>
-                            </div>
-                        );
-                    }}
-                </GlobalLinksContext.Consumer>
-                <div>
-                    <LandingFooter links={socLinks} />
+                <div className={bem.element('footer-cont')}>
+                    <GlobalLinksContext.Consumer>
+                        {context => {
+                            const tosLink = context.links.find(
+                                link => link.label === TERMS_OF_USE_LABEL
+                            ).url;
+                            return (
+                                <div className="tos-link">
+                                    <a href={tosLink} target="_blank">
+                                        {TERMS_OF_USE_LABEL}
+                                    </a>
+                                </div>
+                            );
+                        }}
+                    </GlobalLinksContext.Consumer>
+                    <div>
+                        <LandingFooter links={socLinks} />
+                    </div>
                 </div>
             </div>
         );
