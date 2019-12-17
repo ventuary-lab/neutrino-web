@@ -70,7 +70,7 @@ class StakingLanding extends React.Component<Props, State> {
         annualYield = _round(annualYield, 2);
         totalIssued = _round(totalIssued, 2);
         totalStaked = _round(totalStaked, 2);
-        const stakedFromIssuedPercent = _round((totalIssued - totalStaked) / totalIssued, 2) * 100;
+        const stakedFromIssuedPercent = _round(1 - ((totalIssued - totalStaked) / totalIssued), 2) * 100;
 
         return (
             <div className={bem.element('main')}>
