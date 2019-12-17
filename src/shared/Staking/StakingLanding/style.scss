@@ -15,6 +15,9 @@ body {
         color: #000;
         font-size: 28.8px;
         background: linear-gradient(1deg, #F8F2FD -2.36%, #FFFBED 49.5%, #F4F9FF 84.02%);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
 
         & button {
             cursor: pointer;
@@ -49,8 +52,17 @@ body {
         }
     }
 
+    &__first-part {
+        
+        & > :first-child {
+            max-width: 1480px;
+            margin: auto;
+        }
+    }
+
     &__yield-section {
         font-size: 33px;
+        width: 100%;
         line-height: 38px;
         display: flex;
         flex-direction: row;
@@ -154,14 +166,20 @@ body {
             font-weight: bold;
             position: absolute;
             top: 44px;
-            left: -4px;
-            font-size: 42px;
+            font-size: 38px;
+            display: block;
+            width: 100%;
+            text-align: center;
         }
 
         @media screen and (max-width: 768px) {
             top: -40px;
             margin: auto;
         }
+    }
+
+    &__footer-cont {
+        height: 100%;
     }
 }
 
