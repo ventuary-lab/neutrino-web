@@ -87,7 +87,7 @@ class StakingLanding extends React.Component<Props, State> {
                 <div className={bem.element('yield-section')}>
                     <div className={bem.element('yield-section-item')}>
                         <span className={bem.element('yield-section-item-head')}>
-                            Earn staking rewards with us dollar neutrino stablecoin
+                            Earn staking rewards with US dollar neutrino stablecoin
                         </span>
                         <p className={bem.element('yield-section-item-body')}>
                             <span className="bold">Neutrino dApp</span> distributes staking rewards
