@@ -123,6 +123,7 @@ export default class Layout extends React.PureComponent {
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
         this.globalLinksContextValue = { links, product };
+        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
 
         this.state = {
             shouldShowInviteModal: false,
@@ -136,10 +137,12 @@ export default class Layout extends React.PureComponent {
             const isKeeperInstalled = Boolean(window.WavesKeeper && window.WavesKeeper.publicState);
 
             const { page } = this.props;
+            const { customViewRoutes } = this;
 
             if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                store.dispatch(goToPage(ROUTE_ROOT));
-                // window.location.href = '/';
+                if (customViewRoutes.indexOf(page.id) === -1) {
+                    store.dispatch(goToPage(ROUTE_ROOT));
+                }
 
                 this.setState({ shouldShowInviteModal: true });
                 onError();
@@ -331,7 +334,7 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
 
-        const customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+        const { customViewRoutes } = this;
 
         const children =
             customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (

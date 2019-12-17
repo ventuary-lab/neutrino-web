@@ -149,7 +149,7 @@ export default {
             exact: true,
             path: '/staking',
             component: StakingLanding,
-            label: __('Staking Landing'),
+            label: __('Staking Rewards'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         }

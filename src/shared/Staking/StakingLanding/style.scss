@@ -11,6 +11,7 @@ body {
     $bd-col: #E0CDB8;
     
     &__main {
+        min-height: 100vh;
         color: #000;
         font-size: 28.8px;
         background: linear-gradient(1deg, #F8F2FD -2.36%, #FFFBED 49.5%, #F4F9FF 84.02%);
@@ -100,12 +101,12 @@ body {
 
             &_right {
                 display: flex;
-                flex-direction: column-reverse;
+                flex-direction: column;
                 max-width: calc(100vw - 48px);
                 width: 100%;
                 margin: unset;
                 padding: 30px 0;
-                padding-bottom: 130px;
+                padding-top: 130px;
 
                 & > :nth-child(2) {
                     margin: unset;
@@ -158,6 +159,7 @@ body {
         }
 
         @media screen and (max-width: 768px) {
+            top: -40px;
             margin: auto;
         }
     }
