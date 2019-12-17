@@ -88,7 +88,7 @@ class StakingBalance extends React.Component<Props, State> {
                 </div>
                 <p className={bem.element('info')}>
                     Neutrino dApp will distribute staking rewards proportionately to users each week
-                    based on their daily average USD-N staking share from total amount of stacked
+                    based on their daily average USD-N staking share from the total amount of staked
                     USD-N. These rewards are coming from waves lPoS decentralized monetary policy.
                 </p>
             </div>
