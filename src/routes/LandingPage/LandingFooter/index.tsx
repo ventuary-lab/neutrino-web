@@ -2,7 +2,7 @@ import React from 'react';
 import { buildBem } from '../helpers';
 import { SocLink } from 'ui/global/types';
 
-import './style.scss';
+import './styles.scss';
 
 const bem = buildBem('LandingFooter');
 
