@@ -1,11 +1,11 @@
-import _get from 'lodash/get';
-import _isEqual from 'lodash/isEqual';
+import { get as _get, isEqual as _isEqual } from 'lodash';
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
 import { clientStorage } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
+import WebKeeper from './dal/WebKeeper';
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
@@ -23,6 +23,26 @@ export default class DalComponent {
         this.balance = new BalanceController({ dalRef: this });
         this.balance.onUpdate = this.login.bind(this);
 
+        // var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry', true, true);
+        // var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' })
+        // waves.setProvider(provider);
+        // this.wavesLib = new Waves(this.nodeUrl ? this.nodeUrl : undefined);
+        // this.wavesLib.setProvider(new Provider('http://localhost:8081/iframe-entry', true, true));
+        this.webKeeper = new WebKeeper({
+            nodeUrl: 'https://nodes.wavesplatform.com',
+            provider: 'http://localhost:8081/iframe-entry'
+        });
+        this.webKeeperProvided = true;
+        this.onWebKeeperReady = async () => {
+            try {
+                await this.webKeeper.lib.login();
+            
+                this.webKeeperProvided = true;
+            } catch (err) {
+                this.webKeeperProvided = false;
+            }
+        }
+
         this.keeper = new Keeper(this);
         this.keeper.onUpdate = this.login.bind(this);
 
@@ -37,6 +57,11 @@ export default class DalComponent {
      */
     async login() {
         // Start keeper listener, fetch balances
+        // if (this.webKeeperProvided) {
+        //     this.webKeeper.lib.login();
+        //     return;
+        // }
+
         const account = await this.keeper.getAccount();
         await this.keeper.start();
         await this.balance.start(account.address);
@@ -216,6 +241,16 @@ export default class DalComponent {
     }
 
     async transferFunds(pairName, paymentCurrency, address, amount) {
+        if (this.webKeeperProvided) {
+            await this.webKeeper.lib.login();
+            await this.webKeeper.lib.transfer({
+                amount: Number(amount),
+                recipient: address
+            }).broadcast();
+
+            return;
+        }
+
         await this.keeper.transfer(
             pairName,
             address,

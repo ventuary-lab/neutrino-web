@@ -223,7 +223,7 @@ export default class Keeper {
     async _buildTransferTransaction() {}
 
     async transfer(
-        pairName: string,
+        // pairName: string,
         recipient: string,
         amount: string,
         assetId: string,

@@ -45,14 +45,12 @@ import {
     InstallKeeperModalContext,
     BlurContext,
     UserCongratsModalContext,
-    LearnLinksContext,
     GlobalLinksContext,
 } from './context';
 import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
-
 import './Layout.scss';
 
 const bem = html.bem('Layout');
