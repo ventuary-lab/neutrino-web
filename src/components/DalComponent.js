@@ -30,7 +30,7 @@ export default class DalComponent {
         // this.wavesLib.setProvider(new Provider('http://localhost:8081/iframe-entry', true, true));
         this.webKeeper = new WebKeeper({
             nodeUrl: 'https://nodes.wavesplatform.com',
-            provider: 'http://neutrinokeeper.com:8081/iframe-entry'
+            provider: 'https://neutrinokeeper.com/iframe-entry'
         });
         // this.webKeeperProvided = true;
         // this.onWebKeeperReady = async () => {
