@@ -72,7 +72,7 @@ class StakingLanding extends React.Component<Props, State> {
         totalIssued = _round(totalIssued, 2);
         totalStaked = _round(totalStaked, 2);
 
-        const stakedFromIssuedPercent = _round(1 - ((totalIssued - totalStaked) / totalIssued), 2) * 100;
+        const stakedFromIssuedPercent = _round((1 - ((totalIssued - totalStaked) / totalIssued)) * 100, 2);
 
         const mapBigNumber = (num: number) => omitThousandsNumber(_round(num));
 
