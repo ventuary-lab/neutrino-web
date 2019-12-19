@@ -32,16 +32,16 @@ export default class DalComponent {
             nodeUrl: 'https://nodes.wavesplatform.com',
             provider: 'http://localhost:8081/iframe-entry'
         });
-        this.webKeeperProvided = true;
-        this.onWebKeeperReady = async () => {
-            try {
-                await this.webKeeper.lib.login();
+        // this.webKeeperProvided = true;
+        // this.onWebKeeperReady = async () => {
+        //     try {
+        //         await this.webKeeper.lib.login();
             
-                this.webKeeperProvided = true;
-            } catch (err) {
-                this.webKeeperProvided = false;
-            }
-        }
+        //         this.webKeeperProvided = true;
+        //     } catch (err) {
+        //         this.webKeeperProvided = false;
+        //     }
+        // }
 
         this.keeper = new Keeper(this);
         this.keeper.onUpdate = this.login.bind(this);
@@ -241,21 +241,20 @@ export default class DalComponent {
     }
 
     async transferFunds(pairName, paymentCurrency, address, amount) {
-        if (this.webKeeperProvided) {
-            await this.webKeeper.lib.login();
-            await this.webKeeper.lib.transfer({
-                amount: Number(amount),
-                recipient: address
-            }).broadcast();
+        await this.webKeeper.lib.login();
+        await this.webKeeper.lib.transfer({
+            amount: Number(amount),
+            assetId: 'WAVES',
+            recipient: address
+        }).broadcast();
+        await this.webKeeper.lib.logout();
+        // return;
 
-            return;
-        }
-
-        await this.keeper.transfer(
-            pairName,
-            address,
-            amount,
-            this.assets[paymentCurrency] || 'WAVES'
-        );
+        // await this.keeper.transfer(
+        //     pairName,
+        //     address,
+        //     amount,
+        //     this.assets[paymentCurrency] || 'WAVES'
+        // );
     }
 }
