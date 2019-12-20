@@ -24,11 +24,11 @@ body {
     background-color: #fff !important;
   }
 
-  &_is-show-left-sidebar {
-    #{$root}__center {
-      width: calc(100% - #{$left-width} - #{$right-width} - #{$gap * 2});
-    }
-  }
+  // &_is-show-left-sidebar {
+  //   #{$root}__center {
+  //     width: calc(100% - #{$left-width} - #{$right-width} - #{$gap * 2});
+  //   }
+  // }
 
   &__inner {
     flex-grow: 1;
@@ -87,6 +87,18 @@ body {
 
     &__center {
       width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+
+      & > * {
+        width: 100%;
+      }
     }
   }
 }

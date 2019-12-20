@@ -35,6 +35,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import {
     ROUTE_ROOT,
+    ROUTE_RPD,
     ROUTE_NEUTRINO_SHOW_TRANSFERS,
     ROUTE_NEUTRINO_SHOW_INVOICE_GEN,
     ROUTE_STAKING_LANDING_PAGE,
@@ -138,7 +139,7 @@ export default class Layout extends React.PureComponent {
             const { customViewRoutes } = this;
 
             if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                if (customViewRoutes.indexOf(page.id) === -1) {
+                if ([...customViewRoutes, ROUTE_RPD].indexOf(page.id) === -1) {
                     store.dispatch(goToPage(ROUTE_ROOT));
                 }
 
