@@ -15,7 +15,7 @@ class ExplorerApiService {
         try {
             const resp = await axios.get(route, { baseURL: this.apiUrl });
 
-            res.send(`${resp.data}`);
+            res.send(JSON.stringify(resp.data));
         } catch (err) {
             console.log({ err });
             res.send({ error: true, message: 'Not Found' });
