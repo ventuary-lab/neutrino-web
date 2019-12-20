@@ -1,5 +1,5 @@
 import React from 'react';
-import { buildBem } from '../helpers';
+import { buildBem } from 'ui/global/helpers';
 import { SocLink } from 'ui/global/types';
 
 import './style.scss';

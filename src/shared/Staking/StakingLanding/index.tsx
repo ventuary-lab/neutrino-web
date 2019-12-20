@@ -1,7 +1,7 @@
 import React from 'react';
 import { round as _round } from 'lodash';
 import axios from 'axios';
-import { buildBem } from 'routes/LandingPage/helpers';
+import { buildBem } from 'ui/global/helpers';
 import LandingFooter from 'routes/LandingPage/LandingFooter';
 import LandingHeader from 'routes/LandingPage/LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';

@@ -1,4 +1,5 @@
 import { t as translateGetter } from 'locales/config';
+import { STAKING_REWARDS_LABEL } from './constants'; // Temp
 
 export const getDefaultProductLinks = (t = translateGetter) => [
     {

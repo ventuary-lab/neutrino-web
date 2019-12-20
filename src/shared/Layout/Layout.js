@@ -124,7 +124,7 @@ export default class Layout extends React.PureComponent {
             onClose: () => this.setState({ isUserCongratsModalOpened: false }),
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
-        this.globalLinksContextValue = { links, product };
+        // this.globalLinksContextValue = { links, product };
         this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
 
         this.state = {
@@ -433,8 +433,7 @@ export default class Layout extends React.PureComponent {
                         </GlobalLinksContext.Provider>
                     </div>
                 )}
-            </Translation>
-            {/* <div
+                {/* <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
                     'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
@@ -471,6 +470,7 @@ export default class Layout extends React.PureComponent {
                     </BlurContext.Provider>
                 </GlobalLinksContext.Provider>
             </div> */}
+            </Translation>
         );
     }
 
