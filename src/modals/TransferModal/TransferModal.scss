@@ -52,4 +52,11 @@
   .ModalView__content {
     padding: 0;
   }
+
+  @media screen and (max-width: 768px) {
+    &__inner {
+      padding: 20px;
+      max-width: 80vw;
+    }
+  }
 }

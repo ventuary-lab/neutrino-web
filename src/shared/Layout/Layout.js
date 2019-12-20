@@ -138,8 +138,8 @@ export default class Layout extends React.PureComponent {
             const { page } = this.props;
             const { customViewRoutes } = this;
 
-            if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                if ([...customViewRoutes, ROUTE_RPD].indexOf(page.id) === -1) {
+            if (page.id !== ROUTE_ROOT) {
+                if ([...customViewRoutes, ROUTE_NEUTRINO_SHOW_TRANSFERS].indexOf(page.id) === -1) {
                     store.dispatch(goToPage(ROUTE_ROOT));
                 }
 
@@ -156,9 +156,9 @@ export default class Layout extends React.PureComponent {
     checkCurrentRoute() {
         const { page, user } = this.props;
 
-        if (document.body.offsetWidth < 600 || !user) {
-            return;
-        }
+        // if (document.body.offsetWidth < 600 || !user) {
+        //     return;
+        // }
 
         switch (page.id) {
             case ROUTE_NEUTRINO_SHOW_TRANSFERS:
@@ -171,7 +171,8 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
+        this.checkCurrentRoute();
+        // this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
     }
 
     async componentDidMount() {
