@@ -2,7 +2,7 @@
 @import '../../style/helpers/vars';
 
 body {
-  background-color: $color-layout-bg;
+  background-color: #fff;
   height: auto;
   min-height: 100%;
 }
@@ -13,11 +13,16 @@ body {
   $left-width: 64px;
   $right-width: 316px;
   $header-height: 65px;
+  background-color: $color-layout-bg;
 
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   height: 100%;
+
+  &_is_custom {
+    background-color: #fff !important;
+  }
 
   &_is-show-left-sidebar {
     #{$root}__center {

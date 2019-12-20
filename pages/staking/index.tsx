@@ -36,18 +36,17 @@ class LandingPage extends React.Component<{}, State> {
 
     render() {
         const { googleTagId } = this.state;
-        const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: true });
+        const DynamicPage = dynamic(() => import('shared/Staking/StakingLanding'), { ssr: true });
 
         return (
             <div>
                 <Head>
-                    <title>Neutrino</title>
                     <link rel="icon" href={'static/images/favicon.ico'} />
                     <title>Neutrino</title>
                 </Head>
                 <div className="Layout">
                     <div></div>
-                    <DynamicLandingPage />
+                    <DynamicPage />
                 </div>
                 <script
                     async

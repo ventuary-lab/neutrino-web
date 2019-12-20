@@ -19,7 +19,7 @@ import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
 import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
-import { ROUTE_ROOT } from 'routes';
+import { ROUTE_ROOT, ROUTE_STAKING_LANDING_PAGE } from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
 
 import './Header.scss';
@@ -97,6 +97,9 @@ export default class Header extends React.PureComponent {
         const showNav = !!this.props.navItems.find(item =>
             item.roles.includes(this.props.userRole)
         );
+        const navItems = this.props.navItems.filter(
+            item => [ROUTE_STAKING_LANDING_PAGE].indexOf(item.id) === -1
+        );
 
         return (
             <GlobalLinksContext.Consumer>
@@ -110,7 +113,7 @@ export default class Header extends React.PureComponent {
                                 <Form
                                     formId={FORM_ID}
                                     initialValues={{
-                                        section: this.props.navItems
+                                        section: navItems
                                             .map(item => item.id)
                                             .includes(this.props.currentItem.id)
                                             ? this.props.currentItem.id
@@ -119,7 +122,7 @@ export default class Header extends React.PureComponent {
                                 >
                                     <DropDownField
                                         attribute={'section'}
-                                        items={this.props.navItems}
+                                        items={navItems}
                                         onItemChange={item =>
                                             this.onNavItemChange(
                                                 item,

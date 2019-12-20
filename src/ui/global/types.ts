@@ -6,3 +6,5 @@ export interface Link extends React.HTMLProps<HTMLAnchorElement> {
     icon?: string;
     url?: string;
 }
+
+export type SocLink = { icon: string; route: string };

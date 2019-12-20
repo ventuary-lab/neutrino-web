@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BoundsDashboard from './BoundsDashboard';
 import LeadingDashboard from './LeadingDashboard';
+import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
 import { getDefaultProductLinks } from 'shared/Layout/defaults';
 import { getExchangeLink } from 'shared/Layout/helpers';
@@ -22,6 +23,7 @@ import UserRole from 'enums/UserRole';
 
 export const ROUTE_ROOT = 'root';
 export const ROUTE_LANDING_PAGE = 'landing';
+export const ROUTE_STAKING_LANDING_PAGE = 'staking';
 export const ROUTE_NEUTRINO = 'neutrino';
 export const ROUTE_NEUTRINO_SHOW_TRANSFERS = 'neutrino_show_transfers';
 export const ROUTE_NEUTRINO_SHOW_INVOICE_GEN = 'neutrino_show_invoice_gen';
@@ -142,5 +144,13 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
+        [ROUTE_STAKING_LANDING_PAGE]: {
+            exact: true,
+            path: '/staking',
+            component: StakingLanding,
+            label: __('Staking Rewards'),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+        }
     },
 };

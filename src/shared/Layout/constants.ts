@@ -14,3 +14,4 @@ export const DISCUSSIONS_LABEL = t('common.discussions.label');
 export const GITHUB_LABEL = t('common.github.label');
 export const SMART_CONTRACT_LABEL = t('common.smart_contract.label');
 export const TERMS_OF_USE_LABEL = t('common.terms_of_use.label');
+export const STAKING_REWARDS_LABEL = 'Staking Rewards';

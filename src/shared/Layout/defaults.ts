@@ -67,4 +67,8 @@ export const getDefaultLearnLinks = (t = translateGetter) => [
             'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
         target: '_blank',
     },
+    {
+        label: STAKING_REWARDS_LABEL,
+        url: '/staking'
+    }
 ];

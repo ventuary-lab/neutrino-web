@@ -5,6 +5,7 @@ export const onlyDecimalRegex2 = /^\d*\.?\d*$/;
 export const prettyPrintNumber = num => {
     let rs = num.toString();
     const regex = /(-?\d+)(\d{3})/;
+
     while (regex.test(rs)) {
         rs = rs.replace(regex, "$1,$2");
     }
@@ -23,4 +24,14 @@ export function buildBem(className: string) {
         },
         block: () => className
     }
+}
+
+export const omitThousandsNumber = num => {
+    let rs = num.toString();
+    const regex = /(-?\d+)(\d{3})/;
+
+    while (regex.test(rs)) {
+        rs = rs.replace(regex, "$1k");
+    }
+    return rs;
 }

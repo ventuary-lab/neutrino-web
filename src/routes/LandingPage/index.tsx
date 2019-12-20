@@ -2,9 +2,28 @@ import React from 'react';
 // import { html, dal } from 'components';
 import { buildBem } from 'ui/global/helpers';
 import LandingHeader from './LandingHeader';
+import LandingFooter from './LandingFooter';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 import { Translation } from 'react-i18next';
+import { SocLink } from 'ui/global/types';
+import {
+    NEUTRINO_FACEBOOK_LINK,
+    NEUTRINO_MEDIUM_LINK,
+    NEUTRINO_TELEGRAM_LINK,
+    NEUTRINO_TWITTER_LINK,
+} from 'ui/global/variables';
+
+// import backgroundImage from 'static/images/landing/background.png';
+// import usdnLogo from 'static/icons/usd-n.svg';
+// import boxesImage from 'static/images/landing/boxes.svg';
+// import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
+// import fbIcon from 'static/images/landing/socials/fb-icon.svg';
+// import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
+// import tgIcon from 'static/images/landing/socials/tg-icon.svg';
+// import twitterIcon from 'static/images/landing/socials/twitter.svg';
+import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
+
 const backgroundImage = 'static/images/landing/background.png';
 const usdnLogo = 'static/icons/usd-n_blue.svg';
 const boxesImage = 'static/images/landing/boxes.svg';
@@ -13,15 +32,12 @@ const fbIcon = 'static/images/landing/socials/fb-icon.svg';
 const mediumIcon = 'static/images/landing/socials/medium-icon.svg';
 const tgIcon = 'static/images/landing/socials/tg-icon.svg';
 const twitterIcon = 'static/images/landing/socials/twitter.svg';
-const poweredByWavesLogo = 'static/images/landing/powered_by_waves.svg';
 
 import './style.scss';
 
 const bem = buildBem('LandingPage');
 
 interface Props {}
-
-type SocLink = { icon: string; route: string };
 
 class LandingPage extends React.Component<Props> {
     constructor(props) {
@@ -31,16 +47,13 @@ class LandingPage extends React.Component<Props> {
     render() {
         const boxes = Array(2).fill(<img src={boxesImage} />);
         const coloredBoxes = Array(2).fill(<img src={coloredBoxesImage} />);
+
         const socLinks = [
-            { icon: fbIcon, route: 'https://www.facebook.com/Neutrino-Protocol-106351204088941/' },
-            { icon: mediumIcon, route: 'https://medium.com/@neutrinoteam' },
-            { icon: tgIcon, route: 'https://t.me/neutrino_protocol_group' },
-            { icon: twitterIcon, route: 'https://twitter.com/neutrino_proto' },
-        ].map((item: SocLink) => (
-            <a href={item.route} target="_blank">
-                <img src={item.icon} />
-            </a>
-        ));
+            { icon: fbIcon, route: NEUTRINO_FACEBOOK_LINK },
+            { icon: mediumIcon, route: NEUTRINO_MEDIUM_LINK },
+            { icon: tgIcon, route: NEUTRINO_TELEGRAM_LINK },
+            { icon: twitterIcon, route: NEUTRINO_TWITTER_LINK },
+        ];
 
         const getParagraph = t => (
             <p>
@@ -112,14 +125,50 @@ class LandingPage extends React.Component<Props> {
                                     );
                                 }}
                             </GlobalLinksContext.Consumer>
-                            <div className={bem.element('soc-links')}>{socLinks}</div>
+                            {/* <div className={bem.element('soc-links')}>{socLinks}</div>
                             <div className={bem.element('powered-by-waves')}>
                                 <img src={poweredByWavesLogo} alt="powered by waves" />
-                            </div>
+                            </div> */}
+                            <LandingFooter links={socLinks}/>
                         </div>
                     </div>
                 )}
             </Translation>
+                //     </div>
+                //     <div className={bem.element('action-buttons')}>
+                //         <a className="base-button" target="_blank" href="/neutrino/usd-n">
+                //             Get USD-N
+                //         </a>
+                //         <a
+                //             className="base-button alt"
+                //             target="_blank"
+                //             href="https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354"
+                //         >
+                //             How it works
+                //         </a>
+                //     </div>
+                //     <div className={bem.element('mobile-info')}>{paragraph}</div>
+                //     <GlobalLinksContext.Consumer>
+                //         {context => {
+                //             const tosLink = context.links.find(
+                //                 link => link.label === TERMS_OF_USE_LABEL
+                //             ).url;
+                //             return (
+                //                 <div className={bem.element('tos')}>
+                //                     <a href={tosLink} target="_blank">
+                //                         {TERMS_OF_USE_LABEL}
+                //                     </a>
+                //                 </div>
+                //             );
+                //         }}
+                //     </GlobalLinksContext.Consumer>
+                //     {/* <div className={bem.element('soc-links')}>{socLinks}</div>
+                //     <div className={bem.element('powered-by-waves')}>
+                //         <img src={poweredByWavesLogo} alt="powered by waves" />
+                //     </div> */}
+                //     <LandingFooter links={socLinks}/>
+                // </div>
+            // </div>
         );
     }
 }
