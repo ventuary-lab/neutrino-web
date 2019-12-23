@@ -182,7 +182,7 @@ class BuyBondsForm extends React.PureComponent {
             }
         });
 
-        return { position };
+        return position;
     }
 
     _onSubmit(values) {

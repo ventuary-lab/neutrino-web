@@ -123,7 +123,6 @@ export default class DalComponent {
         if (price <= 0 || price >= 1) {
             return;
         }
-
         const contractPrice = Math.round(price * 100);
 
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
