@@ -242,6 +242,7 @@ module.exports = class Router {
                     opened: [],
                     history: [],
                 };
+
                 for (let pairName of PairsEnum.getKeys()) {
                     for (let collectionName of [
                         CollectionEnum.BONDS_ORDERS,

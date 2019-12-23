@@ -28,7 +28,7 @@ module.exports = class BondsOrders extends BaseCollection {
         let orders = await this.getItemsAll();
         orders = orders
             .filter(order => order.discountPercent > 0 && order.discountPercent < 100)
-            .map(order => mapFieldsToNumber(order, ['height']));
+            .map(order => mapFieldsToNumber(order, ['height', 'price']));
 
         orders = _orderBy(orders, 'height', 'desc');
         return orders;
@@ -41,7 +41,7 @@ module.exports = class BondsOrders extends BaseCollection {
         let orders = await this.getItemsAll();
         orders = orders
             .filter(order => order.index !== null)
-            .map(order => mapFieldsToNumber(order, ['height']));
+            .map(order => mapFieldsToNumber(order, ['height', 'price']));
 
         orders = _orderBy(orders, 'index', 'asc');
         return orders;
