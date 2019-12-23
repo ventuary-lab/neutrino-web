@@ -119,19 +119,12 @@ export default class DalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, paymentCurrency, bondsAmount) {
+    async setBondOrder(pairName, price, paymentCurrency, bondsAmount, position) {
         if (price <= 0 || price >= 1) {
             return;
         }
 
         const contractPrice = Math.round(price * 100);
-
-        let position = _get(
-            await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice },
-            }),
-            'data.position'
-        );
 
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(

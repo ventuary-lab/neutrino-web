@@ -30,6 +30,9 @@ class BuyBondsForm extends React.PureComponent {
         neutrinoConfig: PropTypes.shape({
             price: PropTypes.number,
         }),
+        bondOrders: PropTypes.arrayOf([
+            PropTypes.object
+        ])
     };
 
     constructor() {
@@ -164,13 +167,32 @@ class BuyBondsForm extends React.PureComponent {
         );
     }
 
+    computeOrderBookPositionIndex (price) {
+        const { bondOrders } = this.props;
+
+        if (!bondOrders) {
+            return null;
+        }
+
+        let position = 0;
+
+        bondOrders.forEach(order => {
+            if (price <= order.price) {
+                position++;
+            }
+        });
+
+        return { position };
+    }
+
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
         // const wavesToUsdPrice = this.props.controlPrice;
+        const orderBookPositionIndex = this.computeOrderBookPositionIndex(Math.round(price * 100));
 
         return dal
-            .setBondOrder(this.props.pairName, price, this.props.quoteCurrency, values.bounds)
+            .setBondOrder(this.props.pairName, price, this.props.quoteCurrency, values.bounds, orderBookPositionIndex)
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console
             })

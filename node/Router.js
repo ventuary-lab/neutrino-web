@@ -198,19 +198,21 @@ module.exports = class Router {
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },
-            '/api/v1/bonds/:pairName/position': async request => {
-                const price = request.query.price;
-                const orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
-                    .getOpenedOrders();
-                let position = 0;
-                orders.forEach(order => {
-                    if (price <= order.price) {
-                        position++;
-                    }
-                });
-                return { position };
-            },
+            // '/api/v1/bonds/:pairName/position': async request => {
+            //     const price = request.query.price;
+            //     const orders = await this.app
+            //         .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
+            //         .getOpenedOrders();
+
+            //     let position = 0;
+
+            //     orders.forEach(order => {
+            //         if (price <= order.price) {
+            //             position++;
+            //         }
+            //     });
+            //     return { position };
+            // },
             // '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
             //     let orders = await this.app
             //         .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)

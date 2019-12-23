@@ -63,7 +63,8 @@ class BondsDashboard extends React.PureComponent {
     }
 
     render() {
-        if (!this.props.bondOrders || !this.props.liquidateOrders) {
+        const { bondOrders, liquidateOrders } = this.props;
+        if (!bondOrders || !liquidateOrders) {
             return null;
         }
 
@@ -89,6 +90,9 @@ class BondsDashboard extends React.PureComponent {
                                     id: 'buy',
                                     label: __('Buy'),
                                     content: BuyBondsForm,
+                                    contentProps: {
+                                        bondOrders
+                                    }
                                 },
                                 {
                                     id: 'liquidate',
