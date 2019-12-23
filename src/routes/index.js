@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router';
-import IndexPage from './IndexPage';
+// import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BondsDashboard from './BondsDashboard';
 import LeadingDashboard from './LeadingDashboard';
