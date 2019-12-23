@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router';
 import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
-import BoundsDashboard from './BoundsDashboard';
+import BondsDashboard from './BondsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
@@ -140,7 +140,7 @@ export default {
         [ROUTE_BONDS]: {
             exact: true,
             path: '/bonds/:currency',
-            component: BoundsDashboard,
+            component: BondsDashboard,
             label: __(BONDS_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,

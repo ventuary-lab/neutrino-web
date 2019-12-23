@@ -211,22 +211,22 @@ module.exports = class Router {
                 });
                 return { position };
             },
-            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-                let orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
-                    .getItemsAll();
-                const timestamps = await this.app.heightListener.getTimestamps(
-                    orders.map(order => order.height)
-                );
+            // '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
+            //     let orders = await this.app
+            //         .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
+            //         .getItemsAll();
+            //     const timestamps = await this.app.heightListener.getTimestamps(
+            //         orders.map(order => order.height)
+            //     );
 
-                orders = Utils.orderBy(orders, 'height', 'desc', {
-                    toNumber: true,
-                });
+            //     orders = Utils.orderBy(orders, 'height', 'desc', {
+            //         toNumber: true,
+            //     });
 
-                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
+            //     orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
-                return orders.map(order => [timestamps[order.height], order.discountPercent]);
-            },
+            //     return orders.map(order => [timestamps[order.height], order.discountPercent]);
+            // },
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)

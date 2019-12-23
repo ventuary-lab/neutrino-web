@@ -16,20 +16,13 @@ import { getControlPrice } from 'reducers/contract/selectors';
 
 import { dal, html, store } from 'components';
 
-import './BuyBoundsForm.scss';
+import './BuyBondsForm.scss';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 
-const bem = html.bem('BuyBoundsForm');
-const FORM_ID = 'BuyBoundsForm';
+const bem = html.bem('BuyBondsForm');
+const FORM_ID = 'BuyBondsForm';
 
-@connect(state => ({
-    pairName: getPairName(state),
-    baseCurrency: getBaseCurrency(state),
-    quoteCurrency: getQuoteCurrency(state),
-    formValues: getFormValues(FORM_ID)(state),
-    controlPrice: getControlPrice(state),
-}))
-export default class BuyBoundsForm extends React.PureComponent {
+class BuyBondsForm extends React.PureComponent {
     static propTypes = {
         pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
@@ -174,7 +167,7 @@ export default class BuyBoundsForm extends React.PureComponent {
     _onSubmit(values) {
         const price = 1 - values.discount / 100;
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
-        const wavesToUsdPrice = this.props.controlPrice;
+        // const wavesToUsdPrice = this.props.controlPrice;
 
         return dal
             .setBondOrder(this.props.pairName, price, this.props.quoteCurrency, values.bounds)
@@ -266,3 +259,11 @@ export default class BuyBoundsForm extends React.PureComponent {
         );
     };
 }
+
+export default connect(state => ({
+    pairName: getPairName(state),
+    baseCurrency: getBaseCurrency(state),
+    quoteCurrency: getQuoteCurrency(state),
+    formValues: getFormValues(FORM_ID)(state),
+    controlPrice: getControlPrice(state),
+}))(BuyBondsForm);
