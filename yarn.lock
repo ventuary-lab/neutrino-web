@@ -1583,7 +1583,7 @@
   dependencies:
     parchment "^1.1.2"
 
-"@types/ramda@^0.26.36":
+"@types/ramda@^0.26.36", "@types/ramda@^0.26.38":
   version "0.26.38"
   resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.38.tgz#9d19bb910bb15fc9a213402092e160cbbb5acc9b"
   integrity sha512-legQx15y72vedr5fkVTb5xZaI/OXMzJgZYbMxVL5r269sOg7fZIeitEOumcevMPOMZdqH4cMoL35VuU13TLvVA==
@@ -1640,36 +1640,40 @@
   dependencies:
     csstype "^2.6.4"
 
-"@waves.exchange/react-uikit@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.2.0.tgz#6ea856e3ebc871fd34e19fdeeac791b9175e7c3e"
-  integrity sha512-ettUEF9XFFFs0QOyW5tnrMkAif9YNn2+FUdPQVbsAXTl+ZVj21rKy2dp/C5JUr6nOnw4vd/1Osw4Q+b1mgTe7w==
+"@waves.exchange/react-uikit@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.3.6.tgz#90ba178dd7b9cece0b9a8271ee1bf6bc7dbc1652"
+  integrity sha512-QsUeF2wlV9M2fEM1PRHKn/QPwUQebOmL4ga9xiRQrDxDpGlwDZtpftdr0DllVYRPR1Ey/CxjLos0FULTgklCyA==
   dependencies:
     "@styled-system/css" "^5.1.4"
     "@types/ramda" "^0.26.36"
     "@waves/ts-lib-crypto" "^1.4.1"
     "@waves/ts-types" "^0.3.1"
+    copy-to-clipboard "^3.2.0"
     identity-img "^2.0.0"
     ramda "^0.26.1"
 
-"@waves.exchange/storage-provider@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/storage-provider/-/storage-provider-0.0.18.tgz#e6a2897e5b14e67f7508c48687725b00ac154fc5"
-  integrity sha512-+PNXMVCzbcS/rQMefYxHjndCxyICe3asodDnlAWfF/4DKlkgLnZTl0TfLVUrRhbEwtocs3OtN0pQM02lX31RWw==
+"@waves.exchange/storage-provider@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/storage-provider/-/storage-provider-0.0.22.tgz#0a1c222a7128d0cccd1d34565b7e97d1ee9e5652"
+  integrity sha512-z3GAOxyzqQQTmrrzT7pBo3gleicMu3KroU69lPc0/u+p/lXDj/je9OKq/IdTDrQvJ9WrBy1s7gbAiwMkDrKMHw==
   dependencies:
     "@emotion/core" "^10.0.22"
     "@emotion/styled" "^10.0.23"
+    "@styled-system/css" "^5.1.4"
     "@styled-system/should-forward-prop" "^5.1.4"
+    "@types/ramda" "^0.26.38"
     "@types/react" "^16.9.15"
     "@types/react-dom" "^16.9.4"
     "@types/styled-system" "^5.1.4"
-    "@waves.exchange/react-uikit" "^0.2.0"
+    "@waves.exchange/react-uikit" "^0.3.6"
     "@waves/bignumber" "0.0.1"
-    "@waves/blockchain-api" "0.0.7"
+    "@waves/node-api-js" "0.0.1"
     "@waves/ts-types" "^0.3.0"
     "@waves/waves-browser-bus" "^0.2.3"
     "@waves/waves-transactions" "^3.20.2"
     emotion-theming "^10.0.19"
+    ramda "^0.26.1"
     react "^16.12.0"
     react-dom "^16.12.0"
     styled-system "^5.1.4"
@@ -1691,16 +1695,6 @@
   dependencies:
     "@waves/ts-types" "^0.3.1"
 
-"@waves/blockchain-api@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@waves/blockchain-api/-/blockchain-api-0.0.7.tgz#7427a2132b18bea56bbc60da8e21f9f6f6941bab"
-  integrity sha512-OPkUmbUOUu613JTnCkSu1j5lDOzREaPA0SxWzD2nKGZQLn1+UNcN1dr/VE3yYPM61q1GEKR8+IPbdbo3Rlid0g==
-  dependencies:
-    "@types/node-fetch" "^2.5.4"
-    "@waves/bignumber" "0.0.1"
-    "@waves/ts-types" "^0.3.1"
-    node-fetch "^2.6.0"
-
 "@waves/marshall@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@waves/marshall/-/marshall-0.8.0.tgz#83c49d3c3cc60e1282732ce310f4bdb6641eb3cc"
@@ -1721,6 +1715,16 @@
     "@waves/bignumber" "0.0.1"
     "@waves/parse-json-bignumber" "^1.0.1"
     base64-js "^1.3.0"
+
+"@waves/node-api-js@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@waves/node-api-js/-/node-api-js-0.0.1.tgz#5857a3f2b37d92c818ca408d4055db15cc818b9b"
+  integrity sha512-MnfxSoS2j9bc3cGr9xuFjornyNQeTP/eGuF8GOGz4sAgD2gjTTXIewb4RFknKYujZxXDIHs+tG10OZ7kTRG8Rg==
+  dependencies:
+    "@types/node-fetch" "^2.5.4"
+    "@waves/bignumber" "0.0.1"
+    "@waves/ts-types" "^0.3.1"
+    node-fetch "^2.6.0"
 
 "@waves/parse-json-bignumber@^1.0.1":
   version "1.0.1"
@@ -3824,7 +3828,7 @@ copy-props@^2.0.1:
     each-props "^1.3.0"
     is-plain-object "^2.0.1"
 
-copy-to-clipboard@^3:
+copy-to-clipboard@^3, copy-to-clipboard@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.2.0.tgz#d2724a3ccbfed89706fac8a894872c979ac74467"
   integrity sha512-eOZERzvCmxS8HWzugj4Uxl8OJxa7T2k1Gi0X5qavwydHIfuSHq2dTD09LOg/XyGq4Zpb5IsR/2OJ5lbOegz78w==
