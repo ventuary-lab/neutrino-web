@@ -44,11 +44,11 @@ export default class DalComponent {
         // Keeper user
         const user = account
             ? {
-                  role: UserRole.REGISTERED,
-                  address: account.address,
-                  network: account.network,
-                  balances: this.balance.getBalances(),
-              }
+                role: UserRole.REGISTERED,
+                address: account.address,
+                network: account.network,
+                balances: this.balance.getBalances(),
+            }
             : null;
 
         // Mark logged
