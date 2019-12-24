@@ -109,14 +109,14 @@ export default class BoundsDashboard extends React.PureComponent {
                     </div>
                 </div>
                 <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('graph')}>
+                    {/* <div className={bem.element('graph')}>
                         <span className={bem.element('graph-title')}>
                             {__('Price')}
                         </span>
                         <MainChart
                             pairName={this.props.pairName}
                         />
-                    </div>
+                    </div> */}
                     <div className={bem.element('orders')}>
                         {this.props.userOrders && (
                             <Nav

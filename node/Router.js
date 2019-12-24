@@ -1,4 +1,4 @@
-const ExplorerApiService = require('./services/ExplorerApiService');
+const { default: ExplorerApiService } = require('./services/ExplorerApiService');
 const CollectionEnum = require('./enums/CollectionEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
@@ -9,13 +9,12 @@ const moment = require('moment');
 const { default: Utils } = require('./utils');
 const fs = require('fs');
 const path = require('path');
-// const Utils = require('./utils');
 
 module.exports = class Router {
     constructor(contractApp, expressApp) {
         this.app = contractApp;
         this.expressApp = expressApp;
-        this.explorerApiService = new ExplorerApiService.default();
+        this.explorerApiService = new ExplorerApiService();
 
         this._routes = {
             '/api/v1/init': async () => {

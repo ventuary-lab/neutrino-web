@@ -94,7 +94,7 @@ export default class TransferModal extends React.PureComponent {
             [
                 'address',
                 function(address) {
-                    if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+                    if (!/\w+/.test(address)) {
                         return __('Recipient address is not valid');
                     }
                 }
