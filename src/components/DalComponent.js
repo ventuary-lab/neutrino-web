@@ -5,7 +5,7 @@ import { clientStorage } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
-import WebKeeper from './services/WebKeeper';
+import WebKeeper from './services/webkeeper/WebKeeper';
 import WebKeeperService from './services/webkeeper/WebKeeperService';
 
 import axios from 'axios';
