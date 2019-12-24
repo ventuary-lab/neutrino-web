@@ -17,9 +17,7 @@ class WebKeeperService {
     }
 
     async transfer(address: string, amount: string | number, assetId: string) {
-        const { transfer } = this.ref.lib;
-
-        await transfer({
+        await this.ref.lib.transfer({
             amount,
             assetId,
             recipient: address,

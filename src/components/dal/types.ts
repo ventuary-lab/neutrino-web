@@ -1,3 +1,5 @@
+import { IInvoke } from '@waves/waves-js/dist/src/interface';
+
 export interface WavesKeeperAssetData {
     assetId: string;
     tokens: string;
@@ -12,13 +14,14 @@ export interface WavesKeeperCallData {
     function: string;
 }
 
-export interface WavesKeeperTransactionData {
-    fee?: WavesKeeperAssetData;
-    dApp?: string;
-    call?: WavesKeeperCallData;
-    payment?: WavesKeeperAssetData[];
-    recipient?: string;
-}
+export type WavesKeeperTransactionData = IInvoke;
+// export interface WavesKeeperTransactionData {
+//     fee?: WavesKeeperAssetData;
+//     dApp: string;
+//     call?: WavesKeeperCallData;
+//     payment?: WavesKeeperAssetData[];
+//     recipient?: string;
+// }
 
 export interface WavesKeeperTransaction {
     type: number;

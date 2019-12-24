@@ -1,8 +1,19 @@
-const { waitForTx, broadcast } = require('@waves/waves-transactions');
-const _isString = require('lodash/isString');
-const _isInteger = require('lodash/isInteger');
-const _isObject = require('lodash/isObject');
+import { waitForTx, broadcast } from '@waves/waves-transactions';
+import {
+    isString as _isString,
+    isInteger as _isInteger,
+    isObject as _isObject
+} from 'lodash';
+import WebKeeper from '../services/webkeeper/WebKeeper';
+import WebKeeperService from '../services/webkeeper/WebKeeperService';
 import { WavesKeeperTransaction, WavesKeeper, WavesKeeperAccount } from './types';
+
+const webKeeper = new WebKeeperService({
+    ref: new WebKeeper({
+        nodeUrl: 'https://nodes.wavesplatform.com',
+        provider: 'https://neutrinokeeper.com/iframe-entry'
+    })
+});
 
 declare global {
     interface Window {
@@ -110,12 +121,21 @@ export default class Keeper {
         paymentAmount: number,
         waitTx: boolean = true,
     ) {
-        const keeper = await this.getPlugin();
+        const isWebKeeperReady = await webKeeper.isReady();
         const dApp = this.dal.contracts[pairName][contractName];
+        const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount);
 
-        const result = await keeper.signAndPublishTransaction(
-            this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
-        );
+        if (isWebKeeperReady) {
+            webKeeper.ref.lib
+                .invoke(builtTransaction.data)
+                .broadcast();
+
+            return;
+        }
+
+        const keeper = await this.getPlugin();
+
+        const result = await keeper.signAndPublishTransaction(builtTransaction);
 
         if (result) {
             if (!waitTx) {
@@ -157,10 +177,7 @@ export default class Keeper {
         const transaction: WavesKeeperTransaction = {
             type: 16,
             data: {
-                fee: {
-                    assetId: 'WAVES',
-                    tokens: String(this.fee),
-                },
+                fee: 1,
                 dApp,
                 call: {
                     args: args.map(item => ({
@@ -174,7 +191,7 @@ export default class Keeper {
                     : [
                           {
                               assetId: paymentCurrency || 'WAVES',
-                              tokens: String(paymentAmount),
+                              amount: Number(paymentAmount),
                           },
                       ],
             },
@@ -229,6 +246,16 @@ export default class Keeper {
         assetId: string,
         fee: string
     ) {
+        const isWebKeeperReady = await webKeeper.isReady();
+
+        if (isWebKeeperReady) {
+            webKeeper.transfer(
+                recipient,
+                amount,
+                assetId
+            )
+            return;
+        }
 
         const tx = {
             type: 4,
@@ -237,6 +264,7 @@ export default class Keeper {
                     assetId: assetId,
                     tokens: amount,
                 },
+                // fee: 'WAVES',
                 fee: {
                     assetId: 'WAVES',
                     tokens: '0.001',
@@ -244,9 +272,18 @@ export default class Keeper {
                 recipient: recipient,
             },
         };
+        // const tx = this._buildTransaction(
+        //     dApp,
+
+        // )
+        // dApp: string,
+        // method: string,
+        // args: Array<number | string>,
+        // paymentCurrency,
+        // paymentAmount
 
         const keeper = await this.getPlugin();
+        // @ts-ignore
         const result = await keeper.signAndPublishTransaction(tx);
-        console.log({ result });
     }
 }

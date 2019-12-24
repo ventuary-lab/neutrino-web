@@ -5,10 +5,7 @@ import { clientStorage } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
-import WebKeeper from './services/webkeeper/WebKeeper';
-import WebKeeperService from './services/webkeeper/WebKeeperService';
 
-import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
@@ -24,15 +21,6 @@ export default class DalComponent {
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
         this.balance.onUpdate = this.login.bind(this);
-
-        this.webKeeperService = new WebKeeperService({
-            ref: new WebKeeper({
-                nodeUrl: 'https://nodes.wavesplatform.com',
-                provider: 'https://neutrinokeeper.com/iframe-entry'
-            })
-        });
-
-        
 
         this.keeper = new Keeper(this);
         this.keeper.onUpdate = this.login.bind(this);
@@ -224,9 +212,8 @@ export default class DalComponent {
     }
 
     async transferFunds(pairName, paymentCurrency, address, amount) {
-        const { transfer } = this.webKeeperService;
-
-        transfer(
+        await this.keeper.transfer(
+            pairName,
             address,
             amount,
             this.assets[paymentCurrency] || 'WAVES'
