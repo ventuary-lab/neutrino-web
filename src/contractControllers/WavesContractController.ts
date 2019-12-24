@@ -1,3 +1,5 @@
+import axios from 'axios';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import { store } from '../components';
 import { SET_CONTRACT_PRICE, SET_TOTAL_ISSUED } from '../actions/contract';
 
@@ -61,19 +63,9 @@ export class WavesContractDataController {
     }
 
     async _getTotalIssuedAmount(): Promise<number> | undefined {
-        if (!this.neutrinoAssetId) {
-            return;
-        }
+        const totalIssued = await axios.get<number>('/api/explorer/get_total_issued');
 
-        const { dAppAddress, neutrinoAssetId } = this;
-
-        const totalQtyRes = await this.getAssetDetails(neutrinoAssetId);
-        const neutrinoBalanceRes = await this.getAssetBalanceInfo(dAppAddress, neutrinoAssetId);
-
-        const { quantity } = totalQtyRes.data;
-        const { balance } = neutrinoBalanceRes.data;
-
-        return quantity - balance;
+        return totalIssued.data * CurrencyEnum.getContractPow(CurrencyEnum.USD_N);
     }
 
     async _getControlContractPrice(): Promise<number> {

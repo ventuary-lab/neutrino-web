@@ -10,14 +10,13 @@ class ExplorerApiService {
     }
 
     async handleRequest (req: Request, res: Response) {
-        const route = `/api/${req.params['0']}`;
+        const route = String(req.originalUrl).replace('/api/explorer', '/api');
 
         try {
             const resp = await axios.get(route, { baseURL: this.apiUrl });
 
-            res.send(`${resp.data}`);
+            res.send(JSON.stringify(resp.data));
         } catch (err) {
-            console.log({ err });
             res.send({ error: true, message: 'Not Found' });
         }
     }
