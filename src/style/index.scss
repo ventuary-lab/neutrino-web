@@ -44,3 +44,20 @@ code {
     /* Support for IE. */
     font-feature-settings: 'liga';
 }
+
+.tos-link {
+    padding: 12px 0;
+    font-style: normal;
+    font-weight: 300;
+    font-size: .41em;
+    line-height: 24px;
+    text-align: center;
+
+    & a {
+        color: #000000;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

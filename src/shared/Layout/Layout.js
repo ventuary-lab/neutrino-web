@@ -33,7 +33,12 @@ import BlockedApp from 'shared/BlockedApp';
 import MessageModal from 'modals/MessageModal';
 import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
-import { ROUTE_ROOT, ROUTE_NEUTRINO_SHOW_TRANSFERS, ROUTE_NEUTRINO_SHOW_INVOICE_GEN } from 'routes';
+import {
+    ROUTE_ROOT,
+    ROUTE_NEUTRINO_SHOW_TRANSFERS,
+    ROUTE_NEUTRINO_SHOW_INVOICE_GEN,
+    ROUTE_STAKING_LANDING_PAGE,
+} from 'routes';
 import { getPairName } from 'reducers/currency';
 import {
     ConfigContext,
@@ -43,10 +48,7 @@ import {
     LearnLinksContext,
     GlobalLinksContext,
 } from './context';
-import {
-    defaultLearnLinks as links,
-    defaultProductLinks as product,
-} from './defaults';
+import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
@@ -121,6 +123,7 @@ export default class Layout extends React.PureComponent {
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
         this.globalLinksContextValue = { links, product };
+        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
 
         this.state = {
             shouldShowInviteModal: false,
@@ -134,10 +137,12 @@ export default class Layout extends React.PureComponent {
             const isKeeperInstalled = Boolean(window.WavesKeeper && window.WavesKeeper.publicState);
 
             const { page } = this.props;
+            const { customViewRoutes } = this;
 
             if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                store.dispatch(goToPage(ROUTE_ROOT));
-                // window.location.href = '/';
+                if (customViewRoutes.indexOf(page.id) === -1) {
+                    store.dispatch(goToPage(ROUTE_ROOT));
+                }
 
                 this.setState({ shouldShowInviteModal: true });
                 onError();
@@ -171,13 +176,13 @@ export default class Layout extends React.PureComponent {
     }
 
     async componentDidMount() {
-        this.attachResizeObserver();
+        // this.attachResizeObserver();
         this.openWarningModal();
 
         this.handleQueryParams();
     }
 
-    handleQueryParams () {
+    handleQueryParams() {
         const url = new URL(window.location.href);
 
         if (url.searchParams.get('openKeeperWarning')) {
@@ -329,8 +334,10 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
 
+        const { customViewRoutes } = this;
+
         const children =
-            this.props.currentItem.id !== ROUTE_ROOT ? (
+            customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
                 <div className={bem.element('inner')}>
                     {this.props.isShowLeftSidebar && (
                         <aside className={bem.element('left')}>
@@ -358,6 +365,7 @@ export default class Layout extends React.PureComponent {
             <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
+                    'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
                 })}
             >
                 <InstallKeeperModal

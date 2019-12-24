@@ -12,6 +12,7 @@ import {
     GITHUB_LABEL,
     SMART_CONTRACT_LABEL,
     TERMS_OF_USE_LABEL,
+    STAKING_REWARDS_LABEL,
 } from './constants';
 
 export const defaultProductLinks = [
@@ -81,4 +82,8 @@ export const defaultLearnLinks = [
             'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
         target: '_blank',
     },
+    {
+        label: STAKING_REWARDS_LABEL,
+        url: '/staking'
+    }
 ];
