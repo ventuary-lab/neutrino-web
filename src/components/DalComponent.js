@@ -60,11 +60,11 @@ export default class DalComponent {
         // Keeper user
         const user = account
             ? {
-                  role: UserRole.REGISTERED,
-                  address: account.address,
-                  network: account.network,
-                  balances: this.balance.getBalances(),
-              }
+                role: UserRole.REGISTERED,
+                address: account.address,
+                network: account.network,
+                balances: this.balance.getBalances(),
+            }
             : null;
 
         // Mark logged
@@ -135,19 +135,11 @@ export default class DalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, paymentCurrency, bondsAmount) {
+    async setBondOrder(pairName, price, paymentCurrency, bondsAmount, position) {
         if (price <= 0 || price >= 1) {
             return;
         }
-        // price = Math.round(price * 100) / 100;
         const contractPrice = Math.round(price * 100);
-
-        let position = _get(
-            await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice },
-            }),
-            'data.position'
-        );
 
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(

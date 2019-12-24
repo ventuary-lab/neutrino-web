@@ -198,35 +198,37 @@ module.exports = class Router {
                 prices = prices[request.params.pairName].slice(-1 * request.params.period);
                 return meanBy(prices, 'price');
             },
-            '/api/v1/bonds/:pairName/position': async request => {
-                const price = request.query.price;
-                const orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
-                    .getOpenedOrders();
-                let position = 0;
-                orders.forEach(order => {
-                    if (price <= order.price) {
-                        position++;
-                    }
-                });
-                return { position };
-            },
-            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-                let orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
-                    .getItemsAll();
-                const timestamps = await this.app.heightListener.getTimestamps(
-                    orders.map(order => order.height)
-                );
+            // '/api/v1/bonds/:pairName/position': async request => {
+            //     const price = request.query.price;
+            //     const orders = await this.app
+            //         .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
+            //         .getOpenedOrders();
 
-                orders = Utils.orderBy(orders, 'height', 'desc', {
-                    toNumber: true,
-                });
+            //     let position = 0;
 
-                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
+            //     orders.forEach(order => {
+            //         if (price <= order.price) {
+            //             position++;
+            //         }
+            //     });
+            //     return { position };
+            // },
+            // '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
+            //     let orders = await this.app
+            //         .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
+            //         .getItemsAll();
+            //     const timestamps = await this.app.heightListener.getTimestamps(
+            //         orders.map(order => order.height)
+            //     );
 
-                return orders.map(order => [timestamps[order.height], order.discountPercent]);
-            },
+            //     orders = Utils.orderBy(orders, 'height', 'desc', {
+            //         toNumber: true,
+            //     });
+
+            //     orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
+
+            //     return orders.map(order => [timestamps[order.height], order.discountPercent]);
+            // },
             '/api/v1/bonds/:pairName/orders': async request => {
                 return await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
@@ -242,6 +244,7 @@ module.exports = class Router {
                     opened: [],
                     history: [],
                 };
+
                 for (let pairName of PairsEnum.getKeys()) {
                     for (let collectionName of [
                         CollectionEnum.BONDS_ORDERS,
