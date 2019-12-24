@@ -1,7 +1,6 @@
 import Waves from '@waves/waves-js';
 import Provider from '@waves.exchange/storage-provider';
 
-
 class WebKeeper {
     lib!: Waves;
     provider!: Provider;

@@ -5,7 +5,9 @@ import { clientStorage } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import Keeper from './dal/Keeper';
-import WebKeeper from './dal/WebKeeper';
+import WebKeeper from './services/WebKeeper';
+import WebKeeperService from './services/webkeeper/WebKeeperService';
+
 import axios from 'axios';
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
@@ -23,25 +25,14 @@ export default class DalComponent {
         this.balance = new BalanceController({ dalRef: this });
         this.balance.onUpdate = this.login.bind(this);
 
-        // var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry', true, true);
-        // var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' })
-        // waves.setProvider(provider);
-        // this.wavesLib = new Waves(this.nodeUrl ? this.nodeUrl : undefined);
-        // this.wavesLib.setProvider(new Provider('http://localhost:8081/iframe-entry', true, true));
-        this.webKeeper = new WebKeeper({
-            nodeUrl: 'https://nodes.wavesplatform.com',
-            provider: 'https://neutrinokeeper.com/iframe-entry'
+        this.webKeeperService = new WebKeeperService({
+            ref: new WebKeeper({
+                nodeUrl: 'https://nodes.wavesplatform.com',
+                provider: 'https://neutrinokeeper.com/iframe-entry'
+            })
         });
-        // this.webKeeperProvided = true;
-        // this.onWebKeeperReady = async () => {
-        //     try {
-        //         await this.webKeeper.lib.login();
-            
-        //         this.webKeeperProvided = true;
-        //     } catch (err) {
-        //         this.webKeeperProvided = false;
-        //     }
-        // }
+
+        
 
         this.keeper = new Keeper(this);
         this.keeper.onUpdate = this.login.bind(this);
@@ -241,20 +232,12 @@ export default class DalComponent {
     }
 
     async transferFunds(pairName, paymentCurrency, address, amount) {
-        await this.webKeeper.lib.login();
-        await this.webKeeper.lib.transfer({
-            amount: Number(amount),
-            assetId: 'WAVES',
-            recipient: address
-        }).broadcast();
-        await this.webKeeper.lib.logout();
-        // return;
+        const { transfer } = this.webKeeperService;
 
-        // await this.keeper.transfer(
-        //     pairName,
-        //     address,
-        //     amount,
-        //     this.assets[paymentCurrency] || 'WAVES'
-        // );
+        transfer(
+            address,
+            amount,
+            this.assets[paymentCurrency] || 'WAVES'
+        );
     }
 }

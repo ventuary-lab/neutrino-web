@@ -64,16 +64,16 @@ export default class CreateInvoiceModal extends React.PureComponent {
     }
 
     _onSubmit(address, amount) {
-        validate(address, [
-            [
-                'address',
-                function(address) {
-                    if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
-                        return __('Recipient address is not valid');
-                    }
-                },
-            ],
-        ]);
+        // validate(address, [
+        //     [
+        //         'address',
+        //         function(address) {
+        //             if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+        //                 return __('Recipient address is not valid');
+        //             }
+        //         },
+        //     ],
+        // ]);
 
         const link = `${location.origin}/${ROUTE_NEUTRINO}/${CurrencyEnum.USD_N}?invoiceAddress=${address}&invoiceAmount=${amount}&invoiceCurrency=${this.props.currency}`;
 
