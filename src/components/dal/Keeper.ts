@@ -21,6 +21,11 @@ declare global {
     }
 }
 
+enum LoginType {
+    WEB_KEEPER = 0,
+    KEEPER
+}
+
 export default class Keeper {
     dal: any;
     onUpdate: (address: string) => void | null;
@@ -29,6 +34,7 @@ export default class Keeper {
     _address: string | null;
     _pageStart: number;
     _checkerInterval: number;
+    _loginType: LoginType;
 
     constructor(dal: any) {
         this.dal = dal;
@@ -39,10 +45,27 @@ export default class Keeper {
         this._address = null;
         this._pageStart = Date.now();
         this._checkerInterval = null;
+        this._loginType = LoginType.KEEPER;
 
         this._buildTransaction = this._buildTransaction.bind(this);
 
         this._addressChecker = this._addressChecker.bind(this);
+    }
+
+    setWebKeeperAuthType () {
+        this._loginType = LoginType.WEB_KEEPER;
+    }
+
+    setKeeperAuthType () {
+        this._loginType = LoginType.KEEPER;
+    }
+
+    isAuthByWebKeeper () {
+        return this._loginType === LoginType.WEB_KEEPER;
+    }
+
+    isAuthByKeeper () {
+        return this._loginType === LoginType.KEEPER;
     }
 
     async start() {
@@ -125,7 +148,7 @@ export default class Keeper {
         const dApp = this.dal.contracts[pairName][contractName];
         const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount);
 
-        if (isWebKeeperReady) {
+        if (isWebKeeperReady && this.isAuthByWebKeeper()) {
             webKeeper.ref.lib
                 .invoke(builtTransaction.data)
                 .broadcast();
@@ -237,6 +260,14 @@ export default class Keeper {
         }
     }
 
+    async loginByWebKeeper () {
+        const isWebKeeperReady = await webKeeper.isReady();
+
+        if (isWebKeeperReady) {
+            await webKeeper.ref.lib.login();
+        }
+    }
+
     async _buildTransferTransaction() {}
 
     async transfer(
@@ -248,7 +279,7 @@ export default class Keeper {
     ) {
         const isWebKeeperReady = await webKeeper.isReady();
 
-        if (isWebKeeperReady) {
+        if (isWebKeeperReady && this.isAuthByWebKeeper()) {
             webKeeper.transfer(
                 recipient,
                 amount,

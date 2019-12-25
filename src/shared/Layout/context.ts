@@ -1,8 +1,5 @@
 import { createContext } from 'react';
-import {
-    defaultLearnLinks,
-    defaultProductLinks
-} from './defaults';
+import { defaultLearnLinks, defaultProductLinks } from './defaults';
 
 import { Link } from 'ui/global/types';
 
@@ -28,3 +25,5 @@ export const GlobalLinksContext = createContext<{ links: Link[]; product: Link[]
     links: defaultLearnLinks,
     product: defaultProductLinks,
 });
+
+export const LoginTypeModalContext = createContext({ onClose: null, onOpen: null });

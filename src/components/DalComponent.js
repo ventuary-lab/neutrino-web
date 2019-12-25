@@ -30,6 +30,11 @@ export default class DalComponent {
         }
     }
 
+    async loginByWebKeeper () {
+        this.keeper.setWebKeeperAuthType();
+        this.keeper.loginByWebKeeper();
+    }
+
     /**
      * Auth current user and return it data
      * @returns {Promise}
@@ -41,6 +46,7 @@ export default class DalComponent {
         //     return;
         // }
 
+        this.keeper.setKeeperAuthType();
         const account = await this.keeper.getAccount();
         await this.keeper.start();
         await this.balance.start(account.address);

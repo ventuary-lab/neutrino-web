@@ -44,6 +44,7 @@ import { getPairName } from 'reducers/currency';
 import {
     ConfigContext,
     InstallKeeperModalContext,
+    LoginTypeModalContext,
     BlurContext,
     UserCongratsModalContext,
     GlobalLinksContext,
@@ -52,6 +53,7 @@ import { defaultLearnLinks as links, defaultProductLinks as product } from './de
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
+import LoginTypeModal from 'modals/LoginTypeModal';
 import './Layout.scss';
 
 const bem = html.bem('Layout');
@@ -122,11 +124,16 @@ export default class Layout extends React.PureComponent {
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
         this.globalLinksContextValue = { links, product };
+        this.loginTypeContextValue = {
+            onClose: () => this.setState({ isLoginTypeModalOpened: false }),
+            onOpen: () => this.setState({ isLoginTypeModalOpened: true }),
+        };
         this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
 
         this.state = {
             shouldShowInviteModal: false,
             isUserCongratsModalOpened: false,
+            isLoginTypeModalOpened: false,
             isBlurred: false,
         };
     }
@@ -180,6 +187,8 @@ export default class Layout extends React.PureComponent {
         this.openWarningModal();
 
         this.handleQueryParams();
+
+        this.loginTypeContextValue.onOpen();
     }
 
     handleQueryParams() {
@@ -332,7 +341,12 @@ export default class Layout extends React.PureComponent {
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
+        const {
+            shouldShowInviteModal,
+            isBlurred,
+            isUserCongratsModalOpened,
+            isLoginTypeModalOpened,
+        } = this.state;
 
         const { customViewRoutes } = this;
 
@@ -365,7 +379,7 @@ export default class Layout extends React.PureComponent {
             <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
-                    'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
+                    is_custom: customViewRoutes.indexOf(this.props.currentItem.id) !== -1,
                 })}
             >
                 <InstallKeeperModal
@@ -374,28 +388,36 @@ export default class Layout extends React.PureComponent {
                 />
                 <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
                     <BlurContext.Provider value={this.blurContextValue}>
-                        <UserCongratsModalContext.Provider
-                            value={this.userCongratsModalContextValue}
-                        >
-                            <InstallKeeperModalContext.Provider
-                                value={{
-                                    onLogin: this.onWavesKeeperLogin,
-                                    onLogout: this.onWavesKeeperLogout,
-                                    isVisible: shouldShowInviteModal,
-                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
-                                }}
+                        <LoginTypeModalContext.Provider value={this.loginTypeContextValue}>
+                            <UserCongratsModalContext.Provider
+                                value={this.userCongratsModalContextValue}
                             >
-                                <ConfigContext.Provider value={configValue}>
-                                    <UserCongratsModal
-                                        isOpened={isUserCongratsModalOpened}
-                                        onClose={this.userCongratsModalContextValue.onClose}
-                                        onOpen={this.userCongratsModalContextValue.onOpen}
-                                    />
-                                    {children}
-                                </ConfigContext.Provider>
-                                <ModalWrapper />
-                            </InstallKeeperModalContext.Provider>
-                        </UserCongratsModalContext.Provider>
+                                <InstallKeeperModalContext.Provider
+                                    value={{
+                                        onLogin: this.onWavesKeeperLogin,
+                                        onLogout: this.onWavesKeeperLogout,
+                                        isVisible: shouldShowInviteModal,
+                                        openModal: () =>
+                                            this.triggerInstallKeeperModalVisibility(true),
+                                    }}
+                                >
+                                    <ConfigContext.Provider value={configValue}>
+                                        <LoginTypeModal
+                                            isOpened={isLoginTypeModalOpened}
+                                            onClose={this.loginTypeContextValue.onClose}
+                                            onOpen={this.loginTypeContextValue.onOpen}
+                                        />
+                                        <UserCongratsModal
+                                            isOpened={isUserCongratsModalOpened}
+                                            onClose={this.userCongratsModalContextValue.onClose}
+                                            onOpen={this.userCongratsModalContextValue.onOpen}
+                                        />
+                                        {children}
+                                    </ConfigContext.Provider>
+                                    <ModalWrapper />
+                                </InstallKeeperModalContext.Provider>
+                            </UserCongratsModalContext.Provider>
+                        </LoginTypeModalContext.Provider>
                     </BlurContext.Provider>
                 </GlobalLinksContext.Provider>
             </div>
