@@ -21,4 +21,17 @@
   &__submit-button {
     margin-top: 24px;
   }
+
+  &__form {
+    position: relative;
+  }
+
+  &__roi {
+    position: absolute;
+    top: 35px;
+    right: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #00F59E;
+  }
 }

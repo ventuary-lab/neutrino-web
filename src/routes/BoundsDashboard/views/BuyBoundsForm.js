@@ -10,9 +10,9 @@ import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
-// import CollectionEnum from 'enums/CollectionEnum';
 import MessageModal from 'modals/MessageModal';
 import { getControlPrice } from 'reducers/contract/selectors';
+import { computeROI } from 'reducers/contract/helpers';
 
 import { dal, html, store } from 'components';
 
@@ -43,45 +43,105 @@ export default class BuyBoundsForm extends React.PureComponent {
         super(...arguments);
 
         this._onSubmit = this._onSubmit.bind(this);
+        this.validateDecimal = this.validateDecimal.bind(this);
         this._isProgramChange = false;
 
         this.state = {
             isButtonDisabled: false,
+            roi: 30
         };
+
+        this.isBoundsFieldFocused = false;
     }
 
-    componentWillReceiveProps(nextProps) {
-        const isChangePriceAmount =
-            _get(this.props.formValues, 'price') !== _get(nextProps.formValues, 'price');
-        const isChangeBoundsAmount =
-            _get(this.props.formValues, 'bounds') !== _get(nextProps.formValues, 'bounds');
-        const isChangeNeutrinoAmount =
-            _get(this.props.formValues, 'neutrino') !== _get(nextProps.formValues, 'neutrino');
+    computeHint() {
+        // _get(this.props, 'formValues.bounds')
+        // ? `${_round(
+        //     _get(this.props, 'formValues.neutrino') * (controlPrice / 100),
+        //     2
+        // )} USDN`
+        // : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
+        // // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
+        // ' '
+    }
 
-        //price validate
-        if (_get(this.props.formValues, 'price')) {
-            const nextPrice = _get(nextProps.formValues, 'price');
+    updatePriceField() {
+        let { controlPrice } = this.props;
+        let bondsAmount = _get(this.props.formValues, 'bounds');
+        let wavesRawAmount = _get(this.props.formValues, 'waves');
+        let priceRaw = _get(this.props.formValues, 'price');
 
-            if (nextPrice && nextPrice < 0) {
-                store.dispatch(change(FORM_ID, 'price', Math.abs(nextPrice)));
-            }
-
-            if (nextPrice && nextPrice.length > 2) {
-                store.dispatch(change(FORM_ID, 'price', Math.round(nextPrice*100)/100));
-            }
+        if (!bondsAmount || !controlPrice || !wavesRawAmount) {
+            return;
         }
 
-        if (isChangePriceAmount || isChangeBoundsAmount || isChangeNeutrinoAmount) {
-            this._refreshAmount(nextProps, false, isChangeBoundsAmount || isChangePriceAmount);
-        } else {
-            this._isProgramChange = false;
+        const decimalControlPrice = _round(controlPrice / 100, 2);
+
+        bondsAmount = Number(bondsAmount);
+        wavesRawAmount = Number(wavesRawAmount) * decimalControlPrice;
+
+        const roi = _round(computeROI(bondsAmount, wavesRawAmount) * 100, 2);
+
+        if (priceRaw !== decimalControlPrice) {
+            store.dispatch(change(FORM_ID, 'price', decimalControlPrice));
+        }
+
+        console.log({ roi, bondsAmount, wavesRawAmount,decimalControlPrice, controlPrice });
+
+        if (roi !== Infinity && roi !== -Infinity) {
+            this.setState({ roi });
         }
     }
 
+    componentDidUpdate(prevProps) {
+        this.updatePriceField();
+
+        this.updateInputFields(prevProps);
+        this.initFormValues(prevProps);
+    }
+
+    updateInputFields(prevProps) {
+        const { isBoundsFieldFocused } = this;
+        const { controlPrice } = this.props;
+
+        let bondsAmount = _get(this.props.formValues, 'bounds');
+        let wavesRawAmount = _get(this.props.formValues, 'waves');
+
+        const decimalControlPrice = controlPrice / 100;
+
+        if (isBoundsFieldFocused && bondsAmount !== _get(prevProps.formValues, 'bounds')) {
+            store.dispatch(change(FORM_ID, 'waves',
+                _round(bondsAmount / decimalControlPrice, 2)
+            ));
+            this.updatePriceField();
+        } else if (!isBoundsFieldFocused && wavesRawAmount && wavesRawAmount !== _get(prevProps.formValues, 'waves')) {
+            store.dispatch(change(FORM_ID, 'bounds', 
+                _round(wavesRawAmount * decimalControlPrice, 2)
+            ));
+            this.updatePriceField();
+        }
+    }
+
+    validateDecimal () {
+        // return /^[0-9]+([,.][0-9]+)?$/g.test(value);
+    }
+
+    initFormValues(prevProps) {
+        const { controlPrice } = this.props;
+        let bondsAmount = _get(this.props.formValues, 'bounds');
+        let wavesRawAmount = _get(this.props.formValues, 'waves');
+
+        // /^[0-9]+([,.][0-9]+)?$/g;
+
+        if (!bondsAmount && !wavesRawAmount && controlPrice) {
+            store.dispatch(change(FORM_ID, 'price', _round(controlPrice / 100, 2)));
+            store.dispatch(change(FORM_ID, 'waves', 10));
+            store.dispatch(change(FORM_ID, 'bounds', _round(10 - (controlPrice / 100), 2)));
+        }
+    }
 
     render() {
-        const { isButtonDisabled } = this.state;
-        const { controlPrice } = this.props;
+        const { isButtonDisabled, roi } = this.state;
 
         return (
             <div className={bem.block()}>
@@ -89,18 +149,15 @@ export default class BuyBoundsForm extends React.PureComponent {
                     className={bem.element('form')}
                     formId={FORM_ID}
                     initialValues={{
-                        price: 0.01,
                     }}
                     onSubmit={this._onSubmit}
                     validators={[
                         [['price', 'bounds'], 'required'],
-                        [['bounds'], 'integer'],
                     ]}
                 >
                     <NumberField
                         min={0}
                         step="any"
-                        required
                         inputProps={{
                             autoComplete: 'off',
                         }}
@@ -110,41 +167,39 @@ export default class BuyBoundsForm extends React.PureComponent {
                         inners={{
                             label: '',
                         }}
+                        disabled
                     />
+                    <span className={bem.element('roi')}>
+                        {roi}%
+                    </span>
                     <NumberField
-                        min={0}
+                        min={1}
                         step="any"
                         required
                         inputProps={{
                             autoComplete: 'off',
+                            onFocus: () => (this.isBoundsFieldFocused = true),
                         }}
-                        label={__('Amount')}
+                        label={__('Receive')}
                         layoutClassName={bem.element('input', 'with-hint')}
                         attribute={'bounds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
                             icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
                         }}
-                        hint={
-                            _get(this.props, 'formValues.bounds')
-                                ? `${_round(
-                                    _get(this.props, 'formValues.neutrino') * (controlPrice / 100),
-                                    2
-                                )} USDN`
-                                : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
-                                // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
-                                ' '
-                        }
+                        hint={this.computeHint()}
                     />
                     <NumberField
-                        min={10}
+                        min={1}
+                        required
                         step="any"
                         inputProps={{
                             autoComplete: 'off',
+                            onFocus: () => (this.isBoundsFieldFocused = false),
                         }}
-                        label={__('Total')}
+                        label={__('Send')}
                         layoutClassName={bem.element('input')}
-                        attribute={'neutrino'}
+                        attribute={'waves'}
                         inners={{
                             label: CurrencyEnum.getLabel(CurrencyEnum.WAVES),
                             icon: CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
@@ -166,10 +221,15 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     _onSubmit(values) {
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
-        const wavesToUsdPrice = this.props.controlPrice;
+        // const wavesToUsdPrice = this.props.controlPrice;
 
         return dal
-            .setBondOrder(this.props.pairName, values.price, this.props.quoteCurrency, values.bounds)
+            .setBondOrder(
+                this.props.pairName,
+                values.price,
+                this.props.quoteCurrency,
+                values.bounds
+            )
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console
             })
@@ -194,67 +254,4 @@ export default class BuyBoundsForm extends React.PureComponent {
                 }
             });
     }
-
-    _refreshAmount(props, isRefreshPrice = false, isRefreshNeutrino = false) {
-        props = props || this.props;
-
-        if (this._isProgramChange) {
-            this._isProgramChange = false;
-            return;
-        }
-        this._isProgramChange = true;
-
-        const price = _get(props, 'formValues.price');
-        const bounds = _get(props.formValues, 'bounds');
-        const neutrino = _get(props.formValues, 'neutrino');
-
-        let amount;
-
-        if (isRefreshPrice) {
-            amount = this._parseAmount(((bounds - neutrino) * 100) / bounds);
-
-            store.dispatch(change(FORM_ID, 'price', this._toFixedSpecial(amount, 2)));
-        } else {
-            amount = this._parseAmount(
-                isRefreshNeutrino
-                    ? (bounds * price)
-                    : (neutrino / price)
-            );
-
-            store.dispatch(
-                change(
-                    FORM_ID,
-                    isRefreshNeutrino ? 'neutrino' : 'bounds',
-                    this._toFixedSpecial(amount, 2)
-                )
-            );
-        }
-    }
-
-    _parseAmount(amount) {
-        if (typeof amount === 'undefined') {
-            return 0;
-        }
-        let result = typeof amount === 'string' ? amount.replace(/,/, '.') : amount;
-        return !isNaN(parseFloat(result)) && isFinite(result) ? result : 0;
-    }
-
-    _toFixedSpecial = function(num, n) {
-        const str = num.toFixed(n);
-        if (str.indexOf('e+') < 0) {
-            return str;
-        }
-
-        // if number is in scientific notation, pick (b)ase and (p)ower
-        return (
-            str
-                .replace('.', '')
-                .split('e+')
-                .reduce(function(p, b) {
-                    return p + new Array(b - p.length + 2).join(0);
-                }) +
-            '.' +
-            new Array(n + 1).join(0)
-        );
-    };
 }
