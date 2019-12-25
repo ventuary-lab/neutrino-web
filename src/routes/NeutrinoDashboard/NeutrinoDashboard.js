@@ -377,13 +377,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     : CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
                             }}
                         />
-                        {/* <div className={bem.element('input-hint')}>
-                            {__('Max {currency} available to generate: 10k {currency}', {
-                                currency: this.state.isWavesLeft
-                                    ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                    : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
-                            })}
-                        </div> */}
                     </div>
                 </div>
 
