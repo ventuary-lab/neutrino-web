@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _orderBy from 'lodash-es/orderBy';
-import _isInteger from 'lodash-es/isInteger';
+// import _orderBy from 'lodash-es/orderBy';
+// import _isInteger from 'lodash-es/isInteger';
+import {
+    orderBy as _orderBy,
+    round as _round,
+    isInteger as _isInteger
+} from 'lodash';
 import moment from 'moment';
 
 import { dal, html } from 'components';
@@ -11,7 +16,7 @@ import OrderSchema from 'types/OrderSchema';
 import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import OrderStatusEnum from 'enums/OrderStatusEnum';
+// import OrderStatusEnum from 'enums/OrderStatusEnum';
 import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrdersTable');
@@ -56,10 +61,12 @@ export default class OrdersTable extends React.PureComponent {
                 get: item => item.price ? item.price / 100 : '--'
             },
             roi: {
-                label: 'ROI'
+                label: 'ROI',
+                get: (order, controlPrice) => order.amount && order.total ? _round(computeROI(order.amount, order.total / (controlPrice / 100)), 2) : '--'
             },
             waves: {
-                label: 'WAVES'
+                label: 'WAVES',
+                get: (item, controlPrice) => item.restAmount && controlPrice ? _round(item.restAmount / (controlPrice / 100), 2) : '--'
             },
             status: {
                 label: 'Status',
@@ -109,6 +116,8 @@ export default class OrdersTable extends React.PureComponent {
                     <th>{fieldTable.usdnb.label}</th>
                     <th>{fieldTable.price.label}</th>
                     <th>{fieldTable.status.label}</th>
+                    <th>{fieldTable.roi.label}</th>
+                    <th>{fieldTable.waves.label}</th>
                     {!isHistory && (
                         <th className={bem.element('cancel-column')}>
                             <div
@@ -132,9 +141,7 @@ export default class OrdersTable extends React.PureComponent {
     }
 
     getTableBody() {
-
-        console.log({ items });
-
+        const { controlPrice } = this.props;
         // 
         const items = [{
             height: "1837728",
@@ -174,7 +181,8 @@ export default class OrdersTable extends React.PureComponent {
                                 <td>{fieldTable.usdnb.get(item)}</td>
                                 <td>{fieldTable.price.get(item)}</td>
                                 <td>{fieldTable.status.get(item)}</td>
-                                {/* <td>{OrderStatusEnum.getLabel(item.status)}</td> */}
+                                <td>{fieldTable.roi.get(item, controlPrice)}</td>
+                                <td>{fieldTable.waves.get(item, controlPrice)}</td>
                                 {!this.props.isHistory && (
                                     <td className={bem.element('cancel-column')}>
                                         <div

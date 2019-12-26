@@ -128,6 +128,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                         contentProps: {
                                             items: this.props.userOrders.opened,
                                             pairName: this.props.pairName,
+                                            controlPrice
                                         },
                                     },
                                     {

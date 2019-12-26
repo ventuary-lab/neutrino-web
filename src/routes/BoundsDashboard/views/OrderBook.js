@@ -26,8 +26,38 @@ export default class OrderBook extends React.PureComponent {
         formTab: PropTypes.oneOf(['buy', 'liquidate']),
     };
 
+    constructor(props) {
+        super(props);
+
+        this.computeROIForField = this.computeROIForField.bind(this);
+    }
+
+    computeROIForField(groupedField) {
+        const { controlPrice } = this.props;
+
+        return _round(
+            _sum(
+                groupedField.map(order => {
+                    return computeROI(order.amount, order.total / (controlPrice / 100));
+                })
+            ),
+            2
+        );
+    }
+
+    // getCommonROI (orders) {
+    //     const ROIs = orders.map(order => this.computeROIForField(order));
+    //     return Math.max(...ROIs);
+    // }
+
+    // getCommonPrice (orders) {
+
+    // }
+
     render() {
-        if (!this.props.orders) {
+        const { orders } = this.props;
+
+        if (!orders) {
             return null;
         }
 
@@ -36,28 +66,32 @@ export default class OrderBook extends React.PureComponent {
                 {this.props.formTab === 'buy' && (
                     <>
                         <div className={bem.element('header-column', 'upper-case')}>
-                            {_round(_sum(this.props.orders.map(order => order.restAmount)))}
+                            {_round(_sum(orders.map(order => order.restAmount)))}
                         </div>
                         <div className={bem.element('header-column')}>
-                            -1
+                            {/* {this.getCommonROI(orders)} */}-
                         </div>
-                        <div className={bem.element('header-column')}>—</div>
+                        <div className={bem.element('header-column')}>
+                            {/* {this.getCommonPrice(orders)} */}-
+                        </div>
                         <div className={bem.element('header-column', 'upper-case')}>
-                            {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
+                            {_round(_sum(orders.map(order => order.restTotal)), 2)}
                         </div>
                     </>
                 )}
                 {this.props.formTab === 'liquidate' && (
                     <>
                         <div className={bem.element('header-column', 'upper-case')}>
-                            {_round(_sum(this.props.orders.map(order => order.restTotal)))}
+                            {_round(_sum(orders.map(order => order.restTotal)))}
                         </div>
                     </>
                 )}
             </div>
         );
-        const groupedOrders = _groupBy(this.props.orders, 'price');
+        const groupedOrders = _groupBy(orders, 'price');
         const sortedKeys = _orderBy(Object.keys(groupedOrders), null, 'desc');
+
+        console.log({ groupedOrders, sortedKeys });
 
         return (
             <div className={bem.block()}>
@@ -97,9 +131,11 @@ export default class OrderBook extends React.PureComponent {
                                     )}
                                 </div>
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {/* {computeROI()} */}-
+                                    {this.computeROIForField(groupedOrders[price])}
                                 </div>
-                                <div className={bem.element('body-column')}>{price / 100}</div>
+                                <div className={bem.element('body-column')}>
+                                    {_round(price / 100, 2)}
+                                </div>
                                 <div className={bem.element('body-column', 'bg')}>
                                     {_round(
                                         _sum(groupedOrders[price].map(order => order.restTotal)),
