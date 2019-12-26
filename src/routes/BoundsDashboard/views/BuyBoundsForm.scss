@@ -30,8 +30,16 @@
     position: absolute;
     top: 35px;
     right: 15px;
-    font-size: 1.2em;
-    font-weight: bold;
     color: #00F59E;
+
+    & > :nth-child(1) {
+      padding-right: 4px;
+      color: #fff;
+    }
+
+    & > :nth-child(2) {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
   }
 }

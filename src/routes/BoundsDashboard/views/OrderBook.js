@@ -38,7 +38,7 @@ export default class OrderBook extends React.PureComponent {
         return _round(
             _sum(
                 groupedField.map(order => {
-                    return computeROI(order.amount, order.total / (controlPrice / 100));
+                    return computeROI(order.amount, order.total, controlPrice);
                 })
             ),
             2

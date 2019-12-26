@@ -76,7 +76,7 @@ export default class BuyBoundsForm extends React.PureComponent {
         wavesRawAmount = Number(wavesRawAmount);
         controlPrice = _round(controlPrice / 100, 2);
 
-        const roi = _round(computeROI(bondsAmount, wavesRawAmount * controlPrice) * 100, 2);
+        const roi = _round(computeROI(bondsAmount, wavesRawAmount, controlPrice), 2);
         const dependPrice = _round(bondsAmount / wavesRawAmount, 2);
 
         console.log({ roi, dependPrice, bondsAmount, wavesRawAmount });
@@ -127,7 +127,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                         disabled
                     />
                     <span className={bem.element('roi')}>
-                        Exp. ROI {roi}%
+                        <span>Exp. ROI</span>
+                        <span>{roi}%</span>
                     </span>
                     <NumberField
                         min={1}
