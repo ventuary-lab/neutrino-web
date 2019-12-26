@@ -43,11 +43,12 @@ export default class BuyBoundsForm extends React.PureComponent {
         super(...arguments);
 
         this._onSubmit = this._onSubmit.bind(this);
-        this.validateDecimal = this.validateDecimal.bind(this);
+        this.computeHint = this.computeHint.bind(this);
         this._isProgramChange = false;
 
         this.state = {
             isButtonDisabled: false,
+            dependPrice: undefined,
             roi: 30
         };
 
@@ -55,93 +56,47 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     computeHint() {
-        // _get(this.props, 'formValues.bounds')
-        // ? `${_round(
-        //     _get(this.props, 'formValues.neutrino') * (controlPrice / 100),
-        //     2
-        // )} USDN`
-        // : // ? `${_round(_get(this.props, 'formValues.bounds') / _get(this.props, 'neutrinoConfig.price'), 2)} WAVES`
-        // // ? `${_round(_get(this.props, 'formValues.bounds') / 2, 2)} WAVES`
-        // ' '
+        let bondsAmount = _get(this.props.formValues, 'bounds');
+
+        if (bondsAmount) {
+            return `${bondsAmount} ${CurrencyEnum.USD_N.toUpperCase()}`;
+        }
     }
 
     updatePriceField() {
-        let { controlPrice } = this.props;
+        // let { controlPrice } = this.props;
         let bondsAmount = _get(this.props.formValues, 'bounds');
         let wavesRawAmount = _get(this.props.formValues, 'waves');
-        let priceRaw = _get(this.props.formValues, 'price');
 
-        if (!bondsAmount || !controlPrice || !wavesRawAmount) {
+        if (!bondsAmount || !wavesRawAmount) {
             return;
         }
 
-        const decimalControlPrice = _round(controlPrice / 100, 2);
+        // const decimalControlPrice = _round(controlPrice / 100, 2);
 
         bondsAmount = Number(bondsAmount);
-        wavesRawAmount = Number(wavesRawAmount) * decimalControlPrice;
+        wavesRawAmount = Number(wavesRawAmount);
 
         const roi = _round(computeROI(bondsAmount, wavesRawAmount) * 100, 2);
+        const dependPrice = _round(bondsAmount / wavesRawAmount, 2);
 
-        if (priceRaw !== decimalControlPrice) {
-            store.dispatch(change(FORM_ID, 'price', decimalControlPrice));
-        }
+        console.log({ roi, dependPrice, bondsAmount, wavesRawAmount });
 
-        console.log({ roi, bondsAmount, wavesRawAmount,decimalControlPrice, controlPrice });
-
-        if (roi !== Infinity && roi !== -Infinity) {
-            this.setState({ roi });
-        }
+        this.setState(prevProps => ({
+            dependPrice,
+            roi: roi !== Infinity && roi !== -Infinity && roi || prevProps.roi
+        }));
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         this.updatePriceField();
 
-        this.updateInputFields(prevProps);
-        this.initFormValues(prevProps);
-    }
-
-    updateInputFields(prevProps) {
-        const { isBoundsFieldFocused } = this;
-        const { controlPrice } = this.props;
-
-        let bondsAmount = _get(this.props.formValues, 'bounds');
-        let wavesRawAmount = _get(this.props.formValues, 'waves');
-
-        const decimalControlPrice = controlPrice / 100;
-
-        if (isBoundsFieldFocused && bondsAmount !== _get(prevProps.formValues, 'bounds')) {
-            store.dispatch(change(FORM_ID, 'waves',
-                _round(bondsAmount / decimalControlPrice, 2)
-            ));
-            this.updatePriceField();
-        } else if (!isBoundsFieldFocused && wavesRawAmount && wavesRawAmount !== _get(prevProps.formValues, 'waves')) {
-            store.dispatch(change(FORM_ID, 'bounds', 
-                _round(wavesRawAmount * decimalControlPrice, 2)
-            ));
-            this.updatePriceField();
-        }
-    }
-
-    validateDecimal () {
-        // return /^[0-9]+([,.][0-9]+)?$/g.test(value);
-    }
-
-    initFormValues(prevProps) {
-        const { controlPrice } = this.props;
-        let bondsAmount = _get(this.props.formValues, 'bounds');
-        let wavesRawAmount = _get(this.props.formValues, 'waves');
-
-        // /^[0-9]+([,.][0-9]+)?$/g;
-
-        if (!bondsAmount && !wavesRawAmount && controlPrice) {
-            store.dispatch(change(FORM_ID, 'price', _round(controlPrice / 100, 2)));
-            store.dispatch(change(FORM_ID, 'waves', 10));
-            store.dispatch(change(FORM_ID, 'bounds', _round(10 - (controlPrice / 100), 2)));
-        }
+        // this.updateInputFields(prevProps);
+        // this.initFormValues(prevProps);
     }
 
     render() {
-        const { isButtonDisabled, roi } = this.state;
+        const { isButtonDisabled, roi, dependPrice } = this.state;
 
         return (
             <div className={bem.block()}>
@@ -149,10 +104,12 @@ export default class BuyBoundsForm extends React.PureComponent {
                     className={bem.element('form')}
                     formId={FORM_ID}
                     initialValues={{
+                        waves: 10,
+                        bounds: 10
                     }}
                     onSubmit={this._onSubmit}
                     validators={[
-                        [['price', 'bounds'], 'required'],
+                        [['bounds'], 'required'],
                     ]}
                 >
                     <NumberField
@@ -160,6 +117,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         step="any"
                         inputProps={{
                             autoComplete: 'off',
+                            value: dependPrice
                         }}
                         label={__('Price')}
                         layoutClassName={bem.element('input')}
