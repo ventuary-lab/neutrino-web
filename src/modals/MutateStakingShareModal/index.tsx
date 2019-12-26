@@ -102,7 +102,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         await dal.unlockNeutrino(
             this.props.pairName,
             CurrencyEnum.USD_N,
-            Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
+            Math.round(Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N))
         );
 
         this.props.onClose();
