@@ -74,7 +74,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
         bondsAmount = Number(bondsAmount);
         wavesRawAmount = Number(wavesRawAmount);
-        controlPrice = _round(controlPrice / 100, 2);
+        // controlPrice = _round(controlPrice / 100, 2);
 
         const roi = _round(computeROI(bondsAmount, wavesRawAmount, controlPrice), 2);
         const dependPrice = _round(bondsAmount / wavesRawAmount, 2);

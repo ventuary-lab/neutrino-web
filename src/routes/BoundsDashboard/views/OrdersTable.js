@@ -63,7 +63,7 @@ export default class OrdersTable extends React.PureComponent {
             roi: {
                 label: 'ROI',
                 get: (order, controlPrice) => {
-                    console.log({ restAmount: order.restAmount }, order.restAmount, order.total, controlPrice)
+                    console.log({ restAmount: order.restAmount }, order.restAmount, order.total, controlPrice, computeROI(order.restAmount, order.total, controlPrice));
                     return order.amount && order.total ? _round(computeROI(order.restAmount, order.total, controlPrice), 2) : '--'
                 }
             },
