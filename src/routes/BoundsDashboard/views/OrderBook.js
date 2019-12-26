@@ -12,6 +12,8 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
 import { Utils } from 'ui/global/utils';
+// import OrderStatusEnum from 'enums/OrderStatusEnum';
+import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
 
@@ -36,7 +38,9 @@ export default class OrderBook extends React.PureComponent {
                         <div className={bem.element('header-column', 'upper-case')}>
                             {_round(_sum(this.props.orders.map(order => order.restAmount)))}
                         </div>
-                        <div className={bem.element('header-column')}>—1</div>
+                        <div className={bem.element('header-column')}>
+                            -1
+                        </div>
                         <div className={bem.element('header-column')}>—</div>
                         <div className={bem.element('header-column', 'upper-case')}>
                             {_round(_sum(this.props.orders.map(order => order.restTotal)), 2)}
@@ -92,7 +96,9 @@ export default class OrderBook extends React.PureComponent {
                                         _sum(groupedOrders[price].map(order => order.restAmount))
                                     )}
                                 </div>
-                                <div className={bem.element('body-column', 'bg')}>?</div>
+                                <div className={bem.element('body-column', 'bg')}>
+                                    {/* {computeROI()} */}-
+                                </div>
                                 <div className={bem.element('body-column')}>{price / 100}</div>
                                 <div className={bem.element('body-column', 'bg')}>
                                     {_round(

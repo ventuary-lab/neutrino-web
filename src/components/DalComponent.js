@@ -120,9 +120,9 @@ export default class DalComponent {
     }
 
     async setBondOrder(pairName, price, paymentCurrency, bondsAmount) {
-        if (price <= 0 || price >= 100) {
-            return;
-        }
+        // if (price <= 0 || price >= 100) {
+        //     return;
+        // }
         // price = Math.round(price * 100) / 100;
         const contractPrice = Math.round(price * 100);
 
@@ -132,6 +132,8 @@ export default class DalComponent {
             }),
             'data.position'
         );
+
+        console.log(...arguments)
 
         if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(

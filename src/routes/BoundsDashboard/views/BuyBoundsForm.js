@@ -11,7 +11,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
-import { getControlPrice } from 'reducers/contract/selectors';
+// import { getControlPrice } from 'reducers/contract/selectors';
 import { computeROI } from 'reducers/contract/helpers';
 
 import { dal, html, store } from 'components';
@@ -27,7 +27,7 @@ const FORM_ID = 'BuyBoundsForm';
     baseCurrency: getBaseCurrency(state),
     quoteCurrency: getQuoteCurrency(state),
     formValues: getFormValues(FORM_ID)(state),
-    controlPrice: getControlPrice(state),
+    // controlPrice: getControlPrice(state),
 }))
 export default class BuyBoundsForm extends React.PureComponent {
     static propTypes = {
@@ -64,20 +64,19 @@ export default class BuyBoundsForm extends React.PureComponent {
     }
 
     updatePriceField() {
-        // let { controlPrice } = this.props;
+        let { controlPrice } = this.props;
         let bondsAmount = _get(this.props.formValues, 'bounds');
         let wavesRawAmount = _get(this.props.formValues, 'waves');
 
-        if (!bondsAmount || !wavesRawAmount) {
+        if (!bondsAmount || !wavesRawAmount || !controlPrice) {
             return;
         }
 
-        // const decimalControlPrice = _round(controlPrice / 100, 2);
-
         bondsAmount = Number(bondsAmount);
         wavesRawAmount = Number(wavesRawAmount);
+        controlPrice = _round(controlPrice / 100, 2);
 
-        const roi = _round(computeROI(bondsAmount, wavesRawAmount) * 100, 2);
+        const roi = _round(computeROI(bondsAmount, wavesRawAmount * controlPrice) * 100, 2);
         const dependPrice = _round(bondsAmount / wavesRawAmount, 2);
 
         console.log({ roi, dependPrice, bondsAmount, wavesRawAmount });
@@ -128,7 +127,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         disabled
                     />
                     <span className={bem.element('roi')}>
-                        {roi}%
+                        Exp. ROI {roi}%
                     </span>
                     <NumberField
                         min={1}
@@ -139,13 +138,12 @@ export default class BuyBoundsForm extends React.PureComponent {
                             onFocus: () => (this.isBoundsFieldFocused = true),
                         }}
                         label={__('Receive')}
-                        layoutClassName={bem.element('input', 'with-hint')}
+                        layoutClassName={bem.element('input')}
                         attribute={'bounds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
                             icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
                         }}
-                        hint={this.computeHint()}
                     />
                     <NumberField
                         min={1}
@@ -180,11 +178,12 @@ export default class BuyBoundsForm extends React.PureComponent {
     _onSubmit(values) {
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
         // const wavesToUsdPrice = this.props.controlPrice;
+        const { dependPrice } = this.state;
 
         return dal
             .setBondOrder(
                 this.props.pairName,
-                values.price,
+                dependPrice,
                 this.props.quoteCurrency,
                 values.bounds
             )

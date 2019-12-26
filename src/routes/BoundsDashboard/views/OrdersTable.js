@@ -12,6 +12,7 @@ import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderStatusEnum from 'enums/OrderStatusEnum';
+import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrdersTable');
 
@@ -35,19 +36,24 @@ export default class OrdersTable extends React.PureComponent {
         
         this.fieldTable = {
             name: {
-                label: 'Name'
+                label: 'Name',
+                get: item => item.type === OrderTypeEnum.LIQUIDATE ? CurrencyEnum.getLabel(item.currency) : PairsEnum.getLabel(item.pairName)
             },
             type: {
-                label: 'Type'
+                label: 'Type',
+                get: item => OrderTypeEnum.getLabel(item.type) || '--'
             },
             time: {
-                label: 'Time'
+                label: 'Time',
+                get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--'
             },
             usdnb: {
-                label: 'USD-NB'
+                label: 'USD-NB',
+                get: item => item.restAmount || '--'
             },
             price: {
-                label: 'Price'
+                label: 'Price',
+                get: item => item.price ? item.price / 100 : '--'
             },
             roi: {
                 label: 'ROI'
@@ -56,7 +62,10 @@ export default class OrdersTable extends React.PureComponent {
                 label: 'WAVES'
             },
             status: {
-                label: 'Status'
+                label: 'Status',
+                get: item => (
+                    _isInteger(item.restTotal) ? item.restTotal : _isInteger(item.total)
+                ) ? item.total : '--'
             },
             cancelall: {
                 label: 'Cancel All'
@@ -122,7 +131,30 @@ export default class OrdersTable extends React.PureComponent {
         );
     }
 
-    getTableBody(items) {
+    getTableBody() {
+
+        console.log({ items });
+
+        // 
+        const items = [{
+            height: "1837728",
+            timestamp: 1576258303151,
+            owner: "3P6LsCKZbvBj7PNFbV72AcMvqCoGaAkvMh8",
+            price: 81,
+            total: 3.04,
+            filledTotal: 0,
+            restTotal: 3.04,
+            status: "canceled",
+            index: null,
+            amount: 3.75,
+            filledAmount: 0,
+            restAmount: 3.75,
+            pairName: "usd-nb_usd-n",
+            type: "buy",
+            id: "DhVEVcWQMBYXkdMdGtcJCUAiFp18rCpt4Jb8aVGEx5XD"
+        }]
+
+        const { fieldTable } = this;
 
         return (
             <tbody>
@@ -131,24 +163,18 @@ export default class OrdersTable extends React.PureComponent {
                         {items.map((item, index) => (
                             <tr key={index}>
                                 <td>
-                                    {item.type === OrderTypeEnum.LIQUIDATE ? CurrencyEnum.getLabel(item.currency) : PairsEnum.getLabel(item.pairName)}
+                                    {fieldTable.name.get(item)}
                                 </td>
                                 <td className={bem.element('type-column', item.type)}>
-                                    {OrderTypeEnum.getLabel(item.type) || '--'}
+                                    {fieldTable.type.get(item)}
                                 </td>
                                 <td>
-                                    {moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--'}
+                                    {fieldTable.time.get(item)}
                                 </td>
-                                <td>{item.restAmount || '--'}</td>
-                                <td>{item.price ? item.price / 100 : '--'}</td>
-                                <td>
-                                    {_isInteger(item.restTotal)
-                                        ? item.restTotal
-                                        : _isInteger(item.total)
-                                        ? item.total
-                                        : '--'}
-                                </td>
-                                <td>{OrderStatusEnum.getLabel(item.status)}</td>
+                                <td>{fieldTable.usdnb.get(item)}</td>
+                                <td>{fieldTable.price.get(item)}</td>
+                                <td>{fieldTable.status.get(item)}</td>
+                                {/* <td>{OrderStatusEnum.getLabel(item.status)}</td> */}
                                 {!this.props.isHistory && (
                                     <td className={bem.element('cancel-column')}>
                                         <div
