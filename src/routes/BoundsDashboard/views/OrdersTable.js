@@ -143,26 +143,8 @@ export default class OrdersTable extends React.PureComponent {
         );
     }
 
-    getTableBody() {
+    getTableBody(items) {
         const { controlPrice } = this.props;
-        // 
-        const items = [{
-            height: "1837728",
-            timestamp: 1576258303151,
-            owner: "3P6LsCKZbvBj7PNFbV72AcMvqCoGaAkvMh8",
-            price: 81,
-            total: 3.04,
-            filledTotal: 0,
-            restTotal: 3.04,
-            status: "canceled",
-            index: null,
-            amount: 3.75,
-            filledAmount: 0,
-            restAmount: 3.75,
-            pairName: "usd-nb_usd-n",
-            type: "buy",
-            id: "DhVEVcWQMBYXkdMdGtcJCUAiFp18rCpt4Jb8aVGEx5XD"
-        }]
 
         const { fieldTable } = this;
 
