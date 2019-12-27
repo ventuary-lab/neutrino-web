@@ -69,20 +69,19 @@ export default class BuyBoundsForm extends React.PureComponent {
         let wavesRawAmount = _get(this.props.formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
+            this.setState({ roi: null, isButtonDisabled: true });
             return;
         }
 
         bondsAmount = Number(bondsAmount);
         wavesRawAmount = Number(wavesRawAmount);
-        // controlPrice = _round(controlPrice / 100, 2);
 
         const roi = _round(computeROI(bondsAmount, wavesRawAmount, controlPrice), 2);
         const dependPrice = _round(bondsAmount / wavesRawAmount, 2);
 
-        console.log({ roi, dependPrice, bondsAmount, wavesRawAmount });
-
         this.setState(prevProps => ({
             dependPrice,
+            isButtonDisabled: roi > 100,
             roi: roi !== Infinity && roi !== -Infinity && roi || prevProps.roi
         }));
     }
@@ -94,8 +93,19 @@ export default class BuyBoundsForm extends React.PureComponent {
         // this.initFormValues(prevProps);
     }
 
+    getROIStyle () {
+        const { roi } = this.state;
+        return { display: roi === null && 'none' || '' };
+    }
+
+    getPriceValue () {
+        const { roi, dependPrice } = this.state;
+
+        return roi === null ? '' : dependPrice;
+    }
+
     render() {
-        const { isButtonDisabled, roi, dependPrice } = this.state;
+        const { isButtonDisabled, roi } = this.state;
 
         return (
             <div className={bem.block()}>
@@ -116,7 +126,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         step="any"
                         inputProps={{
                             autoComplete: 'off',
-                            value: dependPrice
+                            value: this.getPriceValue()
                         }}
                         label={__('Price')}
                         layoutClassName={bem.element('input')}
@@ -126,7 +136,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         }}
                         disabled
                     />
-                    <span className={bem.element('roi')}>
+                    <span className={bem.element('roi')} style={this.getROIStyle()}>
                         <span>Exp. ROI</span>
                         <span>{roi}%</span>
                     </span>
