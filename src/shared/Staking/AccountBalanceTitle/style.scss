@@ -9,6 +9,22 @@
         font-weight: normal;
         display: block;
         position: relative;
+
+        &_vertical {
+            & > :nth-child(1) {
+                display: block;
+                text-align: center;
+            }
+
+            & > :nth-child(2) {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                padding-top: 6px;
+            }
+        }
     }
 
     &__balance {
