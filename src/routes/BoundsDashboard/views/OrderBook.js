@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _round from 'lodash/round';
-import _sum from 'lodash/sum';
-import _groupBy from 'lodash/groupBy';
-import _orderBy from 'lodash/orderBy';
+import {
+    round as _round,
+    sum as _sum,
+    groupBy as _groupBy,
+    orderBy as _orderBy
+} from 'lodash';
 
 import { html } from 'components';
 
@@ -11,11 +13,20 @@ import './OrderBook.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
-import { Utils } from 'ui/global/utils';
+// import { Utils } from 'ui/global/utils';
 // import OrderStatusEnum from 'enums/OrderStatusEnum';
 import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
+
+function OrderBookTitle ({ title, amount }) {
+    return (
+        <div className={bem.element('orb-title')}>
+            <span>{title}</span>
+            <span>{amount}</span>
+        </div>
+    );
+}
 
 export default class OrderBook extends React.PureComponent {
     static propTypes = {
@@ -55,7 +66,7 @@ export default class OrderBook extends React.PureComponent {
     // }
 
     render() {
-        const { orders } = this.props;
+        const { orders, controlPrice } = this.props;
 
         if (!orders) {
             return null;
@@ -91,11 +102,15 @@ export default class OrderBook extends React.PureComponent {
         const groupedOrders = _groupBy(orders, 'price');
         const sortedKeys = _orderBy(Object.keys(groupedOrders), null, 'desc');
 
-        console.log({ groupedOrders, sortedKeys });
+        const wavesByUsdAmount = _round(controlPrice / 100, 2);
+        const usdnByWavesAmount = _round(1 / wavesByUsdAmount, 2);
 
         return (
             <div className={bem.block()}>
-                <div className={bem.element('title')}>{__('Order Book')}</div>
+                <div className={bem.element('title')} style={{ display: !controlPrice ? 'none' : '' }}>
+                    <OrderBookTitle title={'WAVES / USD: '} amount={wavesByUsdAmount} />
+                    <OrderBookTitle title={'USD-N / WAVES: '} amount={usdnByWavesAmount}/>
+                </div>
                 <div className={bem.element('header-row')}>
                     <div className={bem.element('header-column', 'upper-case')}>
                         {CurrencyEnum.getLabel(this.props.baseCurrency)}
