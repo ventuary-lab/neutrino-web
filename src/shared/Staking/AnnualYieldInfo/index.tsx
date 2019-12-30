@@ -17,7 +17,7 @@ class AnnualYieldInfo extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            yieldPercent: 6.85
+            yieldPercent: 53.7
         }
     }
 
