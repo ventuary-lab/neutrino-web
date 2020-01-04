@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ApplicationParams } from '../types';
-import axios from 'axios';
+import axios, { CancelToken, Canceler } from 'axios';
 
 class ExplorerApiService {
     apiUrl: string;
@@ -8,7 +8,9 @@ class ExplorerApiService {
     proxyRoutesCollection: Set<string>;
     storageKey: string;
     updateFrequency: number;
+    maxRequestWait: number;
     updateInterval: NodeJS.Timeout;
+    apiReqCanceler: Canceler;
 
     constructor (contractApp: ApplicationParams) {
         this.contractApp = contractApp;
@@ -17,7 +19,8 @@ class ExplorerApiService {
 
         this.proxyRoutesCollection = new Set();
         this.storageKey = 'explorer_api_cache';
-        this.updateFrequency = 17000;
+        this.updateFrequency = 15000;
+        this.maxRequestWait = 5000;
     }
 
     async handleRequest (req: Request, res: Response) {
@@ -45,12 +48,33 @@ class ExplorerApiService {
     }
 
     async requestApiValue (route: string) {
+        setTimeout(async () => {
+            const cachedValue = await this.contractApp.storage.hget(
+                this.storageKey,
+                route
+            );
+
+            if (this.apiReqCanceler && cachedValue !== null) {
+                this.apiReqCanceler(`Too much time spent for waiting the response. Route: ${route}`);
+            }
+        }, this.maxRequestWait)
+
         try {
-            const response = await axios.get<string>(route, { baseURL: this.apiUrl });
+            const response = await axios.get<string>(route, { 
+                baseURL: this.apiUrl,
+                cancelToken: new axios.CancelToken((executor: Canceler) => {
+                    this.apiReqCanceler = executor;
+                })
+            });
 
             return response;
         } catch (err) {
-            console.log(`Error occured on Explorer API call. Route: ${route}`, err);
+            if (axios.isCancel(err)) {
+                console.log(err.message);
+            } else {
+                console.log(`Error occured on Explorer API call. Route: ${route}`, err);
+            }
+
             return null;
         }
     }
