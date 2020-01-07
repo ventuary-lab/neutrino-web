@@ -1,3 +1,17 @@
+const { performance, PerformanceObserver } = require('perf_hooks');
+
+const obs = new PerformanceObserver((items) => {
+    const itemMarks = items.getEntries();
+    const [firstItem] = itemMarks;
+
+    if (firstItem.name.includes('bonds_orders')) {
+        console.log(`${firstItem.name} took ${firstItem.duration} ms`);
+    }
+    
+    performance.clearMarks(firstItem.name);
+});
+
+obs.observe({ entryTypes: ['measure'] });
 
 module.exports = class BaseCollection {
 
@@ -69,30 +83,35 @@ module.exports = class BaseCollection {
         this.logger.debug('Update all items of ' + this.pairName + ':' + this.collectionName + ' collection... ');
 
         // Get ids
-        const ids = [];
         const idRegexp = new RegExp(this.getKeys()[0]);
+        const data = {};
+
+        const [mark1, mark2] = ['mark1', 'mark2', 'mark3', 'mark4', 'mark5']
+            .map(markName => `${this.collectionName}_${markName}`);
+
+        performance.mark(mark1);
+
+        // I'll let this stay
         Object.keys(nodeData)
             .forEach(nodeKey => {
                 const match = idRegexp.exec(nodeKey);
+
                 if (match && match[1]) {
-                    ids.push(match[1]);
+                    const id = match[1];
+                    data[id] = {};
+
+                    Object.keys(nodeData)
+                        .forEach(nodeKey => {
+                            if (nodeData[nodeKey] !== undefined) {
+                                data[id][nodeKey] = nodeData[nodeKey];
+                            }
+                        });
                 }
             });
-
-        const data = {};
-        ids.forEach(id => {
-            data[id] = {};
-            this.getKeys(id).forEach(key => {
-                const keyRegexp = new RegExp(key);
-                Object.keys(nodeData)
-                    .forEach(nodeKey => {
-                        const match = keyRegexp.exec(nodeKey);
-                        if (match) {
-                            data[id][nodeKey] = nodeData[nodeKey];
-                        }
-                    });
-            });
-        });
+    
+        performance.mark(mark2);
+    
+        performance.measure(`${mark1}-${mark2}`, mark1, mark2);
 
         await this._updateNext(Object.keys(data), data);
     }
