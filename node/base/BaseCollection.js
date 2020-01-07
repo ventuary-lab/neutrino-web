@@ -84,7 +84,6 @@ module.exports = class BaseCollection {
         this.logger.debug('Update all items of ' + this.pairName + ':' + this.collectionName + ' collection... ');
 
         // Get ids
-        // const ids = [];
         const idRegexp = new RegExp(this.getKeys()[0]);
         const data = {};
 
