@@ -1,7 +1,6 @@
 const { performance, PerformanceObserver } = require('perf_hooks');
+
 const obs = new PerformanceObserver((items) => {
-    // console.log(items.getEntries()[0].duration);
-    // performance.clearMarks(items.getEntries()[0].name);
     const itemMarks = items.getEntries();
     const [firstItem] = itemMarks;
 
@@ -11,8 +10,8 @@ const obs = new PerformanceObserver((items) => {
     
     performance.clearMarks(firstItem.name);
 });
+
 obs.observe({ entryTypes: ['measure'] });
-  
 
 module.exports = class BaseCollection {
 
