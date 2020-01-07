@@ -1,5 +1,4 @@
 import redis from 'redis';
-import { performance } from 'perf_hooks';
 import winston, { Logger } from 'winston';
 import { Express } from 'express';
 import * as http from "http";
@@ -24,6 +23,7 @@ import {
 } from './types';
 
 const Router = require('./Router');
+
 module.exports = class App implements ApplicationParams {
     // Parameter types
     network: string;
@@ -285,19 +285,11 @@ module.exports = class App implements ApplicationParams {
                     const collection = this.getCollection(pairName, collectionName);
                     const contractName = CollectionEnum.getContractName(collectionName) as string;
 
-                    const performanceMarkA = `${collectionName}-A`;
-                    const performanceMarkB = `${collectionName}-B`;
-                    const performanceMarkC = `${collectionName}-C`;
-
-                    performance.mark(performanceMarkA);
-
                     if (!data[contractName]) {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
-                    performance.mark(performanceMarkB);
-
-                    // this.logger.info('Update all data in collection... ' + collectionName);
+                    this.logger.info('Update all data in collection... ' + collectionName);
 
                     if (shouldFlush) {
                         await collection.removeAll();
@@ -306,11 +298,6 @@ module.exports = class App implements ApplicationParams {
                     const nodeNewData = data[contractName];
 
                     await collection.updateAll(nodeNewData);
-
-                    performance.mark(performanceMarkC);
-
-                    // performance.measure(`Fetching data from blockchain of ${collectionName} collection`, performanceMarkA, performanceMarkB);
-                    performance.measure(`Updating ${collectionName} collection in REDIS`, performanceMarkB, performanceMarkC);
                 }
             }
         } catch (err) {
