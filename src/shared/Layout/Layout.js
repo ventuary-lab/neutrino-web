@@ -212,6 +212,8 @@ export default class Layout extends React.PureComponent {
     }
 
     attachResizeObserver() {
+
+
         try {
             this.resizeObserver = new ResizeObserver(this.onScreenResize);
             this.resizeObserver.observe(document.body);
@@ -264,7 +266,7 @@ export default class Layout extends React.PureComponent {
 
     async onWavesKeeperLogout() {
         await dal.logout();
-        store.dispatch(goToPage(ROUTE_ROOT));
+        // store.dispatch(goToPage(ROUTE_ROOT));
     }
 
     componentDidUpdate(prevProps) {

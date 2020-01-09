@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { round as _round, isEqual as _isEqual, get as _get, floor as _floor } from 'lodash';
 
 import CurrencyEnum from '../enums/CurrencyEnum';
@@ -42,10 +42,6 @@ export default class BalanceController {
         this._address = address;
         this._balances = null;
         this._lastTransactionId = null;
-
-        // if (!this._address) {
-        //     return;
-        // }
 
         return await this._next();
     }

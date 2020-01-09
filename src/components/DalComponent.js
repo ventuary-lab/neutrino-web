@@ -1,9 +1,10 @@
 import { get as _get, isEqual as _isEqual } from 'lodash';
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
-import { clientStorage } from 'components';
+import { clientStorage, store } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
+import UserController from '../contractControllers/UserController';
 import Keeper from './dal/Keeper';
 
 import ContractEnum from '../enums/ContractEnum';
@@ -20,6 +21,7 @@ export default class DalComponent {
         this.contracts = null;
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
+        this.userController = new UserController();
         this.balance.onUpdate = this.login.bind(this);
 
         this.keeper = new Keeper(this);
@@ -31,8 +33,31 @@ export default class DalComponent {
     }
 
     async loginByWebKeeper () {
+        const userData = await this.keeper.loginByWebKeeper();
+
+        console.log({ userData });
+
+        if (!userData) {
+            return;
+        }
+
         this.keeper.setWebKeeperAuthType();
-        this.keeper.loginByWebKeeper();
+
+        await this.keeper.start();
+        await this.balance.start(userData.address);
+
+        const user = {
+            role: UserRole.REGISTERED,
+            address: userData.address,
+            network: String.fromCharCode(userData.networkByte) === 'W' ? 'mainnet' : 'testnet',
+            balances: this.balance.getBalances(),
+        };
+
+        console.log({ user });
+
+        this.userController.updateUser({ user });
+
+        return user;
     }
 
     /**
@@ -41,13 +66,12 @@ export default class DalComponent {
      */
     async login() {
         // Start keeper listener, fetch balances
-        // if (this.webKeeperProvided) {
-        //     this.webKeeper.lib.login();
-        //     return;
-        // }
-
+        // this.webKeeper.lib.login();
         this.keeper.setKeeperAuthType();
+
         const account = await this.keeper.getAccount();
+
+        // this.keeper.stop();
         await this.keeper.start();
         await this.balance.start(account.address);
 
@@ -67,11 +91,8 @@ export default class DalComponent {
         }
 
         // Update redux store
-        const store = require('components').store;
-        const storeUser = store.getState().auth.user || null;
-        if (!_isEqual(storeUser, user)) {
-            store.dispatch(setUser(user));
-        }
+
+        this.userController.updateUser({ user });
 
         return user;
     }
@@ -89,11 +110,15 @@ export default class DalComponent {
      * @returns {Promise<void>}
      */
     async logout() {
-        require('components').store.dispatch(setUser(null));
+        store.dispatch(setUser(null));
         clientStorage.remove(STORAGE_AUTH_KEY);
 
         this.keeper.stop();
         this.balance.stop();
+
+        if (this.keeper.isAuthByWebKeeper) {
+            this.keeper.logoutByWebKeeper();
+        }
     }
 
     async swapWavesToNeutrino(pairName, amount) {

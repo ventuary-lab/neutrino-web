@@ -33,7 +33,7 @@ export default class Keeper {
     _isAvailable: boolean | null;
     _address: string | null;
     _pageStart: number;
-    _checkerInterval: number;
+    _checkerInterval: NodeJS.Timeout;
     _loginType: LoginType;
 
     constructor(dal: any) {
@@ -72,9 +72,12 @@ export default class Keeper {
         if (this._checkerInterval) {
             clearInterval(this._checkerInterval);
         }
+        if (this.isAuthByWebKeeper) {
+            return;
+        }
 
         this._address = await this.getAddress();
-        // @ts-ignore
+
         this._checkerInterval = setInterval(this._addressChecker, 1000);
     }
 
@@ -93,6 +96,7 @@ export default class Keeper {
 
     async getAccount(): Promise<WavesKeeperAccount | null> {
         const keeper = await this.getPlugin();
+
         if (!keeper) {
             return null;
         }
@@ -264,7 +268,16 @@ export default class Keeper {
         const isWebKeeperReady = await webKeeper.isReady();
 
         if (isWebKeeperReady) {
-            await webKeeper.ref.lib.login();
+            const readyUser = await webKeeper.ref.lib.login();
+            return readyUser;
+        }
+    }
+
+    async logoutByWebKeeper () {
+        const isWebKeeperReady = await webKeeper.isReady();
+
+        if (isWebKeeperReady) {
+            await webKeeper.ref.lib.logout();
         }
     }
 
