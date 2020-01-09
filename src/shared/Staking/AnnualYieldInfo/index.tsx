@@ -17,7 +17,7 @@ class AnnualYieldInfo extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            yieldPercent: 6.85
+            yieldPercent: 53.7
         }
     }
 
@@ -46,7 +46,7 @@ class AnnualYieldInfo extends React.Component<Props, State> {
                     </div>
                     <span className={bem.element('title')}>Average Estimated Annual Yield</span>
                     <span className={bem.element('body')}>
-                        Estimated Annual Yield is depending on waves token price, can be 1%-20%
+                        Estimated Annual Yield is depending on waves token price, can be 1%-100%
                         based on market situation
                     </span>
                 </div>

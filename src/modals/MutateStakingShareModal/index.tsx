@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { html, dal } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
 import BaseInput from 'ui/form/BaseInput';
-import AccountBalanceTitle from 'shared/Staking/AccountBalanceTitle';
+import AccountBalanceTitle, { AccountBalanceTitleOption } from 'shared/Staking/AccountBalanceTitle';
 import PercentButton from 'ui/form/PercentButton';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
@@ -102,7 +102,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         await dal.unlockNeutrino(
             this.props.pairName,
             CurrencyEnum.USD_N,
-            Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
+            Math.round(Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N))
         );
 
         this.props.onClose();
@@ -151,8 +151,16 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                     <div className={bem.element('body')}>
                         <span className={bem.element('title')}>{title}</span>
                         <div className={bem.element('balances')}>
-                            <AccountBalanceTitle title="Account balance:" amount={accountBalance} />
-                            <AccountBalanceTitle title="Staking balance:" amount={stakingBalance} />
+                            <AccountBalanceTitle
+                                title="Account balance:"
+                                amount={accountBalance}
+                                type={AccountBalanceTitleOption.VERTICAL}
+                            />
+                            <AccountBalanceTitle
+                                title="Staking balance:"
+                                amount={stakingBalance}
+                                type={AccountBalanceTitleOption.VERTICAL}
+                            />
                         </div>
                         <div className={bem.element('actions')}>
                             <div className={bem.element('percents')}>

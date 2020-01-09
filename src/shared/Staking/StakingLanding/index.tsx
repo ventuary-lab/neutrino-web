@@ -67,7 +67,7 @@ class StakingLanding extends React.Component<Props, State> {
             { icon: twitterIcon, route: NEUTRINO_TWITTER_LINK },
         ];
 
-        let { annualYield = 52.51, totalIssued = 100000, totalStaked = 10000 } = this.state;
+        let { annualYield = 53.7, totalIssued = 100000, totalStaked = 10000 } = this.state;
         annualYield = _round(annualYield, 2);
         totalIssued = _round(totalIssued, 2);
         totalStaked = _round(totalStaked, 2);
