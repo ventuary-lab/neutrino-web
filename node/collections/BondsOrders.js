@@ -10,7 +10,7 @@ const CurrencyEnum = require('../enums/CurrencyEnum');
 
 module.exports = class BondsOrders extends BaseCollection {
 
-    getKeys(id = '([A-Za-z0-9]{40,50})') {
+    getKeys(id = '(\w{40,50})') {
         return [
             `order_height_${id}`,
             `order_owner_${id}`,
