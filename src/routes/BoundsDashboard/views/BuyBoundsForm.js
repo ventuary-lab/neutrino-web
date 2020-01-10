@@ -68,8 +68,6 @@ export default class BuyBoundsForm extends React.PureComponent {
         let bondsAmount = _get(this.props.formValues, 'bounds');
         let wavesRawAmount = _get(this.props.formValues, 'waves');
 
-        console.log({ bondsAmount, wavesRawAmount, controlPrice });
-
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
             this.setState({ roi: null, isButtonDisabled: true });
             return;
