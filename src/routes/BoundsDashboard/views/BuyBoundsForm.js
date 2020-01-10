@@ -196,7 +196,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                 this.props.pairName,
                 dependPrice,
                 this.props.quoteCurrency,
-                values.bounds
+                values.waves
             )
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console

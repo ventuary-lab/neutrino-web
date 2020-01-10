@@ -119,7 +119,7 @@ export default class DalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, paymentCurrency, bondsAmount) {
+    async setBondOrder(pairName, price, paymentCurrency, sendAmount) {
         // if (price <= 0 || price >= 100) {
         //     return;
         // }
@@ -133,16 +133,14 @@ export default class DalComponent {
             'data.position'
         );
 
-        console.log(...arguments)
-
-        if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
+        if (price > 0 && sendAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
                 'addBuyBondOrder',
                 [contractPrice, position],
                 'WAVES',
-                bondsAmount * price
+                sendAmount
             );
         }
     }
