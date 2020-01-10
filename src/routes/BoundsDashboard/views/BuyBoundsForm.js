@@ -68,6 +68,8 @@ export default class BuyBoundsForm extends React.PureComponent {
         let bondsAmount = _get(this.props.formValues, 'bounds');
         let wavesRawAmount = _get(this.props.formValues, 'waves');
 
+        console.log({ bondsAmount, wavesRawAmount, controlPrice });
+
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
             this.setState({ roi: null, isButtonDisabled: true });
             return;
@@ -79,11 +81,11 @@ export default class BuyBoundsForm extends React.PureComponent {
         const roi = _round(computeROI(bondsAmount, wavesRawAmount, controlPrice), 2);
         const dependPrice = _round(bondsAmount / wavesRawAmount, 2);
 
-        this.setState(prevProps => ({
+        this.setState({
             dependPrice,
-            isButtonDisabled: roi > 100,
-            roi: roi !== Infinity && roi !== -Infinity && roi || prevProps.roi
-        }));
+            isButtonDisabled: roi < 0 || roi > 100,
+            roi: (roi === Infinity || roi === -Infinity) ? null : roi
+        });
     }
 
     componentDidUpdate() {
