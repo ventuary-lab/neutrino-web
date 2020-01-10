@@ -11,6 +11,10 @@
     font-size: 14px;
     line-height: 17px;
     padding: 24px 40px 20px;
+
+    & > :not(:first-child) {
+      padding-top: 6px;
+    }
   }
 
   &__header-row {
@@ -103,4 +107,20 @@
     padding-left: 15px;
   }
 
+
+  &__orb-title {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    & > * {
+      display: block;
+    }
+    
+    & > :nth-child(2) {
+      font-weight: bold;
+      color: $color-brand-green;
+    }
+  }
 }

@@ -8,7 +8,6 @@ const OrderSchema = PropTypes.shape({
     price: PropTypes.number,
     total: PropTypes.number,
     filledTotal: PropTypes.number,
-    discountPercent: PropTypes.number,
     index: PropTypes.number,
     amount: PropTypes.number,
     filledAmount: PropTypes.number,

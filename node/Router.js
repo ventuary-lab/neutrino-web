@@ -1,4 +1,4 @@
-const ExplorerApiService = require('./services/ExplorerApiService');
+const { default: ExplorerApiService } = require('./services/ExplorerApiService');
 const CollectionEnum = require('./enums/CollectionEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
@@ -6,15 +6,15 @@ const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
 const moment = require('moment');
+const { default: Utils } = require('./utils');
 const fs = require('fs');
 const path = require('path');
-const Utils = require('./utils');
 
 module.exports = class Router {
     constructor(contractApp, expressApp) {
         this.app = contractApp;
         this.expressApp = expressApp;
-        this.explorerApiService = new ExplorerApiService.default(contractApp);
+        this.explorerApiService = new ExplorerApiService(contractApp);
         this.explorerApiService.startPulling();
 
         this._routes = {
@@ -221,17 +221,23 @@ module.exports = class Router {
                 );
 
                 orders = Utils.orderBy(orders, 'height', 'desc', {
-                    toNumber: true,
+                    isNumber: true,
                 });
 
                 orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
 
-                return orders.map(order => [timestamps[order.height], order.discountPercent]);
+                return orders.map(order => [timestamps[order.height], order.price]);
             },
             '/api/v1/bonds/:pairName/orders': async request => {
-                return await this.app
+                var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+
+                orders = Utils.orderBy(orders, 'price', 'desc', {
+                    isNumber: true,
+                });
+
+                return orders;
             },
             '/api/v1/liquidate/:pairName/orders': async request => {
                 return await this.app
