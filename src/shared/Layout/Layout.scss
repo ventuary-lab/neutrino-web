@@ -76,8 +76,8 @@ body {
   &__right {
     width: $right-width;
     min-width: $right-width;
-    // margin-left: $gap;
     @include gradient-bg(242.05deg);
+    margin-left: $gap;
   }
 
   @media screen and (max-width: 1024px) {
@@ -91,6 +91,10 @@ body {
   }
 
   @media screen and (max-width: 768px) {
+    &__right {
+      margin-left: unset;
+    }
+
     &__inner {
       display: flex;
       flex-direction: column;
