@@ -35,7 +35,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import {
     ROUTE_ROOT,
-    ROUTE_RPD,
+    // ROUTE_RPD,
     ROUTE_NEUTRINO_SHOW_TRANSFERS,
     ROUTE_NEUTRINO_SHOW_INVOICE_GEN,
     ROUTE_STAKING_LANDING_PAGE,
@@ -107,6 +107,8 @@ export default class Layout extends React.PureComponent {
         this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
+        this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
+        this.onWebKeeperLogout = this.onWebKeeperLogout.bind(this);
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
@@ -187,8 +189,6 @@ export default class Layout extends React.PureComponent {
         this.openWarningModal();
 
         this.handleQueryParams();
-
-        this.loginTypeContextValue.onOpen();
     }
 
     handleQueryParams() {
@@ -266,7 +266,14 @@ export default class Layout extends React.PureComponent {
 
     async onWavesKeeperLogout() {
         await dal.logout();
-        // store.dispatch(goToPage(ROUTE_ROOT));
+    }
+
+    async onWebKeeperLogin () {
+        await dal.loginByWebKeeper();
+    }
+
+    async onWebKeeperLogout () {
+        // await dal.logoutByWebKeeper();
     }
 
     componentDidUpdate(prevProps) {
@@ -286,14 +293,14 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
-                store.dispatch([
-                    // currencySetPrices(nextProps.data.prices),
-                    setUser(user),
-                ]);
-            });
-        }
+        // if (this.props.data !== nextProps.data) {
+        //     Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
+        //         store.dispatch([
+        //             // currencySetPrices(nextProps.data.prices),
+        //             setUser(user),
+        //         ]);
+        //     });
+        // }
 
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
             store.dispatch(currencySetCurrent(nextProps.matchParams.currency));
@@ -317,6 +324,7 @@ export default class Layout extends React.PureComponent {
                 nextUserNetwork &&
                 nextAppNetwork !== nextUserNetwork
             ) {
+                console.log({ wasWrongNetworkMessageShown: this.wasWrongNetworkMessageShown, nextAppNetwork, nextUserNetwork })
                 store.dispatch(
                     openModal(MessageModal, {
                         text: __('Switch your Waves Keeper network to {name}', {
@@ -398,6 +406,8 @@ export default class Layout extends React.PureComponent {
                                     value={{
                                         onLogin: this.onWavesKeeperLogin,
                                         onLogout: this.onWavesKeeperLogout,
+                                        onWebKeeperLogin: this.onWebKeeperLogin,
+                                        onWebKeeperLogout: this.onWebKeeperLogout,
                                         isVisible: shouldShowInviteModal,
                                         openModal: () =>
                                             this.triggerInstallKeeperModalVisibility(true),

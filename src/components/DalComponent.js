@@ -1,7 +1,7 @@
-import { get as _get, isEqual as _isEqual } from 'lodash';
+// import { get as _get, isEqual as _isEqual } from 'lodash';
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
-import { clientStorage, store } from 'components';
+import { store } from 'components';
 
 import BalanceController from '../contractControllers/BalanceController';
 import UserController from '../contractControllers/UserController';
@@ -11,7 +11,7 @@ import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
 
-export const STORAGE_AUTH_KEY = 'isAuth';
+// export const STORAGE_AUTH_KEY = 'isAuth';
 
 export default class DalComponent {
     constructor() {
@@ -22,10 +22,10 @@ export default class DalComponent {
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
         this.userController = new UserController();
-        this.balance.onUpdate = this.login.bind(this);
+        this.balance.onUpdate = () => {};
 
         this.keeper = new Keeper(this);
-        this.keeper.onUpdate = this.login.bind(this);
+        this.keeper.onUpdate = () => {};
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
@@ -34,8 +34,6 @@ export default class DalComponent {
 
     async loginByWebKeeper () {
         const userData = await this.keeper.loginByWebKeeper();
-
-        console.log({ userData });
 
         if (!userData) {
             return;
@@ -46,14 +44,14 @@ export default class DalComponent {
         await this.keeper.start();
         await this.balance.start(userData.address);
 
+        // console.log()
+
         const user = {
             role: UserRole.REGISTERED,
             address: userData.address,
-            network: String.fromCharCode(userData.networkByte) === 'W' ? 'mainnet' : 'testnet',
+            network: String.fromCharCode(userData.networkByte || 87) === 'W' ? 'mainnet' : 'testnet',
             balances: this.balance.getBalances(),
         };
-
-        console.log({ user });
 
         this.userController.updateUser({ user });
 
@@ -66,7 +64,6 @@ export default class DalComponent {
      */
     async login() {
         // Start keeper listener, fetch balances
-        // this.webKeeper.lib.login();
         this.keeper.setKeeperAuthType();
 
         const account = await this.keeper.getAccount();
@@ -86,9 +83,9 @@ export default class DalComponent {
             : null;
 
         // Mark logged
-        if (account && !this.isLogged()) {
-            clientStorage.set(STORAGE_AUTH_KEY, '1');
-        }
+        // if (account && !this.isLogged()) {
+        //     clientStorage.set(STORAGE_AUTH_KEY, '1');
+        // }
 
         // Update redux store
 
@@ -97,13 +94,13 @@ export default class DalComponent {
         return user;
     }
 
-    /**
-     * Check is logged flag
-     * @returns {boolean}
-     */
-    isLogged() {
-        return clientStorage.get(STORAGE_AUTH_KEY) === '1';
-    }
+    // /**
+    //  * Check is logged flag
+    //  * @returns {boolean}
+    //  */
+    // isLogged() {
+    //     return clientStorage.get(STORAGE_AUTH_KEY) === '1';
+    // }
 
     /**
      * Logout user
@@ -111,14 +108,13 @@ export default class DalComponent {
      */
     async logout() {
         store.dispatch(setUser(null));
-        clientStorage.remove(STORAGE_AUTH_KEY);
+        // clientStorage.remove(STORAGE_AUTH_KEY);
 
         this.keeper.stop();
         this.balance.stop();
-
-        if (this.keeper.isAuthByWebKeeper) {
-            this.keeper.logoutByWebKeeper();
-        }
+        // if (this.keeper.isAuthByWebKeeper) {
+        //     this.keeper.logoutByWebKeeper();
+        // }
     }
 
     async swapWavesToNeutrino(pairName, amount) {

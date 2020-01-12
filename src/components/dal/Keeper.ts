@@ -11,7 +11,7 @@ import { WavesKeeperTransaction, WavesKeeper, WavesKeeperAccount } from './types
 const webKeeper = new WebKeeperService({
     ref: new WebKeeper({
         nodeUrl: 'https://nodes.wavesplatform.com',
-        provider: 'https://neutrinokeeper.com/iframe-entry'
+        // provider: 'https://neutrinokeeper.com/iframe-entry'
     })
 });
 
@@ -23,7 +23,8 @@ declare global {
 
 enum LoginType {
     WEB_KEEPER = 0,
-    KEEPER
+    KEEPER,
+    NONE
 }
 
 export default class Keeper {
@@ -45,7 +46,7 @@ export default class Keeper {
         this._address = null;
         this._pageStart = Date.now();
         this._checkerInterval = null;
-        this._loginType = LoginType.KEEPER;
+        this._loginType = LoginType.NONE;
 
         this._buildTransaction = this._buildTransaction.bind(this);
 
@@ -69,10 +70,11 @@ export default class Keeper {
     }
 
     async start() {
+        console.log(this._loginType);
         if (this._checkerInterval) {
             clearInterval(this._checkerInterval);
         }
-        if (this.isAuthByWebKeeper) {
+        if (!this.isAuthByKeeper) {
             return;
         }
 

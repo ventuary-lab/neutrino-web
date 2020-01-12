@@ -43,7 +43,7 @@ class LoginTypeModal extends React.Component<Props> {
     }
 
     onWebKeeperLogin() {
-        dal.loginByWebKeeper();
+        // dal.loginByWebKeeper();
     }
 
     onKeeperLogin() {}
@@ -70,7 +70,10 @@ class LoginTypeModal extends React.Component<Props> {
                                         </a>
                                     </div>
                                     <div>
-                                        <a href="#" onClick={this.onWebKeeperLogin}>
+                                        <a href="#" onClick={() => {
+                                            this.props.onClose();
+                                            keeperContext.onWebKeeperLogin();
+                                        }}>
                                             Login using Web Keeper
                                         </a>
                                     </div>

@@ -10,11 +10,13 @@ export const UserCongratsModalContext = createContext({ onClose: null, onOpen: n
 export const InstallKeeperModalContext = createContext<{
     onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
     onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
+    onWebKeeperLogin: () => void;
     openModal: () => void;
     isVisible: boolean;
 }>({
     onLogin: () => {},
     onLogout: () => {},
+    onWebKeeperLogin: () => {},
     openModal: () => {},
     isVisible: false,
 });

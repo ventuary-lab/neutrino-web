@@ -7,7 +7,7 @@ class WebKeeper {
     nodeUrl!: string;
     storageProviderUrl!: string;
 
-    constructor ({ nodeUrl, provider }: { nodeUrl: string, provider: string }) {
+    constructor ({ nodeUrl, provider }: { nodeUrl: string, provider?: string }) {
         this.nodeUrl = nodeUrl;
         this.storageProviderUrl = provider;
         this.provider = new Provider(provider);
