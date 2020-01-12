@@ -162,7 +162,7 @@ export default class Keeper {
             payment: !paymentAmount ? [] : [
                 {
                     assetId: paymentCurrency || 'WAVES',
-                    amount: Number(paymentAmount),
+                    amount: Number(paymentAmount) * CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
                 },
             ],
             call: {
@@ -190,9 +190,7 @@ export default class Keeper {
         if (this.isAuthByWebKeeper()) {
             let buildTx: IInvoke = this.buildInvokeTx(dApp, method, args, paymentCurrency, paymentAmount);
 
-            webKeeper.ref.lib
-                .invoke(buildTx)
-                .broadcast();
+            await webKeeper.ref.lib.invoke(buildTx).broadcast();
 
             return;
         }
@@ -241,7 +239,10 @@ export default class Keeper {
         const transaction: WavesKeeperTransaction = {
             type: 16,
             data: {
-                fee: 1,
+                fee: {
+                    assetId: 'WAVES',
+                    tokens: String(this.fee),
+                },
                 dApp,
                 call: {
                     args: args.map(item => ({
@@ -255,7 +256,7 @@ export default class Keeper {
                     : [
                           {
                               assetId: paymentCurrency || 'WAVES',
-                              amount: Number(paymentAmount),
+                              tokens: String(paymentAmount),
                           },
                       ],
             },
