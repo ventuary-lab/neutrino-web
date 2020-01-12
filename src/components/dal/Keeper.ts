@@ -1,4 +1,5 @@
 import { waitForTx, broadcast } from '@waves/waves-transactions';
+import { IInvoke, ITXBase, ICallArgs } from '@waves/waves-js/dist/src/interface';
 import {
     isString as _isString,
     isInteger as _isInteger,
@@ -7,6 +8,8 @@ import {
 import WebKeeper from '../services/webkeeper/WebKeeper';
 import WebKeeperService from '../services/webkeeper/WebKeeperService';
 import { WavesKeeperTransaction, WavesKeeper, WavesKeeperAccount } from './types';
+import { getDappAddress } from '../selectors';
+import CurrencyEnum from 'enums/CurrencyEnum';
 
 const webKeeper = new WebKeeperService({
     ref: new WebKeeper({
@@ -145,22 +148,50 @@ export default class Keeper {
         return new Promise(checker);
     }
 
+    buildInvokeTx (
+        dApp: string,
+        method: string,
+        args: Array<ICallArgs>,
+        paymentCurrency: string,
+        paymentAmount: number
+    ) {
+        const tx: IInvoke = {
+            dApp,
+            fee: 0.09 * CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
+            // payment?: Array<IMoney>;
+            payment: !paymentAmount ? [] : [
+                {
+                    assetId: paymentCurrency || 'WAVES',
+                    amount: Number(paymentAmount),
+                },
+            ],
+            call: {
+                function: method,
+                args
+            },
+            chainId: this.dal.signerNetworkByte || 87
+        };
+
+        return tx;
+    }
+
     async sendTransaction(
         pairName: string,
         contractName: string,
         method: string,
-        args: string[],
+        args: Array<ICallArgs>,
         paymentCurrency: string,
         paymentAmount: number,
         waitTx: boolean = true,
     ) {
-        const isWebKeeperReady = await webKeeper.isReady();
-        const dApp = this.dal.contracts[pairName][contractName];
+        const dApp = getDappAddress(this.dal, pairName, contractName);
         const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount);
 
-        if (isWebKeeperReady && this.isAuthByWebKeeper()) {
+        if (this.isAuthByWebKeeper()) {
+            let buildTx: IInvoke = this.buildInvokeTx(dApp, method, args, paymentCurrency, paymentAmount);
+
             webKeeper.ref.lib
-                .invoke(builtTransaction.data)
+                .invoke(buildTx)
                 .broadcast();
 
             return;
@@ -188,7 +219,7 @@ export default class Keeper {
         pairName: string,
         contractName: string,
         method: string,
-        args: string[],
+        args: Array<ICallArgs>,
         paymentCurrency: string,
         paymentAmount: number,
     ) {
@@ -203,9 +234,9 @@ export default class Keeper {
     _buildTransaction(
         dApp: string,
         method: string,
-        args: Array<number | string>,
-        paymentCurrency,
-        paymentAmount
+        args: Array<ICallArgs>,
+        paymentCurrency: string,
+        paymentAmount: number
     ) {
         const transaction: WavesKeeperTransaction = {
             type: 16,
