@@ -20,6 +20,10 @@
     border-bottom: 1px solid $color-brand-purple-light;
   }
 
+  &__input-container {
+    height: 100px;
+  }
+
   &__step {
     position: relative;
     display: flex;

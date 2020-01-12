@@ -108,7 +108,6 @@ export default class Layout extends React.PureComponent {
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
         this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
-        this.onWebKeeperLogout = this.onWebKeeperLogout.bind(this);
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
@@ -272,10 +271,6 @@ export default class Layout extends React.PureComponent {
         await dal.loginByWebKeeper();
     }
 
-    async onWebKeeperLogout () {
-        // await dal.logoutByWebKeeper();
-    }
-
     componentDidUpdate(prevProps) {
         if (prevProps.user) {
             const invoiceProvided = this._checkForInvoice();
@@ -407,7 +402,6 @@ export default class Layout extends React.PureComponent {
                                         onLogin: this.onWavesKeeperLogin,
                                         onLogout: this.onWavesKeeperLogout,
                                         onWebKeeperLogin: this.onWebKeeperLogin,
-                                        onWebKeeperLogout: this.onWebKeeperLogout,
                                         isVisible: shouldShowInviteModal,
                                         openModal: () =>
                                             this.triggerInstallKeeperModalVisibility(true),

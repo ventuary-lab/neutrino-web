@@ -7,9 +7,11 @@ export const ConfigContext = createContext({ config: null });
 
 export const UserCongratsModalContext = createContext({ onClose: null, onOpen: null });
 
+type ErrorHandlerFn = <T extends () => void>(onSuccess?: T, onError?: T) => void;
+
 export const InstallKeeperModalContext = createContext<{
-    onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
-    onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
+    onLogin: ErrorHandlerFn,
+    onLogout: ErrorHandlerFn,
     onWebKeeperLogin: () => void;
     openModal: () => void;
     isVisible: boolean;
