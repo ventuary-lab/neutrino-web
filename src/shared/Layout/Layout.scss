@@ -76,7 +76,7 @@ body {
   &__right {
     width: $right-width;
     min-width: $right-width;
-    margin-left: $gap;
+    // margin-left: $gap;
     @include gradient-bg(242.05deg);
   }
 
