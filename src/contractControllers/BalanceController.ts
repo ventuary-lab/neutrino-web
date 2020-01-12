@@ -30,6 +30,10 @@ export default class BalanceController {
         this._next = this._next.bind(this);
     }
 
+    updateAddress (address) {
+        this._address = address;
+    }
+
     getBalances() {
         return this._balances;
     }
@@ -117,6 +121,7 @@ export default class BalanceController {
             );
         });
 
+        console.log({ address, th: this._address });
         if (address === this._address) {
             this._balances = balanceDict;
 

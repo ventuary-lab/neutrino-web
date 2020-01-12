@@ -22,17 +22,30 @@ export default class DalComponent {
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
         this.userController = new UserController();
-        this.balance.onUpdate = () => {};
+        this.balance.onUpdate = async () => {};
 
         this.keeper = new Keeper(this);
-        this.keeper.onUpdate = () => {};
+        this.keeper.onUpdate = async () => { // unused addres argument provided
+
+            if (this.keeper.isAuthByKeeper()) {
+                const account = await this.keeper.getAccount();
+
+                this.balance.stop();
+                await this.balance.start(account.address);
+
+                const user = this.constructUserData(account);
+
+                this.userController.updateUser({ user });
+            }
+        };
+        this.signerNetworkByte = 87;
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
     }
 
-    async loginByWebKeeper () {
+    async loginByWebKeeper() {
         const userData = await this.keeper.loginByWebKeeper();
 
         if (!userData) {
@@ -49,13 +62,25 @@ export default class DalComponent {
         const user = {
             role: UserRole.REGISTERED,
             address: userData.address,
-            network: String.fromCharCode(userData.networkByte || 87) === 'W' ? 'mainnet' : 'testnet',
+            network:
+                String.fromCharCode(
+                    userData.networkByte || this.signerNetworkByte
+                ) === 'W' ? 'mainnet' : 'testnet',
             balances: this.balance.getBalances(),
         };
 
         this.userController.updateUser({ user });
 
         return user;
+    }
+
+    constructUserData(account) {
+        return account ? {
+            role: UserRole.REGISTERED,
+            address: account.address,
+            network: account.network,
+            balances: this.balance.getBalances(),
+        } : null;
     }
 
     /**
@@ -73,14 +98,7 @@ export default class DalComponent {
         await this.balance.start(account.address);
 
         // Keeper user
-        const user = account
-            ? {
-                role: UserRole.REGISTERED,
-                address: account.address,
-                network: account.network,
-                balances: this.balance.getBalances(),
-            }
-            : null;
+        const user = this.constructUserData(account);
 
         // Mark logged
         // if (account && !this.isLogged()) {
@@ -108,13 +126,13 @@ export default class DalComponent {
      */
     async logout() {
         store.dispatch(setUser(null));
-        // clientStorage.remove(STORAGE_AUTH_KEY);
 
         this.keeper.stop();
         this.balance.stop();
-        // if (this.keeper.isAuthByWebKeeper) {
-        //     this.keeper.logoutByWebKeeper();
-        // }
+
+        if (this.keeper.isAuthByWebKeeper()) {
+            this.keeper.logoutByWebKeeper();
+        }
     }
 
     async swapWavesToNeutrino(pairName, amount) {

@@ -71,10 +71,14 @@ export default class Keeper {
 
     async start() {
         console.log(this._loginType);
+
         if (this._checkerInterval) {
             clearInterval(this._checkerInterval);
         }
-        if (!this.isAuthByKeeper) {
+
+        console.log({ isAuthByKeeper: this.isAuthByKeeper() });
+
+        if (!this.isAuthByKeeper()) {
             return;
         }
 
@@ -256,6 +260,8 @@ export default class Keeper {
         // Get next address
 
         const address = await this.getAddress();
+
+        // console.log({ address, th: this._address });
 
         if (this._address && address && this._address !== address) {
             this._address = address;
