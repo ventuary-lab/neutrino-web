@@ -1,4 +1,4 @@
-import { IInvoke } from '@waves/waves-js/dist/src/interface';
+import { IInvoke } from '@waves/signer/cjs/interface';
 
 export interface WavesKeeperAssetData {
     assetId: string;

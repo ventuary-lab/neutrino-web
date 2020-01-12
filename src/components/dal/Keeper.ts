@@ -1,5 +1,6 @@
 import { waitForTx, broadcast } from '@waves/waves-transactions';
-import { IInvoke, ITXBase, ICallArgs } from '@waves/waves-js/dist/src/interface';
+import { IInvoke, ITXBase, TLong } from '@waves/signer/cjs/interface';
+import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import {
     isString as _isString,
     isInteger as _isInteger,
@@ -151,7 +152,7 @@ export default class Keeper {
     buildInvokeTx (
         dApp: string,
         method: string,
-        args: Array<ICallArgs>,
+        args: Array<TInvokeScriptCallArgument<TLong>>,
         paymentCurrency: string,
         paymentAmount: number
     ) {
@@ -179,7 +180,7 @@ export default class Keeper {
         pairName: string,
         contractName: string,
         method: string,
-        args: Array<ICallArgs>,
+        args: Array<TInvokeScriptCallArgument<TLong>>,
         paymentCurrency: string,
         paymentAmount: number,
         waitTx: boolean = true,
@@ -217,7 +218,7 @@ export default class Keeper {
         pairName: string,
         contractName: string,
         method: string,
-        args: Array<ICallArgs>,
+        args: Array<TInvokeScriptCallArgument<TLong>>,
         paymentCurrency: string,
         paymentAmount: number,
     ) {
@@ -232,7 +233,7 @@ export default class Keeper {
     _buildTransaction(
         dApp: string,
         method: string,
-        args: Array<ICallArgs>,
+        args: Array<TInvokeScriptCallArgument<TLong>>,
         paymentCurrency: string,
         paymentAmount: number
     ) {

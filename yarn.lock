@@ -1529,11 +1529,6 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.147.tgz#8ca5cfa9c67753dcb73e507d1bbf1c4f8ba6f029"
   integrity sha512-+0zY1Axql6ru5T85Rh6aR6Zr0xT7c0USLqsHv01b3ID//dOrV3OvpXJGjm69+4QpxoZ0oMNEfmW1ltwXe2WVzQ==
 
-"@types/long@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.0.tgz#719551d2352d301ac8b81db732acb6bdc28dbdef"
-  integrity sha512-1w52Nyx4Gq47uuu0EVcsHBxZFJgurQ+rTKS3qMHxR1GY2T8c2AJYd6vZoZ9q1rupaDjU0yT+Jc2XTyXkjeMA+Q==
-
 "@types/mime@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
@@ -1640,7 +1635,35 @@
   dependencies:
     csstype "^2.6.4"
 
-"@waves.exchange/react-uikit@^0.3.4":
+"@waves.exchange/provider-web@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/provider-web/-/provider-web-0.0.3.tgz#501d25206944cae7294f5e9fbcb5469fe6903da8"
+  integrity sha512-eQ4/sf2i0EWLLMzlSkvHncVPzXgKi5vjDZiGzg8lZCcjwRtO2W65yNKrGT90O/1EtuOS/l6m3rY0FIf48hxisw==
+  dependencies:
+    "@emotion/core" "^10.0.22"
+    "@emotion/styled" "^10.0.23"
+    "@styled-system/css" "^5.1.4"
+    "@styled-system/should-forward-prop" "^5.1.4"
+    "@types/ramda" "^0.26.38"
+    "@types/react" "^16.9.15"
+    "@types/react-dom" "^16.9.4"
+    "@types/styled-system" "^5.1.4"
+    "@waves.exchange/react-uikit" "^0.3.12"
+    "@waves/bignumber" "0.0.1"
+    "@waves/node-api-js" "0.0.1"
+    "@waves/signer" "0.0.3"
+    "@waves/ts-types" "^0.3.0"
+    "@waves/waves-browser-bus" "^0.2.3"
+    "@waves/waves-transactions" "^3.20.2"
+    emotion-theming "^10.0.19"
+    ramda "^0.26.1"
+    react "^16.12.0"
+    react-dom "^16.12.0"
+    styled-system "^5.1.4"
+    tslib "^1.10.0"
+    typed-ts-events "^1.0.5"
+
+"@waves.exchange/react-uikit@^0.3.12", "@waves.exchange/react-uikit@^0.3.4":
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.3.12.tgz#b423d183636a5e4aa767bb6ab48f44006492ba42"
   integrity sha512-BVnLK2ddNhlxeJj/38f3hAWqS90moMZQFa4HPkGaYuIPHarLXcivxPC42e9WxkyDzD+uig3U5MZuD6MjEQWuzA==
@@ -1687,24 +1710,6 @@
     "@types/bignumber.js" "^5.0.0"
     bignumber.js "^8.1.1"
 
-"@waves/blockchain-api@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@waves/blockchain-api/-/blockchain-api-0.0.1.tgz#c015718ce5b2176125c155992b7c8baa198fa7d3"
-  integrity sha512-G9vWvc5ApHCzdI+OV63R8y8nrtUg05A6B0hu41ShwNeyfbL9QhYl4VMb8qLwRjBxLftJavFcXzAKsrMTGWTpOQ==
-  dependencies:
-    "@waves/ts-types" "^0.3.1"
-
-"@waves/marshall@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@waves/marshall/-/marshall-0.8.0.tgz#83c49d3c3cc60e1282732ce310f4bdb6641eb3cc"
-  integrity sha512-YyojnIYXl8MEiIS21CPHYevHdJcqInjn/ukvulXNHkLRo4LmqMQmaeKQecleQ1Rrxw83Rb0UjDFeYdY3cRjG3g==
-  dependencies:
-    "@types/base64-js" "^1.2.5"
-    "@types/long" "^4.0.0"
-    base64-js "^1.3.0"
-    long "^4.0.0"
-    parse-json-bignumber "^0.1.2"
-
 "@waves/marshall@^0.9.1":
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/@waves/marshall/-/marshall-0.9.1.tgz#004d01757b997cf7ad9ef6322823db4779ce526c"
@@ -1730,12 +1735,23 @@
   resolved "https://registry.yarnpkg.com/@waves/parse-json-bignumber/-/parse-json-bignumber-1.0.1.tgz#ea691f532ab65f610df9425b2231d2f82b6b9619"
   integrity sha512-cbjnqkhKBHKtzQCUsqwK4c3im90BTVdho7ZSM2nq7K5Z7al93qC/qp6Q7Ts2SMXGlGQFu4C2SzU7q62n2wmPEQ==
 
-"@waves/ts-lib-crypto@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@waves/ts-lib-crypto/-/ts-lib-crypto-1.1.1.tgz#37d400fda210442d397d3509527b5fda8c4364a7"
-  integrity sha512-rU4NOa2agwpQmDAomnU2NSbnla3XvEL8PJB4hn8pKWqVxnfcyL4OwxgSUPhLZsV4SQgWasDqBpaLB3mVYf/QRA==
+"@waves/signer@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@waves/signer/-/signer-0.0.3.tgz#d3d6eda8622e04a73af3151764ae1591321ae421"
+  integrity sha512-15NRxid3GCTByoGX+SlWf0zCMQkF1znETSVOGnZLRP0TvbDASxU66FUbf4j0LzRjdzjmgTaKvufCCw3Zc1QeGw==
   dependencies:
-    node-forge "^0.8.5"
+    "@waves/node-api-js" "0.0.1"
+    "@waves/ts-types" "^0.3.1"
+    typescript-tuple "^2.2.1"
+
+"@waves/signer@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@waves/signer/-/signer-0.0.4.tgz#74b0ee3f683300cad27a82fac8a374f4f163b5cd"
+  integrity sha512-prKtAYx8ATUYGSNWpkT0Bub3HK/st2fFw/AKjmtANJpR2/mwZ7AwFo7umEfc4RRIikn2RBoCzT8P+722/Ogm+Q==
+  dependencies:
+    "@waves/node-api-js" "0.0.1"
+    "@waves/ts-types" "^0.3.1"
+    typescript-tuple "^2.2.1"
 
 "@waves/ts-lib-crypto@^1.4.1":
   version "1.4.2"
@@ -1765,28 +1781,19 @@
   dependencies:
     crypto-js "^3.1.9-1"
 
-"@waves/waves-js@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@waves/waves-js/-/waves-js-0.0.19.tgz#1c742b458b7eab39c34ca03943c06c23fcb5a204"
-  integrity sha512-Ai4AgdczGlobLzWBL4VsedsAoiqSIlxW3LmwO8oifKQb5Q6rEQA4CD1za3v4RiFtq9kIzjDA1wXMHJD5tRRgCQ==
-  dependencies:
-    "@waves/blockchain-api" "0.0.1"
-    "@waves/ts-types" "^0.3.1"
-    typescript-tuple "^2.2.1"
-
-"@waves/waves-transactions@^3.16.3":
-  version "3.16.3"
-  resolved "https://registry.yarnpkg.com/@waves/waves-transactions/-/waves-transactions-3.16.3.tgz#7daf622e8b9ee35ed831799bd3cbb1d105a5fa33"
-  integrity sha512-PDk9/AC1ZNzRqb0K8AGDX2iGsZo2/LibW82rBZ6J6jvpKwkg0VFE/ly7kLh1bFJC5oHmlE34bFB0YqnWYGfutw==
-  dependencies:
-    "@waves/marshall" "^0.8.0"
-    "@waves/ts-lib-crypto" "^1.1.1"
-    axios "^0.19.0"
-
 "@waves/waves-transactions@^3.20.2":
   version "3.24.0"
   resolved "https://registry.yarnpkg.com/@waves/waves-transactions/-/waves-transactions-3.24.0.tgz#f019aa694af2dfbeb8d51af46fd559599ae21406"
   integrity sha512-wzDK1CeP3nGn2hzWT4Em4SDNt8T3nLq7U3qnEqj4yF3zMnsis2FAf76EWRQQ9KsuatNt7i40YIu6kclMfSBLcQ==
+  dependencies:
+    "@waves/marshall" "^0.9.1"
+    "@waves/ts-lib-crypto" "^1.4.1"
+    axios "^0.19.0"
+
+"@waves/waves-transactions@^3.25.0":
+  version "3.25.0"
+  resolved "https://registry.yarnpkg.com/@waves/waves-transactions/-/waves-transactions-3.25.0.tgz#6472bffae8d83be5f782de0550865b3893679700"
+  integrity sha512-ddo/Go+hd5+0m2qglwhseSXrfhXVN24cx+60xLYD7ojz2Gw2Zk4cLU9ikXrCRPTk/qRvMFiWwlsaVPCGpB4QGg==
   dependencies:
     "@waves/marshall" "^0.9.1"
     "@waves/ts-lib-crypto" "^1.4.1"
@@ -7717,11 +7724,6 @@ loglevel@^1.6.3:
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.3.tgz#77f2eb64be55a404c9fd04ad16d57c1d6d6b1280"
   integrity sha512-LoEDv5pgpvWgPF4kNYuIp0qqSJVWak/dML0RY74xlzMZiT9w77teNAwKYKWBTYjlokMirg+o3jBwp+vlLrcfAA==
 
-long@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
-  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
-
 longest-streak@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/longest-streak/-/longest-streak-2.0.3.tgz#3de7a3f47ee18e9074ded8575b5c091f5d0a4105"
@@ -9084,11 +9086,6 @@ parse-glob@^3.0.4:
     is-dotfile "^1.0.0"
     is-extglob "^1.0.0"
     is-glob "^2.0.0"
-
-parse-json-bignumber@^0.1.2:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/parse-json-bignumber/-/parse-json-bignumber-0.1.3.tgz#8ddf51dbd5dd6d8a644a68de1ab3ed85fac22c21"
-  integrity sha512-eE2NSq0PNe3yrtGVTuxrJSpP1pm2/NTRhfhsKA8oy2jDiYAK8BETabTFSymvw3pz6uuu8c4GpWRCCuVEdDFr8g==
 
 parse-json@^2.2.0:
   version "2.2.0"
