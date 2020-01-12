@@ -93,6 +93,10 @@ export default class DalComponent {
 
         const account = await this.keeper.getAccount();
 
+        if (account === null) {
+            throw new Error('Keeper is not provided');
+        }
+
         // this.keeper.stop();
         await this.keeper.start();
         await this.balance.start(account.address);

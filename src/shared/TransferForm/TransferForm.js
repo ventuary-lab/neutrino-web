@@ -66,7 +66,6 @@ export default class TransferForm extends React.PureComponent {
                     }}
                 />
                 <NumberField
-                    min={1}
                     step="any"
                     inputProps={{
                         autoComplete: 'off'
