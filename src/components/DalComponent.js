@@ -22,27 +22,40 @@ export default class DalComponent {
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
         this.userController = new UserController();
-        this.balance.onUpdate = async () => {};
 
+        this.balance.onUpdate = this.onListenerUpdate.bind(this);
         this.keeper = new Keeper(this);
-        this.keeper.onUpdate = async () => { // unused addres argument provided
-
-            if (this.keeper.isAuthByKeeper()) {
-                const account = await this.keeper.getAccount();
-
-                this.balance.stop();
-                await this.balance.start(account.address);
-
-                const user = this.constructUserData(account);
-
-                this.userController.updateUser({ user });
-            }
-        };
+        this.keeper.onUpdate = this.onListenerUpdate.bind(this);
         this.signerNetworkByte = 87;
+        this.webKeeperUserData = null;
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
+    }
+
+    async onListenerUpdate () {
+        let account;
+
+        if (this.keeper.isAuthByKeeper()) {
+            account = await this.keeper.getAccount();
+        } else if (this.keeper.isAuthByWebKeeper()) {
+            account = {
+                ...this.webKeeperUserData,
+                // network: String.fromCharCode(this.signerNetworkByte) === 'W' ? 'mainnet' : 'testnet',
+                network: this.getNetworkOfByte()
+            };
+        } else {
+            return;
+        }
+
+        await this.keeper.start();
+        // console.log(account.address, 'a.a');
+        await this.balance.start(account.address);
+
+        const user = this.constructUserData(account);
+
+        this.userController.updateUser({ user });
     }
 
     async loginByWebKeeper() {
@@ -52,26 +65,27 @@ export default class DalComponent {
             return;
         }
 
+        this.webKeeperUserData = userData;
+
         this.keeper.setWebKeeperAuthType();
 
         await this.keeper.start();
         await this.balance.start(userData.address);
 
-        // console.log()
-
-        const user = {
-            role: UserRole.REGISTERED,
+        const user = this.constructUserData({
             address: userData.address,
-            network:
-                String.fromCharCode(
-                    userData.networkByte || this.signerNetworkByte
-                ) === 'W' ? 'mainnet' : 'testnet',
-            balances: this.balance.getBalances(),
-        };
+            network: this.getNetworkOfByte(userData.networkByte)
+        });
 
         this.userController.updateUser({ user });
 
         return user;
+    }
+
+    getNetworkOfByte (networkByte, defaultByte = this.signerNetworkByte) {
+        return String.fromCharCode(
+            networkByte || defaultByte
+        ) === 'W' ? 'mainnet' : 'testnet';
     }
 
     constructUserData(account) {
@@ -265,7 +279,8 @@ export default class DalComponent {
             pairName,
             address,
             amount,
-            this.assets[paymentCurrency] || 'WAVES'
+            this.assets[paymentCurrency] || 'WAVES',
+            paymentCurrency
         );
     }
 }

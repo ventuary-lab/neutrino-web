@@ -324,20 +324,21 @@ export default class Keeper {
     async _buildTransferTransaction() {}
 
     async transfer(
-        // pairName: string,
+        pairName: string, // it's not used ?
         recipient: string,
         amount: string,
         assetId: string,
-        fee: string
+        // fee: string,
+        paymentCurrency: string
     ) {
-        const isWebKeeperReady = await webKeeper.isReady();
+        // const isWebKeeperReady = await webKeeper.isReady();
 
-        if (isWebKeeperReady && this.isAuthByWebKeeper()) {
-            webKeeper.transfer(
+        if (this.isAuthByWebKeeper()) {
+            await webKeeper.transfer(
                 recipient,
-                amount,
+                Number(amount) * CurrencyEnum.getContractPow(paymentCurrency),
                 assetId
-            )
+            );
             return;
         }
 
