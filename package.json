@@ -21,7 +21,7 @@
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.147",
     "@types/react-modal": "^3.10.0",
-    "@waves.exchange/storage-provider": "0.0.22",
+    "@waves.exchange/storage-provider": "^0.0.21",
     "@waves/waves-crypto": "^3.0.17",
     "@waves/waves-js": "^0.0.19",
     "@waves/waves-transactions": "^3.16.3",

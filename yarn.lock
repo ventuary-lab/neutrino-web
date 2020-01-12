@@ -1640,10 +1640,10 @@
   dependencies:
     csstype "^2.6.4"
 
-"@waves.exchange/react-uikit@^0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.3.6.tgz#90ba178dd7b9cece0b9a8271ee1bf6bc7dbc1652"
-  integrity sha512-QsUeF2wlV9M2fEM1PRHKn/QPwUQebOmL4ga9xiRQrDxDpGlwDZtpftdr0DllVYRPR1Ey/CxjLos0FULTgklCyA==
+"@waves.exchange/react-uikit@^0.3.4":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.3.12.tgz#b423d183636a5e4aa767bb6ab48f44006492ba42"
+  integrity sha512-BVnLK2ddNhlxeJj/38f3hAWqS90moMZQFa4HPkGaYuIPHarLXcivxPC42e9WxkyDzD+uig3U5MZuD6MjEQWuzA==
   dependencies:
     "@styled-system/css" "^5.1.4"
     "@types/ramda" "^0.26.36"
@@ -1653,20 +1653,19 @@
     identity-img "^2.0.0"
     ramda "^0.26.1"
 
-"@waves.exchange/storage-provider@0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/storage-provider/-/storage-provider-0.0.22.tgz#0a1c222a7128d0cccd1d34565b7e97d1ee9e5652"
-  integrity sha512-z3GAOxyzqQQTmrrzT7pBo3gleicMu3KroU69lPc0/u+p/lXDj/je9OKq/IdTDrQvJ9WrBy1s7gbAiwMkDrKMHw==
+"@waves.exchange/storage-provider@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/storage-provider/-/storage-provider-0.0.21.tgz#dfce0c40b0c4e6634a6fd7c10206dd8066eac741"
+  integrity sha512-86FQCcjwdE2Jr5a4kokZiUgD1QCPemvSaRVw9S33+X3pomJ2ktUyRinQZUGjnJz++cYBMJ29VsUeyAwFjdL8jA==
   dependencies:
     "@emotion/core" "^10.0.22"
     "@emotion/styled" "^10.0.23"
-    "@styled-system/css" "^5.1.4"
     "@styled-system/should-forward-prop" "^5.1.4"
     "@types/ramda" "^0.26.38"
     "@types/react" "^16.9.15"
     "@types/react-dom" "^16.9.4"
     "@types/styled-system" "^5.1.4"
-    "@waves.exchange/react-uikit" "^0.3.6"
+    "@waves.exchange/react-uikit" "^0.3.4"
     "@waves/bignumber" "0.0.1"
     "@waves/node-api-js" "0.0.1"
     "@waves/ts-types" "^0.3.0"
