@@ -139,6 +139,7 @@ export default class BoundsDashboard extends React.PureComponent {
                                             items: this.props.userOrders.history,
                                             pairName: this.props.pairName,
                                             isHistory: true,
+                                            controlPrice
                                         },
                                     },
                                 ]}

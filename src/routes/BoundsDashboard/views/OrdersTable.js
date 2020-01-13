@@ -32,8 +32,8 @@ export default class OrdersTable extends React.PureComponent {
         isHistory: false,
     };
 
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
 
         this.getTableHead = this.getTableHead.bind(this);
         this.getTableBody = this.getTableBody.bind(this);
@@ -63,8 +63,9 @@ export default class OrdersTable extends React.PureComponent {
             roi: {
                 label: 'ROI',
                 get: (order, controlPrice) => {
-                    console.log({ restAmount: order.restAmount }, order.restAmount, order.total, controlPrice, computeROI(order.restAmount, order.total, controlPrice));
-                    return order.amount && order.total ? _round(computeROI(order.restAmount, order.total, controlPrice), 2) : '--'
+                    console.log({ restAmount: order.restAmount, amount: order.amount }, order.total, controlPrice, computeROI(order.restAmount, order.total, controlPrice));
+
+                    return order.amount && order.total ? _round(computeROI(order.restAmount, order.total, controlPrice), 2) : '--';
                 }
             },
             waves: {
