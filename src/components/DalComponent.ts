@@ -1,4 +1,3 @@
-// import { get as _get, isEqual as _isEqual } from 'lodash';
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
 import { store } from 'components';

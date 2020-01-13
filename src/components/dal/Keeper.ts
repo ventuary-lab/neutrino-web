@@ -1,5 +1,6 @@
 import { waitForTx, broadcast } from '@waves/waves-transactions';
 import { IInvoke, TLong } from '@waves/signer/cjs/interface';
+import { invert as _invert } from 'lodash';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import {
     isString as _isString,
@@ -153,10 +154,14 @@ export default class Keeper {
         dApp: string,
         method: string,
         args: Array<TInvokeScriptCallArgument<TLong>>,
-        paymentCurrency: string,
+        paymentCurrencyOrAssetId: string,
         paymentAmount: number
     ): IInvoke {
-        console.log(...arguments);
+        const assetsDict = Object.assign({}, this.dal.assets);
+        const invertedAssetsDict = _invert(assetsDict);
+        const paymentCurrency = paymentCurrencyOrAssetId !== CurrencyEnum.WAVES ? invertedAssetsDict[paymentCurrencyOrAssetId] : CurrencyEnum.WAVES;
+
+        console.log(paymentCurrency);
 
         const tx: IInvoke = {
             dApp,
@@ -164,7 +169,7 @@ export default class Keeper {
             // payment?: Array<IMoney>;
             payment: !paymentAmount ? [] : [
                 {
-                    assetId: paymentCurrency || 'WAVES',
+                    assetId: paymentCurrencyOrAssetId || CurrencyEnum.WAVES,
                     amount: Number(paymentAmount) * CurrencyEnum.getContractPow(paymentCurrency),
                 },
             ],
@@ -243,7 +248,7 @@ export default class Keeper {
             type: 16,
             data: {
                 fee: {
-                    assetId: 'WAVES',
+                    assetId: CurrencyEnum.WAVES,
                     tokens: String(this.fee),
                 },
                 dApp,
@@ -258,7 +263,7 @@ export default class Keeper {
                     ? []
                     : [
                           {
-                              assetId: paymentCurrency || 'WAVES',
+                              assetId: paymentCurrency || CurrencyEnum.WAVES,
                               tokens: String(paymentAmount),
                           },
                       ],
@@ -353,7 +358,7 @@ export default class Keeper {
                 },
                 // fee: 'WAVES',
                 fee: {
-                    assetId: 'WAVES',
+                    assetId: CurrencyEnum.WAVES,
                     tokens: '0.001',
                 },
                 recipient: recipient,
