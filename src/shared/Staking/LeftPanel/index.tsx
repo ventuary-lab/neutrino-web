@@ -5,7 +5,7 @@ import AccountBalance from './../AccountBalance';
 import StakingBalance from './../StakingBalance';
 import AnnualYieldInfo from './../AnnualYieldInfo';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import { User } from 'contractControllers/types';
+import { IUser } from 'contractControllers/types';
 
 const bem = html.bem('StakingLeftPanel');
 
@@ -14,7 +14,7 @@ import './style.scss';
 interface Props {
     pairName: string;
     stakingBalance: number;
-    user: User | null;
+    user: IUser | null;
 }
 
 const ListItem = ({ children }) => {

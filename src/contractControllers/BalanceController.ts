@@ -4,11 +4,8 @@ import { round as _round, isEqual as _isEqual, get as _get, floor as _floor } fr
 import CurrencyEnum from '../enums/CurrencyEnum';
 import DalComponent from '../components/DalComponent';
 
+import { BalanceDictionary } from './types';
 import { getAddressDefaultBalance, getAssetBalanceInfo } from './helpers';
-
-interface BalanceDictionary {
-    [key: string]: number | null;
-}
 
 export default class BalanceController {
     private dal: DalComponent | null;
@@ -30,7 +27,7 @@ export default class BalanceController {
         this._next = this._next.bind(this);
     }
 
-    updateAddress (address) {
+    updateAddress(address) {
         this._address = address;
     }
 

@@ -1,10 +1,10 @@
-import { WavesKeeperAccount } from './../components/dal/types';
 import { store } from 'components';
 import { isEqual as _isEqual } from 'lodash';
 import { setUser } from 'yii-steroids/actions/auth';
+import { IUser } from './types';
 
 interface IUpdateUserDataAction {
-    user: WavesKeeperAccount;
+    user: IUser;
 }
 
 class UserController {

@@ -1,5 +1,5 @@
 import { waitForTx, broadcast } from '@waves/waves-transactions';
-import { IInvoke, ITXBase, TLong } from '@waves/signer/cjs/interface';
+import { IInvoke, TLong } from '@waves/signer/cjs/interface';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import {
     isString as _isString,
@@ -155,7 +155,9 @@ export default class Keeper {
         args: Array<TInvokeScriptCallArgument<TLong>>,
         paymentCurrency: string,
         paymentAmount: number
-    ) {
+    ): IInvoke {
+        console.log(...arguments);
+
         const tx: IInvoke = {
             dApp,
             fee: 0.09 * CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
@@ -163,7 +165,7 @@ export default class Keeper {
             payment: !paymentAmount ? [] : [
                 {
                     assetId: paymentCurrency || 'WAVES',
-                    amount: Number(paymentAmount) * CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
+                    amount: Number(paymentAmount) * CurrencyEnum.getContractPow(paymentCurrency),
                 },
             ],
             call: {
@@ -329,7 +331,6 @@ export default class Keeper {
         recipient: string,
         amount: string,
         assetId: string,
-        // fee: string,
         paymentCurrency: string
     ) {
         // const isWebKeeperReady = await webKeeper.isReady();

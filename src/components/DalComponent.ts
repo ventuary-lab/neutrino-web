@@ -2,6 +2,7 @@
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
 import { store } from 'components';
+import { IUserData } from '@waves/signer/cjs/interface';
 
 import BalanceController from '../contractControllers/BalanceController';
 import UserController from '../contractControllers/UserController';
@@ -10,10 +11,27 @@ import Keeper from './dal/Keeper';
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
+import { IUser } from '../contractControllers/types';
+import { IDalComponent, IDalNetwork, IDalContractsDict } from './types';
 
-// export const STORAGE_AUTH_KEY = 'isAuth';
+declare global {
+    interface Window {
+        dal?: DalComponent;
+    }
+}
 
-export default class DalComponent {
+export default class DalComponent implements IDalComponent {
+    network: IDalNetwork | null;
+    nodeUrl: string;
+    assets: Record<string, string>;
+    contracts: IDalContractsDict;
+    hoc: () => void;
+    balance: BalanceController;
+    userController: UserController;
+    keeper: Keeper;
+    signerNetworkByte: 87;
+    webKeeperUserData: IUserData | null;
+
     constructor() {
         this.network = null;
         this.nodeUrl = null;
@@ -61,6 +79,8 @@ export default class DalComponent {
     async loginByWebKeeper() {
         const userData = await this.keeper.loginByWebKeeper();
 
+        console.log(this);
+
         if (!userData) {
             return;
         }
@@ -74,7 +94,8 @@ export default class DalComponent {
 
         const user = this.constructUserData({
             address: userData.address,
-            network: this.getNetworkOfByte(userData.networkByte)
+            // network: this.getNetworkOfByte(userData.networkByte)
+            network: this.getNetworkOfByte()
         });
 
         this.userController.updateUser({ user });
@@ -82,13 +103,13 @@ export default class DalComponent {
         return user;
     }
 
-    getNetworkOfByte (networkByte, defaultByte = this.signerNetworkByte) {
+    getNetworkOfByte (networkByte?: number, defaultByte = this.signerNetworkByte) {
         return String.fromCharCode(
             networkByte || defaultByte
         ) === 'W' ? 'mainnet' : 'testnet';
     }
 
-    constructUserData(account) {
+    constructUserData(account) : IUser | null {
         return account ? {
             role: UserRole.REGISTERED,
             address: account.address,
