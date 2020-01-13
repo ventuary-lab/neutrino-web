@@ -54,7 +54,7 @@ export default class OrdersTable extends React.PureComponent {
             },
             usdnb: {
                 label: 'USD-NB',
-                get: item => item.restAmount || '--'
+                get: item => item.total && item.price ? _round(item.total / (item.price / 100), 2) : '--'
             },
             price: {
                 label: 'Price',
@@ -65,7 +65,9 @@ export default class OrdersTable extends React.PureComponent {
                 get: (order, controlPrice) => {
                     console.log({ restAmount: order.restAmount, amount: order.amount }, order.total, controlPrice, computeROI(order.restAmount, order.total, controlPrice));
 
-                    return order.amount && order.total ? _round(computeROI(order.restAmount, order.total, controlPrice), 2) : '--';
+                    return order.amount && order.total ? _round(
+                        computeROI(_round(order.total / (order.price / 100), 2), order.total, controlPrice), 2
+                    ) : '--';
                 }
             },
             waves: {
@@ -84,7 +86,7 @@ export default class OrdersTable extends React.PureComponent {
         };
 
         this.state = {
-            sort: ['amount', 'desc'],
+            sort: ['time', 'desc'],
             search: '',
         };
     }
@@ -144,10 +146,12 @@ export default class OrdersTable extends React.PureComponent {
         );
     }
 
-    getTableBody(items) {
+    getTableBody(rawItems) {
         const { controlPrice } = this.props;
 
         const { fieldTable } = this;
+        const items = rawItems
+            .filter(item => moment(item.timestamp).isAfter(moment('01.12.2020'))); // 12 of Jan
 
         return (
             <tbody>
