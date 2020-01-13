@@ -80,13 +80,17 @@ module.exports = class BaseCollection {
             });
 
         const data = {};
+
         ids.forEach(id => {
             data[id] = {};
+
             this.getKeys(id).forEach(key => {
                 const keyRegexp = new RegExp(key);
+
                 Object.keys(nodeData)
                     .forEach(nodeKey => {
                         const match = keyRegexp.exec(nodeKey);
+
                         if (match) {
                             data[id][nodeKey] = nodeData[nodeKey];
                         }
