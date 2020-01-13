@@ -77,9 +77,7 @@ export default class OrdersTable extends React.PureComponent {
             },
             status: {
                 label: 'Status',
-                get: item => (
-                    _isInteger(item.restTotal) ? item.restTotal : _isInteger(item.total)
-                ) ? item.total : '--'
+                get: item => item.status || '--'
             },
             cancelall: {
                 label: 'Cancel All'
