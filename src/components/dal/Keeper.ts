@@ -165,7 +165,7 @@ export default class Keeper {
 
         const tx: IInvoke = {
             dApp,
-            fee: 0.09 * CurrencyEnum.getContractPow(CurrencyEnum.WAVES),
+            fee: Math.round(0.009 * CurrencyEnum.getContractPow(CurrencyEnum.WAVES)),
             // payment?: Array<IMoney>;
             payment: !paymentAmount ? [] : [
                 {
