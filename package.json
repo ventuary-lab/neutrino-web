@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --project tsconfig-node.json --log-error server.js",
-    "serve-no-update": "ts-node-dev --project tsconfig-node.json --log-error server.js --port 5001",
+    "serve-no-update": "ts-node --project tsconfig-node.json --log-error server.js --port 5001",
     "serve": "ts-node --project tsconfig-node.json --log-error server.js --noupdate",
     "dev": "node webpack",
     "build": "node webpack production",
