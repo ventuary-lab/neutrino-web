@@ -4,7 +4,7 @@ import {
     round as _round,
     sum as _sum,
     groupBy as _groupBy,
-    orderBy as _orderBy
+    orderBy as _orderBy,
 } from 'lodash';
 
 import { html } from 'components';
@@ -19,7 +19,7 @@ import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
 
-function OrderBookTitle ({ title, amount }) {
+function OrderBookTitle({ title, amount }) {
     return (
         <div className={bem.element('orb-title')}>
             <span>{title}</span>
@@ -99,17 +99,21 @@ export default class OrderBook extends React.PureComponent {
                 )}
             </div>
         );
-        const groupedOrders = _groupBy(orders, 'price');
-        const sortedKeys = _orderBy(Object.keys(groupedOrders), null, 'desc');
+        
+        let groupedOrders = _groupBy(orders, 'price');
+        const sortedKeys = _orderBy(Object.keys(groupedOrders).map(item => Number(item)), null, 'desc');
 
         const wavesByUsdAmount = _round(controlPrice / 100, 2);
         const usdnByWavesAmount = _round(1 / wavesByUsdAmount, 2);
 
         return (
             <div className={bem.block()}>
-                <div className={bem.element('title')} style={{ display: !controlPrice ? 'none' : '' }}>
+                <div
+                    className={bem.element('title')}
+                    style={{ display: !controlPrice ? 'none' : '' }}
+                >
                     <OrderBookTitle title={'WAVES / USD: '} amount={wavesByUsdAmount} />
-                    <OrderBookTitle title={'USD-N / WAVES: '} amount={usdnByWavesAmount}/>
+                    <OrderBookTitle title={'USD-N / WAVES: '} amount={usdnByWavesAmount} />
                 </div>
                 <div className={bem.element('header-row')}>
                     <div className={bem.element('header-column', 'upper-case')}>
