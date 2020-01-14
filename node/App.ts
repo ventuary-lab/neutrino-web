@@ -9,10 +9,12 @@ import WebSocketServer from './components/WebSocketServer';
 import MassPaymentService from './services/MassPaymentService';
 import HeightListener from './components/HeightListener';
 import WavesTransport from './components/WavesTransport';
+import { grabProcessArgumentValue } from './helpers';
 import PairsEnum from './enums/PairsEnum';
 import ContractEnum from './enums/ContractEnum';
 import CurrencyEnum from './enums/CurrencyEnum';
 import CollectionEnum from './enums/CollectionEnum';
+
 import { ProcessArguments } from './types';
 import {
     DAppPairs,
@@ -280,6 +282,7 @@ module.exports = class App implements ApplicationParams {
         }
 
         this._isNowUpdated = true;
+        const threadName = grabProcessArgumentValue(process.argv, '--thread');
 
         try {
             for (const pairName of PairsEnum.getKeys()) {
@@ -293,7 +296,7 @@ module.exports = class App implements ApplicationParams {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
-                    this.logger.info('Update all data in collection... ' + collectionName);
+                    this.logger.info(`Thread ${threadName}. Update all data in collection... ${collectionName}`);
 
                     if (shouldFlush) {
                         await collection.removeAll();

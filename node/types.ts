@@ -50,5 +50,6 @@ export interface ContractDataRecord {
 }
 
 export enum ProcessArguments {
-    NO_UPDATE_ARG = '--noupdate'
+    NO_UPDATE_ARG = '--noupdate',
+    THREAD_NAME = '--thread'
 }

@@ -66,7 +66,6 @@ module.exports = class BaseCollection {
     }
 
     async updateAll(nodeData) {
-        this.logger.debug('Update all items of ' + this.pairName + ':' + this.collectionName + ' collection... ');
 
         // Get ids
         const ids = [];
