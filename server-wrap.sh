@@ -11,9 +11,9 @@ serve_no_update_pid=?;
 function run_with_restarts {
     if [ $command != "?" ]
     then
-        sudo npm run $command &
+        npm run $command &
         current_pid=$!;
-        sudo npm run serve-no-update &
+        npm run serve-no-update &
         serve_no_update_pid=$!;
 
         echo "PID is $current_pid; serve_no_update_pid is $serve_no_update_pid;"
@@ -26,8 +26,8 @@ function run_with_restarts {
 
     sleep $restart_timeout;
 
-    sudo kill -9 $current_pid;
-    sudo kill -9 $serve_no_update_pid;
+    kill -9 $current_pid;
+    kill -9 $serve_no_update_pid;
 
     echo 'Restart app in 10 seconds...'
 
