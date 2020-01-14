@@ -13,6 +13,7 @@ import PairsEnum from './enums/PairsEnum';
 import ContractEnum from './enums/ContractEnum';
 import CurrencyEnum from './enums/CurrencyEnum';
 import CollectionEnum from './enums/CollectionEnum';
+import { ProcessArguments } from './types';
 import {
     DAppPairs,
     ApplicationParams,
@@ -170,7 +171,10 @@ module.exports = class App implements ApplicationParams {
             }
         }
 
-        await this._updateAll(this.isCleaningRedis);
+        if (!process.argv.includes(ProcessArguments.NO_UPDATE_ARG)) {
+            await this._updateAll(this.isCleaningRedis);
+        }
+
         this._isSkipUpdates = false;
     }
 
