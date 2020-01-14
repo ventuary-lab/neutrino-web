@@ -81,7 +81,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
         this.setState({
             dependPrice,
-            isButtonDisabled: roi < 0 || roi > 100,
+            isButtonDisabled: wavesRawAmount < 10 || roi < 0 || roi > 100,
             roi: (roi === Infinity || roi === -Infinity) ? null : roi
         });
     }
