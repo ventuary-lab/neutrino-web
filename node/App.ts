@@ -131,7 +131,7 @@ module.exports = class App implements ApplicationParams {
         this._isNowUpdated = false;
         this._isNeedUpdateAgain = false;
 
-        this._collectionUpdateTimeout = 30000;
+        this._collectionUpdateTimeout = 3000;
     }
 
     async start() {
