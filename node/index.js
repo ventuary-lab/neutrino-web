@@ -22,7 +22,7 @@ if (process.env.APP_ENV) {
 
 console.log(process.argv);
 // Create app
-const port = process.env.PORT || grabProcessArgumentValue(process.argv, '--port') || 5000;
+const port = grabProcessArgumentValue(process.argv, '--port') || process.env.PORT || 5000;
 const httpServer = expressApp.listen(port, () => {
     console.log(__dirname); // eslint-disable-line no-console
     console.log('Listening Port ' + port); // eslint-disable-line no-console
