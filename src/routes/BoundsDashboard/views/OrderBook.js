@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { html } from 'components';
 import {
     round as _round,
     sum as _sum,
     groupBy as _groupBy,
     orderBy as _orderBy,
 } from 'lodash';
-
-import { html } from 'components';
+import { computeROIForOrder } from './helpers';
 
 import './OrderBook.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
-// import { Utils } from 'ui/global/utils';
-// import OrderStatusEnum from 'enums/OrderStatusEnum';
-import { computeROI } from 'reducers/contract/helpers';
+// import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
 
@@ -48,22 +46,11 @@ export default class OrderBook extends React.PureComponent {
 
         return _round(
             _sum(
-                groupedField.map(order => {
-                    return computeROI(order.amount, order.total, controlPrice);
-                })
-            ),
+                groupedField.map(order => computeROIForOrder(order, controlPrice))
+            ) / groupedField.length,
             2
         );
     }
-
-    // getCommonROI (orders) {
-    //     const ROIs = orders.map(order => this.computeROIForField(order));
-    //     return Math.max(...ROIs);
-    // }
-
-    // getCommonPrice (orders) {
-
-    // }
 
     render() {
         const { orders, controlPrice } = this.props;
