@@ -122,11 +122,10 @@ export default class BuyBoundsForm extends React.PureComponent {
                     ]}
                 >
                     <NumberField
-                        min={0}
-                        step="any"
                         inputProps={{
                             autoComplete: 'off',
-                            value: this.getPriceValue()
+                            value: this.getPriceValue(),
+                            type: 'text'
                         }}
                         label={__('Price')}
                         layoutClassName={bem.element('input')}
@@ -141,12 +140,11 @@ export default class BuyBoundsForm extends React.PureComponent {
                         <span>{roi}%</span>
                     </span>
                     <NumberField
-                        min={1}
-                        step="any"
                         required
                         inputProps={{
                             autoComplete: 'off',
                             onFocus: () => (this.isBoundsFieldFocused = true),
+                            type: 'text'
                         }}
                         label={__('Receive')}
                         layoutClassName={bem.element('input')}
@@ -157,12 +155,11 @@ export default class BuyBoundsForm extends React.PureComponent {
                         }}
                     />
                     <NumberField
-                        min={1}
                         required
-                        step="any"
                         inputProps={{
                             autoComplete: 'off',
                             onFocus: () => (this.isBoundsFieldFocused = false),
+                            type: 'text'
                         }}
                         label={__('Send')}
                         layoutClassName={bem.element('input')}
