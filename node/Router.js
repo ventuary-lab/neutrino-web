@@ -249,12 +249,14 @@ module.exports = class Router {
                     opened: [],
                     history: [],
                 };
+
                 for (let pairName of PairsEnum.getKeys()) {
                     for (let collectionName of [
                         CollectionEnum.BONDS_ORDERS,
                         CollectionEnum.NEUTRINO_ORDERS,
                     ]) {
                         const collection = this.app.getCollection(pairName, collectionName);
+
                         result.opened = result.opened.concat(
                             await collection.getUserOpenedOrders(request.params.address)
                         );

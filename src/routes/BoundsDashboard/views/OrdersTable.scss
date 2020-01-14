@@ -9,6 +9,9 @@
   overflow: auto;
   @include scrollbar;
 
+  max-height: calc(100vh - 200px);
+  min-height: 400px;
+
   table {
     width: 100%;
     border-collapse: collapse;

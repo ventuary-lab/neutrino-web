@@ -68,7 +68,7 @@ module.exports = class BondsOrders extends BaseCollection {
             restTotal: _round((total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),
             status: item['order_status_' + id],
             index: index !== -1 ? index : null,
-            amount: _round(total / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
+            amount: _round(total / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100)), // Bonds amount
             filledAmount: _round(filledTotal / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             restAmount: _round((total - filledTotal) / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             pairName: this.pairName,

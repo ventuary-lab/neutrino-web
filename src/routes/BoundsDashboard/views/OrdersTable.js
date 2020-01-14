@@ -32,8 +32,8 @@ export default class OrdersTable extends React.PureComponent {
         isHistory: false,
     };
 
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
 
         this.getTableHead = this.getTableHead.bind(this);
         this.getTableBody = this.getTableBody.bind(this);
@@ -54,7 +54,8 @@ export default class OrdersTable extends React.PureComponent {
             },
             usdnb: {
                 label: 'USD-NB',
-                get: item => item.restAmount || '--'
+                // get: item => item.total && item.price ? _round(item.total / (item.price / 100), 2) : '--'
+                get: item => item.amount || '--'
             },
             price: {
                 label: 'Price',
@@ -63,19 +64,20 @@ export default class OrdersTable extends React.PureComponent {
             roi: {
                 label: 'ROI',
                 get: (order, controlPrice) => {
-                    console.log({ restAmount: order.restAmount }, order.restAmount, order.total, controlPrice, computeROI(order.restAmount, order.total, controlPrice));
-                    return order.amount && order.total ? _round(computeROI(order.restAmount, order.total, controlPrice), 2) : '--'
+
+                    return order.amount && order.total ? _round(
+                        computeROI(_round(order.total / (order.price / 100), 2), order.total, controlPrice), 2
+                    ) : '--';
                 }
             },
             waves: {
                 label: 'WAVES',
-                get: (item, controlPrice) => item.restAmount && controlPrice ? _round(item.restAmount / (controlPrice / 100), 2) : '--'
+                // get: (item, controlPrice) => item.restAmount && controlPrice ? _round(item.restAmount / (controlPrice / 100), 2) : '--'
+                get: (item, controlPrice) => item.total || '--'
             },
             status: {
                 label: 'Status',
-                get: item => (
-                    _isInteger(item.restTotal) ? item.restTotal : _isInteger(item.total)
-                ) ? item.total : '--'
+                get: item => item.status || '--'
             },
             cancelall: {
                 label: 'Cancel All'
@@ -83,7 +85,7 @@ export default class OrdersTable extends React.PureComponent {
         };
 
         this.state = {
-            sort: ['amount', 'desc'],
+            sort: ['time', 'desc'],
             search: '',
         };
     }
@@ -143,10 +145,12 @@ export default class OrdersTable extends React.PureComponent {
         );
     }
 
-    getTableBody(items) {
+    getTableBody(rawItems) {
         const { controlPrice } = this.props;
 
         const { fieldTable } = this;
+        const items = rawItems
+            .filter(item => moment(item.timestamp).isAfter(moment('01.12.2020'))); // 12 of Jan
 
         return (
             <tbody>
