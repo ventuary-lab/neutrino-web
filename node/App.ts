@@ -282,7 +282,7 @@ module.exports = class App implements ApplicationParams {
         }
 
         this._isNowUpdated = true;
-        const threadName = grabProcessArgumentValue(process.argv, '--thread');
+        const threadName = grabProcessArgumentValue(process.argv, ProcessArguments.THREAD_NAME);
 
         try {
             for (const pairName of PairsEnum.getKeys()) {

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --project tsconfig-node.json --log-error server.js",
+    "start": "ts-node-dev --project tsconfig-node.json --log-error server.js --thread develop",
     "serve-and-update": "ts-node --project tsconfig-node.json --log-error server.js --port 5001 --thread serve-and-update",
     "serve": "ts-node --project tsconfig-node.json --log-error server.js --noupdate --thread main",
     "dev": "node webpack",
