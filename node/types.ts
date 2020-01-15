@@ -48,3 +48,8 @@ export interface ContractDataRecord {
     value: number;
     key: string;
 }
+
+export enum ProcessArguments {
+    NO_UPDATE_ARG = '--noupdate',
+    THREAD_NAME = '--thread'
+}

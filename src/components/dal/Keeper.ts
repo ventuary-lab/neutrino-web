@@ -159,9 +159,11 @@ export default class Keeper {
     ): IInvoke {
         const assetsDict = Object.assign({}, this.dal.assets);
         const invertedAssetsDict = _invert(assetsDict);
-        const paymentCurrency = paymentCurrencyOrAssetId !== CurrencyEnum.WAVES ? invertedAssetsDict[paymentCurrencyOrAssetId] : CurrencyEnum.WAVES;
+        const paymentCurrency = paymentCurrencyOrAssetId !== CurrencyEnum.WAVES ? (
+            invertedAssetsDict[paymentCurrencyOrAssetId] || CurrencyEnum.WAVES
+        )  : CurrencyEnum.WAVES;
 
-        console.log(paymentCurrency);
+        console.log({ assetsDict, invertedAssetsDict, paymentCurrency, paymentAmount });
 
         const tx: IInvoke = {
             dApp,
@@ -271,6 +273,7 @@ export default class Keeper {
         };
         if (process.env.NODE_ENV !== 'production') {
             console.log('Transaction:', transaction); // eslint-disable-line no-console
+            console.log('Transaction:', JSON.stringify(transaction));
         }
         return transaction;
     }

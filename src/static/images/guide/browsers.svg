@@ -16,7 +16,7 @@
         <rect x="238.836" y="7.42188" width="36.3281" height="36.3281" fill="url(#pattern0)"/>
     </g>
     <defs>
-        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+        <pattern id="pattern0" patternContentUnits="objectBondingBox" width="1" height="1">
             <use xlink:href="#image0" transform="scale(0.005)"/>
         </pattern>
         <linearGradient id="paint0_linear" x1="196.23" y1="8.9401" x2="196.23" y2="41.1179" gradientUnits="userSpaceOnUse">

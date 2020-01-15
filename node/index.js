@@ -2,7 +2,7 @@ const App = require('./App');
 const express = require('express');
 const expressApp = express();
 const Sentry = require('@sentry/node');
-// const { isNextJsPrefixed } = require('./helpers');
+const { grabProcessArgumentValue } = require('./helpers');
 
 require('dotenv').config();
 
@@ -20,8 +20,9 @@ if (process.env.APP_ENV) {
     // Sentry.init({ dsn: sentryDsn['locale'] });
 }
 
+console.log(process.argv);
 // Create app
-const port = process.env.PORT || 5000;
+const port = grabProcessArgumentValue(process.argv, '--port') || process.env.PORT || 5000;
 const httpServer = expressApp.listen(port, () => {
     console.log(__dirname); // eslint-disable-line no-console
     console.log('Listening Port ' + port); // eslint-disable-line no-console

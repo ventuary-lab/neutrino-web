@@ -66,7 +66,6 @@ module.exports = class BaseCollection {
     }
 
     async updateAll(nodeData) {
-        this.logger.debug('Update all items of ' + this.pairName + ':' + this.collectionName + ' collection... ');
 
         // Get ids
         const ids = [];
@@ -80,13 +79,17 @@ module.exports = class BaseCollection {
             });
 
         const data = {};
+
         ids.forEach(id => {
             data[id] = {};
+
             this.getKeys(id).forEach(key => {
                 const keyRegexp = new RegExp(key);
+
                 Object.keys(nodeData)
                     .forEach(nodeKey => {
                         const match = keyRegexp.exec(nodeKey);
+
                         if (match) {
                             data[id][nodeKey] = nodeData[nodeKey];
                         }

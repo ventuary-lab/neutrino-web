@@ -355,6 +355,8 @@ export default class Layout extends React.PureComponent {
 
         const { customViewRoutes } = this;
 
+        console.log({ isBlurred });
+
         const children =
             customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
                 <div className={bem.element('inner')}>

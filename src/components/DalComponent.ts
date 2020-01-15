@@ -1,5 +1,7 @@
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
+import axios from 'axios';
+import { get as _get } from 'lodash';
 import { store } from 'components';
 import { IUserData } from '@waves/signer/cjs/interface';
 
@@ -206,20 +208,30 @@ export default class DalComponent implements IDalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, paymentCurrency, bondsAmount, position) {
-        if (price <= 0 || price >= 1) {
-            return;
-        }
+    async setBondOrder(pairName, price, paymentCurrency, sendAmount) {
+        // if (price <= 0 || price >= 100) {
+        //     return;
+        // }
+        // price = Math.round(price * 100) / 100;
         const contractPrice = Math.round(price * 100);
 
-        if (price > 0 && bondsAmount > 0 && Number.isInteger(position)) {
+        let position = _get(
+            await axios.get(`/api/v1/bonds/${pairName}/position`, {
+                params: { price: contractPrice },
+            }),
+            'data.position'
+        );
+
+        console.log({ price, sendAmount, position });
+
+        if (price > 0 && sendAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
                 'addBuyBondOrder',
                 [contractPrice, position],
-                this.assets[paymentCurrency],
-                bondsAmount * price
+                'WAVES',
+                sendAmount
             );
         }
     }

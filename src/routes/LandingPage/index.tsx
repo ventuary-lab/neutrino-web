@@ -58,7 +58,7 @@ class LandingPage extends React.Component<Props> {
         const paragraph = (
             <p>
                 <span>
-                    Dollar neutrino (USD-N) is a crypto-collateralized token pegged to US
+                    Dollar neutrino (USD-N) is a crypto-backed token pegged to US
                     dollar.&nbsp;
                 </span>
                 <span>

@@ -9,6 +9,7 @@ import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
 import { onlyDecimalRegex2 } from 'ui/global/helpers';
+import { hasBooleanPropChanged } from 'shared/Layout/helpers';
 
 import './style.scss';
 
@@ -53,20 +54,22 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {}
+    componentDidUpdate(prevProps) {
+        const { isOpened } = this.props;
+        const { isOpened: wasOpened } = prevProps;
 
-    componentDidUpdate() {
-        if (this.props.isOpened) {
-            this.context.blur();
-        } else {
-            this.context.unblur();
+        console.log({ isOpened, wasOpened, checkIsBlurred: this.context.checkIsBlurred() })
 
-            this.emptyField();
-        }
-    }
-
-    componentWillUnmount() {
-        this.context.unblur();
+        // if (isOpened && !wasOpened) {
+        //     this.context.blur();
+        // } else if (!isOpened && wasOpened) {
+        //     this.emptyField();
+        //     this.context.unblur();
+        // }
+        hasBooleanPropChanged(prevProps, this.props, 'isOpened', {
+            becameTrue: () => this.context.blur(),
+            becameFalse: () => this.context.unblur(),
+        });
     }
 
     getParentSelector() {

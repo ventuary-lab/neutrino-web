@@ -10,12 +10,12 @@ import _get from 'lodash/get';
 import { dal, html, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 
-import './LiquidateBoundsFrom.scss';
+import './LiquidateBondsFrom.scss';
 import {getUser} from 'yii-steroids/reducers/auth';
 import {getBaseCurrency, getPairName,} from 'reducers/currency';
 
-const bem = html.bem('LiquidateBoundsFrom');
-const FORM_ID = 'LiquidateBoundsFrom';
+const bem = html.bem('LiquidateBondsFrom');
+const FORM_ID = 'LiquidateBondsFrom';
 
 @connect(
     state => ({
@@ -25,7 +25,7 @@ const FORM_ID = 'LiquidateBoundsFrom';
         baseCurrency: getBaseCurrency(state),
     })
 )
-export default class LiquidateBoundsFrom extends React.PureComponent {
+export default class LiquidateBondsFrom extends React.PureComponent {
 
     static propTypes = {
         formValues: PropTypes.object,

@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { html, dal } from 'components';
 // import { goToPage } from 'yii-steroids/actions/navigation';
 import { BlurContext } from 'shared/Layout/context';
+import { hasBooleanPropChanged } from 'shared/Layout/helpers';
 import {
     InstallKeeperModalContext,
     // GlobalLinksContext,
@@ -29,12 +30,11 @@ class LoginTypeModal extends React.Component<Props> {
 
     static contextType = BlurContext;
 
-    componentDidUpdate() {
-        if (this.props.isOpened) {
-            this.context.blur();
-        } else {
-            this.context.unblur();
-        }
+    componentDidUpdate(prevProps) {
+        hasBooleanPropChanged(prevProps, this.props, 'isOpened', {
+            becameTrue: () => this.context.blur(),
+            becameFalse: () => this.context.unblur(),
+        });
     }
 
     componentWillUnmount() {
@@ -62,18 +62,24 @@ class LoginTypeModal extends React.Component<Props> {
                             <div className={bem.element('main')}>
                                 <div className={bem.element('list')}>
                                     <div>
-                                        <a href="#" onClick={() => {
-                                            this.props.onClose();
-                                            keeperContext.onLogin();
-                                        }}>
+                                        <a
+                                            href="#"
+                                            onClick={() => {
+                                                this.props.onClose();
+                                                keeperContext.onLogin();
+                                            }}
+                                        >
                                             Login using Waves Keeper
                                         </a>
                                     </div>
                                     <div>
-                                        <a href="#" onClick={() => {
-                                            this.props.onClose();
-                                            keeperContext.onWebKeeperLogin();
-                                        }}>
+                                        <a
+                                            href="#"
+                                            onClick={() => {
+                                                this.props.onClose();
+                                                keeperContext.onWebKeeperLogin();
+                                            }}
+                                        >
                                             Login using Web Keeper
                                         </a>
                                     </div>

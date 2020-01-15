@@ -1,17 +1,18 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Nav from 'yii-steroids/ui/nav/Nav';
-import {getUser} from 'yii-steroids/reducers/auth';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
+import { getUser } from 'yii-steroids/reducers/auth';
+import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
+import { getControlPrice } from 'reducers/contract/selectors';
 
-import {html, dal} from 'components';
+import { html, dal } from 'components';
 import OrdersTable from './views/OrdersTable';
 import BuyBondsForm from './views/BuyBondsForm';
-import LiquidateBoundsForm from './views/LiquidateBoundsForm';
+import LiquidateBondsForm from './views/LiquidateBondsForm';
 import OrderBook from './views/OrderBook';
-// import MainChart from './views/MainChart';
-// import CurrencyEnum from 'enums/CurrencyEnum';
+import MainChart from './views/MainChart';
+import CurrencyEnum from 'enums/CurrencyEnum';
 import CollectionEnum from 'enums/CollectionEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
@@ -20,8 +21,15 @@ import './BondsDashboard.scss';
 
 const bem = html.bem('BondsDashboard');
 
-@dal.hoc(
-    props => [
+@connect(state => ({
+    pairName: getPairName(state),
+    baseCurrency: getBaseCurrency(state),
+    quoteCurrency: getQuoteCurrency(state),
+    user: getUser(state),
+    controlPrice: getControlPrice(state)
+}))
+@dal.hoc(props =>
+    [
         {
             url: `/api/v1/bonds/${props.pairName}/orders`,
             key: 'bondOrders',
@@ -35,15 +43,11 @@ const bem = html.bem('BondsDashboard');
         props.user && {
             url: `/api/v1/bonds/user/${props.user.address}`,
             key: 'userOrders',
-            collection: [
-                CollectionEnum.BONDS_ORDERS,
-                CollectionEnum.NEUTRINO_ORDERS,
-            ],
-        }
+            collection: [CollectionEnum.BONDS_ORDERS, CollectionEnum.NEUTRINO_ORDERS],
+        },
     ].filter(Boolean)
 )
-class BondsDashboard extends React.PureComponent {
-
+export default class BondsDashboard extends React.PureComponent {
     static propTypes = {
         bondOrders: PropTypes.arrayOf(OrderSchema),
         liquidateOrders: PropTypes.arrayOf(OrderSchema),
@@ -63,7 +67,8 @@ class BondsDashboard extends React.PureComponent {
     }
 
     render() {
-        const { bondOrders, liquidateOrders } = this.props;
+        const { controlPrice, liquidateOrders, bondOrders } = this.props;
+
         if (!bondOrders || !liquidateOrders) {
             return null;
         }
@@ -73,7 +78,12 @@ class BondsDashboard extends React.PureComponent {
                 <div className={bem.element('column', 'left')}>
                     <div className={bem.element('order-book')}>
                         <OrderBook
-                            orders={this.state.formTab === 'buy' ? this.props.bondOrders : this.props.liquidateOrders}
+                            controlPrice={controlPrice}
+                            orders={
+                                this.state.formTab === 'buy'
+                                    ? this.props.bondOrders
+                                    : this.props.liquidateOrders
+                            }
                             user={this.props.user}
                             baseCurrency={this.props.baseCurrency}
                             quoteCurrency={this.props.quoteCurrency}
@@ -84,21 +94,21 @@ class BondsDashboard extends React.PureComponent {
                         <Nav
                             isFullWidthTabs
                             layout={'tabs'}
-                            onChange={formTab => this.setState({formTab})}
+                            onChange={formTab => this.setState({ formTab })}
                             items={[
                                 {
                                     id: 'buy',
                                     label: __('Buy'),
                                     content: BuyBondsForm,
                                     contentProps: {
-                                        bondOrders
+                                        controlPrice
                                     }
                                 },
                                 {
                                     id: 'liquidate',
                                     label: __('Liquidate'),
                                     className: bem.element('danger-tab'),
-                                    content: LiquidateBoundsForm,
+                                    content: LiquidateBondsForm,
                                 },
                             ]}
                         />
@@ -118,7 +128,8 @@ class BondsDashboard extends React.PureComponent {
                                         contentProps: {
                                             items: this.props.userOrders.opened,
                                             pairName: this.props.pairName,
-                                        }
+                                            controlPrice
+                                        },
                                     },
                                     {
                                         id: 'my-orders-history',
@@ -128,7 +139,8 @@ class BondsDashboard extends React.PureComponent {
                                             items: this.props.userOrders.history,
                                             pairName: this.props.pairName,
                                             isHistory: true,
-                                        }
+                                            controlPrice
+                                        },
                                     },
                                 ]}
                             />
@@ -139,12 +151,3 @@ class BondsDashboard extends React.PureComponent {
         );
     }
 }
-
-export default connect(
-    state => ({
-        pairName: getPairName(state),
-        baseCurrency: getBaseCurrency(state),
-        quoteCurrency: getQuoteCurrency(state),
-        user: getUser(state),
-    })
-)(BondsDashboard);
