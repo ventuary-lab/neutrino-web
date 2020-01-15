@@ -150,7 +150,7 @@ export default class OrdersTable extends React.PureComponent {
 
         const { fieldTable } = this;
         const items = rawItems
-            .filter(item => moment(item.timestamp).isAfter(moment('01.12.2020'))); // 12 of Jan
+            .filter(item => item.type !== 'liquidate' ? moment(item.timestamp).isAfter(moment('01.12.2020')) : true); // 12 of Jan
 
         return (
             <tbody>
