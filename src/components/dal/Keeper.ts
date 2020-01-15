@@ -325,11 +325,7 @@ export default class Keeper {
     }
 
     async logoutByWebKeeper () {
-        const isWebKeeperReady = await webKeeper.isReady();
-
-        if (isWebKeeperReady) {
-            await webKeeper.ref.lib.logout();
-        }
+        await webKeeper.ref.lib.logout();
     }
 
     async _buildTransferTransaction() {}

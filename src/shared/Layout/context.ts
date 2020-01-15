@@ -1,21 +1,17 @@
 import { createContext } from 'react';
 import { defaultLearnLinks, defaultProductLinks } from './defaults';
-
-import { Link } from 'ui/global/types';
+import {
+    IInstallKeeperModalContext,
+    IBlurContext,
+    IGlobalLinksContext,
+    ILoginTypeModalContext,
+} from './types';
 
 export const ConfigContext = createContext({ config: null });
 
 export const UserCongratsModalContext = createContext({ onClose: null, onOpen: null });
 
-type ErrorHandlerFn = <T extends () => void>(onSuccess?: T, onError?: T) => void;
-
-export const InstallKeeperModalContext = createContext<{
-    onLogin: ErrorHandlerFn,
-    onLogout: ErrorHandlerFn,
-    onWebKeeperLogin: () => void;
-    openModal: () => void;
-    isVisible: boolean;
-}>({
+export const InstallKeeperModalContext = createContext<IInstallKeeperModalContext>({
     onLogin: () => {},
     onLogout: () => {},
     onWebKeeperLogin: () => {},
@@ -23,11 +19,18 @@ export const InstallKeeperModalContext = createContext<{
     isVisible: false,
 });
 
-export const BlurContext = createContext({ blur: null, unblur: null, checkIsBlurred: null });
+export const BlurContext = createContext<IBlurContext>({
+    blur: null,
+    unblur: null,
+    checkIsBlurred: null,
+});
 
-export const GlobalLinksContext = createContext<{ links: Link[]; product: Link[] }>({
+export const GlobalLinksContext = createContext<IGlobalLinksContext>({
     links: defaultLearnLinks,
     product: defaultProductLinks,
 });
 
-export const LoginTypeModalContext = createContext({ onClose: null, onOpen: null });
+export const LoginTypeModalContext = createContext<ILoginTypeModalContext>({
+    onClose: null,
+    onOpen: null,
+});

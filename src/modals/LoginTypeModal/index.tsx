@@ -1,14 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { html, dal } from 'components';
-// import { goToPage } from 'yii-steroids/actions/navigation';
+import { wavesExchange as wavesExchangeLogo } from 'static/images/guide/companies';
+import wavesKeeperLogo from 'static/images/logos/waves-keeper.png';
 import { BlurContext } from 'shared/Layout/context';
 import { hasBooleanPropChanged } from 'shared/Layout/helpers';
-import {
-    InstallKeeperModalContext,
-    // GlobalLinksContext,
-    // LoginTypeModalContext,
-} from 'shared/Layout/context';
+import { InstallKeeperModalContext } from 'shared/Layout/context';
+import { IInstallKeeperModalContext } from 'shared/Layout/types';
 
 import './style.scss';
 
@@ -19,13 +17,18 @@ interface Props {
     isOpened: boolean;
     onClose: () => void;
 }
+interface ModalLink {
+    label: string;
+    img: string;
+    handler: (keeperContext: IInstallKeeperModalContext) => void;
+}
 
 class LoginTypeModal extends React.Component<Props> {
     constructor(props) {
         super(props);
 
-        this.onKeeperLogin = this.onKeeperLogin.bind(this);
         this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
+        this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
     }
 
     static contextType = BlurContext;
@@ -42,11 +45,45 @@ class LoginTypeModal extends React.Component<Props> {
         this.context.unblur();
     }
 
-    onWebKeeperLogin() {
-        // dal.loginByWebKeeper();
+    onWebKeeperLogin(keeperContext: IInstallKeeperModalContext) {
+        this.props.onClose();
+        keeperContext.onWebKeeperLogin();
     }
 
-    onKeeperLogin() {}
+    onWavesKeeperLogin(keeperContext: IInstallKeeperModalContext) {
+        this.props.onClose();
+        keeperContext.onLogin();
+    }
+
+    mapModalLink(item: ModalLink, keeperContext: IInstallKeeperModalContext) {
+        return (
+            <a
+                href="#"
+                className={bem.element('login-item')}
+                onClick={() => item.handler(keeperContext)}
+            >
+                <img src={item.img} className={bem.element('login-item-img')} />
+                <span>{item.label}</span>
+            </a>
+        );
+    }
+
+    getLinks(keeperContext: IInstallKeeperModalContext) {
+        const links: ModalLink[] = [
+            {
+                label: 'Login using Waves Keeper',
+                img: wavesKeeperLogo,
+                handler: () => this.onWavesKeeperLogin(keeperContext),
+            },
+            {
+                label: ' Login using Web Keeper',
+                img: wavesExchangeLogo,
+                handler: () => this.onWebKeeperLogin(keeperContext),
+            },
+        ];
+
+        return links.map(item => this.mapModalLink(item, keeperContext));
+    }
 
     render() {
         return (
@@ -61,28 +98,7 @@ class LoginTypeModal extends React.Component<Props> {
                         {keeperContext => (
                             <div className={bem.element('main')}>
                                 <div className={bem.element('list')}>
-                                    <div>
-                                        <a
-                                            href="#"
-                                            onClick={() => {
-                                                this.props.onClose();
-                                                keeperContext.onLogin();
-                                            }}
-                                        >
-                                            Login using Waves Keeper
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a
-                                            href="#"
-                                            onClick={() => {
-                                                this.props.onClose();
-                                                keeperContext.onWebKeeperLogin();
-                                            }}
-                                        >
-                                            Login using Web Keeper
-                                        </a>
-                                    </div>
+                                    {this.getLinks(keeperContext)}
                                 </div>
                             </div>
                         )}
