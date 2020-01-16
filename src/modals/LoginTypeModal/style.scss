@@ -1,4 +1,4 @@
-
+$border-col: rgb(47, 47, 94);
 
 .LoginTypeModal {
     position: absolute;
@@ -8,43 +8,99 @@
 
     & a:not(:hover) {
         color: #fff;
-    }   
+    }
 
     &__main {
         width: 100%;
         height: 100%;;
-        padding: 24px;
         background-color: #17183A;
-        border: 1px solid #494991;
+        border: 1px solid $border-col;
+        width: 500px;
     }
 
     &__list {
         & > :first-child {
             max-height: unset;
         }
+        & > :not(:first-child) {
+            padding-top: 12px;
+        }
 
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        flex-direction: column;
         justify-content: space-evenly;
+        padding: 24px;
     }
 
     &__login-item-img {
-        max-height: 80px;
-        max-width: 120px;
+        max-height: 40px;
+        max-width: 60px;
         margin: auto;
     }
 
     &__login-item {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-evenly;
         margin: 12px;
         text-align: center;
 
+        height: 60px;
+        width: 380px;
+        margin: auto;
+        border-radius: 50px;
+        border: 1px solid rgb(47, 47, 94);
+        padding: 0 32px;
+
+        & > :nth-child(1) {
+            margin: auto 0;
+            height: 40px;
+        }
+
         & > *:nth-child(2) {
-            padding-top: 12px;
+            // padding-top: 12px;
+            display: block;
+            margin: auto;
+            padding: 0;
+            font-weight: bold;
+        }
+    }
+
+    &__head {
+        padding: 24px;
+        background-color: $border-col;
+    }
+
+    &__we-cont {
+        width: 35px;
+        overflow: hidden;
+
+        & > :nth-child(1) {
+            display: block;
+            height: 40px;
+            max-width: unset;
+            max-height: unset;
+            padding-left: 5px;
+        }
+    }
+
+    &__head-icon {
+        width: 16px;
+        height: 16px;
+        margin-left: auto;
+        cursor: pointer;
+
+
+        & * {
+            fill: #fff;
+        }
+
+        &:hover {
+            & * {
+                fill: rgb(20, 141, 229);
+            }
         }
     }
 }
