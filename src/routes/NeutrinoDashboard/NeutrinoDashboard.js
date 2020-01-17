@@ -321,6 +321,17 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
+    getCurrencyLabels () {
+        const { quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
+        const sourceCurrency = _sourceCurrency.toUpperCase();
+
+        return {
+            mapLabel: label => <span>{label}</span>,
+            totalIssuedLabels:  [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
+            currentPriceLabels:  [`Current WAVES ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+        };
+    }
+
     renderGenerationStep() {
         const grabNeutrinoAddress = config => {
             try {
@@ -329,6 +340,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 return '';
             }
         };
+
+        const {
+            // mobile: mobileLabels,
+            // desktop: desktopLabels
+            totalIssuedLabels,
+            mapLabel,
+            currentPriceLabels
+        } = this.getCurrencyLabels();
 
         return (
             <>
@@ -415,22 +434,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
                     <div className={bem.element('info-column')}>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <span>
-                                    {__('Total issued {currency}', {
-                                        currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                    })}
-                                </span>
+                            <div className={bem.element('info-string', 'with-mobile')}>
+                                {totalIssuedLabels.map(mapLabel)}
                             </div>
                             <span>{prettyPrintNumber(this.getTotalIssued())}</span>
                         </div>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <span>
-                                    {__('Current WAVES / {currency} price', {
-                                        currency: this.props.sourceCurrency.toUpperCase(),
-                                    })}
-                                </span>
+                            <div className={bem.element('info-string', 'with-mobile')}>
+                                {currentPriceLabels.map(mapLabel)}
                             </div>
                             <span>
                                 {this.getControlPrice()}{' '}
