@@ -74,16 +74,16 @@ class LoginTypeModal extends React.Component<Props> {
     getLinks(keeperContext: IInstallKeeperModalContext) {
         const links: ModalLink[] = [
             {
-                label: 'Waves Keeper',
-                img: wavesKeeperLogo,
-                handler: () => this.onWavesKeeperLogin(keeperContext),
-            },
-            {
                 label: 'Waves Signer',
                 img: wavesExchangeLogo,
                 className: bem.element('we-cont'),
                 handler: () => this.onWebKeeperLogin(keeperContext),
             },
+            {
+                label: 'Waves Keeper',
+                img: wavesKeeperLogo,
+                handler: () => this.onWavesKeeperLogin(keeperContext),
+            }
         ];
 
         return links.map(item => this.mapModalLink(item, keeperContext));

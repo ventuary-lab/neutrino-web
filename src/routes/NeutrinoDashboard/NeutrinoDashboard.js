@@ -172,29 +172,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
         } else {
             this._isProgramChange = false;
         }
-
-        // const thisWithdraw = _get(this.props, 'withdraw');
-        // const nextWithdraw = _get(nextProps, 'withdraw');
-        // const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
-        // const nextHeight = Number(_get(nextProps, 'withdraw.height'));
-        // //first loading component
-        // if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
-        //     this.setState({ isSwapLoading: true });
-        // }
-
-        // //changing withdraw
-        // if (thisWithdraw && nextWithdraw) {
-        //     if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: true });
-        //     } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: false });
-        //     } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
-        //         //close delay
-        //         setTimeout(() => this.setState({ isSwapLoading: false }), 3000);
-        //     }
-        // } else if (this.state.isSwapLoading) {
-        //     this.setState({ isSwapLoading: false });
-        // }
     }
 
     mapToSwapLoaderProps({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock }) {
@@ -223,12 +200,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 unlockBlock,
             }),
         });
-
-        // height: 1822964
-        // - id: "3P8ZzvkLGWtaoPVYDozhbWavqgYgZJWbq9j"
-        // neutrinoBlocked: 0
-        // unblockBlock: 1821919
-        // wavesBlocked: 0
     }
 
     async _updateBalanceIndices(dAppAddress, address) {
@@ -322,13 +293,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     getCurrencyLabels () {
-        const { quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
+        const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
         const sourceCurrency = _sourceCurrency.toUpperCase();
+        const quoteCurrency = _quoteCurrency.toUpperCase();
 
         return {
             mapLabel: label => <span>{label}</span>,
             totalIssuedLabels:  [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
-            currentPriceLabels:  [`Current WAVES ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+            currentPriceLabels:  [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
         };
     }
 

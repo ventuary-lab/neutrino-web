@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUser } from 'yii-steroids/reducers/auth';
 import _upperFirst from 'lodash-es/upperFirst';
+import wavesRawLogo from 'static/icons/waves-raw-logo.svg';
 import {
     InstallKeeperModalContext,
     LoginTypeModalContext,
@@ -42,12 +43,13 @@ export default class RightSidebar extends React.PureComponent {
                                 {(this.props.user && (
                                     <>
                                         <div className={bem.element('user-info')}>
-                                            <div
+                                            {/* <div
                                                 className={bem(
                                                     bem.element('user-info-icon'),
                                                     'Icon Icon__waves-keeper'
                                                 )}
-                                            />
+                                            /> */}
+                                            <img src={wavesRawLogo} className={bem.element('waves-logo')} />
                                             <div className={bem.element('address-container')}>
                                                 <span className={bem.element('address-value')}>
                                                     <a href={addressUrl} target="_blank">
@@ -96,20 +98,21 @@ export default class RightSidebar extends React.PureComponent {
         );
     }
 
-    renderAuthBlock({ loginTypeContext, installKeeperContext }) {
+    renderAuthBlock({ loginTypeContext }) {
         return (
             <div className={bem.element('auth')}>
-                <div className={bem(bem.element('auth-icon'), 'Icon Icon__waves-keeper')} />
+                {/* <div className={bem(bem.element('auth-icon'), 'Icon Icon__waves-keeper')} /> */}
+                <img src={wavesRawLogo} className={bem.element('waves-logo')} />
                 <p className={bem.element('auth-title')}>
                     <span>Get started by connecting</span>
                     <br />
-                    <span>Waves Keeper account</span>
+                    <span>Waves account</span>
                 </p>
 
                 <Button
                     className={bem.element('auth-button')}
                     block
-                    label={'Login with Keeper'}
+                    label={'Login'}
                     onClick={() => loginTypeContext.onOpen()}
                 />
                 <p className={bem.element('auth-info')}>
