@@ -17,7 +17,3 @@ export interface Props {
 export interface State {
     stakingBalance: StakingBalanceDTO;
 }
-export interface IStakingDashboard {
-    _updateInterval: NodeJS.Timeout | null;
-    _updateTimeout: number;
-}

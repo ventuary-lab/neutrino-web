@@ -10,15 +10,15 @@ import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currenc
 
 import StakingLeftPanel from 'shared/Staking/LeftPanel';
 import StakingRightPanel from 'shared/Staking/RightPanel';
-
-import { IStakingDashboard, Props, State, StakingBalanceDTO } from './types';
+import { ILongPullingComponent } from 'ui/global/types';
+import { Props, State, StakingBalanceDTO } from './types';
 
 import './RpdDashboard.scss';
 
 const bem = html.bem('RpdDashboard');
 const FORM_ID = 'RpdDashboard';
 
-class StakingDashboard extends React.Component<Props, State> implements IStakingDashboard {
+class StakingDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
 
