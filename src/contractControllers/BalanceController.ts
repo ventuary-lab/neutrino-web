@@ -99,7 +99,6 @@ export default class BalanceController {
             if (this.dal.assets.hasOwnProperty(currency)) {
                 const assetId = this.dal.assets[currency];
 
-                console.log({ assetId });
                 const newBalanceRes = await getAssetBalanceInfo({
                     nodeUrl: this.dal.nodeUrl,
                     address,

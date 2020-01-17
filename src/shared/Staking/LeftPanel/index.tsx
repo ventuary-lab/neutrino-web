@@ -62,7 +62,6 @@ class StakingLeftPanel extends React.Component<Props> {
     }
 }
 
-// export default StakingLeftPanel;
 export default connect(state => ({
     user: state.auth.user,
 }))(StakingLeftPanel);

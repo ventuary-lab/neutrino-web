@@ -58,14 +58,6 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         const { isOpened } = this.props;
         const { isOpened: wasOpened } = prevProps;
 
-        console.log({ isOpened, wasOpened, checkIsBlurred: this.context.checkIsBlurred() })
-
-        // if (isOpened && !wasOpened) {
-        //     this.context.blur();
-        // } else if (!isOpened && wasOpened) {
-        //     this.emptyField();
-        //     this.context.unblur();
-        // }
         hasBooleanPropChanged(prevProps, this.props, 'isOpened', {
             becameTrue: () => this.context.blur(),
             becameFalse: () => this.context.unblur(),
