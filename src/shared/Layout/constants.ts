@@ -14,3 +14,7 @@ export const GITHUB_LABEL = 'GitHub';
 export const SMART_CONTRACT_LABEL = 'Smart Contract';
 export const TERMS_OF_USE_LABEL = 'Terms of Use';
 export const STAKING_REWARDS_LABEL = 'Staking Rewards';
+
+export enum LayoutUrlParams {
+    LOGIN_WARNING_PARAM = 'loginWarning'
+}

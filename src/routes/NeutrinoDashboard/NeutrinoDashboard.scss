@@ -18,6 +18,12 @@
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid $color-brand-purple-light;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: unset;
+    }
   }
 
   &__input-container {
@@ -29,18 +35,26 @@
     display: flex;
     align-items: center;
 
-    margin-right: 42px;
+    @media screen and (max-width: 390px) {
+      &:not(:first-child) {
+        padding-top: 16px;
+      }
+    }
 
     &:not(:last-child) {
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: -30px;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 1px;
-        background-color: $color-brand-purple-light;
+      margin-right: 42px;
+
+      @media screen and (min-width: 500px) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: -30px;
+          transform: translateY(-50%);
+          width: 20px;
+          height: 1px;
+          background-color: $color-brand-purple-light;
+        }
       }
     }
 
@@ -88,7 +102,10 @@
   }
 
   &__input {
-    min-width: 315px;
+    // min-width: 315px;
+    width: calc(100vw - 90px);
+    min-width: unset;
+    max-width: 315px;
   }
 
   &__input-hint {
@@ -168,7 +185,9 @@
 
   &__submit-button.ButtonView,
   &__withdraw-button.ButtonView {
-    min-width: 322px;
+    max-width: 322px;
+    width: calc(100vw - 90px);
+    min-width: 100px;
   }
 
   &__submit-button {
@@ -294,6 +313,14 @@
     align-items: center;
     font-size: 13px;
     line-height: 16px;
+  }
+
+  @media screen and (max-width: 768px) {
+    &__info {
+      & > :nth-child(1) {
+        display: none;
+      }
+    }
   }
 
   @media screen and (max-width: 1264px) {

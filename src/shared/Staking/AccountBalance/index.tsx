@@ -19,14 +19,15 @@ class AccountBalance extends React.Component<Props> {
     }
 
     render() {
-        const onClick = () => store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
+        const onClick = () =>
+            store.dispatch(goToPage('neutrino', { currency: CurrencyEnum.USD_N }));
         const { accountBalance } = this.props;
 
         return (
             <div className={bem.block()}>
-                <AccountBalanceTitle title="Account balance" amount={accountBalance}/>
+                <AccountBalanceTitle title="Account balance" amount={accountBalance} />
                 <div className={bem.element('buy-btn')}>
-                    <Button type={'submit'} block label={'Buy'} onClick={onClick}/>
+                    <Button type={'submit'} block label={'Buy'} onClick={onClick} />
                 </div>
             </div>
         );

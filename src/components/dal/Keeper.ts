@@ -150,7 +150,18 @@ export default class Keeper {
         return new Promise(checker);
     }
 
-    buildInvokeTx (
+    mapInvokeTxArgs (args: Array<string | number>) {    
+        return args.map(argument => ({
+            type: (
+                typeof argument === 'string' && 'string' ||
+                typeof argument === 'number' && 'integer' ||
+                typeof argument === 'boolean' && 'boolean'
+            ),
+            value: argument
+        })) as Array<TInvokeScriptCallArgument<TLong>>;
+    }
+
+    buildSignerInvokeTx (
         dApp: string,
         method: string,
         args: Array<TInvokeScriptCallArgument<TLong>>,
@@ -163,16 +174,15 @@ export default class Keeper {
             invertedAssetsDict[paymentCurrencyOrAssetId] || CurrencyEnum.WAVES
         )  : CurrencyEnum.WAVES;
 
-        console.log({ assetsDict, invertedAssetsDict, paymentCurrency, paymentAmount });
+        console.log({ args, assetsDict, invertedAssetsDict, paymentCurrency, paymentAmount });
 
         const tx: IInvoke = {
             dApp,
             fee: Math.round(0.009 * CurrencyEnum.getContractPow(CurrencyEnum.WAVES)),
-            // payment?: Array<IMoney>;
             payment: !paymentAmount ? [] : [
                 {
                     assetId: paymentCurrencyOrAssetId || CurrencyEnum.WAVES,
-                    amount: Number(paymentAmount) * CurrencyEnum.getContractPow(paymentCurrency),
+                    amount: `${Number(paymentAmount) * CurrencyEnum.getContractPow(paymentCurrency)}`,
                 },
             ],
             call: {
@@ -188,8 +198,8 @@ export default class Keeper {
     async sendTransaction(
         pairName: string,
         contractName: string,
-        method: string,
-        args: Array<TInvokeScriptCallArgument<TLong>>,
+        method: string, 
+        args: Array<string | number>,
         paymentCurrency: string,
         paymentAmount: number,
         waitTx: boolean = true,
@@ -198,7 +208,8 @@ export default class Keeper {
         const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount);
 
         if (this.isAuthByWebKeeper()) {
-            let buildTx: IInvoke = this.buildInvokeTx(dApp, method, args, paymentCurrency, paymentAmount);
+            const mappedArgs = this.mapInvokeTxArgs(args);
+            let buildTx: IInvoke = this.buildSignerInvokeTx(dApp, method, mappedArgs, paymentCurrency, paymentAmount);
 
             await webKeeper.ref.lib.invoke(buildTx).broadcast();
 
@@ -227,7 +238,8 @@ export default class Keeper {
         pairName: string,
         contractName: string,
         method: string,
-        args: Array<TInvokeScriptCallArgument<TLong>>,
+        // args: Array<TInvokeScriptCallArgument<TLong>>,
+        args: Array<string | number>,
         paymentCurrency: string,
         paymentAmount: number,
     ) {
@@ -242,7 +254,8 @@ export default class Keeper {
     _buildTransaction(
         dApp: string,
         method: string,
-        args: Array<TInvokeScriptCallArgument<TLong>>,
+        // args: Array<TInvokeScriptCallArgument<TLong>>,
+        args: Array<string | number>,
         paymentCurrency: string,
         paymentAmount: number
     ) {
@@ -316,11 +329,11 @@ export default class Keeper {
     }
 
     async loginByWebKeeper () {
-        const isWebKeeperReady = await webKeeper.isReady();
-
-        if (isWebKeeperReady) {
+        try {
             const readyUser = await webKeeper.ref.lib.login();
             return readyUser;
+        } catch (err) {
+            return null;
         }
     }
 

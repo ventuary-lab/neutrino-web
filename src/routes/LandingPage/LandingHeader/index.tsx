@@ -5,6 +5,7 @@ import { buildBem } from '../helpers';
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
+import { LayoutUrlParams } from 'shared/Layout/constants';
 
 import { Link } from 'ui/global/types';
 
@@ -153,7 +154,7 @@ class LandingHeader extends React.Component<Props, State> {
                                         // } finally {
                                         //     installKeeperContext.openModal();
                                         // }
-                                        window.location.href = `/neutrino/${CurrencyEnum.USD_N}?openKeeperWarning=1`;
+                                        window.location.href = `/neutrino/${CurrencyEnum.USD_N}?${LayoutUrlParams.LOGIN_WARNING_PARAM}=1`;
                                     },
                                 };
                                 const links = currentLinks.map(this.mapLink);

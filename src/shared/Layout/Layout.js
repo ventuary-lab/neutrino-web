@@ -16,7 +16,7 @@ import { getCurrentItem, getCurrentItemParam } from 'yii-steroids/reducers/navig
 import { getData, getUser } from 'yii-steroids/reducers/auth';
 import { openModal } from 'yii-steroids/actions/modal';
 import { isPhone } from 'yii-steroids/reducers/screen';
-import WarningMobileModal from 'modals/WarningMobileModal';
+// import WarningMobileModal from 'modals/WarningMobileModal';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
@@ -48,8 +48,15 @@ import {
     BlurContext,
     UserCongratsModalContext,
     GlobalLinksContext,
+    ScreenSizeContext,
 } from './context';
-import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
+import { LayoutUrlParams } from './constants';
+import {
+    defaultScreenSizeContext,
+    defaultLearnLinks as links,
+    defaultProductLinks as product,
+} from './defaults';
+import { isScreenNarrow } from './helpers';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
@@ -104,7 +111,7 @@ export default class Layout extends React.PureComponent {
         this.controllerInitialized = false;
 
         this.onScreenResize = this.onScreenResize.bind(this);
-        this.openWarningModal = this.openWarningModal.bind(this);
+        // this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
         this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
@@ -114,22 +121,35 @@ export default class Layout extends React.PureComponent {
 
         this.resizeObserver = null;
         this.wcc = null;
+        this.learnLinksContextValue = { links };
+        this.currentResizeObserverEntries = [];
+        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
         this.blurContextValue = {
             blur: () => this.setState({ isBlurred: true }),
             unblur: () => this.setState({ isBlurred: false }),
             checkIsBlurred: () => this.state.isBlurred,
         };
-        this.learnLinksContextValue = { links };
+
         this.userCongratsModalContextValue = {
             onClose: () => this.setState({ isUserCongratsModalOpened: false }),
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
+
         this.globalLinksContextValue = { links, product };
+
         this.loginTypeContextValue = {
             onClose: () => this.setState({ isLoginTypeModalOpened: false }),
             onOpen: () => this.setState({ isLoginTypeModalOpened: true }),
         };
-        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
+        this.screenSizeContextValue = {
+            ...defaultScreenSizeContext,
+            getEntries: () => this.currentResizeObserverEntries,
+            // getListeners: () => this.currentResizeObserverListeners,
+            // subscribe: (name, fn) => this.currentResizeObserverListeners.add(name, fn),
+            // unsubscribe: (fnName) => this.currentResizeObserverListeners.delete(fnName)
+        };
 
         this.state = {
             shouldShowInviteModal: false,
@@ -184,8 +204,8 @@ export default class Layout extends React.PureComponent {
     }
 
     async componentDidMount() {
-        // this.attachResizeObserver();
-        this.openWarningModal();
+        this.attachResizeObserver();
+        // this.openWarningModal();
 
         this.handleQueryParams();
     }
@@ -193,31 +213,25 @@ export default class Layout extends React.PureComponent {
     handleQueryParams() {
         const url = new URL(window.location.href);
 
-        if (url.searchParams.get('openKeeperWarning')) {
-            this.triggerInstallKeeperModalVisibility(true);
+        if (url.searchParams.get(LayoutUrlParams.LOGIN_WARNING_PARAM)) {
+            this.loginTypeContextValue.onOpen();
         }
     }
 
-    openWarningModal(width = document.body.offsetWidth) {
-        // if (width < 600) {
-        //     store.dispatch(openModal(WarningMobileModal));
-        // }
-    }
-
-    onScreenResize(entry) {
-        const width = _get(entry[0], 'contentRect.width', null);
-
-        this.openWarningModal(width);
+    onScreenResize(entries) {
+        this.currentResizeObserverEntries = entries;
     }
 
     attachResizeObserver() {
-
-
         try {
+            if (typeof ResizeObserver === 'undefined') {
+                throw new Error('ResizeObserver is not supported');
+            }
+
             this.resizeObserver = new ResizeObserver(this.onScreenResize);
             this.resizeObserver.observe(document.body);
         } catch (err) {
-            console.warn({ err }, 'ResizeObserver is not supported');
+            console.warn({ err });
         }
     }
 
@@ -267,7 +281,7 @@ export default class Layout extends React.PureComponent {
         await dal.logout();
     }
 
-    async onWebKeeperLogin () {
+    async onWebKeeperLogin() {
         await dal.loginByWebKeeper();
     }
 
@@ -319,7 +333,11 @@ export default class Layout extends React.PureComponent {
                 nextUserNetwork &&
                 nextAppNetwork !== nextUserNetwork
             ) {
-                console.log({ wasWrongNetworkMessageShown: this.wasWrongNetworkMessageShown, nextAppNetwork, nextUserNetwork })
+                console.log({
+                    wasWrongNetworkMessageShown: this.wasWrongNetworkMessageShown,
+                    nextAppNetwork,
+                    nextUserNetwork,
+                });
                 store.dispatch(
                     openModal(MessageModal, {
                         text: __('Switch your Waves Keeper network to {name}', {
@@ -337,9 +355,49 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    render() {
+    getDefaultBody() {
+        const { isBlurred } = this.state;
         const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
 
+        let elements = [
+            this.props.isShowLeftSidebar && (
+                <aside className={bem.element('left')}>
+                    <LeftSidebar />
+                </aside>
+            ),
+            <div className={bem.element('center')}>
+                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                <header className={bem.element('header')}>
+                    <Header />
+                </header>
+                <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                    {this.props.status !== STATUS_LOADING && this.props.children}
+                </main>
+            </div>,
+            <aside className={bem.element('right')}>
+                <RightSidebar />
+            </aside>,
+        ];
+
+        if (isScreenNarrow()) {
+            elements = [
+                <div className={bem.element('center')}>
+                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                    <header className={bem.element('header')}>
+                        <Header />
+                    </header>
+                    <RightSidebar />
+                    <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                        {this.props.status !== STATUS_LOADING && this.props.children}
+                    </main>
+                </div>,
+            ]
+        }
+
+        return elements;
+    }
+
+    render() {
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {
             return null;
@@ -359,25 +417,7 @@ export default class Layout extends React.PureComponent {
 
         const children =
             customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
-                <div className={bem.element('inner')}>
-                    {this.props.isShowLeftSidebar && (
-                        <aside className={bem.element('left')}>
-                            <LeftSidebar />
-                        </aside>
-                    )}
-                    <div className={bem.element('center')}>
-                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
-                        <header className={bem.element('header')}>
-                            <Header />
-                        </header>
-                        <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
-                            {this.props.status !== STATUS_LOADING && this.props.children}
-                        </main>
-                    </div>
-                    <aside className={bem.element('right')}>
-                        <RightSidebar />
-                    </aside>
-                </div>
+                <div className={bem.element('inner')}>{this.getDefaultBody()}</div>
             ) : (
                 this.props.children
             );
@@ -393,41 +433,43 @@ export default class Layout extends React.PureComponent {
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
-                    <BlurContext.Provider value={this.blurContextValue}>
-                        <LoginTypeModalContext.Provider value={this.loginTypeContextValue}>
-                            <UserCongratsModalContext.Provider
-                                value={this.userCongratsModalContextValue}
-                            >
-                                <InstallKeeperModalContext.Provider
-                                    value={{
-                                        onLogin: this.onWavesKeeperLogin,
-                                        onLogout: this.onWavesKeeperLogout,
-                                        onWebKeeperLogin: this.onWebKeeperLogin,
-                                        isVisible: shouldShowInviteModal,
-                                        openModal: () =>
-                                            this.triggerInstallKeeperModalVisibility(true),
-                                    }}
+                <ScreenSizeContext.Provider value={this.screenSizeContextValue}>
+                    <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
+                        <BlurContext.Provider value={this.blurContextValue}>
+                            <LoginTypeModalContext.Provider value={this.loginTypeContextValue}>
+                                <UserCongratsModalContext.Provider
+                                    value={this.userCongratsModalContextValue}
                                 >
-                                    <ConfigContext.Provider value={configValue}>
-                                        <LoginTypeModal
-                                            isOpened={isLoginTypeModalOpened}
-                                            onClose={this.loginTypeContextValue.onClose}
-                                            onOpen={this.loginTypeContextValue.onOpen}
-                                        />
-                                        <UserCongratsModal
-                                            isOpened={isUserCongratsModalOpened}
-                                            onClose={this.userCongratsModalContextValue.onClose}
-                                            onOpen={this.userCongratsModalContextValue.onOpen}
-                                        />
-                                        {children}
-                                    </ConfigContext.Provider>
-                                    <ModalWrapper />
-                                </InstallKeeperModalContext.Provider>
-                            </UserCongratsModalContext.Provider>
-                        </LoginTypeModalContext.Provider>
-                    </BlurContext.Provider>
-                </GlobalLinksContext.Provider>
+                                    <InstallKeeperModalContext.Provider
+                                        value={{
+                                            onLogin: this.onWavesKeeperLogin,
+                                            onLogout: this.onWavesKeeperLogout,
+                                            onWebKeeperLogin: this.onWebKeeperLogin,
+                                            isVisible: shouldShowInviteModal,
+                                            openModal: () =>
+                                                this.triggerInstallKeeperModalVisibility(true),
+                                        }}
+                                    >
+                                        <ConfigContext.Provider value={configValue}>
+                                            <LoginTypeModal
+                                                isOpened={isLoginTypeModalOpened}
+                                                onClose={this.loginTypeContextValue.onClose}
+                                                onOpen={this.loginTypeContextValue.onOpen}
+                                            />
+                                            <UserCongratsModal
+                                                isOpened={isUserCongratsModalOpened}
+                                                onClose={this.userCongratsModalContextValue.onClose}
+                                                onOpen={this.userCongratsModalContextValue.onOpen}
+                                            />
+                                            {children}
+                                        </ConfigContext.Provider>
+                                        <ModalWrapper />
+                                    </InstallKeeperModalContext.Provider>
+                                </UserCongratsModalContext.Provider>
+                            </LoginTypeModalContext.Provider>
+                        </BlurContext.Provider>
+                    </GlobalLinksContext.Provider>
+                </ScreenSizeContext.Provider>
             </div>
         );
     }

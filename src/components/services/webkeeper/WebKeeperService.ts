@@ -7,15 +7,6 @@ class WebKeeperService {
         this.ref = ref;
     }
 
-    async isReady() {
-        try {
-            await this.ref.lib.login();
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-
     async transfer(address: string, amount: string | number, assetId: string) {
         await this.ref.lib.transfer({
             amount,

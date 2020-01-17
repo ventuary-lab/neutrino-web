@@ -16,6 +16,7 @@ $border-col: rgb(47, 47, 94);
         background-color: #17183A;
         border: 1px solid $border-col;
         width: 500px;
+        max-width: calc(100vw - 16px);
     }
 
     &__list {
@@ -53,6 +54,7 @@ $border-col: rgb(47, 47, 94);
         border-radius: 50px;
         border: 1px solid rgb(47, 47, 94);
         padding: 0 32px;
+        max-width: calc(100vw - 60px);
 
         & > :nth-child(1) {
             margin: auto 0;
