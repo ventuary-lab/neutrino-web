@@ -75,7 +75,7 @@ export default class RightSidebar extends React.PureComponent {
                                         <div className={bem.element('balance-table')}>
                                             <BalanceTable />
                                         </div>
-                                        <div className={bem.element('user-network-container')}>
+                                        {/* <div className={bem.element('user-network-container')}>
                                             <div className={bem.element('user-network')}>
                                                 <div className={bem.element('user-network-icon')}>
                                                     <span
@@ -86,7 +86,7 @@ export default class RightSidebar extends React.PureComponent {
                                                 </div>
                                                 {_upperFirst(this.props.user.network)}
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </>
                                 )) || <>{this.renderAuthBlock({ loginTypeContext, installKeeperContext })}</>}
                                 {/* <WavesExchangeChart /> */}
