@@ -19,6 +19,8 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
 import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
@@ -621,7 +623,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
             await this._updateAndCheckBalanceIndices();
         } catch (err) {
             console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
-            throw new Error(err.data);
+
+            store.dispatch(openModal(MessageModal, {
+                text: `Error on Swap occured. ${err.message}`
+            }));
         }
     }
 }

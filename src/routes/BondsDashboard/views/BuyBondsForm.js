@@ -11,7 +11,6 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
-// import { getControlPrice } from 'reducers/contract/selectors';
 import { computeROI } from 'reducers/contract/helpers';
 
 import { dal, html, store } from 'components';
