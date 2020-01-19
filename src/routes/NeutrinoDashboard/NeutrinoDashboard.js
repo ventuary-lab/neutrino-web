@@ -465,21 +465,23 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                             this.state.isWavesLeft ? 'waves' : 'neutrino'
                                         )}
                                     </span>
-                                    <span
-                                        className={bem(
-                                            bem.element('value-icon'),
-                                            `Icon ${
-                                                this.state.isWavesLeft
-                                                    ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                                    : CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                            }`
-                                        )}
-                                    />
-                                    <span className={bem.element('value-name')}>
-                                        {this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                            : CurrencyEnum.getLabel(this.props.quoteCurrency)}
-                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                                        : CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                                }`
+                                            )}
+                                        />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                                : CurrencyEnum.getLabel(this.props.quoteCurrency)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div className={bem.element('values')}>
@@ -491,21 +493,23 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                             this.state.isWavesLeft ? 'neutrino' : 'waves'
                                         )}
                                     </span>
-                                    <span
-                                        className={bem(
-                                            bem.element('value-icon'),
-                                            `Icon ${
-                                                this.state.isWavesLeft
-                                                    ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                                    : CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                            }`
-                                        )}
-                                    />
-                                    <span className={bem.element('value-name')}>
-                                        {this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                            : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
-                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                                        : CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                                }`
+                                            )}
+                                        />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(this.props.quoteCurrency)
+                                                : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

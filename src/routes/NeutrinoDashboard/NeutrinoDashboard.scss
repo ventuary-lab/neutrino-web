@@ -237,13 +237,13 @@
 
   &__values {
     width: 50%;
-    padding: 16px 0 16px 32px;
+    padding: 16px 0 16px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     &:first-child {
-      padding: 16px 32px 16px 0;
+      padding: 16px 16px 16px 0;
       border-right: 1px solid #343869;
     }
   }
@@ -301,9 +301,9 @@
     margin-right: 12px;
   }
 
-  &__finalize-button.ButtonView {
-      min-width: 320px;
-  }
+  // &__finalize-button.ButtonView {
+  //     min-width: 320px;
+  // }
 
   &__withdraw {
     position: relative;
@@ -380,6 +380,43 @@
       }
       & > :nth-child(2) {
         margin-top: 12px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__details-actions {
+      display: flex;
+      flex-direction: column;
+
+      & > * {
+        width: 100%;
+      }
+      & > :not(:first-child) {
+        padding-top: 16px;
+      }
+
+      & button {
+        width: 100%;
+      }
+    }
+
+    &__value-item {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0 8px;
+      justify-content: center;
+  
+      & > :nth-child(2) {
+        padding-bottom: 6px;
+        display: flex;
+        flex-direction: row;
+
+        & > :nth-child(2) {
+          padding-top: 4px;
+        }
       }
     }
   }
