@@ -50,7 +50,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
     async _updateListener () {
         const { user, pairName } = this.props;
-        console.log(this.props.user, user)
 
         if (!pairName) {
             return;
@@ -64,8 +63,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             if (user) {
                 userOrdersResponse = await axios.get<IUserOrders>(`/api/v1/bonds/user/${user.address}`);
             }
-
-            console.log({ bondOrdersResponse,  liquidateOrdersResponse, userOrdersResponse })
 
             this.setState({
                 bondOrders: bondOrdersResponse.data,

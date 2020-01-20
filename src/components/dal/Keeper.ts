@@ -66,6 +66,10 @@ export default class Keeper {
         this._loginType = LoginType.KEEPER;
     }
 
+    resetAuthType () {
+        this._loginType = LoginType.NONE;
+    }
+
     isAuthByWebKeeper () {
         return this._loginType === LoginType.WEB_KEEPER;
     }
@@ -74,14 +78,14 @@ export default class Keeper {
         return this._loginType === LoginType.KEEPER;
     }
 
-    async start() {
-        console.log(this._loginType);
+    isNotLoggedIn () {
+        return this._loginType === LoginType.NONE;
+    }
 
+    async start() {
         if (this._checkerInterval) {
             clearInterval(this._checkerInterval);
         }
-
-        console.log({ isAuthByKeeper: this.isAuthByKeeper() });
 
         if (!this.isAuthByKeeper()) {
             return;
@@ -173,8 +177,6 @@ export default class Keeper {
         const paymentCurrency = paymentCurrencyOrAssetId !== CurrencyEnum.WAVES ? (
             invertedAssetsDict[paymentCurrencyOrAssetId] || CurrencyEnum.WAVES
         )  : CurrencyEnum.WAVES;
-
-        console.log({ args, assetsDict, invertedAssetsDict, paymentCurrency, paymentAmount });
 
         const tx: IInvoke = {
             dApp,

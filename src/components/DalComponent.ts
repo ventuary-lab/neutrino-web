@@ -80,8 +80,6 @@ export default class DalComponent implements IDalComponent {
     async loginByWebKeeper() {
         const userData = await this.keeper.loginByWebKeeper();
 
-        console.log(this);
-
         if (!userData) {
             return;
         }
@@ -152,14 +150,6 @@ export default class DalComponent implements IDalComponent {
         return user;
     }
 
-    // /**
-    //  * Check is logged flag
-    //  * @returns {boolean}
-    //  */
-    // isLogged() {
-    //     return clientStorage.get(STORAGE_AUTH_KEY) === '1';
-    // }
-
     /**
      * Logout user
      * @returns {Promise<void>}
@@ -173,6 +163,8 @@ export default class DalComponent implements IDalComponent {
         if (this.keeper.isAuthByWebKeeper()) {
             this.keeper.logoutByWebKeeper();
         }
+
+        this.keeper.resetAuthType();
     }
 
     async swapWavesToNeutrino(pairName, amount) {
@@ -221,8 +213,6 @@ export default class DalComponent implements IDalComponent {
             }),
             'data.position'
         );
-
-        console.log({ price, sendAmount, position });
 
         if (price > 0 && sendAmount > 0 && Number.isInteger(position)) {
             await this.keeper.sendTransaction(

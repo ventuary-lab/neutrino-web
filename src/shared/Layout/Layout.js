@@ -405,14 +405,11 @@ export default class Layout extends React.PureComponent {
         const configValue = { ...this.props.config };
         const {
             shouldShowInviteModal,
-            isBlurred,
             isUserCongratsModalOpened,
             isLoginTypeModalOpened,
         } = this.state;
 
         const { customViewRoutes } = this;
-
-        console.log({ isBlurred });
 
         const children =
             customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
