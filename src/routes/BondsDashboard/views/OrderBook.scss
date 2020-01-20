@@ -18,11 +18,12 @@
   }
 
   &__header-row {
-    padding: 0 20px;
+    padding: 20px;
     border-top: 1px solid #343869;
     border-bottom: 1px solid #343869;
     display: flex;
     align-items: center;
+    height: 40px;
   }
   &__header-row_summary &__header-column {
     color: #00F59E;
