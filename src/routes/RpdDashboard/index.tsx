@@ -83,7 +83,7 @@ class StakingDashboard extends React.Component<Props, State> implements ILongPul
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
                     <StakingLeftPanel
-                        stakingBalance={neutrinoBalance.toFixed(2)}
+                        stakingBalance={neutrinoBalance}
                         pairName={pairName}
                     />
                 </div>
