@@ -79,7 +79,7 @@ export default class SwapLoader extends React.PureComponent {
                             {__('The swap procedure has been started.')}
                             <br/>
                             {__('Please wait for it to finish in {value} blocks.', {
-                                value: Math.abs(this.props.unblockBlock - this.props.height),
+                                value: Math.abs(this.props.unblockBlock - this.props.height) + 1,
                             })}
                         </div>
                     </div>
