@@ -53,8 +53,9 @@
 
   @media screen and (max-width: 768px) {
     &__inner {
-      padding: 48px 20px 0px;
-      max-width: 80vw;
+      padding: 0 16px;
+      margin: 48px 0 16px;
+      height: 420px;
     }
   }
 }
