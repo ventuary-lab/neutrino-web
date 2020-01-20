@@ -2,6 +2,7 @@ const _orderBy = require('lodash/orderBy');
 
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const BaseCollection = require('../base/BaseCollection');
+const { mapFieldsToNumber } = require('./helpers');
 
 module.exports = class NeutrinoOrders extends BaseCollection {
 
@@ -21,6 +22,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
      */
     async getOrders() {
         let orders = await this.getItemsAll();
+        orders = orders.map(order => mapFieldsToNumber(order, ['height']));
         orders = _orderBy(orders, 'height', 'desc');
         return orders;
     }
@@ -30,7 +32,10 @@ module.exports = class NeutrinoOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getOrders();
-        orders = orders.filter(order => order.index !== null);
+        orders = orders
+            .filter(order => order.index !== null)
+            .map(order => mapFieldsToNumber(order, ['index']));
+
         orders = _orderBy(orders, 'index', 'asc');
         return orders;
     }

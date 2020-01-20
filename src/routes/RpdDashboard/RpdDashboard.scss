@@ -30,7 +30,7 @@
 
     &_right {
       @include gradient-bg(222.77deg);
-      margin-left: 4px;
+      // margin-left: 4px;
     }
   }
 
@@ -78,5 +78,9 @@
 
   &__check-hint {
     margin-left: 6px;
+  }
+
+  @media screen and (max-width: 768px) {
+    
   }
 }

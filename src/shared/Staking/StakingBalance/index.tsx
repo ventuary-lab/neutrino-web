@@ -32,11 +32,6 @@ class StakingBalance extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
-        // const { blur, unblur } = this.context;
-        // blur();
-    }
-
     triggerStakingShareModal(isVisible: boolean) {
         this.setState({ isStakingShareModalOpened: isVisible });
     }

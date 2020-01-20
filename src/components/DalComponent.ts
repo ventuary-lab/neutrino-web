@@ -1,19 +1,38 @@
-import _get from 'lodash/get';
-import _isEqual from 'lodash/isEqual';
 import { setUser } from 'yii-steroids/actions/auth';
 import apiHoc from './dal/apiHoc';
-import { clientStorage } from 'components';
+import axios from 'axios';
+import { get as _get } from 'lodash';
+import { store } from 'components';
+import { IUserData } from '@waves/signer/cjs/interface';
 
 import BalanceController from '../contractControllers/BalanceController';
+import UserController from '../contractControllers/UserController';
 import Keeper from './dal/Keeper';
-import axios from 'axios';
+
 import ContractEnum from '../enums/ContractEnum';
 import UserRole from 'enums/UserRole';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
+import { IUser } from '../contractControllers/types';
+import { IDalComponent, IDalNetwork, IDalContractsDict } from './types';
 
-export const STORAGE_AUTH_KEY = 'isAuth';
+declare global {
+    interface Window {
+        dal?: DalComponent;
+    }
+}
 
-export default class DalComponent {
+export default class DalComponent implements IDalComponent {
+    network: IDalNetwork | null;
+    nodeUrl: string;
+    assets: Record<string, string>;
+    contracts: IDalContractsDict;
+    hoc: () => void;
+    balance: BalanceController;
+    userController: UserController;
+    keeper: Keeper;
+    signerNetworkByte: 87;
+    webKeeperUserData: IUserData | null;
+
     constructor() {
         this.network = null;
         this.nodeUrl = null;
@@ -21,14 +40,81 @@ export default class DalComponent {
         this.contracts = null;
         this.hoc = apiHoc;
         this.balance = new BalanceController({ dalRef: this });
-        this.balance.onUpdate = this.login.bind(this);
+        this.userController = new UserController();
 
+        this.balance.onUpdate = this.onListenerUpdate.bind(this);
         this.keeper = new Keeper(this);
-        this.keeper.onUpdate = this.login.bind(this);
+        this.keeper.onUpdate = this.onListenerUpdate.bind(this);
+        this.signerNetworkByte = 87;
+        this.webKeeperUserData = null;
 
         if (process.env.NODE_ENV !== 'production') {
             window.dal = this;
         }
+    }
+
+    async onListenerUpdate () {
+        let account;
+
+        if (this.keeper.isAuthByKeeper()) {
+            account = await this.keeper.getAccount();
+        } else if (this.keeper.isAuthByWebKeeper()) {
+            account = {
+                ...this.webKeeperUserData,
+                // network: String.fromCharCode(this.signerNetworkByte) === 'W' ? 'mainnet' : 'testnet',
+                network: this.getNetworkOfByte()
+            };
+        } else {
+            return;
+        }
+
+        await this.keeper.start();
+        // console.log(account.address, 'a.a');
+        await this.balance.start(account.address);
+
+        const user = this.constructUserData(account);
+
+        this.userController.updateUser({ user });
+    }
+
+    async loginByWebKeeper() {
+        const userData = await this.keeper.loginByWebKeeper();
+
+        if (!userData) {
+            return;
+        }
+
+        this.webKeeperUserData = userData;
+
+        this.keeper.setWebKeeperAuthType();
+
+        await this.keeper.start();
+        await this.balance.start(userData.address);
+
+        const user = this.constructUserData({
+            address: userData.address,
+            // network: this.getNetworkOfByte(userData.networkByte)
+            network: this.getNetworkOfByte()
+        });
+
+        this.userController.updateUser({ user });
+
+        return user;
+    }
+
+    getNetworkOfByte (networkByte?: number, defaultByte = this.signerNetworkByte) {
+        return String.fromCharCode(
+            networkByte || defaultByte
+        ) === 'W' ? 'mainnet' : 'testnet';
+    }
+
+    constructUserData(account) : IUser | null {
+        return account ? {
+            role: UserRole.REGISTERED,
+            address: account.address,
+            network: account.network,
+            balances: this.balance.getBalances(),
+        } : null;
     }
 
     /**
@@ -37,41 +123,31 @@ export default class DalComponent {
      */
     async login() {
         // Start keeper listener, fetch balances
+        this.keeper.setKeeperAuthType();
+
         const account = await this.keeper.getAccount();
+
+        if (account === null) {
+            throw new Error('Keeper is not provided');
+        }
+
+        // this.keeper.stop();
         await this.keeper.start();
         await this.balance.start(account.address);
 
         // Keeper user
-        const user = account
-            ? {
-                  role: UserRole.REGISTERED,
-                  address: account.address,
-                  network: account.network,
-                  balances: this.balance.getBalances(),
-              }
-            : null;
+        const user = this.constructUserData(account);
 
         // Mark logged
-        if (account && !this.isLogged()) {
-            clientStorage.set(STORAGE_AUTH_KEY, '1');
-        }
+        // if (account && !this.isLogged()) {
+        //     clientStorage.set(STORAGE_AUTH_KEY, '1');
+        // }
 
         // Update redux store
-        const store = require('components').store;
-        const storeUser = store.getState().auth.user || null;
-        if (!_isEqual(storeUser, user)) {
-            store.dispatch(setUser(user));
-        }
+
+        this.userController.updateUser({ user });
 
         return user;
-    }
-
-    /**
-     * Check is logged flag
-     * @returns {boolean}
-     */
-    isLogged() {
-        return clientStorage.get(STORAGE_AUTH_KEY) === '1';
     }
 
     /**
@@ -79,11 +155,16 @@ export default class DalComponent {
      * @returns {Promise<void>}
      */
     async logout() {
-        require('components').store.dispatch(setUser(null));
-        clientStorage.remove(STORAGE_AUTH_KEY);
+        store.dispatch(setUser(null));
 
         this.keeper.stop();
         this.balance.stop();
+
+        if (this.keeper.isAuthByWebKeeper()) {
+            this.keeper.logoutByWebKeeper();
+        }
+
+        this.keeper.resetAuthType();
     }
 
     async swapWavesToNeutrino(pairName, amount) {
@@ -220,7 +301,8 @@ export default class DalComponent {
             pairName,
             address,
             amount,
-            this.assets[paymentCurrency] || 'WAVES'
+            this.assets[paymentCurrency] || 'WAVES',
+            paymentCurrency
         );
     }
 }

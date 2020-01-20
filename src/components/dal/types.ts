@@ -1,3 +1,5 @@
+import { IInvoke } from '@waves/signer/cjs/interface';
+
 export interface WavesKeeperAssetData {
     assetId: string;
     tokens: string;
@@ -14,7 +16,7 @@ export interface WavesKeeperCallData {
 
 export interface WavesKeeperTransactionData {
     fee?: WavesKeeperAssetData;
-    dApp?: string;
+    dApp: string;
     call?: WavesKeeperCallData;
     payment?: WavesKeeperAssetData[];
     recipient?: string;

@@ -48,6 +48,10 @@
     background-color: $color-brand-purple;
     border: 1px solid $color-brand-purple-light;
     border-radius: 18px;
+
+    @media screen and (max-width: 768px) {
+      left: -150%;
+    }
   }
 
   &__item {

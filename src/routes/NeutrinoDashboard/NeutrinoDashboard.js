@@ -19,6 +19,8 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
 import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
@@ -127,7 +129,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
             return;
         }
 
-        await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        try {
+            await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        } catch (err) {
+            console.warn('Error on balance indices update', err);
+        }
         await this._checkForSwap();
     }
 
@@ -172,29 +178,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
         } else {
             this._isProgramChange = false;
         }
-
-        // const thisWithdraw = _get(this.props, 'withdraw');
-        // const nextWithdraw = _get(nextProps, 'withdraw');
-        // const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
-        // const nextHeight = Number(_get(nextProps, 'withdraw.height'));
-        // //first loading component
-        // if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
-        //     this.setState({ isSwapLoading: true });
-        // }
-
-        // //changing withdraw
-        // if (thisWithdraw && nextWithdraw) {
-        //     if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: true });
-        //     } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: false });
-        //     } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
-        //         //close delay
-        //         setTimeout(() => this.setState({ isSwapLoading: false }), 3000);
-        //     }
-        // } else if (this.state.isSwapLoading) {
-        //     this.setState({ isSwapLoading: false });
-        // }
     }
 
     mapToSwapLoaderProps({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock }) {
@@ -207,8 +190,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     async _checkForSwap() {
-        // (balance_lock_waves_{address} > 0 || balance_lock_neutrino_{address} > 0) && balance_unlock_block_{address} >= height
-
         const { lockedWaves, lockedNeutrino, unlockBlock } = this.state.lastBalanceIndices;
         const currentHeight = await nodeInteraction.currentHeight(dal.nodeUrl);
 
@@ -223,12 +204,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 unlockBlock,
             }),
         });
-
-        // height: 1822964
-        // - id: "3P8ZzvkLGWtaoPVYDozhbWavqgYgZJWbq9j"
-        // neutrinoBlocked: 0
-        // unblockBlock: 1821919
-        // wavesBlocked: 0
     }
 
     async _updateBalanceIndices(dAppAddress, address) {
@@ -282,11 +257,15 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 label: __('Confirm details'),
             },
         ];
+        const computedClassName = [
+            bem.block(),
+            isSwapLoading ? bem.element('swap-processing') : ''
+        ].join(' ');
 
         return (
             <UserCongratsModalContext.Consumer>
                 {context => (
-                    <div className={bem.block()}>
+                    <div className={computedClassName}>
                         {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
                         {this.renderStepChanger(steps)}
                         <Form
@@ -321,6 +300,18 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
+    getCurrencyLabels () {
+        const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
+        const sourceCurrency = _sourceCurrency.toUpperCase();
+        const quoteCurrency = _quoteCurrency.toUpperCase();
+
+        return {
+            mapLabel: label => <span>{label}</span>,
+            totalIssuedLabels:  [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
+            currentPriceLabels:  [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+        };
+    }
+
     renderGenerationStep() {
         const grabNeutrinoAddress = config => {
             try {
@@ -329,6 +320,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 return '';
             }
         };
+
+        const {
+            // mobile: mobileLabels,
+            // desktop: desktopLabels
+            totalIssuedLabels,
+            mapLabel,
+            currentPriceLabels
+        } = this.getCurrencyLabels();
 
         return (
             <>
@@ -415,22 +414,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
                     <div className={bem.element('info-column')}>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <span>
-                                    {__('Total issued {currency}', {
-                                        currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                    })}
-                                </span>
+                            <div className={bem.element('info-string', 'with-mobile')}>
+                                {totalIssuedLabels.map(mapLabel)}
                             </div>
                             <span>{prettyPrintNumber(this.getTotalIssued())}</span>
                         </div>
                         <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string')}>
-                                <span>
-                                    {__('Current WAVES / {currency} price', {
-                                        currency: this.props.sourceCurrency.toUpperCase(),
-                                    })}
-                                </span>
+                            <div className={bem.element('info-string', 'with-mobile')}>
+                                {currentPriceLabels.map(mapLabel)}
                             </div>
                             <span>
                                 {this.getControlPrice()}{' '}
@@ -451,8 +442,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         label={
                             this.state.isWavesLeft
                                 ? __('Issue {currency}', {
-                                      currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                  })
+                                    currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                })
                                 : __('Redeem WAVES')
                         }
                         onClick={() => this.setState({ step: 'details' })}
@@ -480,21 +471,23 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                             this.state.isWavesLeft ? 'waves' : 'neutrino'
                                         )}
                                     </span>
-                                    <span
-                                        className={bem(
-                                            bem.element('value-icon'),
-                                            `Icon ${
-                                                this.state.isWavesLeft
-                                                    ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                                    : CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                            }`
-                                        )}
-                                    />
-                                    <span className={bem.element('value-name')}>
-                                        {this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                            : CurrencyEnum.getLabel(this.props.quoteCurrency)}
-                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                                        : CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                                }`
+                                            )}
+                                        />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                                : CurrencyEnum.getLabel(this.props.quoteCurrency)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div className={bem.element('values')}>
@@ -506,21 +499,23 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                             this.state.isWavesLeft ? 'neutrino' : 'waves'
                                         )}
                                     </span>
-                                    <span
-                                        className={bem(
-                                            bem.element('value-icon'),
-                                            `Icon ${
-                                                this.state.isWavesLeft
-                                                    ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                                    : CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                            }`
-                                        )}
-                                    />
-                                    <span className={bem.element('value-name')}>
-                                        {this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                            : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
-                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                                        : CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                                }`
+                                            )}
+                                        />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(this.props.quoteCurrency)
+                                                : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -638,7 +633,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
             await this._updateAndCheckBalanceIndices();
         } catch (err) {
             console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
-            throw new Error(err.data);
+
+            store.dispatch(openModal(MessageModal, {
+                text: `Error on Swap occured. ${err.message}`
+            }));
         }
     }
 }

@@ -14,6 +14,7 @@ import {
     TERMS_OF_USE_LABEL,
     STAKING_REWARDS_LABEL,
 } from './constants';
+import { isScreenNarrowHelper } from './helpers';
 
 export const defaultProductLinks = [
     {
@@ -87,3 +88,10 @@ export const defaultLearnLinks = [
         url: '/staking'
     }
 ];
+
+
+export const defaultScreenSizeContext = {
+    getEntries: () => [],
+    listeners: new Map(),
+    isScreenNarrow: isScreenNarrowHelper
+};
