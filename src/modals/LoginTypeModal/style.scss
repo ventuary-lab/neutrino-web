@@ -73,6 +73,16 @@ $border-col: rgb(47, 47, 94);
     &__head {
         padding: 24px;
         background-color: $border-col;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        & > :nth-child(1) {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-right: -15px;
+        }
     }
 
     &__we-cont {

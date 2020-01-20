@@ -190,8 +190,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     async _checkForSwap() {
-        // (balance_lock_waves_{address} > 0 || balance_lock_neutrino_{address} > 0) && balance_unlock_block_{address} >= height
-
         const { lockedWaves, lockedNeutrino, unlockBlock } = this.state.lastBalanceIndices;
         const currentHeight = await nodeInteraction.currentHeight(dal.nodeUrl);
 
