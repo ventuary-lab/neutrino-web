@@ -153,7 +153,7 @@ export default class Layout extends React.PureComponent {
 
         this.state = {
             shouldShowInviteModal: false,
-            isUserCongratsModalOpened: true,
+            isUserCongratsModalOpened: false,
             isLoginTypeModalOpened: false,
             isBlurred: false,
         };
