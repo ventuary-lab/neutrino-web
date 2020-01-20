@@ -153,7 +153,7 @@ export default class Layout extends React.PureComponent {
 
         this.state = {
             shouldShowInviteModal: false,
-            isUserCongratsModalOpened: false,
+            isUserCongratsModalOpened: true,
             isLoginTypeModalOpened: false,
             isBlurred: false,
         };
@@ -200,7 +200,6 @@ export default class Layout extends React.PureComponent {
 
     componentWillMount() {
         this.checkCurrentRoute();
-        // this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
     }
 
     async componentDidMount() {

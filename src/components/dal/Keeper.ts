@@ -339,6 +339,8 @@ export default class Keeper {
 
     async logoutByWebKeeper () {
         await webKeeper.ref.lib.logout();
+
+        window.location.href = '/';
     }
 
     async _buildTransferTransaction() {}

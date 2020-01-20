@@ -6,7 +6,7 @@
   &_is-success {
     #{$root}__inner {
       background-color: #353569;
-      padding: 84px 130px 105px;
+      // padding: 84px 130px 105px;
     }
   }
 
@@ -33,16 +33,25 @@
 
   &__inner {
     width: 100%;
-    padding: 125px 130px 105px;
+    // padding: 125px 130px 105px;
+    max-width: unset;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    & button {
+      width: 100%;
+      min-width: unset;
+      max-width: 260px;
+    }
   }
 
   &__form,
   &__success {
     width: 100%;
+    padding: 32px;
+    height: calc(100% - 120px);
 
     &_d-none {
       display: none;
@@ -53,10 +62,10 @@
     padding: 0;
   }
 
-  @media screen and (max-width: 768px) {
-    &__inner {
-      padding: 20px;
-      max-width: 80vw;
-    }
-  }
+  // @media screen and (max-width: 768px) {
+  //   &__inner {
+  //     padding: 20px;
+  //     max-width: 80vw;
+  //   }
+  // }
 }
