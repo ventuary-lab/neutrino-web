@@ -129,7 +129,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
             return;
         }
 
-        await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        try {
+            await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        } catch (err) {
+            console.warn('Error on balance indices update', err);
+        }
         await this._checkForSwap();
     }
 

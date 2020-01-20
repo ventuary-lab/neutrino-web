@@ -401,22 +401,23 @@
       }
     }
 
-    &__value-item {
+  }
+
+  &__value-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0 8px;
+    justify-content: center;
+
+    & > :nth-child(2) {
+      padding-bottom: 4px;
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: 0 8px;
-      justify-content: center;
-  
-      & > :nth-child(2) {
-        padding-bottom: 6px;
-        display: flex;
-        flex-direction: row;
 
-        & > :nth-child(2) {
-          padding-top: 4px;
-        }
+      & > :nth-child(2) {
+        padding-top: 4px;
       }
     }
   }
