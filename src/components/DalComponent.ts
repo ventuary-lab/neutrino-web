@@ -165,6 +165,8 @@ export default class DalComponent implements IDalComponent {
         }
 
         this.keeper.resetAuthType();
+
+        window.location.href = '/';
     }
 
     async swapWavesToNeutrino(pairName, amount) {
