@@ -1,27 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {getUser} from 'yii-steroids/reducers/auth';
+import { connect } from 'react-redux';
+import { getUser } from 'yii-steroids/reducers/auth';
 
-import {html} from 'components';
+import { html } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import {getBaseCurrency, getPairName, getQuoteCurrency} from 'reducers/currency';
+import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 
 import './SwapLoader.scss';
 
 const bem = html.bem('SwapLoader');
 
-
-@connect(
-    state => ({
-        quoteCurrency: getQuoteCurrency(state),
-        baseCurrency: getBaseCurrency(state),
-        pairName: getPairName(state),
-        user: getUser(state),
-    })
-)
+@connect(state => ({
+    quoteCurrency: getQuoteCurrency(state),
+    baseCurrency: getBaseCurrency(state),
+    pairName: getPairName(state),
+    user: getUser(state),
+}))
 export default class SwapLoader extends React.PureComponent {
-
     static propTypes = {
         neutrinoBlocked: PropTypes.number,
         wavesBlocked: PropTypes.number,
@@ -32,7 +28,17 @@ export default class SwapLoader extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.startBlock = this.props.height;
+        this.state = {
+            startBlock: props.height,
+        };
+    }
+
+    componentDidUpdate() {
+        if (!this.state.startBlock && this.props.height) {
+            this.setState({
+                startBlock: this.props.height,
+            });
+        }
     }
 
     render() {
@@ -41,34 +47,37 @@ export default class SwapLoader extends React.PureComponent {
         return (
             <div className={bem.block()}>
                 <div className={bem.element('inner')}>
-
                     <div className={bem.element('content')}>
-                        <span
-                            className={bem.element('title')}
-                        >
-                            {__('SWAP')}
-                        </span>
+                        <span className={bem.element('title')}>{__('SWAP')}</span>
                         <div className={bem.element('icon')}>
-                            <span className={'Icon Icon__swap'}/>
+                            <span className={'Icon Icon__swap'} />
                         </div>
-                        <div className={bem.element('direction', {
-                            'neutrino-to-waves': this.props.neutrinoBlocked > 0,
-                            'waves-to-neutrino': this.props.neutrinoBlocked > 0,
-                        })}>
+                        <div
+                            className={bem.element('direction', {
+                                'neutrino-to-waves': this.props.neutrinoBlocked > 0,
+                                'waves-to-neutrino': this.props.neutrinoBlocked > 0,
+                            })}
+                        >
                             <div className={bem.element('currency')}>
                                 <div className={bem.element('currency-icon')}>
-                                    <span className={`Icon ${CurrencyEnum.getIconClass(CurrencyEnum.WAVES)}`}/>
+                                    <span
+                                        className={`Icon ${CurrencyEnum.getIconClass(
+                                            CurrencyEnum.WAVES
+                                        )}`}
+                                    />
                                 </div>
                                 <span className={bem.element('currency-name')}>
                                     {CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
                                 </span>
                             </div>
-                            <span className={bem.element('direction-union')}>
-                                {__('to')}
-                            </span>
+                            <span className={bem.element('direction-union')}>{__('to')}</span>
                             <div className={bem.element('currency')}>
                                 <div className={bem.element('currency-icon')}>
-                                    <span className={`Icon ${CurrencyEnum.getIconClass(this.props.quoteCurrency)}`}/>
+                                    <span
+                                        className={`Icon ${CurrencyEnum.getIconClass(
+                                            this.props.quoteCurrency
+                                        )}`}
+                                    />
                                 </div>
                                 <span className={bem.element('currency-name')}>
                                     {CurrencyEnum.getLabel(this.props.quoteCurrency)}
@@ -77,7 +86,7 @@ export default class SwapLoader extends React.PureComponent {
                         </div>
                         <div className={bem.element('text')}>
                             {__('The swap procedure has been started.')}
-                            <br/>
+                            <br />
                             {__('Please wait for it to finish in {value} blocks.', {
                                 value: Math.abs(this.props.unblockBlock - this.props.height) + 1,
                             })}
@@ -86,27 +95,21 @@ export default class SwapLoader extends React.PureComponent {
                     <div className={bem.element('footer')}>
                         <div className={bem.element('progress-block')}>
                             <span className={bem.element('progress-status')}>
-                                {isCompleted ? __('Completed') :__('In progress...')}
+                                {isCompleted ? __('Completed') : __('In progress...')}
                             </span>
-                            <div className={bem.element('progress-scale', {
-                                completed: isCompleted,
-                            })}>
+                            <div
+                                className={bem.element('progress-scale', {
+                                    completed: isCompleted,
+                                })}
+                            >
                                 <div
-                                    style={{width: `${this.getScalePercent()}%`}}
+                                    style={{ width: `${this.getScalePercent()}%` }}
                                     className={bem.element('progress-value')}
                                 />
                             </div>
                             <div className={bem.element('progress-hints')}>
-                                <span>
-                                    {__('{value} blocks', {
-                                        value: this.startBlock
-                                    })}
-                                </span>
-                                <span>
-                                    {__('{value} blocks', {
-                                        value: this.props.unblockBlock,
-                                    })}
-                                </span>
+                                <span>{this.state.startBlock} blocks</span>
+                                <span>{this.props.unblockBlock} blocks</span>
                             </div>
                         </div>
                     </div>

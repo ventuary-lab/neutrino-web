@@ -421,4 +421,10 @@
       }
     }
   }
+
+  &__swap-processing {
+    & > :not(:first-child) {
+      filter: blur(10px);
+    }
+  }
 }

@@ -257,11 +257,15 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 label: __('Confirm details'),
             },
         ];
+        const computedClassName = [
+            bem.block(),
+            isSwapLoading ? bem.element('swap-processing') : ''
+        ].join(' ');
 
         return (
             <UserCongratsModalContext.Consumer>
                 {context => (
-                    <div className={bem.block()}>
+                    <div className={computedClassName}>
                         {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
                         {this.renderStepChanger(steps)}
                         <Form
@@ -438,8 +442,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         label={
                             this.state.isWavesLeft
                                 ? __('Issue {currency}', {
-                                      currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                  })
+                                    currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                })
                                 : __('Redeem WAVES')
                         }
                         onClick={() => this.setState({ step: 'details' })}
