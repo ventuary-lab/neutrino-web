@@ -5,7 +5,6 @@ const BaseCollection = require('../base/BaseCollection');
 const { mapFieldsToNumber } = require('./helpers');
 
 module.exports = class NeutrinoOrders extends BaseCollection {
-
     getKeys(id = '([A-Za-z0-9]{40,50})$') {
         return [
             `order_height_${id}`,
@@ -17,7 +16,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             `order_next_${id}`,
             'orderbook',
             'order_first',
-            'order_last'
+            'order_last',
         ];
     }
 
@@ -37,27 +36,23 @@ module.exports = class NeutrinoOrders extends BaseCollection {
     async getOpenedOrders() {
         let orders = await this.getItemsAll();
 
-        let sortedOrders = []
+        let sortedOrders = [];
 
-        orders = orders.filter(order => order.status == "new");
-        if(orders == undefined || orders.length == 0)
-            return orders
+        orders = orders.filter(order => order.status == 'new');
+        if (orders == undefined || orders.length == 0) return orders;
 
         let firstOrder = orders.filter(order => order.isFirst)[0];
-        if(firstOrder == undefined || firstOrder.length == 0)
-            return orders
-        
+        if (firstOrder == undefined || firstOrder.length == 0) return orders;
 
         let nextProcessOrder = firstOrder;
-        sortedOrders.push(firstOrder)
-        while(true){
-            console.log(nextProcessOrder)
+        sortedOrders.push(firstOrder);
+        while (true) {
             if (nextProcessOrder.orderNext == null) {
                 return sortedOrders;
             }
             let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
-            sortedOrders.push(foundOrder)
-            nextProcessOrder = foundOrder
+            sortedOrders.push(foundOrder);
+            nextProcessOrder = foundOrder;
         }
     }
 
@@ -72,8 +67,8 @@ module.exports = class NeutrinoOrders extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
-        const orderNext = item["order_next_" + id] || null;
-        const orderPrev = item["order_prev_" + id] || null;
+        const orderNext = item['order_next_' + id] || null;
+        const orderPrev = item['order_prev_' + id] || null;
 
         const height = item['order_height_' + id];
         const total = item['order_total_' + id] || 0;
@@ -90,7 +85,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             orderNext,
             orderPrev,
             isFirst: id == item.order_first,
-            isLast: id == item.order_last
+            isLast: id == item.order_last,
         };
     }
 
@@ -100,5 +95,4 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             id,
         };
     }
-
 };
