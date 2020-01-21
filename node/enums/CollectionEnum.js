@@ -4,7 +4,7 @@ const ContractEnum = require('./ContractEnum');
 module.exports = class CollectionEnum {
 
     static BONDS_ORDERS = 'bonds_orders';
-    static BONDS_ORDERS_HISTORY = 'bonds_orders_history';
+    // static BONDS_ORDERS_HISTORY = 'bonds_orders_history';
     static NEUTRINO_ORDERS = 'neutrino_orders';
     static NEUTRINO_BALANCES = 'neutrino_balances';
     static NEUTRINO_WITHDRAW = 'neutrino_withdraw';
@@ -21,7 +21,7 @@ module.exports = class CollectionEnum {
     static getKeys() {
         return [
             this.BONDS_ORDERS,
-            this.BONDS_ORDERS_HISTORY,
+            // this.BONDS_ORDERS_HISTORY,
             this.NEUTRINO_ORDERS,
             this.CONTROL_CONFIG,
             this.NEUTRINO_BALANCES,
@@ -40,7 +40,7 @@ module.exports = class CollectionEnum {
     static getClass(name) {
         const map = {
             [this.BONDS_ORDERS]: collections.BondsOrders,
-            [this.BONDS_ORDERS_HISTORY]: collections.BondsOrdersHistory,
+            // [this.BONDS_ORDERS_HISTORY]: collections.BondsOrdersHistory,
             [this.NEUTRINO_ORDERS]: collections.NeutrinoOrders,
             [this.NEUTRINO_BALANCES]: collections.NeutrinoBalances,
             [this.NEUTRINO_WITHDRAW]: collections.NeutrinoWithdraw,
@@ -60,7 +60,7 @@ module.exports = class CollectionEnum {
     static getContractName(name) {
         const map = {
             [this.BONDS_ORDERS]: ContractEnum.AUCTION,
-            [this.BONDS_ORDERS_HISTORY]: ContractEnum.AUCTION,
+            // [this.BONDS_ORDERS_HISTORY]: ContractEnum.AUCTION,
             [this.NEUTRINO_ORDERS]: ContractEnum.LIQUIDATION,
             [this.NEUTRINO_BALANCES]: ContractEnum.NEUTRINO,
             [this.NEUTRINO_WITHDRAW]: ContractEnum.NEUTRINO,

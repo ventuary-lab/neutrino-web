@@ -262,7 +262,7 @@ class InstallKeeperModal extends React.Component<Props, State> {
 
         if (this.views.length - 1 === this.state.currentViewIndex) {
             if (document.body.offsetWidth < 650) {
-                store.dispatch(openModal(WarningMobileModal));
+                // store.dispatch(openModal(WarningMobileModal));
             } else {
                 window.open('https://wavesplatform.com/technology/keeper');
             }

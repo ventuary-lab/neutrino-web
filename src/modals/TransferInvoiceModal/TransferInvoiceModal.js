@@ -43,7 +43,7 @@ export default class TransferInvoiceModal extends React.PureComponent {
                 {...this.props.modalProps}
                 header={this.state.isSuccess
                     ? __('Transferring was successful!')
-                    : __('Please transfer funds to the following user via Waves Keeper')
+                    : __('Please transfer funds to the following user via Waves Keeper or Waves Signer')
                 }
                 className={bem.block({
                     // 'is-success': this.state.isSuccess,

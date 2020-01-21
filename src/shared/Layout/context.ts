@@ -1,30 +1,40 @@
 import { createContext } from 'react';
+import { defaultLearnLinks, defaultProductLinks, defaultScreenSizeContext } from './defaults';
 import {
-    defaultLearnLinks,
-    defaultProductLinks
-} from './defaults';
-
-import { Link } from 'ui/global/types';
+    IInstallKeeperModalContext,
+    IBlurContext,
+    IGlobalLinksContext,
+    ILoginTypeModalContext,
+    IScreenSizeContext,
+} from './types';
 
 export const ConfigContext = createContext({ config: null });
 
 export const UserCongratsModalContext = createContext({ onClose: null, onOpen: null });
 
-export const InstallKeeperModalContext = createContext<{
-    onLogin: <T extends () => void>(onSuccess?: T, onError?: T) => void;
-    onLogout: <T extends () => void>(onSuccess?: T, onError?: T) => void;
-    openModal: () => void;
-    isVisible: boolean;
-}>({
+export const InstallKeeperModalContext = createContext<IInstallKeeperModalContext>({
     onLogin: () => {},
     onLogout: () => {},
+    onWebKeeperLogin: () => {},
     openModal: () => {},
     isVisible: false,
 });
 
-export const BlurContext = createContext({ blur: null, unblur: null, checkIsBlurred: null });
+export const BlurContext = createContext<IBlurContext>({
+    blur: null,
+    unblur: null,
+    checkIsBlurred: null,
+});
 
-export const GlobalLinksContext = createContext<{ links: Link[]; product: Link[] }>({
+export const GlobalLinksContext = createContext<IGlobalLinksContext>({
     links: defaultLearnLinks,
     product: defaultProductLinks,
 });
+
+export const LoginTypeModalContext = createContext<ILoginTypeModalContext>({
+    onClose: null,
+    onOpen: null,
+});
+
+// ResizeObserver dependent
+export const ScreenSizeContext = createContext<IScreenSizeContext>(defaultScreenSizeContext);

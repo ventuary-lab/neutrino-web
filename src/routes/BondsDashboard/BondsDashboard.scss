@@ -1,7 +1,7 @@
 @import 'style/helpers/vars';
 @import 'style/helpers/mixins';
 
-.BoundsDashboard {
+.BondsDashboard {
 
   $root: &;
 
@@ -45,7 +45,6 @@
   }
 
   &__orders {
-    // height: 360px;
     padding-bottom: 18px;
   }
 

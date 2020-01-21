@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router';
-import IndexPage from './IndexPage';
+// import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
-import BoundsDashboard from './BoundsDashboard';
+import BondsDashboard from './BondsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
@@ -30,7 +30,7 @@ export const ROUTE_NEUTRINO_SHOW_TRANSFERS = 'neutrino_show_transfers';
 export const ROUTE_NEUTRINO_SHOW_INVOICE_GEN = 'neutrino_show_invoice_gen';
 export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
 export const ROUTE_BONDS = 'bonds';
-export const ROUTE_BONDS_REDIRECT = 'bounds_redirect';
+export const ROUTE_BONDS_REDIRECT = 'bonds_redirect';
 export const ROUTE_LEASING = 'leasing';
 export const ROUTE_LEASING_REDIRECT = 'leasing_redirect';
 export const ROUTE_RPD = 'rpd';
@@ -140,7 +140,7 @@ export default {
         [ROUTE_BONDS]: {
             exact: true,
             path: '/bonds/:currency',
-            component: BoundsDashboard,
+            component: BondsDashboard,
             label: __(BONDS_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,

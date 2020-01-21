@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { getFormValues, reset } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
 
-import { html, dal } from 'components';
-import validate from 'shared/validate';
+import { html, dal, store } from 'components';
+// import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
-import { getPairName } from 'reducers/currency';
+// import { getPairName } from 'reducers/currency';
 import PairsEnum from 'enums/PairsEnum';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
 // import {getPairName} from 'reducers/currency';
 
 import './TransferModal.scss';
@@ -89,29 +91,34 @@ export default class TransferModal extends React.PureComponent {
         );
     }
 
-    _onSubmit(address, amount) {
-        validate(address, [
-            [
-                'address',
-                function(address) {
-                    if (!/\w+/.test(address)) {
-                        return __('Recipient address is not valid');
-                    }
-                }
-            ]
-        ]);
+    async _onSubmit(address, amount) {
+        // validate(address, [
+        //     [
+        //         'address',
+        //         function(address) {
+        //             if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+        //                 return __('Recipient address is not valid');
+        //             }
+        //         }
+        //     ]
+        // ]);
 
-        dal.transferFunds(
-            PairsEnum.USDNB_USDN, //TODO
-            this.props.currency,
-            address,
-            amount
-        )
-            .then(() => {
-                this.setState({
-                    isSuccess: true
-                });
-            })
-            .catch((err) => console.log('Transfer error: ', err));
+        try {
+
+            await dal.transferFunds(
+                PairsEnum.USDNB_USDN, //TODO
+                this.props.currency,
+                address,
+                amount
+            )
+            this.setState({
+                isSuccess: true
+            });
+        } catch (err) {
+
+            store.dispatch(openModal(MessageModal, {
+                text: `Error on Swap occured. ${err.message}`
+            }));
+        }
     }
 }

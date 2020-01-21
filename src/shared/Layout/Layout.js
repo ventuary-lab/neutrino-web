@@ -16,7 +16,7 @@ import { getCurrentItem, getCurrentItemParam } from 'yii-steroids/reducers/navig
 import { getData, getUser } from 'yii-steroids/reducers/auth';
 import { openModal } from 'yii-steroids/actions/modal';
 import { isPhone } from 'yii-steroids/reducers/screen';
-import WarningMobileModal from 'modals/WarningMobileModal';
+// import WarningMobileModal from 'modals/WarningMobileModal';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
@@ -35,6 +35,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import {
     ROUTE_ROOT,
+    // ROUTE_RPD,
     ROUTE_NEUTRINO_SHOW_TRANSFERS,
     ROUTE_NEUTRINO_SHOW_INVOICE_GEN,
     ROUTE_STAKING_LANDING_PAGE,
@@ -43,16 +44,23 @@ import { getPairName } from 'reducers/currency';
 import {
     ConfigContext,
     InstallKeeperModalContext,
+    LoginTypeModalContext,
     BlurContext,
     UserCongratsModalContext,
-    LearnLinksContext,
     GlobalLinksContext,
+    ScreenSizeContext,
 } from './context';
-import { defaultLearnLinks as links, defaultProductLinks as product } from './defaults';
+import { LayoutUrlParams } from './constants';
+import {
+    defaultScreenSizeContext,
+    defaultLearnLinks as links,
+    defaultProductLinks as product,
+} from './defaults';
+import { isScreenNarrow } from './helpers';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
-
+import LoginTypeModal from 'modals/LoginTypeModal';
 import './Layout.scss';
 
 const bem = html.bem('Layout');
@@ -103,31 +111,50 @@ export default class Layout extends React.PureComponent {
         this.controllerInitialized = false;
 
         this.onScreenResize = this.onScreenResize.bind(this);
-        this.openWarningModal = this.openWarningModal.bind(this);
+        // this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
+        this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
 
         this.resizeObserver = null;
         this.wcc = null;
+        this.learnLinksContextValue = { links };
+        this.currentResizeObserverEntries = [];
+        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
         this.blurContextValue = {
             blur: () => this.setState({ isBlurred: true }),
             unblur: () => this.setState({ isBlurred: false }),
             checkIsBlurred: () => this.state.isBlurred,
         };
-        this.learnLinksContextValue = { links };
+
         this.userCongratsModalContextValue = {
             onClose: () => this.setState({ isUserCongratsModalOpened: false }),
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
+
         this.globalLinksContextValue = { links, product };
-        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
+        this.loginTypeContextValue = {
+            onClose: () => this.setState({ isLoginTypeModalOpened: false }),
+            onOpen: () => this.setState({ isLoginTypeModalOpened: true }),
+        };
+
+        this.screenSizeContextValue = {
+            ...defaultScreenSizeContext,
+            getEntries: () => this.currentResizeObserverEntries,
+            // getListeners: () => this.currentResizeObserverListeners,
+            // subscribe: (name, fn) => this.currentResizeObserverListeners.add(name, fn),
+            // unsubscribe: (fnName) => this.currentResizeObserverListeners.delete(fnName)
+        };
 
         this.state = {
             shouldShowInviteModal: false,
             isUserCongratsModalOpened: false,
+            isLoginTypeModalOpened: false,
             isBlurred: false,
         };
     }
@@ -139,8 +166,8 @@ export default class Layout extends React.PureComponent {
             const { page } = this.props;
             const { customViewRoutes } = this;
 
-            if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                if (customViewRoutes.indexOf(page.id) === -1) {
+            if (page.id !== ROUTE_ROOT) {
+                if ([...customViewRoutes, ROUTE_NEUTRINO_SHOW_TRANSFERS].indexOf(page.id) === -1) {
                     store.dispatch(goToPage(ROUTE_ROOT));
                 }
 
@@ -157,9 +184,9 @@ export default class Layout extends React.PureComponent {
     checkCurrentRoute() {
         const { page, user } = this.props;
 
-        if (document.body.offsetWidth < 600 || !user) {
-            return;
-        }
+        // if (document.body.offsetWidth < 600 || !user) {
+        //     return;
+        // }
 
         switch (page.id) {
             case ROUTE_NEUTRINO_SHOW_TRANSFERS:
@@ -172,12 +199,12 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
+        this.checkCurrentRoute();
     }
 
     async componentDidMount() {
-        // this.attachResizeObserver();
-        this.openWarningModal();
+        this.attachResizeObserver();
+        // this.openWarningModal();
 
         this.handleQueryParams();
     }
@@ -185,29 +212,25 @@ export default class Layout extends React.PureComponent {
     handleQueryParams() {
         const url = new URL(window.location.href);
 
-        if (url.searchParams.get('openKeeperWarning')) {
-            this.triggerInstallKeeperModalVisibility(true);
+        if (url.searchParams.get(LayoutUrlParams.LOGIN_WARNING_PARAM)) {
+            this.loginTypeContextValue.onOpen();
         }
     }
 
-    openWarningModal(width = document.body.offsetWidth) {
-        if (width < 600) {
-            store.dispatch(openModal(WarningMobileModal));
-        }
-    }
-
-    onScreenResize(entry) {
-        const width = _get(entry[0], 'contentRect.width', null);
-
-        this.openWarningModal(width);
+    onScreenResize(entries) {
+        this.currentResizeObserverEntries = entries;
     }
 
     attachResizeObserver() {
         try {
+            if (typeof ResizeObserver === 'undefined') {
+                throw new Error('ResizeObserver is not supported');
+            }
+
             this.resizeObserver = new ResizeObserver(this.onScreenResize);
             this.resizeObserver.observe(document.body);
         } catch (err) {
-            console.warn({ err }, 'ResizeObserver is not supported');
+            console.warn({ err });
         }
     }
 
@@ -255,7 +278,10 @@ export default class Layout extends React.PureComponent {
 
     async onWavesKeeperLogout() {
         await dal.logout();
-        store.dispatch(goToPage(ROUTE_ROOT));
+    }
+
+    async onWebKeeperLogin() {
+        await dal.loginByWebKeeper();
     }
 
     componentDidUpdate(prevProps) {
@@ -275,14 +301,14 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
-                store.dispatch([
-                    // currencySetPrices(nextProps.data.prices),
-                    setUser(user),
-                ]);
-            });
-        }
+        // if (this.props.data !== nextProps.data) {
+        //     Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
+        //         store.dispatch([
+        //             // currencySetPrices(nextProps.data.prices),
+        //             setUser(user),
+        //         ]);
+        //     });
+        // }
 
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
             store.dispatch(currencySetCurrent(nextProps.matchParams.currency));
@@ -306,6 +332,11 @@ export default class Layout extends React.PureComponent {
                 nextUserNetwork &&
                 nextAppNetwork !== nextUserNetwork
             ) {
+                console.log({
+                    wasWrongNetworkMessageShown: this.wasWrongNetworkMessageShown,
+                    nextAppNetwork,
+                    nextUserNetwork,
+                });
                 store.dispatch(
                     openModal(MessageModal, {
                         text: __('Switch your Waves Keeper network to {name}', {
@@ -323,40 +354,66 @@ export default class Layout extends React.PureComponent {
         }
     }
 
-    render() {
+    getDefaultBody() {
+        const { isBlurred } = this.state;
         const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
 
+        let elements = [
+            this.props.isShowLeftSidebar && (
+                <aside className={bem.element('left')}>
+                    <LeftSidebar />
+                </aside>
+            ),
+            <div className={bem.element('center')}>
+                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                <header className={bem.element('header')}>
+                    <Header />
+                </header>
+                <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                    {this.props.status !== STATUS_LOADING && this.props.children}
+                </main>
+            </div>,
+            <aside className={bem.element('right')}>
+                <RightSidebar />
+            </aside>,
+        ];
+
+        if (isScreenNarrow()) {
+            elements = [
+                <div className={bem.element('center')}>
+                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                    <header className={bem.element('header')}>
+                        <Header />
+                    </header>
+                    <RightSidebar />
+                    <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                        {this.props.status !== STATUS_LOADING && this.props.children}
+                    </main>
+                </div>,
+            ]
+        }
+
+        return elements;
+    }
+
+    render() {
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {
             return null;
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
+        const {
+            shouldShowInviteModal,
+            isUserCongratsModalOpened,
+            isLoginTypeModalOpened,
+        } = this.state;
 
         const { customViewRoutes } = this;
 
         const children =
             customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
-                <div className={bem.element('inner')}>
-                    {this.props.isShowLeftSidebar && (
-                        <aside className={bem.element('left')}>
-                            <LeftSidebar />
-                        </aside>
-                    )}
-                    <div className={bem.element('center')}>
-                        {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
-                        <header className={bem.element('header')}>
-                            <Header />
-                        </header>
-                        <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
-                            {this.props.status !== STATUS_LOADING && this.props.children}
-                        </main>
-                    </div>
-                    <aside className={bem.element('right')}>
-                        <RightSidebar />
-                    </aside>
-                </div>
+                <div className={bem.element('inner')}>{this.getDefaultBody()}</div>
             ) : (
                 this.props.children
             );
@@ -365,39 +422,50 @@ export default class Layout extends React.PureComponent {
             <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
-                    'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
+                    is_custom: customViewRoutes.indexOf(this.props.currentItem.id) !== -1,
                 })}
             >
                 <InstallKeeperModal
                     isOpened={shouldShowInviteModal}
                     onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                 />
-                <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
-                    <BlurContext.Provider value={this.blurContextValue}>
-                        <UserCongratsModalContext.Provider
-                            value={this.userCongratsModalContextValue}
-                        >
-                            <InstallKeeperModalContext.Provider
-                                value={{
-                                    onLogin: this.onWavesKeeperLogin,
-                                    onLogout: this.onWavesKeeperLogout,
-                                    isVisible: shouldShowInviteModal,
-                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
-                                }}
-                            >
-                                <ConfigContext.Provider value={configValue}>
-                                    <UserCongratsModal
-                                        isOpened={isUserCongratsModalOpened}
-                                        onClose={this.userCongratsModalContextValue.onClose}
-                                        onOpen={this.userCongratsModalContextValue.onOpen}
-                                    />
-                                    {children}
-                                </ConfigContext.Provider>
-                                <ModalWrapper />
-                            </InstallKeeperModalContext.Provider>
-                        </UserCongratsModalContext.Provider>
-                    </BlurContext.Provider>
-                </GlobalLinksContext.Provider>
+                <ScreenSizeContext.Provider value={this.screenSizeContextValue}>
+                    <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
+                        <BlurContext.Provider value={this.blurContextValue}>
+                            <LoginTypeModalContext.Provider value={this.loginTypeContextValue}>
+                                <UserCongratsModalContext.Provider
+                                    value={this.userCongratsModalContextValue}
+                                >
+                                    <InstallKeeperModalContext.Provider
+                                        value={{
+                                            onLogin: this.onWavesKeeperLogin,
+                                            onLogout: this.onWavesKeeperLogout,
+                                            onWebKeeperLogin: this.onWebKeeperLogin,
+                                            isVisible: shouldShowInviteModal,
+                                            openModal: () =>
+                                                this.triggerInstallKeeperModalVisibility(true),
+                                        }}
+                                    >
+                                        <ConfigContext.Provider value={configValue}>
+                                            <LoginTypeModal
+                                                isOpened={isLoginTypeModalOpened}
+                                                onClose={this.loginTypeContextValue.onClose}
+                                                onOpen={this.loginTypeContextValue.onOpen}
+                                            />
+                                            <UserCongratsModal
+                                                isOpened={isUserCongratsModalOpened}
+                                                onClose={this.userCongratsModalContextValue.onClose}
+                                                onOpen={this.userCongratsModalContextValue.onOpen}
+                                            />
+                                            {children}
+                                        </ConfigContext.Provider>
+                                        <ModalWrapper />
+                                    </InstallKeeperModalContext.Provider>
+                                </UserCongratsModalContext.Provider>
+                            </LoginTypeModalContext.Provider>
+                        </BlurContext.Provider>
+                    </GlobalLinksContext.Provider>
+                </ScreenSizeContext.Provider>
             </div>
         );
     }

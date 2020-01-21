@@ -1,15 +1,14 @@
 const _orderBy = require('lodash/orderBy');
 const _round = require('lodash/round');
 
-const PairsEnum = require('../enums/PairsEnum');
+// const PairsEnum = require('../enums/PairsEnum');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const CurrencyEnum = require('../enums/CurrencyEnum');
-
+const { mapFieldsToNumber } = require('./helpers');
 
 module.exports = class BondsOrders extends BaseCollection {
-
     getKeys(id = '([A-Za-z0-9]{40,50})') {
         return [
             `order_height_${id}`,
@@ -27,6 +26,10 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOrders() {
         let orders = await this.getItemsAll();
+        // orders = orders
+        //      .map(order => mapFieldsToNumber(order, ['height', 'price']));
+        // .filter(order => order.discountPercent > 0 && order.discountPercent < 100)
+
         orders = _orderBy(orders, 'height', 'desc');
         return orders;
     }
@@ -36,14 +39,19 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getItemsAll();
-        orders = orders.filter(order => order.index !== null);
+        orders = orders
+            .filter(order => order.index !== null)
+            .map(order => mapFieldsToNumber(order, ['height', 'price']));
+
         orders = _orderBy(orders, 'index', 'asc');
         return orders;
     }
 
     async getUserOpenedOrders(address) {
         let orders = await this.getOpenedOrders();
-        return orders.filter(order => order.owner === address && order.status === OrderStatusEnum.NEW);
+        return orders.filter(
+            order => order.owner === address && order.status === OrderStatusEnum.NEW
+        );
     }
 
     async getUserHistoryOrders(address) {
@@ -52,7 +60,10 @@ module.exports = class BondsOrders extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
-        const index = item.orderbook.split('_').filter(Boolean).indexOf(id);
+        const index = item.orderbook
+            .split('_')
+            .filter(Boolean)
+            .indexOf(id);
 
         const height = item['order_height_' + id];
         const price = item['order_price_' + id] || 0;
@@ -82,5 +93,4 @@ module.exports = class BondsOrders extends BaseCollection {
             id,
         };
     }
-
 };
