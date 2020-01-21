@@ -50,10 +50,10 @@ module.exports = class NeutrinoOrders extends BaseCollection {
         sortedOrders.push(firstOrder)
         while(true){
             console.log(nextProcessOrder)
-            if (nextProcessOrder.orderPrev == null) {
+            if (nextProcessOrder.orderNext == null) {
                 return sortedOrders;
             }
-            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderPrev)[0];
+            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
             sortedOrders.push(foundOrder)
             nextProcessOrder = foundOrder
         }
