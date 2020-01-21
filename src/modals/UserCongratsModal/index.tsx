@@ -8,6 +8,7 @@ import neutrinoManIcon from 'static/images/neutrino-man.svg';
 import graphsIcon from 'static/images/graphs.svg';
 import spotImage from 'static/images/spot.svg';
 import crossIcon from 'static/icons/cancel.svg';
+import { hasBooleanPropChanged } from 'shared/Layout/helpers';
 
 import './style.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -51,12 +52,11 @@ class UserCongratsModal extends React.Component<Props> {
         );
     }
 
-    componentDidUpdate() {
-        if (this.props.isOpened) {
-            this.context.blur();
-        } else {
-            this.context.unblur();
-        }
+    componentDidUpdate(prevProps) {
+        hasBooleanPropChanged(prevProps, this.props, 'isOpened', {
+            becameTrue: () => this.context.blur(),
+            becameFalse: () => this.context.unblur(),
+        });
     }
 
     componentWillUnmount() {

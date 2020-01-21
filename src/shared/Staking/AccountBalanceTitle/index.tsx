@@ -7,7 +7,7 @@ import './style.scss';
 const bem = html.bem('AccountBalanceTitle');
 
 export enum AccountBalanceTitleOption {
-    VERTICAL = 'vertical'
+    VERTICAL = 'vertical',
 }
 
 type Props = {
@@ -16,8 +16,13 @@ type Props = {
     type?: AccountBalanceTitleOption;
 };
 
-const AccountBalanceTitle: React.FC<Props> = ({ title, amount, type }) => (
-    <div className={bem.element('main', type)}>
+const AccountBalanceTitle: React.FC<Props & React.HTMLAttributes<HTMLDivElement>> = ({
+    title,
+    amount,
+    type,
+    ...restProps
+}) => (
+    <div className={bem.element('main', type)} {...restProps}>
         <span>{title}</span>
         <div className={bem.element('balance')}>
             <span>

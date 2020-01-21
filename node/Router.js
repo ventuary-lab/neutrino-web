@@ -212,22 +212,6 @@ module.exports = class Router {
                 });
                 return { position };
             },
-            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-                let orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
-                    .getItemsAll();
-                const timestamps = await this.app.heightListener.getTimestamps(
-                    orders.map(order => order.height)
-                );
-
-                orders = Utils.orderBy(orders, 'height', 'desc', {
-                    isNumber: true,
-                });
-
-                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
-
-                return orders.map(order => [timestamps[order.height], order.price]);
-            },
             '/api/v1/bonds/:pairName/orders': async request => {
                 var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)

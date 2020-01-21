@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { html, dal, store } from 'components';
 import PayoutCheck from '../PayoutCheck';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import { WavesTransactionInfo, WavesTransfer, User } from 'contractControllers/types';
+import { WavesTransactionInfo, WavesTransfer, IUser } from 'contractControllers/types';
 import { getMassPaymentSender } from 'reducers/auth/selectors';
 
 import './style.scss';
@@ -23,7 +23,7 @@ interface MappedWavesTransactionInfo extends Omit<WavesTransactionInfo, 'transfe
 }
 
 interface Props {
-    user: User | null;
+    user: IUser | null;
 }
 interface State {
     mappedTransactions: MappedWavesTransactionInfo[];
@@ -57,7 +57,7 @@ class StakingRightPanel extends React.Component<Props, State> {
         }
     }
 
-    async updateMassPaymentsList (user: User) {
+    async updateMassPaymentsList (user: IUser) {
         let massPaymentTxs = await this.getMassTransactionsList(
             user.address,
             dal.assets[CurrencyEnum.USD_N]

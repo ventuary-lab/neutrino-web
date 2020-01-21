@@ -108,4 +108,23 @@
       color: #8081b0;
     }
   }
+
+  &__waves-logo {
+    max-height: 35px;
+    margin: 12px;
+  }
+
+  @media screen and (max-width: 768px) {
+    &__waves-logo {
+      display: none;
+    }
+
+    &__user-info {
+      padding: 12px;
+    }
+
+    &__logout {
+      top: 6px;
+    }
+  }
 }

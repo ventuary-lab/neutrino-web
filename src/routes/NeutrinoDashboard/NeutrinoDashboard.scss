@@ -18,6 +18,16 @@
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid $color-brand-purple-light;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: unset;
+    }
+  }
+
+  &__input-container {
+    height: 100px;
   }
 
   &__step {
@@ -25,18 +35,26 @@
     display: flex;
     align-items: center;
 
-    margin-right: 42px;
+    @media screen and (max-width: 390px) {
+      &:not(:first-child) {
+        padding-top: 16px;
+      }
+    }
 
     &:not(:last-child) {
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: -30px;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 1px;
-        background-color: $color-brand-purple-light;
+      margin-right: 42px;
+
+      @media screen and (min-width: 500px) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: -30px;
+          transform: translateY(-50%);
+          width: 20px;
+          height: 1px;
+          background-color: $color-brand-purple-light;
+        }
       }
     }
 
@@ -84,7 +102,10 @@
   }
 
   &__input {
-    min-width: 315px;
+    // min-width: 315px;
+    width: calc(100vw - 90px);
+    min-width: unset;
+    max-width: 315px;
   }
 
   &__input-hint {
@@ -156,6 +177,15 @@
     &_without-hint {
       padding-left: 30px;
     }
+
+    &_with-mobile {
+      & > :nth-child(1) {
+        display: block;
+      }
+      & > :nth-child(2) {
+        display: none;
+      }
+    }
   }
 
   &__info-hint {
@@ -164,7 +194,9 @@
 
   &__submit-button.ButtonView,
   &__withdraw-button.ButtonView {
-    min-width: 322px;
+    max-width: 322px;
+    width: calc(100vw - 90px);
+    min-width: 100px;
   }
 
   &__submit-button {
@@ -205,13 +237,13 @@
 
   &__values {
     width: 50%;
-    padding: 16px 0 16px 32px;
+    padding: 16px 0 16px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     &:first-child {
-      padding: 16px 32px 16px 0;
+      padding: 16px 16px 16px 0;
       border-right: 1px solid #343869;
     }
   }
@@ -269,9 +301,9 @@
     margin-right: 12px;
   }
 
-  &__finalize-button.ButtonView {
-      min-width: 320px;
-  }
+  // &__finalize-button.ButtonView {
+  //     min-width: 320px;
+  // }
 
   &__withdraw {
     position: relative;
@@ -290,6 +322,25 @@
     align-items: center;
     font-size: 13px;
     line-height: 16px;
+  }
+
+  @media screen and (max-width: 768px) {
+    &__info {
+      & > :nth-child(1) {
+        display: none;
+      }
+    }
+
+    &__info-string {
+      &_with-mobile {
+        & > :nth-child(1) {
+          display: none;
+        }
+        & > :nth-child(2) {
+          display: block;
+        }
+      }
+    }
   }
 
   @media screen and (max-width: 1264px) {
@@ -330,6 +381,50 @@
       & > :nth-child(2) {
         margin-top: 12px;
       }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__details-actions {
+      display: flex;
+      flex-direction: column;
+
+      & > * {
+        width: 100%;
+      }
+      & > :not(:first-child) {
+        padding-top: 16px;
+      }
+
+      & button {
+        width: 100%;
+      }
+    }
+
+  }
+
+  &__value-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0 8px;
+    justify-content: center;
+
+    & > :nth-child(2) {
+      padding-bottom: 4px;
+      display: flex;
+      flex-direction: row;
+
+      & > :nth-child(2) {
+        padding-top: 4px;
+      }
+    }
+  }
+
+  &__swap-processing {
+    & > :not(:first-child) {
+      filter: blur(10px);
     }
   }
 }

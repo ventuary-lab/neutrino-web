@@ -68,14 +68,11 @@ export interface WavesTransactionInfo {
     order2?: WavesTransactionInfo;
 }
 
-export interface User {
-    role: 'registered' | 'admin' | null;
+export type BalanceDictionary = Record<string, number | null>
+
+export interface IUser {
+    role: 'registered' | 'admin' | null | string;
     address: string;
     network: 'mainnet' | 'testnet';
-    balances: {
-        [key: string]: number;
-    }
-    // waves
-    // usd-nb
-    // usd-n
+    balances: BalanceDictionary
 }

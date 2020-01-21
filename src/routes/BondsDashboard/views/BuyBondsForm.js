@@ -11,16 +11,15 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
-// import { getControlPrice } from 'reducers/contract/selectors';
 import { computeROI } from 'reducers/contract/helpers';
 
 import { dal, html, store } from 'components';
 
-import './BuyBoundsForm.scss';
+import './BuyBondsForm.scss';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 
-const bem = html.bem('BuyBoundsForm');
-const FORM_ID = 'BuyBoundsForm';
+const bem = html.bem('BuyBondsForm');
+const FORM_ID = 'BuyBondsForm';
 
 @connect(state => ({
     pairName: getPairName(state),
@@ -29,7 +28,7 @@ const FORM_ID = 'BuyBoundsForm';
     formValues: getFormValues(FORM_ID)(state),
     // controlPrice: getControlPrice(state),
 }))
-export default class BuyBoundsForm extends React.PureComponent {
+export default class BuyBondsForm extends React.PureComponent {
     static propTypes = {
         pairName: PropTypes.string,
         baseCurrency: PropTypes.string,
@@ -52,11 +51,11 @@ export default class BuyBoundsForm extends React.PureComponent {
             roi: 30
         };
 
-        this.isBoundsFieldFocused = false;
+        this.isBondsFieldFocused = false;
     }
 
     computeHint() {
-        let bondsAmount = _get(this.props.formValues, 'bounds');
+        let bondsAmount = _get(this.props.formValues, 'bonds');
 
         if (bondsAmount) {
             return `${bondsAmount} ${CurrencyEnum.USD_N.toUpperCase()}`;
@@ -65,7 +64,7 @@ export default class BuyBoundsForm extends React.PureComponent {
 
     updatePriceField() {
         let { controlPrice } = this.props;
-        let bondsAmount = _get(this.props.formValues, 'bounds');
+        let bondsAmount = _get(this.props.formValues, 'bonds');
         let wavesRawAmount = _get(this.props.formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
@@ -114,11 +113,11 @@ export default class BuyBoundsForm extends React.PureComponent {
                     formId={FORM_ID}
                     initialValues={{
                         waves: 10,
-                        bounds: 10
+                        bonds: 10
                     }}
                     onSubmit={this._onSubmit}
                     validators={[
-                        [['bounds'], 'required'],
+                        [['bonds'], 'required'],
                     ]}
                 >
                     <NumberField
@@ -143,12 +142,12 @@ export default class BuyBoundsForm extends React.PureComponent {
                         required
                         inputProps={{
                             autoComplete: 'off',
-                            onFocus: () => (this.isBoundsFieldFocused = true),
+                            onFocus: () => (this.isBondsFieldFocused = true),
                             type: 'text'
                         }}
                         label={__('Receive')}
                         layoutClassName={bem.element('input')}
-                        attribute={'bounds'}
+                        attribute={'bonds'}
                         inners={{
                             label: CurrencyEnum.getLabel(this.props.baseCurrency),
                             icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
@@ -158,7 +157,7 @@ export default class BuyBoundsForm extends React.PureComponent {
                         required
                         inputProps={{
                             autoComplete: 'off',
-                            onFocus: () => (this.isBoundsFieldFocused = false),
+                            onFocus: () => (this.isBondsFieldFocused = false),
                             type: 'text'
                         }}
                         label={__('Send')}
@@ -174,8 +173,8 @@ export default class BuyBoundsForm extends React.PureComponent {
                         block
                         disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
-                        label={__('Buy {bounds}', {
-                            bounds: CurrencyEnum.getLabel(this.props.baseCurrency),
+                        label={__('Buy {bonds}', {
+                            bonds: CurrencyEnum.getLabel(this.props.baseCurrency),
                         })}
                     />
                 </Form>
