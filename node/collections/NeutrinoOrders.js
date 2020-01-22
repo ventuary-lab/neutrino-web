@@ -1,6 +1,7 @@
 const _orderBy = require('lodash/orderBy');
 
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
+const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const { mapFieldsToNumber } = require('./helpers');
 
@@ -38,7 +39,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
 
         let sortedOrders = [];
 
-        orders = orders.filter(order => order.status == 'new');
+        orders = orders.filter(order => order.status == OrderStatusEnum.NEW);
         if (orders == undefined || orders.length == 0) return orders;
 
         let firstOrder = orders.filter(order => order.isFirst)[0];
@@ -58,12 +59,16 @@ module.exports = class NeutrinoOrders extends BaseCollection {
 
     async getUserOpenedOrders(address) {
         let orders = await this.getOrders();
-        return orders.filter(order => order.owner === address && order.index !== null);
+        return orders.filter(
+            order => order.owner === address && order.status === OrderStatusEnum.NEW
+        );
     }
 
     async getUserHistoryOrders(address) {
         let orders = await this.getOrders();
-        return orders.filter(order => order.owner === address && order.index === null);
+        return orders.filter(
+            order => order.owner === address && order.status !== OrderStatusEnum.NEW
+        );
     }
 
     async _prepareItem(id, item) {
