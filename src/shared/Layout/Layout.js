@@ -332,11 +332,6 @@ export default class Layout extends React.PureComponent {
                 nextUserNetwork &&
                 nextAppNetwork !== nextUserNetwork
             ) {
-                console.log({
-                    wasWrongNetworkMessageShown: this.wasWrongNetworkMessageShown,
-                    nextAppNetwork,
-                    nextUserNetwork,
-                });
                 store.dispatch(
                     openModal(MessageModal, {
                         text: __('Switch your Waves Keeper network to {name}', {

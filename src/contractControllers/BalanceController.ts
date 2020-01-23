@@ -117,7 +117,6 @@ export default class BalanceController {
             );
         });
 
-        console.log({ address, th: this._address, balanceDict });
         if (address === this._address) {
             this._balances = balanceDict;
 

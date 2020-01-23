@@ -34,6 +34,7 @@ export default class OrderBook extends React.PureComponent {
         super(props);
 
         this.computeROIForField = this.computeROIForField.bind(this);
+        this.reduceSameOwnerOrders = this.reduceSameOwnerOrders.bind(this);
         this.getBuyBondOrders = this.getBuyBondOrders.bind(this);
         this.getLiquidateOrders = this.getLiquidateOrders.bind(this);
     }
@@ -48,34 +49,48 @@ export default class OrderBook extends React.PureComponent {
         );
     }
 
+    reduceSameOwnerOrders (orders) {
+        // const mappedOrders = [];
+
+        // for (let i = 0; i < orders.length; i++) {
+        //     const order = orders[i];
+
+        //     if (i === 0) {
+        //         mappedOrders.push(order);
+        //         continue;
+        //     }
+
+        //     const prevOrder = orders[i - 1];
+        //     const { owner: currentOwner } = order;
+        //     const { owner: prevOwner } = prevOrder;
+
+        //     if (prevOwner === currentOwner) {
+
+        //     }
+        // }
+
+        // return mappedOrders;
+    }
+
     getLiquidateOrders({ formTab, orders, user }) {
-        const groupedByAddress = _groupBy(orders, 'owner');
-        const ownerKeys = Object.keys(groupedByAddress);
+        const mappedOrders = orders;
 
         return (
             formTab === 'liquidate' && (
                 <div className={bem.element('columns')}>
-                    {ownerKeys.map(ownerKey => {
-                        const orders = groupedByAddress[ownerKey];
-                        const aggregatedOrder = orders.reduce(
-                            (accum, iter) => ({
-                                ...accum,
-                                restTotal: (accum.restTotal || 0) + iter.restTotal,
-                            }),
-                        );
-
+                    {mappedOrders.map(order => {
                         return (
                             <div
-                                key={aggregatedOrder.id}
+                                key={order.id}
                                 className={bem.element('body-row', {
-                                    my: user && user.address === ownerKey,
+                                    my: user && user.address === order.owner,
                                 })}
                             >
                                 <div className={bem.element('body-column', 'bg')}>
-                                    {_round(aggregatedOrder.restTotal)}
+                                    {_round(order.restTotal)}
                                 </div>
                                 <div className={bem.element('body-column', 'address')}>
-                                    {ownerKey}
+                                    {order.owner}
                                 </div>
                             </div>
                         );

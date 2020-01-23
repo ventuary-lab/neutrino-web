@@ -69,7 +69,7 @@ export default class DalComponent implements IDalComponent {
         }
 
         await this.keeper.start();
-        // console.log(account.address, 'a.a');
+
         await this.balance.start(account.address);
 
         const user = this.constructUserData(account);
