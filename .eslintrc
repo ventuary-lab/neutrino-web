@@ -28,6 +28,7 @@
     ],
     "no-lonely-if": "warn",
     "no-multiple-empty-lines": "warn",
+    "curly": [ "error", "all" ],
     "no-duplicate-case": "error",
     "no-extra-boolean-cast": "error",
     "no-dupe-keys": "error",
