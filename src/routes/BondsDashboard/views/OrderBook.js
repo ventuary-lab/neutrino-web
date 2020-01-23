@@ -57,13 +57,11 @@ export default class OrderBook extends React.PureComponent {
                 <div className={bem.element('columns')}>
                     {ownerKeys.map(ownerKey => {
                         const orders = groupedByAddress[ownerKey];
-                        const [firstOrder] = orders;
                         const aggregatedOrder = orders.reduce(
                             (accum, iter) => ({
                                 ...accum,
-                                restTotal: accum.restTotal + iter.restTotal,
+                                restTotal: (accum.restTotal || 0) + iter.restTotal,
                             }),
-                            firstOrder
                         );
 
                         return (
