@@ -7,6 +7,7 @@ import LandingHeader from 'routes/LandingPage/LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 import { omitThousandsNumber } from 'ui/global/helpers';
+import { ILongPullingComponent } from 'ui/global/types';
 
 import {
     NEUTRINO_FACEBOOK_LINK,
@@ -32,11 +33,30 @@ interface State {
     totalStaked?: number;
 }
 
-class StakingLanding extends React.Component<Props, State> {
+class StakingLanding extends React.Component<Props, State> implements ILongPullingComponent {
+    _updateInterval;
+    _updateTimeout;
+
     constructor(props) {
         super(props);
 
+        this._updateListener = this._updateListener.bind(this);
+
+        this._updateTimeout = 3000;
+
         this.state = {};
+    }
+
+    async _updateListener () {
+        await this.loadExplorerData();
+    }
+
+    startListening () {
+        this._updateInterval = setInterval(async () => await this._updateListener(), this._updateTimeout);
+    }
+
+    stopListening () {
+        clearInterval(this._updateInterval);
     }
 
     async loadExplorerData() {
@@ -56,7 +76,14 @@ class StakingLanding extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.loadExplorerData();
+        (async () => {
+            await this.loadExplorerData();
+            this.startListening();
+        })()
+    }
+
+    componentWillUnmount() {
+        this.stopListening();
     }
 
     render() {
