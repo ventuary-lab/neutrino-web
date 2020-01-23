@@ -14,7 +14,7 @@ export class ContractDataConvert{
 
     private static to<T extends any>(convertedContractData: any, contractData: Array<ResponseContractData>) : T {
         const properties = Reflect.ownKeys(convertedContractData);
-        console.log(properties)
+
         properties.forEach(propertyName => {
             const key = getKey(convertedContractData, propertyName as string);
             const responseContractData = contractData.find(x=> x.key == key);

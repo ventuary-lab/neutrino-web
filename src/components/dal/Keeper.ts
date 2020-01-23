@@ -319,8 +319,6 @@ export default class Keeper {
 
         const address = await this.getAddress();
 
-        // console.log({ address, th: this._address });
-
         if (this._address && address && this._address !== address) {
             this._address = address;
 
