@@ -8,6 +8,7 @@ import PairsEnum from 'enums/PairsEnum';
 import OrderTypeEnum from 'enums/OrderTypeEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { computeROI } from 'reducers/contract/helpers';
+import { SortTableEnum } from './enums';
 import { Props, State, IOrdersTable } from './types';
 
 const bem = html.bem('OrdersTable');
@@ -42,7 +43,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                 get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--',
             },
             usdnb: {
-                label: 'USD-NB',
+                label: 'USDNB',
                 get: item => item.amount || '--',
             },
             price: {
@@ -66,7 +67,6 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             waves: {
                 label: 'WAVES',
-                // get: (item, controlPrice) => item.restAmount && controlPrice ? _round(item.restAmount / (controlPrice / 100), 2) : '--'
                 get: (item, controlPrice) => item.total || '--',
             },
             status: {
@@ -79,7 +79,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
         };
 
         this.state = {
-            sort: ['time', 'desc'],
+            sort: ['time', SortTableEnum.DESC],
             search: '',
         };
     }
@@ -183,7 +183,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                                                     'Icon Icon__cancel'
                                                 )}
                                             />
-                                            {__('Cancel')}
+                                            Cancel
                                         </div>
                                     </td>
                                 )}
@@ -194,7 +194,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                     <tr>
                         <td colSpan={this.props.isHistory ? 6 : 7}>
                             <div className={bem.element('empty')}>
-                                {this.props.isHistory ? __('No history') : __('No orders')}
+                                {this.props.isHistory ? 'No history' : 'No orders'}
                             </div>
                         </td>
                     </tr>
@@ -204,30 +204,41 @@ export default class OrdersTable extends React.Component<Props, State> implement
     }
 
     toggleSort(column) {
-        this.setState({ sort: [column, this.state.sort[1] === 'asc' ? 'desc' : 'asc'] });
+        const { sort } = this.state;
+        const [sortColumn, sortOrder] = sort;
+
+        this.setState({
+            sort: [
+                column,
+                sortOrder === SortTableEnum.ASC ? SortTableEnum.DESC : SortTableEnum.ASC,
+            ],
+        });
     }
 
     renderSortButtons(column) {
+        const { sort } = this.state;
+        const [sortColumn, sortOrder] = sort;
+
         return (
             <div className={bem.element('sort-buttons')}>
                 <a
                     className={bem.element('sort-button', {
                         asc: true,
-                        active: this.state.sort[0] === column && this.state.sort[1] === 'asc',
+                        active: sortColumn === column && sortOrder === SortTableEnum.ASC,
                     })}
                     onClick={e => {
                         e.preventDefault();
-                        this.setState({ sort: [column, 'asc'] });
+                        this.setState({ sort: [column, SortTableEnum.ASC] });
                     }}
                 />
                 <a
                     className={bem.element('sort-button', {
                         desc: true,
-                        active: this.state.sort[0] === column && this.state.sort[1] === 'desc',
+                        active: sortColumn === column && sortOrder === SortTableEnum.DESC,
                     })}
                     onClick={e => {
                         e.preventDefault();
-                        this.setState({ sort: [column, 'desc'] });
+                        this.setState({ sort: [column, SortTableEnum.DESC] });
                     }}
                 />
             </div>

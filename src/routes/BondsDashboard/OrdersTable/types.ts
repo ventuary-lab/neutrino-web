@@ -9,7 +9,7 @@ export interface Props {
 }
 
 export interface State {
-    sort: [SortTableEnum.TIME, SortTableEnum.DESC] | [SortTableEnum.DESC, SortTableEnum.TIME];
+    sort: [string, SortTableEnum];
     search: string;
 }
 
