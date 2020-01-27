@@ -53,7 +53,7 @@ export default class OrdersTable extends React.PureComponent {
                 get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--'
             },
             usdnb: {
-                label: 'USD-NB',
+                label: 'USDNB',
                 // get: item => item.total && item.price ? _round(item.total / (item.price / 100), 2) : '--'
                 get: item => item.amount || '--'
             },
