@@ -302,8 +302,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     getCurrencyLabels () {
         const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
-        const sourceCurrency = _sourceCurrency.toUpperCase();
-        const quoteCurrency = _quoteCurrency.toUpperCase();
+        const replaceArgs = [/-/g, ''];
+        const sourceCurrency = _sourceCurrency.toUpperCase().replace(...replaceArgs);
+        const quoteCurrency = _quoteCurrency.toUpperCase().replace(...replaceArgs);
 
         return {
             mapLabel: label => <span>{label}</span>,

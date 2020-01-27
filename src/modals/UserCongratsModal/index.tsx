@@ -104,7 +104,7 @@ class UserCongratsModal extends React.Component<Props> {
                             <img className={bem.element('usdn-logo')} src={usdnLogo} alt="" />
                             <div className={bem.element('msg')}>
                                 <span>
-                                    You are holder of USD-Neutrino (USD-N) - crypto-backed
+                                    You are holder of USD-Neutrino (USDN) - crypto-backed
                                     stablecoin.
                                 </span>
                             </div>

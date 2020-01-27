@@ -13,16 +13,6 @@ import {
     NEUTRINO_TWITTER_LINK,
 } from 'ui/global/variables';
 
-// import backgroundImage from 'static/images/landing/background.png';
-// import usdnLogo from 'static/icons/usd-n.svg';
-// import boxesImage from 'static/images/landing/boxes.svg';
-// import coloredBoxesImage from 'static/images/landing/colored_boxes.svg';
-// import fbIcon from 'static/images/landing/socials/fb-icon.svg';
-// import mediumIcon from 'static/images/landing/socials/medium-icon.svg';
-// import tgIcon from 'static/images/landing/socials/tg-icon.svg';
-// import twitterIcon from 'static/images/landing/socials/twitter.svg';
-// import poweredByWavesLogo from 'static/images/landing/powered_by_waves.svg';
-
 const backgroundImage = 'static/images/landing/background.png';
 const usdnLogo = 'static/icons/usd-n_blue.svg';
 const boxesImage = 'static/images/landing/boxes.svg';
@@ -34,7 +24,6 @@ const twitterIcon = 'static/images/landing/socials/twitter.svg';
 
 import './style.scss';
 
-// const bem = html.bem('LandingPage');
 const bem = buildBem('LandingPage');
 
 interface Props {}
@@ -58,7 +47,7 @@ class LandingPage extends React.Component<Props> {
         const paragraph = (
             <p>
                 <span>
-                    Dollar neutrino (USD-N) is a crypto-backed token pegged to US
+                    Dollar neutrino (USDN) is a crypto-backed token pegged to US
                     dollar.&nbsp;
                 </span>
                 <span>
@@ -97,7 +86,7 @@ class LandingPage extends React.Component<Props> {
                     </div>
                     <div className={bem.element('action-buttons')}>
                         <a className="base-button" target="_blank" href="/neutrino/usd-n">
-                            Get USD-N
+                            Get USDN
                         </a>
                         <a
                             className="base-button alt"
