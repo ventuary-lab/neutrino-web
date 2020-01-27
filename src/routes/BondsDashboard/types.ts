@@ -1,4 +1,5 @@
 import { IUser } from 'contractControllers/types';
+import { FormTabEnum } from './enums';
 
 export interface IOrder {
     id: string;
@@ -34,5 +35,5 @@ export interface State {
     bondOrders?: IOrder[],
     liquidateOrders?: IOrder[],
     userOrders?: IUserOrders;
-    formTab: string;
+    formTab: FormTabEnum;
 }

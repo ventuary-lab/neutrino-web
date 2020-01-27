@@ -1,13 +1,13 @@
 import { IUser } from 'contractControllers/types';
-import { FormTabEnum } from '../enums';
 import { IOrder } from '../types';
+import { FormTabEnum } from '../enums';
 
 export interface Props {
     baseCurrency: string;
     quoteCurrency: string;
     user: IUser;
     orders: IOrder[];
-    formTab: FormTabEnum.AUCTION | FormTabEnum.LIQUIDATE;
+    formTab: FormTabEnum;
     controlPrice: number;
 }
 
