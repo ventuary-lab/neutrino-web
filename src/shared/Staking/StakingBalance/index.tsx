@@ -49,7 +49,7 @@ class StakingBalance extends React.Component<Props, State> {
         const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
         const { title, buttonLabel } = {
             buttonLabel: actionLabel,
-            title: `${actionLabel} neutrino (USD-N) staking share`,
+            title: `${actionLabel} neutrino (USDN) staking share`,
         };
 
         return (
@@ -83,8 +83,8 @@ class StakingBalance extends React.Component<Props, State> {
                 </div>
                 <p className={bem.element('info')}>
                     Neutrino dApp will distribute staking rewards proportionately to users each day
-                    based on their daily average USD-N staking share from the total amount of staked
-                    USD-N. These rewards are coming from waves lPoS decentralized monetary policy.
+                    based on their daily average USDN staking share from the total amount of staked
+                    USDN. These rewards are coming from waves lPoS decentralized monetary policy.
                 </p>
             </div>
         );

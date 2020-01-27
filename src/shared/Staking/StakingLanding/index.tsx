@@ -118,7 +118,7 @@ class StakingLanding extends React.Component<Props, State> implements ILongPulli
                         </span>
                         <p className={bem.element('yield-section-item-body')}>
                             <span className="bold">Neutrino dApp</span> distributes staking rewards
-                            in <span className="bold">USD-N</span> tokens derived from Waves LPoS
+                            in <span className="bold">USDN</span> tokens derived from Waves LPoS
                             decentralized monetary policy.
                         </p>
                         <a className="base-button" href="/rpd/usd-n">
@@ -139,7 +139,7 @@ class StakingLanding extends React.Component<Props, State> implements ILongPulli
                                 This value comprises <span className="bold">6.7%</span> annual yield
                                 from leasing of Waves tokens on the smart contract and{' '}
                                 <span className="bold">~{stakedFromIssuedPercent}%</span> of total{' '}
-                                <span className="bold">USD-N</span> supply in staking: *[
+                                <span className="bold">USDN</span> supply in staking: *[
                                     {mapBigNumber(totalStaked)} from {mapBigNumber(totalIssued)}
                                 ]
                             </p>

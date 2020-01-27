@@ -29,7 +29,7 @@ const AccountBalanceTitle: React.FC<Props & React.HTMLAttributes<HTMLDivElement>
                 <img src={usdnLogo} />
             </span>
             <span>{amount}</span>
-            <span>USD-N</span>
+            <span>USDN</span>
         </div>
     </div>
 );

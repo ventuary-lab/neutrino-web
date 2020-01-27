@@ -189,7 +189,7 @@ export default class OrderBook extends React.PureComponent {
                     style={{ display: !controlPrice ? 'none' : '' }}
                 >
                     <OrderBookTitle title={'WAVES / USD: '} amount={wavesByUsdAmount} />
-                    <OrderBookTitle title={'USD-N / WAVES: '} amount={usdnByWavesAmount} />
+                    <OrderBookTitle title={'USDN / WAVES: '} amount={usdnByWavesAmount} />
                 </div>
                 <div className={bem.element('header-row')}>
                     <div className={bem.element('header-column', 'upper-case')}>
