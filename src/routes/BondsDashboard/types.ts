@@ -11,6 +11,7 @@ export interface IOrder {
     index: number;
     amount: number;
     filledAmount: number;
+    restTotal: number;
     restAmount: number;
     pairName: string;
     status: string;
@@ -35,15 +36,3 @@ export interface State {
     userOrders?: IUserOrders;
     formTab: string;
 }
-
-export interface IBondsDashboard {
-
-}
-
-//     bondOrders: PropTypes.arrayOf(OrderSchema),
-//     liquidateOrders: PropTypes.arrayOf(OrderSchema),
-//     user: UserSchema,
-//     userOrders: PropTypes.shape({
-//         opened: PropTypes.arrayOf(OrderSchema),
-//         history: PropTypes.arrayOf(OrderSchema),
-//     }),

@@ -7,10 +7,10 @@ import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currenc
 import { getControlPrice } from 'reducers/contract/selectors';
 
 import { html, dal } from 'components';
-import OrdersTable from './views/OrdersTable';
+import OrdersTable from './OrdersTable';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
-import OrderBook from './views/OrderBook';
+import OrderBook from './OrderBook';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
