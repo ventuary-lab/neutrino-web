@@ -58,7 +58,7 @@ class LandingPage extends React.Component<Props> {
         const paragraph = (
             <p>
                 <span>
-                    Dollar neutrino (USD-N) is a crypto-backed token pegged to US
+                    Dollar neutrino (USDN) is a crypto-backed token pegged to US
                     dollar.&nbsp;
                 </span>
                 <span>
@@ -97,7 +97,7 @@ class LandingPage extends React.Component<Props> {
                     </div>
                     <div className={bem.element('action-buttons')}>
                         <a className="base-button" target="_blank" href="/neutrino/usd-n">
-                            Get USD-N
+                            Get USDN
                         </a>
                         <a
                             className="base-button alt"

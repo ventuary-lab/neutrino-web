@@ -186,7 +186,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                                 )}
                             >
                                 <BaseInput
-                                    iconLabel="USD-N"
+                                    iconLabel="USDN"
                                     icon={usdnLogo}
                                     value={usdnValue}
                                     onChange={this.onChangeUsdn}
