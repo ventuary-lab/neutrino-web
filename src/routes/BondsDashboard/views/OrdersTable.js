@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import _orderBy from 'lodash-es/orderBy';
-// import _isInteger from 'lodash-es/isInteger';
 import {
     orderBy as _orderBy,
     round as _round,
-    isInteger as _isInteger
+    // isInteger as _isInteger
 } from 'lodash';
 import moment from 'moment';
 
@@ -16,7 +14,6 @@ import OrderSchema from 'types/OrderSchema';
 import PairsEnum from '../../../enums/PairsEnum';
 import OrderTypeEnum from '../../../enums/OrderTypeEnum';
 import CurrencyEnum from 'enums/CurrencyEnum';
-// import OrderStatusEnum from 'enums/OrderStatusEnum';
 import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrdersTable');
@@ -38,50 +35,58 @@ export default class OrdersTable extends React.PureComponent {
         this.getTableHead = this.getTableHead.bind(this);
         this.getTableBody = this.getTableBody.bind(this);
 
-        
         this.fieldTable = {
             name: {
                 label: 'Name',
-                get: item => item.type === OrderTypeEnum.LIQUIDATE ? CurrencyEnum.getLabel(item.currency) : PairsEnum.getLabel(item.pairName)
+                get: item =>
+                    item.type === OrderTypeEnum.LIQUIDATE
+                        ? CurrencyEnum.getLabel(item.currency)
+                        : PairsEnum.getLabel(item.pairName),
             },
             type: {
                 label: 'Type',
-                get: item => OrderTypeEnum.getLabel(item.type) || '--'
+                get: item => OrderTypeEnum.getLabel(item.type) || '--',
             },
             time: {
                 label: 'Time',
-                get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--'
+                get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--',
             },
             usdnb: {
                 label: 'USD-NB',
                 // get: item => item.total && item.price ? _round(item.total / (item.price / 100), 2) : '--'
-                get: item => item.amount || '--'
+                get: item => item.amount || '--',
             },
             price: {
                 label: 'Price',
-                get: item => item.price ? item.price / 100 : '--'
+                get: item => (item.price ? item.price / 100 : '--'),
             },
             roi: {
                 label: 'ROI',
                 get: (order, controlPrice) => {
-
-                    return order.amount && order.total ? _round(
-                        computeROI(_round(order.total / (order.price / 100), 2), order.total, controlPrice), 2
-                    ) : '--';
-                }
+                    return order.amount && order.total
+                        ? _round(
+                              computeROI(
+                                  _round(order.total / (order.price / 100), 2),
+                                  order.total,
+                                  controlPrice
+                              ),
+                              2
+                          )
+                        : '--';
+                },
             },
             waves: {
                 label: 'WAVES',
                 // get: (item, controlPrice) => item.restAmount && controlPrice ? _round(item.restAmount / (controlPrice / 100), 2) : '--'
-                get: (item, controlPrice) => item.total || '--'
+                get: (item, controlPrice) => item.total || '--',
             },
             status: {
                 label: 'Status',
-                get: item => item.status || '--'
+                get: item => item.status || '--',
             },
             cancelall: {
-                label: 'Cancel All'
-            }
+                label: 'Cancel All',
+            },
         };
 
         this.state = {
@@ -149,8 +154,11 @@ export default class OrdersTable extends React.PureComponent {
         const { controlPrice } = this.props;
 
         const { fieldTable } = this;
-        const items = rawItems
-            .filter(item => item.type !== 'liquidate' ? moment(new Date(item.timestamp)).isAfter(moment('01/12/2020')) : true); // 12 of Jan
+        const items = rawItems.filter(item =>
+            item.type !== 'liquidate'
+                ? moment(new Date(item.timestamp)).isAfter(moment('01/12/2020'))
+                : true
+        ); // 12 of Jan
 
         return (
             <tbody>
@@ -158,15 +166,11 @@ export default class OrdersTable extends React.PureComponent {
                     <>
                         {items.map((item, index) => (
                             <tr key={index}>
-                                <td>
-                                    {fieldTable.name.get(item)}
-                                </td>
+                                <td>{fieldTable.name.get(item)}</td>
                                 <td className={bem.element('type-column', item.type)}>
                                     {fieldTable.type.get(item)}
                                 </td>
-                                <td>
-                                    {fieldTable.time.get(item)}
-                                </td>
+                                <td>{fieldTable.time.get(item)}</td>
                                 <td>{fieldTable.usdnb.get(item)}</td>
                                 <td>{fieldTable.price.get(item)}</td>
                                 <td>{fieldTable.status.get(item)}</td>
@@ -210,25 +214,6 @@ export default class OrdersTable extends React.PureComponent {
         );
     }
 
-    render() {
-        if (!this.props.items) {
-            return null;
-        }
-
-        const { sort: sortOrder } = this.state;
-
-        const items = _orderBy(this.props.items, [sortOrder[0]], [sortOrder[1]]);
-
-        return (
-            <div className={bem.block()}>
-                <table>
-                    {this.getTableHead(items)}
-                    {this.getTableBody(items)}
-                </table>
-            </div>
-        );
-    }
-
     toggleSort(column) {
         this.setState({ sort: [column, this.state.sort[1] === 'asc' ? 'desc' : 'asc'] });
     }
@@ -256,6 +241,25 @@ export default class OrdersTable extends React.PureComponent {
                         this.setState({ sort: [column, 'desc'] });
                     }}
                 />
+            </div>
+        );
+    }
+
+    render() {
+        if (!this.props.items) {
+            return null;
+        }
+
+        const { sort: sortOrder } = this.state;
+
+        const items = _orderBy(this.props.items, [sortOrder[0]], [sortOrder[1]]);
+
+        return (
+            <div className={bem.block()}>
+                <table>
+                    {this.getTableHead(items)}
+                    {this.getTableBody(items)}
+                </table>
             </div>
         );
     }

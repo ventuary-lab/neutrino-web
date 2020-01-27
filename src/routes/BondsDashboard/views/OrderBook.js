@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { html } from 'components';
 import { round as _round, sum as _sum, groupBy as _groupBy, orderBy as _orderBy } from 'lodash';
 import { computeROIForOrder } from './helpers';
+import { FormTabEnum } from '../enums';
 
 import './OrderBook.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import OrderSchema from 'types/OrderSchema';
 import UserSchema from 'types/UserSchema';
-// import { computeROI } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
 
@@ -27,7 +27,7 @@ export default class OrderBook extends React.PureComponent {
         quoteCurrency: PropTypes.string,
         user: UserSchema,
         orders: PropTypes.arrayOf(OrderSchema),
-        formTab: PropTypes.oneOf(['buy', 'liquidate']),
+        formTab: PropTypes.oneOf([FormTabEnum.AUCTION, FormTabEnum.LIQUIDATE]),
     };
 
     constructor(props) {
@@ -49,58 +49,57 @@ export default class OrderBook extends React.PureComponent {
         );
     }
 
-    reduceSameOwnerOrders (orders) {
+    reduceSameOwnerOrders(orders) {
         // const mappedOrders = [];
-
         // for (let i = 0; i < orders.length; i++) {
         //     const order = orders[i];
-
         //     if (i === 0) {
         //         mappedOrders.push(order);
         //         continue;
         //     }
-
         //     const prevOrder = orders[i - 1];
         //     const { owner: currentOwner } = order;
         //     const { owner: prevOwner } = prevOrder;
-
         //     if (prevOwner === currentOwner) {
-
         //     }
         // }
-
         // return mappedOrders;
     }
 
     getLiquidateOrders({ formTab, orders, user }) {
+        if (formTab !== FormTabEnum.LIQUIDATE) {
+            return;
+        }
         const mappedOrders = orders;
 
         return (
-            formTab === 'liquidate' && (
-                <div className={bem.element('columns')}>
-                    {mappedOrders.map(order => {
-                        return (
-                            <div
-                                key={order.id}
-                                className={bem.element('body-row', {
-                                    my: user && user.address === order.owner,
-                                })}
-                            >
-                                <div className={bem.element('body-column', 'bg')}>
-                                    {_round(order.restTotal)}
-                                </div>
-                                <div className={bem.element('body-column', 'address')}>
-                                    {order.owner}
-                                </div>
+            <div className={bem.element('columns')}>
+                {mappedOrders.map(order => {
+                    return (
+                        <div
+                            key={order.id}
+                            className={bem.element('body-row', {
+                                my: user && user.address === order.owner,
+                            })}
+                        >
+                            <div className={bem.element('body-column', 'bg')}>
+                                {_round(order.restTotal)}
                             </div>
-                        );
-                    })}
-                </div>
-            )
+                            <div className={bem.element('body-column', 'address')}>
+                                {order.owner}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
         );
     }
 
     getBuyBondOrders({ orders, formTab, user }) {
+        if (formTab !== FormTabEnum.AUCTION) {
+            return;
+        }
+
         const groupedOrders = _groupBy(orders, 'price');
         const sortedKeys = _orderBy(
             Object.keys(groupedOrders).map(item => Number(item)),
@@ -109,38 +108,31 @@ export default class OrderBook extends React.PureComponent {
         );
 
         return (
-            formTab === 'buy' && (
-                <div className={bem.element('columns')}>
-                    {sortedKeys.map(price => (
-                        <div
-                            key={price}
-                            className={bem.element('body-row', {
-                                my:
-                                    user &&
-                                    groupedOrders[price]
-                                        .map(order => order.owner)
-                                        .includes(user.address),
-                            })}
-                        >
-                            <div className={bem.element('body-column', 'bg')}>
-                                {_round(_sum(groupedOrders[price].map(order => order.restAmount)))}
-                            </div>
-                            <div className={bem.element('body-column', 'bg')}>
-                                {this.computeROIForField(groupedOrders[price])}
-                            </div>
-                            <div className={bem.element('body-column')}>
-                                {_round(price / 100, 2)}
-                            </div>
-                            <div className={bem.element('body-column', 'bg')}>
-                                {_round(
-                                    _sum(groupedOrders[price].map(order => order.restTotal)),
-                                    2
-                                )}
-                            </div>
+            <div className={bem.element('columns')}>
+                {sortedKeys.map(price => (
+                    <div
+                        key={price}
+                        className={bem.element('body-row', {
+                            my:
+                                user &&
+                                groupedOrders[price]
+                                    .map(order => order.owner)
+                                    .includes(user.address),
+                        })}
+                    >
+                        <div className={bem.element('body-column', 'bg')}>
+                            {_round(_sum(groupedOrders[price].map(order => order.restAmount)))}
                         </div>
-                    ))}
-                </div>
-            )
+                        <div className={bem.element('body-column', 'bg')}>
+                            {this.computeROIForField(groupedOrders[price])}
+                        </div>
+                        <div className={bem.element('body-column')}>{_round(price / 100, 2)}</div>
+                        <div className={bem.element('body-column', 'bg')}>
+                            {_round(_sum(groupedOrders[price].map(order => order.restTotal)), 2)}
+                        </div>
+                    </div>
+                ))}
+            </div>
         );
     }
 
@@ -153,7 +145,7 @@ export default class OrderBook extends React.PureComponent {
 
         const headerRow = (
             <div className={bem.element('header-row', 'summary')}>
-                {formTab === 'buy' && (
+                {formTab === FormTabEnum.AUCTION && (
                     <>
                         <div className={bem.element('header-column', 'upper-case')}>
                             {_round(_sum(orders.map(order => order.restAmount)))}
@@ -169,7 +161,7 @@ export default class OrderBook extends React.PureComponent {
                         </div>
                     </>
                 )}
-                {formTab === 'liquidate' && (
+                {formTab === FormTabEnum.LIQUIDATE && (
                     <>
                         <div className={bem.element('header-column', 'upper-case')}>
                             {_round(_sum(orders.map(order => order.restTotal)))}
@@ -195,7 +187,7 @@ export default class OrderBook extends React.PureComponent {
                     <div className={bem.element('header-column', 'upper-case')}>
                         {CurrencyEnum.getLabel(baseCurrency)}
                     </div>
-                    {formTab === 'buy' && (
+                    {formTab === FormTabEnum.AUCTION && (
                         <>
                             <div className={bem.element('header-column', 'upper-case')}>ROI</div>
                             <div className={bem.element('header-column')}>{__('Price')}</div>

@@ -32,13 +32,13 @@
     }
   }
 
-  &__order-book {
-    flex-grow: 1;
-    height: calc(100% - 360px);
-    padding-bottom: 20px;
-    overflow: auto;
-    max-height: 310px;
-  }
+  // &__order-book {
+  //   flex-grow: 1;
+  //   height: calc(100% - 360px);
+  //   padding-bottom: 20px;
+  //   overflow: auto;
+  //   max-height: 310px;
+  // }
   &__forms {
     height: 360px;
     background: linear-gradient(201.02deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
