@@ -7,17 +7,13 @@ import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currenc
 import { getControlPrice } from 'reducers/contract/selectors';
 
 import { html, dal } from 'components';
-import OrdersTable from './views/OrdersTable';
+import OrdersTable from './OrdersTable';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
-import OrderBook from './views/OrderBook';
-// import MainChart from './views/MainChart';
-// import CurrencyEnum from 'enums/CurrencyEnum';
-// import CollectionEnum from 'enums/CollectionEnum';
-// import OrderSchema from 'types/OrderSchema';
-// import UserSchema from 'types/UserSchema';
+import OrderBook from './OrderBook';
 
 import { ILongPullingComponent } from 'ui/global/types';
+import { FormTabEnum } from './enums';
 import { IOrder, IUserOrders, Props, State } from './types';
 
 import './BondsDashboard.scss';
@@ -35,7 +31,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this._updateTimeout = 2500;
 
         this.state = {
-            formTab: 'buy',
+            formTab: FormTabEnum.AUCTION,
         };
     }
 
@@ -93,16 +89,14 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    <div className={bem.element('order-book')}>
-                        <OrderBook
-                            controlPrice={controlPrice}
-                            orders={formTab === 'buy' ? bondOrders : liquidateOrders}
-                            user={user}
-                            baseCurrency={baseCurrency}
-                            quoteCurrency={quoteCurrency}
-                            formTab={formTab}
-                        />
-                    </div>
+                    <OrderBook
+                        controlPrice={controlPrice}
+                        orders={formTab === FormTabEnum.AUCTION ? bondOrders : liquidateOrders}
+                        user={user}
+                        baseCurrency={baseCurrency}
+                        quoteCurrency={quoteCurrency}
+                        formTab={formTab}
+                    />
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
@@ -110,7 +104,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                             onChange={formTab => this.setState({ formTab })}
                             items={[
                                 {
-                                    id: 'buy',
+                                    id: FormTabEnum.AUCTION,
                                     label: 'Buy',
                                     content: BuyBondsForm,
                                     contentProps: {
@@ -118,7 +112,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                                     },
                                 },
                                 {
-                                    id: 'liquidate',
+                                    id: FormTabEnum.LIQUIDATE,
                                     label: 'Liquidate',
                                     className: bem.element('danger-tab'),
                                     content: LiquidateBondsForm,

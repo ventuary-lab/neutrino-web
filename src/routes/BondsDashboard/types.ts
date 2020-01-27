@@ -1,4 +1,5 @@
 import { IUser } from 'contractControllers/types';
+import { FormTabEnum } from './enums';
 
 export interface IOrder {
     id: string;
@@ -11,6 +12,7 @@ export interface IOrder {
     index: number;
     amount: number;
     filledAmount: number;
+    restTotal: number;
     restAmount: number;
     pairName: string;
     status: string;
@@ -33,17 +35,5 @@ export interface State {
     bondOrders?: IOrder[],
     liquidateOrders?: IOrder[],
     userOrders?: IUserOrders;
-    formTab: string;
+    formTab: FormTabEnum;
 }
-
-export interface IBondsDashboard {
-
-}
-
-//     bondOrders: PropTypes.arrayOf(OrderSchema),
-//     liquidateOrders: PropTypes.arrayOf(OrderSchema),
-//     user: UserSchema,
-//     userOrders: PropTypes.shape({
-//         opened: PropTypes.arrayOf(OrderSchema),
-//         history: PropTypes.arrayOf(OrderSchema),
-//     }),

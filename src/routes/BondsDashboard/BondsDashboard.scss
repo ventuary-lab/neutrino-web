@@ -20,6 +20,16 @@
 
       display: flex;
       flex-direction: column;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+
+      & > .OrderBook:nth-child(1) {
+        flex-basis: calc(100vh - 447px);
+        overflow: auto;
+        min-height: 290px;
+      }
     }
 
     &_right {
@@ -32,13 +42,6 @@
     }
   }
 
-  &__order-book {
-    flex-grow: 1;
-    height: calc(100% - 360px);
-    padding-bottom: 20px;
-    overflow: auto;
-    max-height: 310px;
-  }
   &__forms {
     height: 360px;
     background: linear-gradient(201.02deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
