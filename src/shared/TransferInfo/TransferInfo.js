@@ -12,7 +12,6 @@ export default class TransferInfo extends React.PureComponent {
     static propTypes = {
         address: PropTypes.string,
         amount: PropTypes.number,
-        currency: PropTypes.string,
         onSubmit: PropTypes.func,
         buttonLabel: PropTypes.string,
     };
@@ -37,7 +36,7 @@ export default class TransferInfo extends React.PureComponent {
                             {__('Transfer amount')}
                         </span>
                         <span className={bem.element('value')}>
-                            {amount} {currency.toUpperCase()}
+                            {amount} {currency}
                         </span>
                     </div>
                 </div>
