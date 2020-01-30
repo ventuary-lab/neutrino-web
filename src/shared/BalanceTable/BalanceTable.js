@@ -155,7 +155,7 @@ export default class BalanceTable extends React.PureComponent {
                                         openModal(
                                             item.id === 'send' ? TransferModal : CreateInvoiceModal,
                                             {
-                                                currency: currency,
+                                                currency: currency.toUpperCase().replace(/[-|_]/, ''),
                                             }
                                         )
                                     )
