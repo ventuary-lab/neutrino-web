@@ -1,6 +1,13 @@
+const { performance, PerformanceObserver } = require('perf_hooks');
+const obs = new PerformanceObserver(list => {
+    const entries = list.getEntries();
+    const [frst] = entries;
+
+    console.log(`${frst.name} took ${frst.duration} ms...`);
+});
+obs.observe({ entryTypes: ['measure'] });
 
 module.exports = class BaseCollection {
-
     constructor(params = {}) {
         this.pairName = params.pairName;
         this.collectionName = params.collectionName;
@@ -66,36 +73,58 @@ module.exports = class BaseCollection {
     }
 
     async updateAll(nodeData) {
-
         // Get ids
         const ids = [];
-        const idRegexp = new RegExp(this.getKeys()[0]);
-        Object.keys(nodeData)
-            .forEach(nodeKey => {
-                const match = idRegexp.exec(nodeKey);
-                if (match && match[1]) {
-                    ids.push(match[1]);
-                }
-            });
-
         const data = {};
+        const regexKeys = this.getKeys();
+        const idRegexp = new RegExp(regexKeys[0]);
+        const nodeDataKeys = Object.keys(nodeData);
 
-        ids.forEach(id => {
-            data[id] = {};
+        performance.mark('1')
 
-            this.getKeys(id).forEach(key => {
-                const keyRegexp = new RegExp(key);
+        const matchedKeys = nodeDataKeys.filter(key => {
+            for (let i = 0; i < regexKeys; i++) {
+                const regexKey = regexKeys[i];
+                const rgx = new RegExp(regexKey);
 
-                Object.keys(nodeData)
-                    .forEach(nodeKey => {
-                        const match = keyRegexp.exec(nodeKey);
+                if (rgx.exec(key) === null) {
+                    return false;
+                }
+            }
 
-                        if (match) {
-                            data[id][nodeKey] = nodeData[nodeKey];
-                        }
-                    });
-            });
+            return true;
         });
+
+        for (let i = 0; i < matchedKeys.length; i++) {
+            const nodeKey = matchedKeys[i];
+
+            const match = idRegexp.exec(nodeKey);
+
+            if (match === null) {
+                continue;
+            }
+
+            const id = match[1];
+
+            if (id) {
+                ids.push(id);
+                data[id] = {};
+                const collectionKeys = this.getKeys(id);
+
+                matchedKeys.forEach(nodeKey => {
+                    if (collectionKeys.includes(nodeKey)) {
+                        data[id][nodeKey] = nodeData[nodeKey];
+                    }
+                });
+            }
+        }
+
+        performance.mark('2')
+
+        if (this.collectionName === 'bonds_orders') {
+            performance.measure(this.collectionName, '1', '2');
+            console.log(ids[0], ids.length, data[ids[0]]);
+        }
 
         await this._updateNext(Object.keys(data), data);
     }
@@ -135,7 +164,9 @@ module.exports = class BaseCollection {
      * @private
      */
     async _updateItem(id, data = null) {
-        this.logger.debug('Update item of ' + this.pairName + ':' + this.collectionName + ' collection... ' + id);
+        this.logger.debug(
+            'Update item of ' + this.pairName + ':' + this.collectionName + ' collection... ' + id
+        );
 
         // Fetch data, if not set
         const keys = this.getKeys(id);

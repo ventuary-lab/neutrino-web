@@ -296,6 +296,8 @@ module.exports = class App implements ApplicationParams {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
+                    // console.log(data[contractName])
+
                     this.logger.info(`Thread ${threadName}. Update all data in collection... ${collectionName}`);
 
                     if (shouldFlush) {
