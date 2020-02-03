@@ -120,6 +120,8 @@ module.exports = class BaseCollection {
         }
 
         performance.mark('2');
+        performance.measure(this.collectionName, '1', '2');
+
         await this._updateNext(Object.keys(data), data);
     }
 
