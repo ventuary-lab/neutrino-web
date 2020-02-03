@@ -6,17 +6,14 @@ command=?; # - run script from package.json. Only command or script_name should 
 script_name=?;
 restart_timeout=1 # in seconds
 current_pid=?;
-serve_no_update_pid=?;
 
 function run_with_restarts {
     if [ $command != "?" ]
     then
         npm run $command &
         current_pid=$!;
-        npm run serve-and-update &
-        serve_no_update_pid=$!;
 
-        echo "PID is $current_pid; serve_no_update_pid is $serve_no_update_pid;"
+        echo "PID is $current_pid;"
     elif [ $script_name != "?" ]
     then
         $("node $script_name $args")
@@ -27,7 +24,6 @@ function run_with_restarts {
     sleep $restart_timeout;
 
     kill -9 $current_pid;
-    kill -9 $serve_no_update_pid;
 
     echo 'Restart app in 10 seconds...'
 
