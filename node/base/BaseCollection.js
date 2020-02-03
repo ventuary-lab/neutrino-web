@@ -80,7 +80,7 @@ module.exports = class BaseCollection {
         const idRegexp = new RegExp(regexKeys[0]);
         const nodeDataKeys = Object.keys(nodeData);
 
-        performance.mark('1')
+        performance.mark('1');
 
         const matchedKeys = nodeDataKeys.filter(key => {
             for (let i = 0; i < regexKeys; i++) {
@@ -119,13 +119,7 @@ module.exports = class BaseCollection {
             }
         }
 
-        performance.mark('2')
-
-        if (this.collectionName === 'bonds_orders') {
-            performance.measure(this.collectionName, '1', '2');
-            console.log(ids[0], ids.length, data[ids[0]]);
-        }
-
+        performance.mark('2');
         await this._updateNext(Object.keys(data), data);
     }
 
