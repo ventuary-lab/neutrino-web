@@ -291,6 +291,7 @@ module.exports = class Router {
 
                 response.writeHead(content && content.error ? 500 : 200, {
                     'Content-Type': 'text/html',
+                    'Access-Control-Allow-Origin': '*'
                 });
                 response.end(JSON.stringify(content));
             });
