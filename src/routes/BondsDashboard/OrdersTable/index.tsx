@@ -44,7 +44,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             usdnb: {
                 label: 'USDNB',
-                get: item => OrderTypeEnum.LIQUIDATE ? item.total : item.amount,
+                get: item => OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount,
             },
             price: {
                 label: 'Price',
@@ -67,7 +67,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             waves: {
                 label: 'WAVES',
-                get: (item, controlPrice) => OrderTypeEnum.LIQUIDATE ? '--' : item.total,
+                get: (item, controlPrice) => OrderTypeEnum.LIQUIDATE === item.type ? '--' : item.total,
             },
             status: {
                 label: 'Status',
