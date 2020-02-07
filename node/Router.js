@@ -216,6 +216,7 @@ module.exports = class Router {
                 var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+                
 
                 orders = Utils.orderBy(orders, 'price', 'desc', {
                     isNumber: true,

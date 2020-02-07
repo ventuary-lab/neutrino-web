@@ -21,6 +21,15 @@ module.exports = class BondsOrders extends BaseCollection {
         ];
     }
 
+    async getItemsAll () {
+        try {
+            return await this.postgresService.getBondsOrders();
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
+    }
+
     /**
      * @returns {Promise}
      */
