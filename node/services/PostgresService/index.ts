@@ -2,7 +2,8 @@ import { Client } from 'pg';
 import { mapBondOrderForRest } from './helpers';
 
 enum TableNames {
-    BONDS_ORDERS = 'f_bonds_orders'
+    BONDS_ORDERS = 'f_bonds_orders',
+    BLOCKS_MAP = 'blocks_map'
 }
 
 class PostgresService {
@@ -26,7 +27,12 @@ class PostgresService {
     async getBondsOrders () {
         return new Promise(resolve => {
             this.client
-                .query(`SELECT * FROM ${TableNames.BONDS_ORDERS}`)
+                .query(`
+                    SELECT bo.height, bo.owner, bo.price, bo.total, bo.filledtotal, bo.resttotal,
+                    bo.status, bo.index, bo.amount, bo.filledamount, bo.restamount, bo.pairname,
+                    bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
+                    INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height 
+                `)
                 .then(result => {
                     resolve(result.rows.map(mapBondOrderForRest))
                 })

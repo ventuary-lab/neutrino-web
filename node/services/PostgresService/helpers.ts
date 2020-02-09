@@ -44,13 +44,17 @@ export const mapBondOrderForRest = (rawOrder) => {
         filledamount: 'filledAmount',
         restamount: 'restAmount',
         pairname: 'pairName',
-        order_id: 'id'
+        order_id: 'id',
     }
 
     for (const orderKey of orderKeys) {
         const newKey = keysMap[orderKey] || orderKey;
 
         resOrder[newKey] = rawOrder[orderKey];
+
+        if (newKey === 'timestamp') {
+            resOrder[newKey] = Number(resOrder[newKey])
+        }
     }
 
     return resOrder;
