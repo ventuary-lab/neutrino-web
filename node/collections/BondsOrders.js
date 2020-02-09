@@ -47,13 +47,19 @@ module.exports = class BondsOrders extends BaseCollection {
      * @returns {Promise}
      */
     async getOpenedOrders() {
-        let orders = await this.getItemsAll();
-        orders = orders
-            .filter(order => order.index !== null)
-            .map(order => mapFieldsToNumber(order, ['height', 'price']));
+        // let orders = await this.getItemsAll();
+        // orders = orders
+        //     .filter(order => order.index !== null)
+        //     .map(order => mapFieldsToNumber(order, ['height', 'price']));
 
-        orders = _orderBy(orders, 'index', 'asc');
-        return orders;
+        // orders = _orderBy(orders, 'index', 'asc');
+        // return orders;
+        try {
+            return await this.postgresService.getOpenedBondsOrders();
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
     }
 
     async getUserOpenedOrders(address) {

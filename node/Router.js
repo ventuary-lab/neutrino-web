@@ -204,6 +204,7 @@ module.exports = class Router {
                 const orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+
                 let position = 0;
                 orders.forEach(order => {
                     if (price <= order.price) {
