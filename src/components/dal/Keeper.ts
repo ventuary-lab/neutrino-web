@@ -350,12 +350,10 @@ export default class Keeper {
         assetId: string,
         paymentCurrency: string
     ) {
-        // const isWebKeeperReady = await webKeeper.isReady();
-
         if (this.isAuthByWebKeeper()) {
             await webKeeper.transfer(
                 recipient,
-                Number(amount) * CurrencyEnum.getContractPow(paymentCurrency),
+                Number(amount) * CurrencyEnum.getContractPow(paymentCurrency.toLowerCase()),
                 assetId
             );
             return;

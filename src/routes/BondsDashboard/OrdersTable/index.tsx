@@ -67,7 +67,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             waves: {
                 label: 'WAVES',
-                get: (item, controlPrice) => item.total || '--',
+                get: (item, controlPrice) => OrderTypeEnum.LIQUIDATE === item.type ? '--' : item.total,
             },
             status: {
                 label: 'Status',
@@ -141,7 +141,6 @@ export default class OrdersTable extends React.Component<Props, State> implement
 
     getTableBody(rawItems) {
         const { controlPrice } = this.props;
-
         const { fieldTable } = this;
         const items = rawItems.filter(item =>
             item.type !== 'liquidate'

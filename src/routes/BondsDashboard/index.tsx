@@ -85,7 +85,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         if (!bondOrders || !liquidateOrders) {
             return null;
         }
-
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
