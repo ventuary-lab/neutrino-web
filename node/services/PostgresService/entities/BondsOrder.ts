@@ -44,13 +44,5 @@ class BondsOrderEntity {
         })
     }
 }
-//     let orders = await this.getItemsAll();
-//     orders = orders
-//         .filter(order => order.index !== null)
-//         .map(order => mapFieldsToNumber(order, ['height', 'price']));
-
-//     orders = _orderBy(orders, 'index', 'asc');
-//     return orders;
-// }
 
 export default BondsOrderEntity
