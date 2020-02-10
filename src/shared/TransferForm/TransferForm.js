@@ -49,7 +49,7 @@ export default class TransferForm extends React.PureComponent {
     render() {
         const address = _get(this.props, 'formValues.address');
         const amount = _get(this.props, 'formValues.amount');
-        const transeftAmountLabel = `Transfer amount (${_get(this.props, 'currency', '').toUpperCase()})`;
+        const transeftAmountLabel = `Transfer amount (${_get(this.props, 'currency', '').toUpperCase().replace(/[-|_]/, '')})`;
 
         return (
             <Form

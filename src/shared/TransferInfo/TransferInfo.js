@@ -18,6 +18,7 @@ export default class TransferInfo extends React.PureComponent {
 
     render() {
         const { address, amount, currency, buttonLabel, onSubmit, onClose } = this.props;
+        const renderCurrency = currency.toUpperCase().replace(/[-|_]/, '');
 
         return (
             <div className={bem.block()}>
@@ -36,7 +37,7 @@ export default class TransferInfo extends React.PureComponent {
                             {__('Transfer amount')}
                         </span>
                         <span className={bem.element('value')}>
-                            {amount} {currency}
+                            {amount} {renderCurrency}
                         </span>
                     </div>
                 </div>

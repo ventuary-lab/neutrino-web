@@ -42,7 +42,7 @@ export default class TransferModal extends React.PureComponent {
     }
 
     render() {
-        const { currency, formValues } = this.props;
+        const { formValues } = this.props;
 
         return (
             <Modal
@@ -79,7 +79,7 @@ export default class TransferModal extends React.PureComponent {
                         <TransferInfo
                             {...formValues}
                             onClose={this.state.isSuccess && this.props.onClose}
-                            currency={currency}
+                            currency={this.props.currency}
                             onSubmit={() => {
                                 this.setState({ isSuccess: false });
                                 this.props.dispatch(reset(FORM_ID));
