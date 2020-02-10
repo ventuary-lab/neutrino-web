@@ -17,7 +17,10 @@ module.exports = class BondsOrders extends BaseCollection {
             `order_total_${id}`,
             `order_filled_total_${id}`,
             `order_status_${id}`,
-            'orderbook',
+
+            `order_prev_${id}`,
+            `order_next_${id}`,
+            'order_first'
         ];
     }
 
@@ -36,15 +39,28 @@ module.exports = class BondsOrders extends BaseCollection {
 
     /**
      * @returns {Promise}
-     */
+    */
     async getOpenedOrders() {
         let orders = await this.getItemsAll();
-        orders = orders
-            .filter(order => order.index !== null)
-            .map(order => mapFieldsToNumber(order, ['height', 'price']));
 
-        orders = _orderBy(orders, 'index', 'asc');
-        return orders;
+        let sortedOrders = [];
+
+        orders = orders.filter(order => order.status == OrderStatusEnum.NEW);
+        if (orders == undefined || orders.length == 0) return orders;
+
+        let firstOrder = orders.filter(order => order.isFirst)[0];
+        if (firstOrder == undefined || firstOrder.length == 0) return orders;
+
+        let nextProcessOrder = firstOrder;
+        sortedOrders.push(firstOrder);
+        while (true) {
+            if (nextProcessOrder.orderNext == null) {
+                return sortedOrders;
+            }
+            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
+            sortedOrders.push(foundOrder);
+            nextProcessOrder = foundOrder;
+        }
     }
 
     async getUserOpenedOrders(address) {
@@ -61,15 +77,14 @@ module.exports = class BondsOrders extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
-        const index = item.orderbook
-            .split('_')
-            .filter(Boolean)
-            .indexOf(id);
+        const orderNext = item['order_next_' + id] || null;
+        const orderPrev = item['order_prev_' + id] || null;
 
         const height = item['order_height_' + id];
         const price = item['order_price_' + id] || 0;
         const total = item['order_total_' + id] || 0;
         const filledTotal = item['order_filled_total_' + id] || 0;
+        
         return {
             height,
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
@@ -84,6 +99,9 @@ module.exports = class BondsOrders extends BaseCollection {
             filledAmount: _round(filledTotal / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             restAmount: _round((total - filledTotal) / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             pairName: this.pairName,
+            orderNext,
+            orderPrev,
+            isFirst: id == item.order_first,
             type: OrderTypeEnum.BUY,
         };
     }
