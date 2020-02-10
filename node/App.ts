@@ -7,6 +7,7 @@ import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
 
 import MassPaymentService from './services/MassPaymentService';
+import PostgresService from './services/PostgresService';
 import HeightListener from './components/HeightListener';
 import WavesTransport from './components/WavesTransport';
 import { grabProcessArgumentValue } from './helpers';
@@ -42,6 +43,7 @@ module.exports = class App implements ApplicationParams {
     expressApp: Express;
     massPaymentService: MassPaymentService;
     massPaymentSender: string | null;
+    postgresService: PostgresService;
 
     // Internal class props
     _isSkipUpdates: boolean;
@@ -56,7 +58,7 @@ module.exports = class App implements ApplicationParams {
 
     constructor(params: ApplicationParams) {
         this.network = process.env.APP_DAPP_NETWORK || 'testnet';
-        this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true' || false;
+        this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true';
 
         switch (this.network) {
             case 'mainnet':
@@ -91,6 +93,8 @@ module.exports = class App implements ApplicationParams {
             namespace: this.redisNamespace + '_' + this.network,
             redisClient: this._redisClient,
         });
+
+        this.postgresService = new PostgresService();
 
         // Create logger
         this.logger = winston.createLogger({
@@ -142,6 +146,7 @@ module.exports = class App implements ApplicationParams {
         this._router.start();
         this._websocket.start();
 
+        await this.postgresService.start()
         await this.heightListener.start();
 
         // Try get timestamp
@@ -236,6 +241,7 @@ module.exports = class App implements ApplicationParams {
 
         const collection = new CollectionClass({
             pairName: pairName,
+            postgresService: this.postgresService,
             collectionName: collectionName,
             storage: contract.storage,
             transport: contract.transport,
@@ -287,8 +293,11 @@ module.exports = class App implements ApplicationParams {
         try {
             for (const pairName of PairsEnum.getKeys()) {
                 const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
+                const collectionNames = CollectionEnum
+                    .getKeys()
+                    .filter(colName => ![CollectionEnum.BONDS_ORDERS].includes(colName));
 
-                for (const collectionName of CollectionEnum.getKeys() as string[]) {
+                for (const collectionName of collectionNames) {
                     const collection = this.getCollection(pairName, collectionName);
                     const contractName = CollectionEnum.getContractName(collectionName) as string;
 

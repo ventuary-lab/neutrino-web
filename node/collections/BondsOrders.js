@@ -24,6 +24,15 @@ module.exports = class BondsOrders extends BaseCollection {
         ];
     }
 
+    async getItemsAll () {
+        try {
+            return await this.postgresService.getBondsOrders();
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
+    }
+
     /**
      * @returns {Promise}
      */
@@ -41,25 +50,18 @@ module.exports = class BondsOrders extends BaseCollection {
      * @returns {Promise}
     */
     async getOpenedOrders() {
-        let orders = await this.getItemsAll();
+        // let orders = await this.getItemsAll();
+        // orders = orders
+        //     .filter(order => order.index !== null)
+        //     .map(order => mapFieldsToNumber(order, ['height', 'price']));
 
-        let sortedOrders = [];
-
-        orders = orders.filter(order => order.status == OrderStatusEnum.NEW);
-        if (orders == undefined || orders.length == 0) return orders;
-
-        let firstOrder = orders.filter(order => order.isFirst)[0];
-        if (firstOrder == undefined || firstOrder.length == 0) return orders;
-
-        let nextProcessOrder = firstOrder;
-        sortedOrders.push(firstOrder);
-        while (true) {
-            if (nextProcessOrder.orderNext == null) {
-                return sortedOrders;
-            }
-            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
-            sortedOrders.push(foundOrder);
-            nextProcessOrder = foundOrder;
+        // orders = _orderBy(orders, 'index', 'asc');
+        // return orders;
+        try {
+            return await this.postgresService.getOpenedBondsOrders();
+        } catch (err) {
+            console.log(err)
+            return [];
         }
     }
 
