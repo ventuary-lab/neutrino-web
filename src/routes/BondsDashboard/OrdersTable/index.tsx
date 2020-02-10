@@ -44,7 +44,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             usdnb: {
                 label: 'USDNB',
-                get: item => OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount,
+                get: item => OrderTypeEnum.LIQUIDATE === item.type ? Math.ceil(item.total) : Math.ceil(item.amount),
             },
             price: {
                 label: 'Price',

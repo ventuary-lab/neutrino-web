@@ -32,12 +32,9 @@ class OrderBook extends React.Component<Props, State> {
 
     computeROIForField(groupedField) {
         const { controlPrice } = this.props;
+        const sum = _sum(groupedField.map(order => computeROIForOrder(order, controlPrice)));
 
-        return _round(
-            _sum(groupedField.map(order => computeROIForOrder(order, controlPrice))) /
-                groupedField.length,
-            2
-        );
+        return _round(sum / groupedField.length, 2);
     }
 
     reduceSameOwnerOrders(orders) {}
@@ -180,6 +177,5 @@ class OrderBook extends React.Component<Props, State> {
         );
     }
 }
-
 
 export default OrderBook;
