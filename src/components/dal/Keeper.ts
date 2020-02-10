@@ -219,7 +219,7 @@ export default class Keeper {
         }
 
         const keeper = await this.getPlugin();
-
+        
         const result = await keeper.signAndPublishTransaction(builtTransaction);
 
         if (result) {

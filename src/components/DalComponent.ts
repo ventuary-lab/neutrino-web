@@ -215,8 +215,8 @@ export default class DalComponent implements IDalComponent {
             }),
             'data.position'
         );
-
-        if (price > 0 && sendAmount > 0 && Number.isInteger(position)) {
+        
+        if (price > 0 && sendAmount > 0) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
