@@ -23,12 +23,14 @@ const bem = html.bem('BondsDashboard');
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
+    _idUpdating: boolean;
 
     constructor(props) {
         super(props);
 
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 7000;
+        this._idUpdating = false;
 
         this.state = {
             formTab: FormTabEnum.AUCTION,
@@ -47,9 +49,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     async _updateListener () {
         const { user, pairName } = this.props;
 
-        if (!pairName) {
+        if (!pairName || this._idUpdating) {
             return;
         }
+
+        this._idUpdating = true;
 
         try {
             const bondOrdersResponse = await axios.get<IOrder[]>(`/api/v1/bonds/${pairName}/orders`);
@@ -65,8 +69,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 liquidateOrders: liquidateOrdersResponse.data,
                 userOrders: userOrdersResponse && userOrdersResponse.data
             })
+
         } catch (err) {
             console.warn('Error on updating orders...', err);
+        } finally {
+            this._idUpdating = false;
         }
     }
 
