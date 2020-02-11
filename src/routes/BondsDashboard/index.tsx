@@ -28,7 +28,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         super(props);
 
         this._updateListener = this._updateListener.bind(this);
-        this._updateTimeout = 2500;
+        this._updateTimeout = 7000;
 
         this.state = {
             formTab: FormTabEnum.AUCTION,
