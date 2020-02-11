@@ -77,8 +77,14 @@ module.exports = class BondsOrders extends BaseCollection {
     }
 
     async getUserHistoryOrders(address) {
-        let orders = await this.getOrders();
-        return orders.filter(order => order.owner === address && order.index === null);
+        // let orders = await this.getOrders();
+        // return orders.filter(order => order.owner === address && order.index === null);
+        try {
+            return await this.postgresService.getUserHistoryBondsOrders(address);
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
     }
 
     async _prepareItem(id, item) {
