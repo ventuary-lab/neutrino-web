@@ -55,7 +55,8 @@ module.exports = class BondsOrders extends BaseCollection {
         // orders = _orderBy(orders, 'index', 'asc');
         // return orders;
         try {
-            return await this.postgresService.getOpenedBondsOrders();
+            const orders = await this.postgresService.getOpenedBondsOrders();
+            return _orderBy(orders, 'index', 'asc');
         } catch (err) {
             console.log(err)
             return [];
