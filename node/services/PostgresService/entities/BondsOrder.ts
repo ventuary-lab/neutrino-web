@@ -53,7 +53,7 @@ class BondsOrderEntity {
                     bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
                     INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height
                     WHERE bo.owner = '${address}' and bo.status = 'new'
-                    ORDER BY bm.timestamp DESC
+                    ORDER BY bm.timestamp ASC
                 `)
                 .then(result => {
                     resolve(result.rows.map(this.mapEntity))
