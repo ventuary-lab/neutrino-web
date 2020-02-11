@@ -21,6 +21,10 @@ class PostgresService {
     async getOpenedBondsOrders () {
         return await BondsOrderEntity.getOpenedOnly(this.client)
     }
+    
+    async getUserOpenedBondsOrders (address: string) {
+        return await BondsOrderEntity.getUserOpenedBondsOrders(this.client, { address })
+    }
 
     async getBondsOrders () {
         // return new Promise(resolve => {

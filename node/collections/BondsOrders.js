@@ -63,11 +63,17 @@ module.exports = class BondsOrders extends BaseCollection {
     }
 
     async getUserOpenedOrders(address) {
-        let orders = await this.getOpenedOrders();
+        try {
+            return await this.postgresService.getUserOpenedBondsOrders(address);
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
+        // let orders = await this.getOpenedOrders();
 
-        return orders.filter(
-            order => order.owner === address && order.status === OrderStatusEnum.NEW
-        );
+        // return orders.filter(
+        //     order => order.owner === address && order.status === OrderStatusEnum.NEW
+        // );
     }
 
     async getUserHistoryOrders(address) {
