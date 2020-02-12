@@ -42,7 +42,7 @@ class StakingLanding extends React.Component<Props, State> implements ILongPulli
 
         this._updateListener = this._updateListener.bind(this);
 
-        this._updateTimeout = 5000;
+        this._updateTimeout = 3000;
 
         this.state = {};
     }

@@ -27,7 +27,7 @@ class StakingDashboard extends React.Component<Props, State> implements ILongPul
 
         this._updateListener = this._updateListener.bind(this);
         this._updateInterval = null;
-        this._updateTimeout = 5000;
+        this._updateTimeout = 4000;
 
         this.state = {
             stakingBalance: {
