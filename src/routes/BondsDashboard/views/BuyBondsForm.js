@@ -193,7 +193,7 @@ export default class BuyBondsForm extends React.PureComponent {
                 }
             });
 
-        return position - 1;
+        return position === 0 ? 0 : position - 1;
     }
 
     _onSubmit(values) {
