@@ -185,7 +185,6 @@ export default class BuyBondsForm extends React.PureComponent {
         const { bondOrders } = this.props;
 
         let position = 0;
-
         bondOrders
             .forEach(order => {
                 if (Number(price) <= Number(order.price)) {
@@ -193,7 +192,7 @@ export default class BuyBondsForm extends React.PureComponent {
                 }
             });
 
-        return position === 0 ? 0 : position - 1;
+        return position;
     }
 
     _onSubmit(values) {
