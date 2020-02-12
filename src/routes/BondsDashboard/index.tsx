@@ -115,6 +115,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                                     content: BuyBondsForm,
                                     contentProps: {
                                         controlPrice,
+                                        bondOrders
                                     },
                                 },
                                 {

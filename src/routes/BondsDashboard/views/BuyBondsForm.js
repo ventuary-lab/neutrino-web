@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
-import _get from 'lodash-es/get';
-import _ from 'lodash';
+import _, { get as _get } from 'lodash';
 import _round from 'lodash-es/round';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
@@ -182,17 +181,41 @@ export default class BuyBondsForm extends React.PureComponent {
         );
     }
 
+    computeOrderPosition (price) {
+        const { bondOrders } = this.props;
+
+        let position = 0;
+
+        bondOrders
+            .forEach(order => {
+                if (Number(price) <= Number(order.price)) {
+                    position++;
+                }
+            });
+
+        return position - 1;
+    }
+
     _onSubmit(values) {
         // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
         // const wavesToUsdPrice = this.props.controlPrice;
         const { dependPrice } = this.state;
+        const contractPrice = Math.round(dependPrice * 100);
+        const position = this.computeOrderPosition(contractPrice);
+        // let position = _get(
+        //     await axios.get(`/api/v1/bonds/${pairName}/position`, {
+        //         params: { price: contractPrice },
+        //     }),
+        //     'data.position'
+        // );
 
         return dal
             .setBondOrder(
                 this.props.pairName,
-                dependPrice,
+                contractPrice,
                 this.props.quoteCurrency,
-                values.waves
+                values.waves,
+                position
             )
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console

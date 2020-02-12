@@ -55,8 +55,11 @@ module.exports = class BondsOrders extends BaseCollection {
         // orders = _orderBy(orders, 'index', 'asc');
         // return orders;
         try {
-            const orders = await this.postgresService.getOpenedBondsOrders();
-            return _orderBy(orders, 'index', 'asc');
+            let orders = await this.postgresService.getOpenedBondsOrders();
+            orders = _orderBy(orders, 'index', 'asc');
+            orders = orders.map(order => mapFieldsToNumber(order, ['height']));
+
+            return orders;
         } catch (err) {
             console.log(err)
             return [];
