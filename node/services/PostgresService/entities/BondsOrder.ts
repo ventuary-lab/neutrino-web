@@ -16,6 +16,7 @@ class BondsOrderEntity {
                 .query(`
                     SELECT bo.height, bo.owner, bo.price, bo.total, bo.filledtotal, bo.resttotal,
                     bo.status, bo.index, bo.amount, bo.filledamount, bo.restamount, bo.pairname,
+                    bo.debug_roi, bo.debug_price,
                     bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
                     INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height
                     WHERE bo.index IS NOT NULL
@@ -34,6 +35,7 @@ class BondsOrderEntity {
                 .query(`
                     SELECT bo.height, bo.owner, bo.price, bo.total, bo.filledtotal, bo.resttotal,
                     bo.status, bo.index, bo.amount, bo.filledamount, bo.restamount, bo.pairname,
+                    bo.debug_roi, bo.debug_price,
                     bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
                     INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height 
                 `)
@@ -50,6 +52,7 @@ class BondsOrderEntity {
                 .query(`
                     SELECT bo.height, bo.owner, bo.price, bo.total, bo.filledtotal, bo.resttotal,
                     bo.status, bo.index, bo.amount, bo.filledamount, bo.restamount, bo.pairname,
+                    bo.debug_roi, bo.debug_price,
                     bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
                     INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height
                     WHERE bo.owner = '${address}' and bo.status = 'new'
@@ -67,6 +70,7 @@ class BondsOrderEntity {
                 .query(`
                     SELECT bo.height, bo.owner, bo.price, bo.total, bo.filledtotal, bo.resttotal,
                     bo.status, bo.index, bo.amount, bo.filledamount, bo.restamount, bo.pairname,
+                    bo.debug_roi, bo.debug_price,
                     bo.type, bo.order_id, bm.timestamp from ${TableNames.BONDS_ORDERS} bo
                     INNER JOIN (SELECT * FROM ${TableNames.BLOCKS_MAP}) as bm ON bm.height = bo.height
                     WHERE bo.owner = '${address}' and bo.index IS NULL
