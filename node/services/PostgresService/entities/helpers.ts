@@ -10,6 +10,8 @@ export const mapBondOrderForRest = (rawOrder) => {
         restamount: 'restAmount',
         pairname: 'pairName',
         order_id: 'id',
+        debug_roi: 'debugRoi',
+        debug_price: 'debugPrice'
     }
 
     for (const orderKey of orderKeys) {

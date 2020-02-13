@@ -44,30 +44,24 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             usdnb: {
                 label: 'USDNB',
-                get: item => OrderTypeEnum.LIQUIDATE === item.type ? Math.ceil(item.total) : Math.ceil(item.amount),
+                get: item =>
+                    OrderTypeEnum.LIQUIDATE === item.type
+                        ? Math.ceil(item.total)
+                        : Math.ceil(item.amount),
             },
             price: {
                 label: 'Price',
-                get: item => (item.price ? item.price / 100 : '--'),
+                get: item => item.debugPrice || '--',
+                // get: item => (item.price ? item.price / 100 : '--'),
             },
             roi: {
                 label: 'ROI',
-                get: (order, controlPrice) => {
-                    return order.amount && order.total
-                        ? _round(
-                              computeROI(
-                                  _round(order.total / (order.price / 100), 2),
-                                  order.total,
-                                  controlPrice
-                              ),
-                              2
-                          )
-                        : '--';
-                },
+                get: (order, controlPrice) => order.debugRoi || '--',
             },
             waves: {
                 label: 'WAVES',
-                get: (item, controlPrice) => OrderTypeEnum.LIQUIDATE === item.type ? '--' : item.total,
+                get: (item, controlPrice) =>
+                    OrderTypeEnum.LIQUIDATE === item.type ? '--' : item.total,
             },
             status: {
                 label: 'Status',
