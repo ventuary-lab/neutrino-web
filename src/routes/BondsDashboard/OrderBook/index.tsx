@@ -99,7 +99,7 @@ class OrderBook extends React.Component<Props, State> {
                         <div className={bem.element('body-column', 'bg')}>
                             {this.computeROIForField(groupedOrders[price])}
                         </div>
-                        <div className={bem.element('body-column')}>{_round(1 / (price / 100), 2)}</div>
+                        <div className={bem.element('body-column')}>{_round(100 / price, 2)}</div>
                         <div className={bem.element('body-column', 'bg')}>
                             {_round(_sum(groupedOrders[price].map(order => order.restTotal)), 2)}
                         </div>
