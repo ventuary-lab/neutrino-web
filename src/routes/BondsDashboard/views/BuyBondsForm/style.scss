@@ -49,5 +49,9 @@
     flex-wrap: nowrap;
     padding-bottom: 16px;
     justify-content: space-between;
+
+    & > * {
+      padding: 4px 16px;
+    }
   }
 }
