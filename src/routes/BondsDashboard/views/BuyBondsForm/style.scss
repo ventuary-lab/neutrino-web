@@ -42,4 +42,12 @@
       font-weight: bold;
     }
   }
+
+  &__percent-btns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-bottom: 16px;
+    justify-content: space-between;
+  }
 }

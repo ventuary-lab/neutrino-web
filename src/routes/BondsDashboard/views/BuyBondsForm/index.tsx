@@ -10,8 +10,8 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
+import PercentButton from 'ui/form/PercentButton';
 import { computeROI } from 'reducers/contract/helpers';
-
 import { dal, html, store } from 'components';
 
 import './style.scss';
@@ -23,18 +23,25 @@ const FORM_ID = 'BuyBondsForm';
 
 class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsForm {
     isBondsFieldFocused;
+    roiComputingAllowed;
+    percentage;
 
     constructor(props) {
         super(props);
 
         this._onSubmit = this._onSubmit.bind(this);
         this.computeHint = this.computeHint.bind(this);
+        this.getPercentButtons = this.getPercentButtons.bind(this);
+        this.mapPercentageButton = this.mapPercentageButton.bind(this);
+        this.onManualChangeRoi = this.onManualChangeRoi.bind(this);
 
         this.state = {
             isButtonDisabled: false,
             dependPrice: undefined,
             roi: 30
         };
+
+        this.percentage = [10, 15, 25, 50];
 
         this.isBondsFieldFocused = false;
     }
@@ -48,15 +55,11 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     updatePriceField() {
-        const { roi: oldRoi, isButtonDisabled } = this.state;
         let { controlPrice, formValues } = this.props;
         let bondsAmount = _get(formValues, 'bonds');
         let wavesRawAmount = _get(formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
-            // if (oldRoi !== null || !isButtonDisabled) {
-            //     this.setState({ roi: null, isButtonDisabled: true });
-            // }
             return;
         }
 
@@ -73,8 +76,29 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         });
     }
 
-    componentDidUpdate() {
-        this.updatePriceField();
+    componentDidUpdate(prevProps) {
+        if (!this.props.formValues || !prevProps.formValues) {
+            return;
+        }
+
+        const { bonds: oldBonds, waves: oldWaves } = prevProps.formValues;
+        const { bonds, waves } = this.props.formValues;
+
+        if (oldBonds !== bonds || oldWaves !== waves) {
+            this.updatePriceField();
+        }
+    }
+
+    onManualChangeRoi (roi: number) {
+        console.log({ roi });
+    }
+
+    mapPercentageButton (num: number) {
+        return <PercentButton label={`${num}%`} onClick={() => this.onManualChangeRoi(num)}/>
+    }
+
+    getPercentButtons () {
+        return this.percentage.map(this.mapPercentageButton);
     }
 
     getROIStyle () {
@@ -97,8 +121,8 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                     className={bem.element('form')}
                     formId={FORM_ID}
                     initialValues={{
-                        waves: 10,
-                        bonds: 10
+                        waves: 1000,
+                        bonds: 1000
                     }}
                     onSubmit={this._onSubmit}
                     validators={[
@@ -123,6 +147,9 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                         <span>Exp. ROI</span>
                         <span>{roi}%</span>
                     </span>
+                    <div className={bem.element('percent-btns')}>
+                        {this.getPercentButtons()}
+                    </div>
                     <NumberField
                         required
                         inputProps={{

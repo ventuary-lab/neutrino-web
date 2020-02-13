@@ -15,4 +15,6 @@ export type State = {
 }
 export type IBuyBondsForm = {
     isBondsFieldFocused: boolean;
+    roiComputingAllowed: boolean;
+    percentage: number[];
 }

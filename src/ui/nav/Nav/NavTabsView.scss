@@ -77,6 +77,6 @@
   &__content {
     padding-top: 16px;
     padding-bottom: 18px;
-    height: calc(100% - #{$tab-item-height});
+    // height: calc(100% - #{$tab-item-height});
   }
 }
