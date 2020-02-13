@@ -14,35 +14,21 @@ import { computeROI } from 'reducers/contract/helpers';
 
 import { dal, html, store } from 'components';
 
-import './BuyBondsForm.scss';
+import './style.scss';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
+import { Props, State, IBuyBondsForm } from './types';
 
 const bem = html.bem('BuyBondsForm');
 const FORM_ID = 'BuyBondsForm';
 
-@connect(state => ({
-    pairName: getPairName(state),
-    baseCurrency: getBaseCurrency(state),
-    quoteCurrency: getQuoteCurrency(state),
-    formValues: getFormValues(FORM_ID)(state),
-    // controlPrice: getControlPrice(state),
-}))
-export default class BuyBondsForm extends React.PureComponent {
-    static propTypes = {
-        pairName: PropTypes.string,
-        baseCurrency: PropTypes.string,
-        quoteCurrency: PropTypes.string,
-        neutrinoConfig: PropTypes.shape({
-            price: PropTypes.number,
-        }),
-    };
+class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsForm {
+    isBondsFieldFocused;
 
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
 
         this._onSubmit = this._onSubmit.bind(this);
         this.computeHint = this.computeHint.bind(this);
-        this._isProgramChange = false;
 
         this.state = {
             isButtonDisabled: false,
@@ -62,12 +48,15 @@ export default class BuyBondsForm extends React.PureComponent {
     }
 
     updatePriceField() {
-        let { controlPrice } = this.props;
-        let bondsAmount = _get(this.props.formValues, 'bonds');
-        let wavesRawAmount = _get(this.props.formValues, 'waves');
+        const { roi: oldRoi, isButtonDisabled } = this.state;
+        let { controlPrice, formValues } = this.props;
+        let bondsAmount = _get(formValues, 'bonds');
+        let wavesRawAmount = _get(formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
-            this.setState({ roi: null, isButtonDisabled: true });
+            // if (oldRoi !== null || !isButtonDisabled) {
+            //     this.setState({ roi: null, isButtonDisabled: true });
+            // }
             return;
         }
 
@@ -86,9 +75,6 @@ export default class BuyBondsForm extends React.PureComponent {
 
     componentDidUpdate() {
         this.updatePriceField();
-
-        // this.updateInputFields(prevProps);
-        // this.initFormValues(prevProps);
     }
 
     getROIStyle () {
@@ -125,7 +111,7 @@ export default class BuyBondsForm extends React.PureComponent {
                             value: this.getPriceValue(),
                             type: 'text'
                         }}
-                        label={__('Price')}
+                        label='Price'
                         layoutClassName={bem.element('input')}
                         attribute={'price'}
                         inners={{
@@ -144,7 +130,7 @@ export default class BuyBondsForm extends React.PureComponent {
                             onFocus: () => (this.isBondsFieldFocused = true),
                             type: 'text'
                         }}
-                        label={__('Receive')}
+                        label='Receive'
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
                         inners={{
@@ -159,7 +145,7 @@ export default class BuyBondsForm extends React.PureComponent {
                             onFocus: () => (this.isBondsFieldFocused = false),
                             type: 'text'
                         }}
-                        label={__('Send')}
+                        label='Send'
                         layoutClassName={bem.element('input')}
                         attribute={'waves'}
                         inners={{
@@ -172,9 +158,7 @@ export default class BuyBondsForm extends React.PureComponent {
                         block
                         disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
-                        label={__('Buy {bonds}', {
-                            bonds: CurrencyEnum.getLabel(this.props.baseCurrency),
-                        })}
+                        label={`Buy ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
                     />
                 </Form>
             </div>
@@ -196,23 +180,16 @@ export default class BuyBondsForm extends React.PureComponent {
     }
 
     _onSubmit(values) {
-        // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
-        // const wavesToUsdPrice = this.props.controlPrice;
+        const { pairName, quoteCurrency } = this.props;
         const { dependPrice } = this.state;
         const contractPrice = Math.round(dependPrice * 100);
         const position = this.computeOrderPosition(contractPrice);
-        // let position = _get(
-        //     await axios.get(`/api/v1/bonds/${pairName}/position`, {
-        //         params: { price: contractPrice },
-        //     }),
-        //     'data.position'
-        // );
 
         return dal
             .setBondOrder(
-                this.props.pairName,
+                pairName,
                 contractPrice,
-                this.props.quoteCurrency,
+                quoteCurrency,
                 values.waves,
                 position
             )
@@ -226,18 +203,24 @@ export default class BuyBondsForm extends React.PureComponent {
                 if (err && err.code === '10') {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('You have canceled the order'),
+                            text: 'You have canceled the order',
                         })
                     );
                 } else if (err) {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('The order was canceled.\n Error: {err}', {
-                                err: err.message,
-                            }),
+                            text: `The order was canceled.\n Error: ${err.message}`
                         })
                     );
                 }
             });
     }
 }
+
+
+export default connect(state => ({
+    pairName: getPairName(state),
+    baseCurrency: getBaseCurrency(state),
+    quoteCurrency: getQuoteCurrency(state),
+    formValues: getFormValues(FORM_ID)(state)
+}))(BuyBondsForm);
