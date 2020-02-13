@@ -31,10 +31,12 @@ class OrderBook extends React.Component<Props, State> {
     }
 
     computeROIForField(groupedField) {
-        // const { controlPrice } = this.props;
-        const sum = _sum(groupedField.map(order => order.debugRoi));
+        const sum = Math.min(...groupedField.map(order => order.debugRoi));
+        return _round(sum / groupedField.length, 2);
+    }
 
-        return _round(sum / (groupedField.length), 2);
+    computeROIForOrder(order) {
+        return order.debugRoi;
     }
 
     reduceSameOwnerOrders(orders) {}
@@ -73,38 +75,33 @@ class OrderBook extends React.Component<Props, State> {
             return;
         }
 
-        const groupedOrders = _groupBy(orders, 'debugPrice');
-        const sortedKeys = _orderBy(
-            Object.keys(groupedOrders).map(item => Number(item)),
-            null,
-            'asc'
-        );
-
         return (
             <div className={bem.element('columns')}>
-                {sortedKeys.map(price => (
-                    <div
-                        key={price}
-                        className={bem.element('body-row', {
-                            my:
-                                user &&
-                                groupedOrders[price]
-                                    .map(order => order.owner)
-                                    .includes(user.address),
-                        })}
-                    >
-                        <div className={bem.element('body-column', 'bg')}>
-                            {_round(_sum(groupedOrders[price].map(order => order.restAmount)))}
+                {orders.map(order => {
+                    const { debugPrice: price } = order;
+
+                    return (
+                        <div
+                            key={price}
+                            className={bem.element('body-row', {
+                                my: user ? order.owner === user.address : false,
+                            })}
+                        >
+                            <div className={bem.element('body-column', 'bg')}>
+                                {Math.floor(order.restAmount)}
+                            </div>
+                            <div className={bem.element('body-column', 'bg')}>
+                                {this.computeROIForOrder(order)}
+                            </div>
+                            <div className={bem.element('body-column')}>
+                                {_round(100 / price, 2)}
+                            </div>
+                            <div className={bem.element('body-column', 'bg')}>
+                                {_round(order.restTotal)}
+                            </div>
                         </div>
-                        <div className={bem.element('body-column', 'bg')}>
-                            {this.computeROIForField(groupedOrders[price])}
-                        </div>
-                        <div className={bem.element('body-column')}>{_round(100 / price, 2)}</div>
-                        <div className={bem.element('body-column', 'bg')}>
-                            {_round(_sum(groupedOrders[price].map(order => order.restTotal)), 2)}
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         );
     }
@@ -130,7 +127,7 @@ class OrderBook extends React.Component<Props, State> {
                             {/* {this.getCommonPrice(orders)} */}-
                         </div>
                         <div className={bem.element('header-column', 'upper-case')}>
-                            {_round(_sum(orders.map(order => order.restTotal)), 2)}
+                            {_round(_sum(orders.map(order => order.restTotal)))}
                         </div>
                     </>
                 )}
