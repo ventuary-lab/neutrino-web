@@ -10,45 +10,47 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
-import { computeROI } from 'reducers/contract/helpers';
-
+import PercentButton from 'ui/form/PercentButton';
+import {
+    computeROI,
+    computeBondsAmountFromROI,
+    computeWavesAmountFromROI,
+} from 'reducers/contract/helpers';
 import { dal, html, store } from 'components';
 
-import './BuyBondsForm.scss';
+import './style.scss';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
+import { Props, State, IBuyBondsForm } from './types';
 
 const bem = html.bem('BuyBondsForm');
 const FORM_ID = 'BuyBondsForm';
 
-@connect(state => ({
-    pairName: getPairName(state),
-    baseCurrency: getBaseCurrency(state),
-    quoteCurrency: getQuoteCurrency(state),
-    formValues: getFormValues(FORM_ID)(state),
-    // controlPrice: getControlPrice(state),
-}))
-export default class BuyBondsForm extends React.PureComponent {
-    static propTypes = {
-        pairName: PropTypes.string,
-        baseCurrency: PropTypes.string,
-        quoteCurrency: PropTypes.string,
-        neutrinoConfig: PropTypes.shape({
-            price: PropTypes.number,
-        }),
-    };
+enum FormDefaults {
+    WAVES_AMOUNT = 1000,
+    BONDS_AMOUNT = 1000
+}
 
-    constructor() {
-        super(...arguments);
+class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsForm {
+    isBondsFieldFocused;
+    roiComputingAllowed;
+    percentage;
+
+    constructor(props) {
+        super(props);
 
         this._onSubmit = this._onSubmit.bind(this);
         this.computeHint = this.computeHint.bind(this);
-        this._isProgramChange = false;
+        this.getPercentButtons = this.getPercentButtons.bind(this);
+        this.mapPercentageButton = this.mapPercentageButton.bind(this);
+        this.onManualChangeRoi = this.onManualChangeRoi.bind(this);
 
         this.state = {
             isButtonDisabled: false,
             dependPrice: undefined,
-            roi: 30
+            roi: undefined,
         };
+
+        this.percentage = [5, 10, 15, 20, 25];
 
         this.isBondsFieldFocused = false;
     }
@@ -61,13 +63,16 @@ export default class BuyBondsForm extends React.PureComponent {
         }
     }
 
+    getComputedROI (bondsAmount: number, wavesAmount: number, controlPrice: number) {
+        return _round(computeROI(bondsAmount, wavesAmount, controlPrice), 2);
+    }
+
     updatePriceField() {
-        let { controlPrice } = this.props;
-        let bondsAmount = _get(this.props.formValues, 'bonds');
-        let wavesRawAmount = _get(this.props.formValues, 'waves');
+        let { controlPrice, formValues } = this.props;
+        let bondsAmount = _get(formValues, 'bonds');
+        let wavesRawAmount = _get(formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
-            this.setState({ roi: null, isButtonDisabled: true });
             return;
         }
 
@@ -75,28 +80,77 @@ export default class BuyBondsForm extends React.PureComponent {
         wavesRawAmount = Number(wavesRawAmount);
 
         const dependPrice = _round(wavesRawAmount / bondsAmount, 2);
-        const roi = _round(computeROI(bondsAmount, wavesRawAmount, controlPrice), 2);
+        const roi = this.getComputedROI(bondsAmount, wavesRawAmount, controlPrice);
 
         this.setState({
             dependPrice,
             isButtonDisabled: wavesRawAmount < 10 || roi < 0 || roi > 100,
-            roi: (roi === Infinity || roi === -Infinity) ? null : roi
+            roi: roi === Infinity || roi === -Infinity ? null : roi,
         });
     }
 
-    componentDidUpdate() {
-        this.updatePriceField();
+    componentDidUpdate(prevProps) {
+        if (!this.props.formValues || !prevProps.formValues) {
+            return;
+        }
 
-        // this.updateInputFields(prevProps);
-        // this.initFormValues(prevProps);
-    }
-
-    getROIStyle () {
         const { roi } = this.state;
-        return { display: roi === null && 'none' || '' };
+        const { controlPrice } = this.props;
+        const { bonds: oldBonds, waves: oldWaves } = prevProps.formValues;
+        const { bonds, waves } = this.props.formValues;
+
+        if ((oldBonds && oldBonds !== bonds) || (oldWaves && oldWaves !== waves)) {
+            this.updatePriceField();
+        }
+
+        if (roi === undefined && controlPrice) {
+            this.calculateDefaults(controlPrice)
+        }
     }
 
-    getPriceValue () {
+    calculateDefaults (controlPrice) {
+        const roi = this.getComputedROI(FormDefaults.BONDS_AMOUNT, FormDefaults.WAVES_AMOUNT, controlPrice);
+        const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / FormDefaults.BONDS_AMOUNT);
+        this.setState({ roi, dependPrice });
+    }
+
+    componentDidMount() {
+        this.updatePriceField();
+    }
+
+    changeFieldValue(fname: string, value: string) {
+        store.dispatch(change(FORM_ID, fname, value));
+    }
+
+    onManualChangeRoi(roi: number) {
+        let { formValues, controlPrice } = this.props;
+
+        if (!formValues || !controlPrice) {
+            return;
+        }
+
+        const { waves } = formValues;
+
+        if (waves) {
+            const computedBonds = Math.round(computeBondsAmountFromROI(roi, waves, controlPrice) / 100)
+            this.changeFieldValue('bonds', `${computedBonds}`)
+        }
+    }
+
+    mapPercentageButton(num: number) {
+        return <PercentButton label={`${num}%`} onClick={() => this.onManualChangeRoi(num)} />;
+    }
+
+    getPercentButtons() {
+        return this.percentage.map(this.mapPercentageButton);
+    }
+
+    getROIStyle() {
+        const { roi } = this.state;
+        return { display: (roi === null && 'none') || '' };
+    }
+
+    getPriceValue() {
         const { roi, dependPrice } = this.state;
 
         return roi === null ? '' : dependPrice;
@@ -111,21 +165,20 @@ export default class BuyBondsForm extends React.PureComponent {
                     className={bem.element('form')}
                     formId={FORM_ID}
                     initialValues={{
-                        waves: 10,
-                        bonds: 10
+                        price: 1,
+                        waves: FormDefaults.WAVES_AMOUNT,
+                        bonds: FormDefaults.BONDS_AMOUNT,
                     }}
                     onSubmit={this._onSubmit}
-                    validators={[
-                        [['bonds'], 'required'],
-                    ]}
+                    validators={[[['bonds'], 'required']]}
                 >
                     <NumberField
                         inputProps={{
                             autoComplete: 'off',
                             value: this.getPriceValue(),
-                            type: 'text'
+                            type: 'text',
                         }}
-                        label={__('Price')}
+                        label="Price"
                         layoutClassName={bem.element('input')}
                         attribute={'price'}
                         inners={{
@@ -135,16 +188,17 @@ export default class BuyBondsForm extends React.PureComponent {
                     />
                     <span className={bem.element('roi')} style={this.getROIStyle()}>
                         <span>Exp. ROI</span>
-                        <span>{roi}%</span>
+                        <span>{Math.round(roi)}%</span>
                     </span>
+                    <div className={bem.element('percent-btns')}>{this.getPercentButtons()}</div>
                     <NumberField
                         required
                         inputProps={{
                             autoComplete: 'off',
                             onFocus: () => (this.isBondsFieldFocused = true),
-                            type: 'text'
+                            type: 'text',
                         }}
-                        label={__('Receive')}
+                        label="Receive"
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
                         inners={{
@@ -157,9 +211,9 @@ export default class BuyBondsForm extends React.PureComponent {
                         inputProps={{
                             autoComplete: 'off',
                             onFocus: () => (this.isBondsFieldFocused = false),
-                            type: 'text'
+                            type: 'text',
                         }}
-                        label={__('Send')}
+                        label="Send"
                         layoutClassName={bem.element('input')}
                         attribute={'waves'}
                         inners={{
@@ -172,50 +226,34 @@ export default class BuyBondsForm extends React.PureComponent {
                         block
                         disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
-                        label={__('Buy {bonds}', {
-                            bonds: CurrencyEnum.getLabel(this.props.baseCurrency),
-                        })}
+                        label={`Buy ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
                     />
                 </Form>
             </div>
         );
     }
 
-    computeOrderPosition (price) {
+    computeOrderPosition(price) {
         const { bondOrders } = this.props;
 
         let position = 0;
-        bondOrders
-            .forEach(order => {
-                if (Number(price) <= Number(order.price)) {
-                    position++;
-                }
-            });
+        bondOrders.forEach(order => {
+            if (Number(price) <= Number(order.price)) {
+                position++;
+            }
+        });
 
         return position;
     }
 
     _onSubmit(values) {
-        // const wavesToUsdPrice = _get(this.props, 'neutrinoConfig.price');
-        // const wavesToUsdPrice = this.props.controlPrice;
+        const { pairName, quoteCurrency } = this.props;
         const { dependPrice } = this.state;
         const contractPrice = Math.round(dependPrice * 100);
         const position = this.computeOrderPosition(contractPrice);
-        // let position = _get(
-        //     await axios.get(`/api/v1/bonds/${pairName}/position`, {
-        //         params: { price: contractPrice },
-        //     }),
-        //     'data.position'
-        // );
 
         return dal
-            .setBondOrder(
-                this.props.pairName,
-                contractPrice,
-                this.props.quoteCurrency,
-                values.waves,
-                position
-            )
+            .setBondOrder(pairName, contractPrice, quoteCurrency, values.waves, position)
             .then(() => {
                 console.log('---setBondOrder success'); // eslint-disable-line no-console
             })
@@ -226,18 +264,23 @@ export default class BuyBondsForm extends React.PureComponent {
                 if (err && err.code === '10') {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('You have canceled the order'),
+                            text: 'You have canceled the order',
                         })
                     );
                 } else if (err) {
                     store.dispatch(
                         openModal(MessageModal, {
-                            text: __('The order was canceled.\n Error: {err}', {
-                                err: err.message,
-                            }),
+                            text: `The order was canceled.\n Error: ${err.message}`,
                         })
                     );
                 }
             });
     }
 }
+
+export default connect(state => ({
+    pairName: getPairName(state),
+    baseCurrency: getBaseCurrency(state),
+    quoteCurrency: getQuoteCurrency(state),
+    formValues: getFormValues(FORM_ID)(state),
+}))(BuyBondsForm);
