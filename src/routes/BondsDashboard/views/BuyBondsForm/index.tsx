@@ -43,6 +43,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         this.getPercentButtons = this.getPercentButtons.bind(this);
         this.mapPercentageButton = this.mapPercentageButton.bind(this);
         this.onManualChangeRoi = this.onManualChangeRoi.bind(this);
+        this.getComputedBondsFromROI = this.getComputedBondsFromROI.bind(this);
 
         this.state = {
             isButtonDisabled: false,
@@ -109,9 +110,12 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     calculateDefaults (controlPrice) {
-        const roi = this.getComputedROI(FormDefaults.BONDS_AMOUNT, FormDefaults.WAVES_AMOUNT, controlPrice);
+        const defaultRoi = 5;
+        const bondsAmount = this.getComputedBondsFromROI(defaultRoi, FormDefaults.WAVES_AMOUNT, controlPrice);
         const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / FormDefaults.BONDS_AMOUNT);
-        this.setState({ roi, dependPrice });
+        this.changeFieldValue('bonds', `${bondsAmount}`);
+
+        this.setState({ roi: 5, dependPrice });
     }
 
     componentDidMount() {
@@ -120,6 +124,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
     changeFieldValue(fname: string, value: string) {
         store.dispatch(change(FORM_ID, fname, value));
+    }
+
+    getComputedBondsFromROI (roi: number, waves: number, controlPrice: number) {
+        return Math.round(computeBondsAmountFromROI(roi, waves, controlPrice) / 100)
     }
 
     onManualChangeRoi(roi: number) {
@@ -132,8 +140,8 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         const { waves } = formValues;
 
         if (waves) {
-            const computedBonds = Math.round(computeBondsAmountFromROI(roi, waves, controlPrice) / 100)
-            this.changeFieldValue('bonds', `${computedBonds}`)
+            const computedBonds = this.getComputedBondsFromROI(roi, waves, controlPrice);
+            this.changeFieldValue('bonds', `${computedBonds}`);
         }
     }
 
@@ -188,7 +196,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                     />
                     <span className={bem.element('roi')} style={this.getROIStyle()}>
                         <span>Exp. ROI</span>
-                        <span>{Math.round(roi)}%</span>
+                        <span>{roi ? Math.round(roi) : ''}%</span>
                     </span>
                     <div className={bem.element('percent-btns')}>{this.getPercentButtons()}</div>
                     <NumberField
