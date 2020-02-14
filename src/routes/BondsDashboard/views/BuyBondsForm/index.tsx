@@ -244,10 +244,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     computeOrderPosition(price) {
         const { bondOrders } = this.props;
 
-        let position = 0;
+        let position = "";
         bondOrders.forEach(order => {
             if (Number(price) <= Number(order.price)) {
-                position++;
+                position = order.id;
             }
         });
 

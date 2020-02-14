@@ -204,11 +204,10 @@ module.exports = class Router {
                 const orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
-
-                let position = 0;
+                let position = "";
                 orders.forEach(order => {
-                    if (Number(price) <= order.price) {
-                        position++;
+                    if (price <= order.price) {
+                        position = order.id
                     }
                 });
                 return { position };

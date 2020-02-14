@@ -3,10 +3,10 @@ const _round = require('lodash/round');
 
 // const PairsEnum = require('../enums/PairsEnum');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
-const OrderStatusEnum = require('../enums/OrderStatusEnum');
+// const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const CurrencyEnum = require('../enums/CurrencyEnum');
-const { mapFieldsToNumber } = require('./helpers');
+const { getOpenedOrders } = require('./helpers');
 
 module.exports = class BondsOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})') {
@@ -17,7 +17,10 @@ module.exports = class BondsOrders extends BaseCollection {
             `order_total_${id}`,
             `order_filled_total_${id}`,
             `order_status_${id}`,
-            'orderbook',
+
+            `order_prev_${id}`,
+            `order_next_${id}`,
+            'order_first'
         ];
     }
 
@@ -25,7 +28,7 @@ module.exports = class BondsOrders extends BaseCollection {
         try {
             return await this.postgresService.getBondsOrders();
         } catch (err) {
-            console.log(err)
+            console.log(err);
             return [];
         }
     }
@@ -35,9 +38,7 @@ module.exports = class BondsOrders extends BaseCollection {
      */
     async getOrders() {
         let orders = await this.getItemsAll();
-        // orders = orders
-        //      .map(order => mapFieldsToNumber(order, ['height', 'price']));
-        //      .filter(order => order.discountPercent > 0 && order.discountPercent < 100)
+        orders = getOpenedOrders(orders);
 
         orders = _orderBy(orders, 'height', 'desc');
         return orders;
@@ -45,25 +46,10 @@ module.exports = class BondsOrders extends BaseCollection {
 
     /**
      * @returns {Promise}
-     */
+    */
     async getOpenedOrders() {
-        // let orders = await this.getItemsAll();
-        // orders = orders
-        //     .filter(order => order.index !== null)
-        //     .map(order => mapFieldsToNumber(order, ['height', 'price']));
-
-        // orders = _orderBy(orders, 'index', 'asc');
-        // return orders;
-        try {
-            let orders = await this.postgresService.getOpenedBondsOrders();
-            orders = _orderBy(orders, 'index', 'asc');
-            orders = orders.map(order => mapFieldsToNumber(order, ['height']));
-
-            return orders;
-        } catch (err) {
-            console.log(err)
-            return [];
-        }
+        const orders = await this.getItemsAll();
+        return getOpenedOrders(orders);
     }
 
     async getUserOpenedOrders(address) {
@@ -92,15 +78,14 @@ module.exports = class BondsOrders extends BaseCollection {
     }
 
     async _prepareItem(id, item) {
-        const index = item.orderbook
-            .split('_')
-            .filter(Boolean)
-            .indexOf(id);
+        const orderNext = item['order_next_' + id] || null;
+        const orderPrev = item['order_prev_' + id] || null;
 
         const height = item['order_height_' + id];
         const price = item['order_price_' + id] || 0;
         const total = item['order_total_' + id] || 0;
         const filledTotal = item['order_filled_total_' + id] || 0;
+        
         return {
             height,
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
@@ -110,11 +95,13 @@ module.exports = class BondsOrders extends BaseCollection {
             filledTotal: _round(filledTotal / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),
             restTotal: _round((total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.WAVES), 2),
             status: item['order_status_' + id],
-            index: index !== -1 ? index : null,
             amount: _round(total / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100)), // Bonds amount
             filledAmount: _round(filledTotal / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             restAmount: _round((total - filledTotal) / (price * CurrencyEnum.getContractPow(CurrencyEnum.WAVES) / 100), 2),
             pairName: this.pairName,
+            orderNext,
+            orderPrev,
+            isFirst: id == item.order_first,
             type: OrderTypeEnum.BUY,
         };
     }

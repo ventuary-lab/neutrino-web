@@ -217,9 +217,8 @@ export default class Keeper {
 
             return;
         }
-
         const keeper = await this.getPlugin();
-
+        
         const result = await keeper.signAndPublishTransaction(builtTransaction);
 
         if (result) {
