@@ -202,26 +202,26 @@ export default class DalComponent implements IDalComponent {
         );
     }
 
-    async setBondOrder(pairName, price, paymentCurrency, sendAmount) {
+    async setBondOrder(pairName, price, paymentCurrency, sendAmount, position) {
         // if (price <= 0 || price >= 100) {
         //     return;
         // }
         // price = Math.round(price * 100) / 100;
-        const contractPrice = Math.round(price * 100);
 
-        let position = _get(
-            await axios.get(`/api/v1/bonds/${pairName}/position`, {
-                params: { price: contractPrice },
-            }),
-            'data.position'
-        );
+        // let position = _get(
+        //     await axios.get(`/api/v1/bonds/${pairName}/position`, {
+        //         params: { price: contractPrice },
+        //     }),
+        //     'data.position'
+        // );
         
+
         if (price > 0 && sendAmount > 0) {
             await this.keeper.sendTransaction(
                 pairName,
                 ContractEnum.AUCTION,
                 'addBuyBondOrder',
-                [contractPrice, position],
+                [price, position],
                 'WAVES',
                 sendAmount
             );

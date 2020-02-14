@@ -12,6 +12,7 @@ module.exports = class BaseCollection {
         this.updateHandler = params.updateHandler;
         this.dApp = params.dApp;
         this.assets = params.assets;
+        this.postgresService = params.postgresService;
 
         this.STORAGE_KEY_PREFIX = '';
     }

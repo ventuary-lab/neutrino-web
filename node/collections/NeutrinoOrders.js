@@ -3,7 +3,7 @@ const _orderBy = require('lodash/orderBy');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
-const { mapFieldsToNumber } = require('./helpers');
+const { mapFieldsToNumber, getOpenedOrders } = require('./helpers');
 
 module.exports = class NeutrinoOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})$') {
@@ -35,25 +35,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
      */
     async getOpenedOrders() {
         let orders = await this.getItemsAll();
-
-        let sortedOrders = [];
-
-        orders = orders.filter(order => order.status == OrderStatusEnum.NEW);
-        if (orders == undefined || orders.length == 0) return orders;
-
-        let firstOrder = orders.filter(order => order.isFirst)[0];
-        if (firstOrder == undefined || firstOrder.length == 0) return orders;
-
-        let nextProcessOrder = firstOrder;
-        sortedOrders.push(firstOrder);
-        while (true) {
-            if (nextProcessOrder.orderNext == null) {
-                return sortedOrders;
-            }
-            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
-            sortedOrders.push(foundOrder);
-            nextProcessOrder = foundOrder;
-        }
+        return getOpenedOrders(orders);
     }
 
     async getUserOpenedOrders(address) {

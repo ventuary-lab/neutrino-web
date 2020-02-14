@@ -3,10 +3,10 @@ const _round = require('lodash/round');
 
 // const PairsEnum = require('../enums/PairsEnum');
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
-const OrderStatusEnum = require('../enums/OrderStatusEnum');
+// const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const CurrencyEnum = require('../enums/CurrencyEnum');
-const { mapFieldsToNumber } = require('./helpers');
+const { getOpenedOrders } = require('./helpers');
 
 module.exports = class BondsOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})') {
@@ -24,14 +24,21 @@ module.exports = class BondsOrders extends BaseCollection {
         ];
     }
 
+    async getItemsAll () {
+        try {
+            return await this.postgresService.getBondsOrders();
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
+    }
+
     /**
      * @returns {Promise}
      */
     async getOrders() {
         let orders = await this.getItemsAll();
-        // orders = orders
-        //      .map(order => mapFieldsToNumber(order, ['height', 'price']));
-        //      .filter(order => order.discountPercent > 0 && order.discountPercent < 100)
+        orders = getOpenedOrders(orders);
 
         orders = _orderBy(orders, 'height', 'desc');
         return orders;
@@ -41,39 +48,33 @@ module.exports = class BondsOrders extends BaseCollection {
      * @returns {Promise}
     */
     async getOpenedOrders() {
-        let orders = await this.getItemsAll();
-
-        let sortedOrders = [];
-
-        orders = orders.filter(order => order.status == OrderStatusEnum.NEW);
-        if (orders == undefined || orders.length == 0) return orders;
-
-        let firstOrder = orders.filter(order => order.isFirst)[0];
-        if (firstOrder == undefined || firstOrder.length == 0) return orders;
-
-        let nextProcessOrder = firstOrder;
-        sortedOrders.push(firstOrder);
-        while (true) {
-            if (nextProcessOrder.orderNext == null) {
-                return sortedOrders;
-            }
-            let foundOrder = orders.filter(order => order.id == nextProcessOrder.orderNext)[0];
-            sortedOrders.push(foundOrder);
-            nextProcessOrder = foundOrder;
-        }
+        const orders = await this.getItemsAll();
+        return getOpenedOrders(orders);
     }
 
     async getUserOpenedOrders(address) {
-        let orders = await this.getOpenedOrders();
+        try {
+            return await this.postgresService.getUserOpenedBondsOrders(address);
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
+        // let orders = await this.getOpenedOrders();
 
-        return orders.filter(
-            order => order.owner === address && order.status === OrderStatusEnum.NEW
-        );
+        // return orders.filter(
+        //     order => order.owner === address && order.status === OrderStatusEnum.NEW
+        // );
     }
 
     async getUserHistoryOrders(address) {
-        let orders = await this.getOrders();
-        return orders.filter(order => order.owner === address && order.index === null);
+        // let orders = await this.getOrders();
+        // return orders.filter(order => order.owner === address && order.index === null);
+        try {
+            return await this.postgresService.getUserHistoryBondsOrders(address);
+        } catch (err) {
+            console.log(err)
+            return [];
+        }
     }
 
     async _prepareItem(id, item) {
