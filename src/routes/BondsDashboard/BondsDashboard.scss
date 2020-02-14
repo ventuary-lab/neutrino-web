@@ -26,6 +26,7 @@
       flex-wrap: nowrap;
 
       & > .OrderBook:nth-child(1) {
+        flex-basis: calc(100vh - 447px);
         overflow: auto;
         min-height: 290px;
       }
