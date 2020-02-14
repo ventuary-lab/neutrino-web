@@ -51,12 +51,11 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             price: {
                 label: 'Price',
-                get: item => item.debugPrice || '--',
-                // get: item => (item.price ? item.price / 100 : '--'),
+                get: item => _round(item.debugPrice / 100, 2) || '--',
             },
             roi: {
                 label: 'ROI',
-                get: (order, controlPrice) => order.debugRoi || '--',
+                get: (order, controlPrice) => order.debugRoi ? `${order.debugRoi}%` : '--',
             },
             waves: {
                 label: 'WAVES',
