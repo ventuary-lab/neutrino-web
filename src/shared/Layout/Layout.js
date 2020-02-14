@@ -243,7 +243,9 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillUnmount() {
-        this.wcc.stopUpdating();
+        if (this.wcc) {
+            this.wcc.stopUpdating();
+        }
         this.detachResizeObserver();
     }
 
