@@ -22,6 +22,9 @@ export const mapBondOrderForRest = (rawOrder) => {
         if (newKey === 'timestamp') {
             resOrder[newKey] = Number(resOrder[newKey])
         }
+        if (['order_next', 'order_prev'].includes(newKey) && resOrder[newKey] === '0') {
+            resOrder[newKey] = null;
+        }
     }
 
     return resOrder;

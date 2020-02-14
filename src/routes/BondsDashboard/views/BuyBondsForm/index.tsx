@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
-import _, { get as _get } from 'lodash';
+import _, { get as _get, orderBy as _orderBy } from 'lodash';
 import _round from 'lodash-es/round';
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
@@ -245,7 +245,21 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         const { bondOrders } = this.props;
 
         let position = "";
-        bondOrders.forEach(order => {
+        const sortedBondOrders = [
+            bondOrders.find(order => order.is_first)
+        ];
+
+        while (true) {
+            const lastSortedOrder = sortedBondOrders[sortedBondOrders.length - 1];
+            if (lastSortedOrder.order_next === null) {
+                break;
+            }
+
+            const nextOrder = bondOrders.find(order => order.id === lastSortedOrder.order_next);
+            sortedBondOrders.push(nextOrder);
+        }
+
+        sortedBondOrders.forEach(order => {
             if (Number(price) <= Number(order.price)) {
                 position = order.id;
             }
