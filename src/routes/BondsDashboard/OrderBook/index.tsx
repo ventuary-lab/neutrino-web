@@ -77,8 +77,8 @@ class OrderBook extends React.Component<Props, State> {
 
         return (
             <div className={bem.element('columns')}>
-                {_orderBy(orders, 'debugRoi', 'asc').map(order => {
-                    const { debugPrice: price } = order;
+                {_orderBy(orders, 'price', 'asc').map(order => {
+                    const { price } = order;
 
                     return (
                         <div
@@ -94,7 +94,7 @@ class OrderBook extends React.Component<Props, State> {
                                 {this.computeROIForOrder(order)}
                             </div>
                             <div className={bem.element('body-column')}>
-                                {_round(100 / price, 2)}
+                                {_round(price / 100, 2)}
                             </div>
                             <div className={bem.element('body-column', 'bg')}>
                                 {_round(order.restTotal)}
