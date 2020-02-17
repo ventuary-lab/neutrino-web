@@ -244,7 +244,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     computeOrderPosition(bondOrders, roi) {
         const sortedBondOrders = [
             bondOrders.find(order => order.is_first)
-        ];
+        ].filter(Boolean);
 
         while (true) {
             const lastSortedOrder = sortedBondOrders[sortedBondOrders.length - 1];
@@ -258,6 +258,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         }
 
         let position = "";
+        if (sortedBondOrders.length === 0) {
+            return position
+        }
+
         sortedBondOrders.forEach(order => {
             if (roi >= Number(order.debugRoi)) {
                 position = order.id
