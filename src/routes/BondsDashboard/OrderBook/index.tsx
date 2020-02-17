@@ -77,7 +77,7 @@ class OrderBook extends React.Component<Props, State> {
 
         return (
             <div className={bem.element('columns')}>
-                {_orderBy(orders, 'debugRoi', 'desc').map(order => {
+                {_orderBy(orders, 'debugRoi', 'asc').map(order => {
                     const { price } = order;
 
                     return (
