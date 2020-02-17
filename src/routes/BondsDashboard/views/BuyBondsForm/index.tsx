@@ -241,10 +241,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         );
     }
 
-    computeOrderPosition(price) {
-        const { bondOrders } = this.props;
-
-        let position = "";
+    computeOrderPosition(bondOrders, roi) {
         const sortedBondOrders = [
             bondOrders.find(order => order.is_first)
         ];
@@ -259,9 +256,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             sortedBondOrders.push(nextOrder);
         }
 
+        let position = "";
         sortedBondOrders.forEach(order => {
-            if (Number(price) <= Number(order.price)) {
-                position = order.id;
+            if (roi >= Number(order.debugRoi)) {
+                position = order.id
             }
         });
 
@@ -269,10 +267,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     _onSubmit(values) {
-        const { pairName, quoteCurrency } = this.props;
-        const { dependPrice } = this.state;
+        const { pairName, quoteCurrency, bondOrders } = this.props;
+        const { dependPrice, roi } = this.state;
         const contractPrice = Math.round(dependPrice * 100);
-        const position = this.computeOrderPosition(contractPrice);
+        const position = this.computeOrderPosition(bondOrders, roi);
 
         return dal
             .setBondOrder(pairName, contractPrice, quoteCurrency, values.waves, position)
