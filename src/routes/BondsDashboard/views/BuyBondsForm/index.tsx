@@ -248,7 +248,8 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
         while (true) {
             const lastSortedOrder = sortedBondOrders[sortedBondOrders.length - 1];
-            if (lastSortedOrder.order_next === null) {
+
+            if (!lastSortedOrder || lastSortedOrder.order_next === null) {
                 break;
             }
 
