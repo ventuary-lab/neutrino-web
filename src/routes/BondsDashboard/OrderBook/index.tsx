@@ -77,7 +77,7 @@ class OrderBook extends React.Component<Props, State> {
 
         return (
             <div className={bem.element('columns')}>
-                {_orderBy(orders, 'debugRoi', 'asc').map(order => {
+                {orders.map(order => {
                     const { price } = order;
 
                     return (
@@ -168,7 +168,7 @@ class OrderBook extends React.Component<Props, State> {
                     )}
                 </div>
                 {headerRow}
-                {this.getBuyBondOrders({ formTab, user, orders })}
+                {this.getBuyBondOrders({ formTab, user, orders: _orderBy(orders, 'debugRoi', 'asc') })}
                 {this.getLiquidateOrders({ formTab, user, orders })}
             </div>
         );
