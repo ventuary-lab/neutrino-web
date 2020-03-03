@@ -48,7 +48,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         this.state = {
             isButtonDisabled: false,
             dependPrice: undefined,
-            roi: undefined,
+            roi: this.props.roi,
         };
 
         this.percentage = [5, 10, 15, 20, 25];
@@ -69,25 +69,35 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     updatePriceField() {
-        let { controlPrice, formValues } = this.props;
+        let { controlPrice, formValues, roi } = this.props;
         let bondsAmount = _get(formValues, 'bonds');
         let wavesRawAmount = _get(formValues, 'waves');
 
         if (!bondsAmount || !wavesRawAmount || !controlPrice) {
             return;
         }
-
+        
+        console.log({ isBondsFieldFocused: this.isBondsFieldFocused })
+        
         bondsAmount = Number(bondsAmount);
         wavesRawAmount = Number(wavesRawAmount);
+        
+        // if (this.isBondsFieldFocused) {
+        //     bondsAmount = Math.round(wavesRawAmount + wavesRawAmount * (roi / 100))
+        //     this.changeFieldValue('waves', `${bondsAmount}`);
+        // } else {
+        //     wavesRawAmount = Math.round(bondsAmount - bondsAmount * (roi / 100))
+        //     this.changeFieldValue('bonds', `${wavesRawAmount}`);
+        // }
 
-        const dependPrice = _round(wavesRawAmount / bondsAmount, 2);
-        const roi = this.getComputedROI(bondsAmount, wavesRawAmount, controlPrice);
+        // const dependPrice = _round(wavesRawAmount / bondsAmount, 2);
+        // const roi = this.getComputedROI(bondsAmount, wavesRawAmount, controlPrice);
 
-        this.setState({
-            dependPrice,
-            isButtonDisabled: wavesRawAmount < 10 || roi < 0 || roi > 100,
-            roi: roi === Infinity || roi === -Infinity ? null : roi,
-        });
+        // this.setState({
+        //     // dependPrice,
+        //     // isButtonDisabled: wavesRawAmount < 10 || roi < 0 || roi > 100,
+        //     // roi: roi === Infinity || roi === -Infinity ? null : roi,
+        // });
     }
 
     componentDidUpdate(prevProps) {
@@ -110,12 +120,12 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     calculateDefaults (controlPrice) {
-        const defaultRoi = 5;
+        const defaultRoi = this.props.roi;
         const bondsAmount = this.getComputedBondsFromROI(defaultRoi, FormDefaults.WAVES_AMOUNT, controlPrice);
         const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / FormDefaults.BONDS_AMOUNT);
         this.changeFieldValue('bonds', `${bondsAmount}`);
 
-        this.setState({ roi: 5, dependPrice });
+        this.setState({ roi: defaultRoi, dependPrice });
     }
 
     componentDidMount() {
@@ -180,7 +190,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                     onSubmit={this._onSubmit}
                     validators={[[['bonds'], 'required']]}
                 >
-                    <NumberField
+                    {/* <NumberField
                         inputProps={{
                             autoComplete: 'off',
                             value: this.getPriceValue(),
@@ -198,7 +208,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                         <span>Exp. ROI</span>
                         <span>{roi ? Math.round(roi) : ''}%</span>
                     </span>
-                    <div className={bem.element('percent-btns')}>{this.getPercentButtons()}</div>
+                    <div className={bem.element('percent-btns')}>{this.getPercentButtons()}</div> */}
                     <NumberField
                         required
                         inputProps={{

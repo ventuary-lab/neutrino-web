@@ -7,6 +7,7 @@ export type Props = {
     baseCurrency: string;
     quoteCurrency: string;
     pairName: string;
+    roi: number; // like wavelets
 }
 export type State = {
     isButtonDisabled: boolean;

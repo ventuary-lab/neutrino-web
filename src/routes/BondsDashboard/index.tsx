@@ -8,6 +8,7 @@ import { getControlPrice } from 'reducers/contract/selectors';
 
 import { html, dal } from 'components';
 import OrdersTable from './OrdersTable';
+import AuctionDiscount from './Auction';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
 import OrderBook from './OrderBook';
@@ -92,17 +93,21 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         if (!bondOrders || !liquidateOrders) {
             return null;
         }
+
+        const ROI_DISCOUNT = 25;
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    <OrderBook
+                    {/* <OrderBook
                         controlPrice={controlPrice}
                         orders={formTab === FormTabEnum.AUCTION ? bondOrders : liquidateOrders}
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
                         formTab={formTab}
-                    />
+                    /> */}
+                    <AuctionDiscount roi={ROI_DISCOUNT}/>
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
@@ -114,6 +119,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                                     label: 'Buy',
                                     content: BuyBondsForm,
                                     contentProps: {
+                                        roi: ROI_DISCOUNT,
                                         controlPrice,
                                         bondOrders
                                     },
