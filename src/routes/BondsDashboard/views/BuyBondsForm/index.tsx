@@ -77,27 +77,22 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             return;
         }
         
-        console.log({ isBondsFieldFocused: this.isBondsFieldFocused })
-        
         bondsAmount = Number(bondsAmount);
         wavesRawAmount = Number(wavesRawAmount);
-        
-        // if (this.isBondsFieldFocused) {
-        //     bondsAmount = Math.round(wavesRawAmount + wavesRawAmount * (roi / 100))
-        //     this.changeFieldValue('waves', `${bondsAmount}`);
-        // } else {
-        //     wavesRawAmount = Math.round(bondsAmount - bondsAmount * (roi / 100))
-        //     this.changeFieldValue('bonds', `${wavesRawAmount}`);
-        // }
+        const floatControlPrice = (controlPrice / 100)
 
-        // const dependPrice = _round(wavesRawAmount / bondsAmount, 2);
-        // const roi = this.getComputedROI(bondsAmount, wavesRawAmount, controlPrice);
-
-        // this.setState({
-        //     // dependPrice,
-        //     // isButtonDisabled: wavesRawAmount < 10 || roi < 0 || roi > 100,
-        //     // roi: roi === Infinity || roi === -Infinity ? null : roi,
-        // });
+        let newValue;
+        if (this.isBondsFieldFocused) {
+            wavesRawAmount = bondsAmount / floatControlPrice
+            wavesRawAmount = Math.round(wavesRawAmount - wavesRawAmount * (roi / 100))
+            newValue = wavesRawAmount
+            this.changeFieldValue('waves', `${newValue}`);
+        } else {
+            bondsAmount = wavesRawAmount * floatControlPrice
+            bondsAmount = Math.round(bondsAmount + bondsAmount * (roi / 100))
+            newValue = bondsAmount
+            this.changeFieldValue('bonds', `${newValue}`);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -190,25 +185,6 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                     onSubmit={this._onSubmit}
                     validators={[[['bonds'], 'required']]}
                 >
-                    {/* <NumberField
-                        inputProps={{
-                            autoComplete: 'off',
-                            value: this.getPriceValue(),
-                            type: 'text',
-                        }}
-                        label="Price"
-                        layoutClassName={bem.element('input')}
-                        attribute={'price'}
-                        inners={{
-                            label: '',
-                        }}
-                        disabled
-                    />
-                    <span className={bem.element('roi')} style={this.getROIStyle()}>
-                        <span>Exp. ROI</span>
-                        <span>{roi ? Math.round(roi) : ''}%</span>
-                    </span>
-                    <div className={bem.element('percent-btns')}>{this.getPercentButtons()}</div> */}
                     <NumberField
                         required
                         inputProps={{
