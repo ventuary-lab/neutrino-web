@@ -166,7 +166,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
     }
 
     render() {
-        const { isButtonDisabled, roi } = this.state;
+        const { isButtonDisabled } = this.state;
 
         return (
             <div className={bem.block()}>
@@ -255,9 +255,12 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
     _onSubmit(values) {
         const { pairName, quoteCurrency, bondOrders } = this.props;
-        const { dependPrice, roi } = this.state;
+        const { roi } = this.state;
+        const dependPrice = values.waves / values.bonds
         const contractPrice = Math.round(dependPrice * 100);
         const position = this.computeOrderPosition(bondOrders, roi);
+
+        console.log({ position })
 
         return dal
             .setBondOrder(pairName, contractPrice, quoteCurrency, values.waves, position)
