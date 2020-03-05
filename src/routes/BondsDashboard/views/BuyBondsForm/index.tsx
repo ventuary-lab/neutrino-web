@@ -83,14 +83,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
         let newValue;
         if (this.isBondsFieldFocused) {
-            wavesRawAmount = bondsAmount / floatControlPrice
-            wavesRawAmount = Math.round(wavesRawAmount - wavesRawAmount * (roi / 100))
-            newValue = wavesRawAmount
+            newValue = Math.round(computeWavesAmountFromROI(roi, bondsAmount, floatControlPrice))
             this.changeFieldValue('waves', `${newValue}`);
         } else {
-            bondsAmount = wavesRawAmount * floatControlPrice
-            bondsAmount = Math.round(bondsAmount + bondsAmount * (roi / 100))
-            newValue = bondsAmount
+            newValue = Math.round(computeBondsAmountFromROI(roi, wavesRawAmount, floatControlPrice))
             this.changeFieldValue('bonds', `${newValue}`);
         }
     }
