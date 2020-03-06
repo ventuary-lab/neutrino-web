@@ -124,7 +124,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             this.updatePriceField();
         }
 
-        if (roi === undefined && controlPrice || prevProps.formType != formType) {
+        if (roi === undefined && controlPrice) {
             this.calculateDefaults(controlPrice);
         }
     }
