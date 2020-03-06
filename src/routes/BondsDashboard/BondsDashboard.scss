@@ -49,6 +49,10 @@
 
   &__orders {
     padding-bottom: 18px;
+
+    &_hidden {
+      display: none;
+    }
   }
 
   &__orders-nav {
@@ -86,5 +90,9 @@
   @media screen and (max-width: 1024px) {
     flex-direction: column;
     flex-grow: unset;
+  }
+
+  .NavTabsView__list > * {
+    min-width: unset;
   }
 }

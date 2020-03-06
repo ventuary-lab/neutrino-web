@@ -21,6 +21,8 @@ import './BondsDashboard.scss';
 
 const bem = html.bem('BondsDashboard');
 
+const DEFAULT_ROI_DISCOUNT = 25;
+
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
@@ -34,20 +36,35 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this._idUpdating = false;
 
         this.state = {
+            currentRoi: DEFAULT_ROI_DISCOUNT,
             formTab: FormTabEnum.AUCTION,
         };
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         await this._updateListener();
+        await this.getAndUpdateROI();
         this.startListening();
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.stopListening();
     }
 
-    async _updateListener () {
+    async getAndUpdateROI() {
+        const deficitPercentResponse = await axios.get<number>(
+            '/api/explorer/get_deficit_per_cent'
+        );
+
+        if (deficitPercentResponse.statusText !== 'OK') {
+            return;
+        }
+
+        const currentDeficit = Number(deficitPercentResponse.data);
+        this.setState({ currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit)) : 0 });
+    }
+
+    async _updateListener() {
         const { user, pairName } = this.props;
 
         if (!pairName || this._idUpdating) {
@@ -57,20 +74,25 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this._idUpdating = true;
 
         try {
-            const bondOrdersResponse = await axios.get<IOrder[]>(`/api/v1/bonds/${pairName}/orders`);
-            const liquidateOrdersResponse = await axios.get<IOrder[]>(`/api/v1/liquidate/${pairName}/orders`);
+            const bondOrdersResponse = await axios.get<IOrder[]>(
+                `/api/v1/bonds/${pairName}/orders`
+            );
+            const liquidateOrdersResponse = await axios.get<IOrder[]>(
+                `/api/v1/liquidate/${pairName}/orders`
+            );
             let userOrdersResponse;
 
             if (user) {
-                userOrdersResponse = await axios.get<IUserOrders>(`/api/v1/bonds/user/${user.address}`);
+                userOrdersResponse = await axios.get<IUserOrders>(
+                    `/api/v1/bonds/user/${user.address}`
+                );
             }
 
             this.setState({
                 bondOrders: bondOrdersResponse.data,
                 liquidateOrders: liquidateOrdersResponse.data,
-                userOrders: userOrdersResponse && userOrdersResponse.data
-            })
-
+                userOrders: userOrdersResponse && userOrdersResponse.data,
+            });
         } catch (err) {
             console.warn('Error on updating orders...', err);
         } finally {
@@ -78,93 +100,122 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
     }
 
-    startListening () {
+    startListening() {
         this._updateInterval = setInterval(this._updateListener, this._updateTimeout);
     }
 
-    stopListening () {
+    stopListening() {
         clearInterval(this._updateInterval);
     }
 
+    getTopNavigationTabItems() {
+        const { controlPrice } = this.props;
+        const { currentRoi, bondOrders } = this.state;
+
+        return [
+            {
+                id: FormTabEnum.AUCTION,
+                label: 'Buy',
+                content: BuyBondsForm,
+                contentProps: {
+                    roi: currentRoi,
+                    controlPrice,
+                    bondOrders,
+                },
+            },
+            {
+                id: FormTabEnum.LIQUIDATE,
+                label: 'Liquidate',
+                className: bem.element('danger-tab'),
+                content: LiquidateBondsForm,
+            },
+            {
+                id: FormTabEnum.CONFIGURE,
+                label: 'Configure',
+                content: BuyBondsForm,
+                contentProps: {
+                    formType: 'full',
+                    roi: currentRoi,
+                    controlPrice,
+                    bondOrders,
+                },
+            }
+        ]
+    }
+
+    getBottomNavigationTabItems() {
+        const { controlPrice, pairName } = this.props;
+        const { userOrders } = this.state;
+
+        if (!userOrders) return [];
+
+        return [
+            {
+                id: 'my-open-orders',
+                label: 'My open Orders',
+                content: OrdersTable,
+                contentProps: {
+                    items: userOrders.opened,
+                    pairName: pairName,
+                    controlPrice,
+                },
+            },
+            {
+                id: 'my-orders-history',
+                label: 'My Orders History',
+                content: OrdersTable,
+                contentProps: {
+                    items: userOrders.history,
+                    pairName: pairName,
+                    isHistory: true,
+                    controlPrice,
+                },
+            },
+        ];
+    }
+
     render() {
-        const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
-        const { liquidateOrders, bondOrders, userOrders, formTab } = this.state;
+        const { liquidateOrders, bondOrders, userOrders, currentRoi } = this.state;
 
         if (!bondOrders || !liquidateOrders) {
             return null;
         }
 
-        const ROI_DISCOUNT = 25;
+
+        const { controlPrice, baseCurrency, quoteCurrency, user } = this.props;
+        const { formTab } = this.state;
 
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    {/* <OrderBook
+                    {(formTab !== FormTabEnum.CONFIGURE) ? (
+                        <>
+                            <AuctionDiscount roi={currentRoi} />
+                        </>
+                    ) : <OrderBook
                         controlPrice={controlPrice}
-                        orders={formTab === FormTabEnum.AUCTION ? bondOrders : liquidateOrders}
+                        orders={liquidateOrders}
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
                         formTab={formTab}
-                    /> */}
-                    <AuctionDiscount roi={ROI_DISCOUNT}/>
+                    />}
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
                             layout={'tabs'}
                             onChange={formTab => this.setState({ formTab })}
-                            items={[
-                                {
-                                    id: FormTabEnum.AUCTION,
-                                    label: 'Buy',
-                                    content: BuyBondsForm,
-                                    contentProps: {
-                                        roi: ROI_DISCOUNT,
-                                        controlPrice,
-                                        bondOrders
-                                    },
-                                },
-                                {
-                                    id: FormTabEnum.LIQUIDATE,
-                                    label: 'Liquidate',
-                                    className: bem.element('danger-tab'),
-                                    content: LiquidateBondsForm,
-                                },
-                            ]}
+                            items={this.getTopNavigationTabItems()}
                         />
                     </div>
                 </div>
                 <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('orders')}>
-                        {userOrders && (
-                            <Nav
-                                className={bem.element('orders-nav')}
-                                layout={'tabs'}
-                                items={[
-                                    {
-                                        id: 'my-open-orders',
-                                        label: 'My open Orders',
-                                        content: OrdersTable,
-                                        contentProps: {
-                                            items: userOrders.opened,
-                                            pairName: pairName,
-                                            controlPrice,
-                                        },
-                                    },
-                                    {
-                                        id: 'my-orders-history',
-                                        label: 'My Orders History',
-                                        content: OrdersTable,
-                                        contentProps: {
-                                            items: userOrders.history,
-                                            pairName: pairName,
-                                            isHistory: true,
-                                            controlPrice,
-                                        },
-                                    },
-                                ]}
-                            />
-                        )}
+                    <div className={bem.element('orders', userOrders ? undefined : 'hidden')}>
+                        <Nav
+                            className={bem.element('orders-nav')}
+                            layout={'tabs'}
+                            items={this.getBottomNavigationTabItems()}
+                        />
                     </div>
                 </div>
             </div>

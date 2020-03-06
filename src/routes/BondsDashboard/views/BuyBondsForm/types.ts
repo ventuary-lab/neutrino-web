@@ -1,6 +1,7 @@
 
 
 export type Props = {
+    formType: string;
     formValues: Record<string, any>;
     bondOrders: Record<string, string>[];
     controlPrice: number;

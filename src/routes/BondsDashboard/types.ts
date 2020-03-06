@@ -32,6 +32,7 @@ export interface Props {
 }
 
 export interface State {
+    currentRoi: number;
     bondOrders?: IOrder[],
     liquidateOrders?: IOrder[],
     userOrders?: IUserOrders;

@@ -1,5 +1,6 @@
 
 export enum FormTabEnum {
     AUCTION = 'auction',
-    LIQUIDATE = 'liquidate'
+    LIQUIDATE = 'liquidate',
+    CONFIGURE = 'configure'
 };
