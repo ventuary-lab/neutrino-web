@@ -47,8 +47,7 @@ class LandingPage extends React.Component<Props> {
         const paragraph = (
             <p>
                 <span>
-                    Dollar neutrino (USDN) is a crypto-backed token pegged to US
-                    dollar.&nbsp;
+                    Dollar neutrino (USDN) is a crypto-backed token pegged to US dollar.&nbsp;
                 </span>
                 <span>
                     The first stablecoin protocol which gives holders the ability of staking with
@@ -102,11 +101,20 @@ class LandingPage extends React.Component<Props> {
                             const tosLink = context.links.find(
                                 link => link.label === TERMS_OF_USE_LABEL
                             ).url;
+
+                            const email = 'info@neutrino.at';
                             return (
-                                <div className={bem.element('tos')}>
-                                    <a href={tosLink} target="_blank">
-                                        {TERMS_OF_USE_LABEL}
-                                    </a>
+                                <div className={bem.element('links-cont')}>
+                                    <div className={bem.element('custom-link')}>
+                                        <a href={tosLink} target="_blank">
+                                            {TERMS_OF_USE_LABEL}
+                                        </a>
+                                    </div>
+                                    <div className={bem.element('custom-link')}>
+                                        <a href={`mailto:${email}`} target="_blank">
+                                            {email}
+                                        </a>
+                                    </div>
                                 </div>
                             );
                         }}
@@ -115,7 +123,7 @@ class LandingPage extends React.Component<Props> {
                     <div className={bem.element('powered-by-waves')}>
                         <img src={poweredByWavesLogo} alt="powered by waves" />
                     </div> */}
-                    <LandingFooter links={socLinks}/>
+                    <LandingFooter links={socLinks} />
                 </div>
             </div>
         );
