@@ -15,7 +15,7 @@ class ExplorerApiService {
     constructor (contractApp: ApplicationParams) {
         this.contractApp = contractApp;
 
-        this.apiUrl = 'https://neutrinoexplorer.herokuapp.com/';
+        this.apiUrl = process.env.EXPLORER_ENDPOINT || 'https://explorer.neutrino.at/';
 
         this.proxyRoutesCollection = new Set();
         this.storageKey = 'explorer_api_cache';
