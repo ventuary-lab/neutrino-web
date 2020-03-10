@@ -5,7 +5,7 @@ import LandingHeader from './LandingHeader';
 import LandingFooter from './LandingFooter';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
-import { SocLink } from 'ui/global/types';
+// import { SocLink } from 'ui/global/types';
 import {
     NEUTRINO_FACEBOOK_LINK,
     NEUTRINO_MEDIUM_LINK,
@@ -119,10 +119,6 @@ class LandingPage extends React.Component<Props> {
                             );
                         }}
                     </GlobalLinksContext.Consumer>
-                    {/* <div className={bem.element('soc-links')}>{socLinks}</div>
-                    <div className={bem.element('powered-by-waves')}>
-                        <img src={poweredByWavesLogo} alt="powered by waves" />
-                    </div> */}
                     <LandingFooter links={socLinks} />
                 </div>
             </div>

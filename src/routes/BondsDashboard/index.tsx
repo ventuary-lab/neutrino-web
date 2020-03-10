@@ -23,6 +23,11 @@ const bem = html.bem('BondsDashboard');
 
 const DEFAULT_ROI_DISCOUNT = 25;
 
+enum OrdersTableTabEnum {
+    ACTIVE = 'active',
+    HISTORY = 'history'
+}
+
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
@@ -151,7 +156,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
         return [
             {
-                id: 'my-open-orders',
+                id: OrdersTableTabEnum.ACTIVE,
                 label: 'My open Orders',
                 content: OrdersTable,
                 contentProps: {
@@ -161,7 +166,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 },
             },
             {
-                id: 'my-orders-history',
+                id: OrdersTableTabEnum.HISTORY,
                 label: 'My Orders History',
                 content: OrdersTable,
                 contentProps: {
@@ -198,7 +203,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
-                        formTab={formTab}
+                        formTab={FormTabEnum.LIQUIDATE}
                     />}
                     <div className={bem.element('forms')}>
                         <Nav
@@ -214,6 +219,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         <Nav
                             className={bem.element('orders-nav')}
                             layout={'tabs'}
+                            activeTab={OrdersTableTabEnum.ACTIVE}
                             items={this.getBottomNavigationTabItems()}
                         />
                     </div>

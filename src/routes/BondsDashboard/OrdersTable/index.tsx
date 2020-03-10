@@ -73,7 +73,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
 
         this.state = {
             sort: ['time', SortTableEnum.DESC],
-            search: '',
+            search: ''
         };
     }
 

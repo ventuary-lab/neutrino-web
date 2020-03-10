@@ -21,6 +21,7 @@ import { dal, html, store } from 'components';
 import './style.scss';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 import { Props, State, IBuyBondsForm } from './types';
+import { FormTabEnum } from 'routes/BondsDashboard/enums';
 
 const bem = html.bem('BuyBondsForm');
 const FORM_ID = 'BuyBondsForm';
@@ -85,7 +86,9 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         if (formType !== 'full') {
             let newValue, dependPrice;
             if (this.isBondsFieldFocused) {
-                newValue = Math.round(computeWavesAmountFromROI(roi, bondsAmount, floatControlPrice));
+                newValue = Math.round(
+                    computeWavesAmountFromROI(roi, bondsAmount, floatControlPrice)
+                );
                 this.changeFieldValue('waves', `${newValue}`);
                 dependPrice = Math.round(newValue / bondsAmount);
             } else {
@@ -95,7 +98,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                 this.changeFieldValue('bonds', `${newValue}`);
                 dependPrice = Math.round(wavesRawAmount / newValue);
             }
-    
+
             this.setState({ dependPrice });
         } else {
             const dependPrice = _round(wavesRawAmount / bondsAmount, 2);
@@ -107,7 +110,6 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                 roi: roi === Infinity || roi === -Infinity ? null : roi,
             });
         }
-
     }
 
     componentDidUpdate(prevProps) {
@@ -115,8 +117,8 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             return;
         }
 
-        const { roi } = this.state;
-        const { controlPrice, formType } = this.props;
+        // const { roi } = this.state;
+        const { controlPrice } = this.props;
         const { bonds: oldBonds, waves: oldWaves } = prevProps.formValues;
         const { bonds, waves } = this.props.formValues;
 
@@ -124,7 +126,10 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             this.updatePriceField();
         }
 
-        if (roi === undefined && controlPrice) {
+        if (
+            (!prevProps.controlPrice && controlPrice) ||
+            (FormTabEnum.AUCTION === this.props.id && prevProps.id !== FormTabEnum.AUCTION)
+        ) {
             this.calculateDefaults(controlPrice);
         }
     }
@@ -136,14 +141,12 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
             FormDefaults.WAVES_AMOUNT,
             controlPrice
         );
-        const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / FormDefaults.BONDS_AMOUNT);
+        const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / bondsAmount);
+
+        console.log({ dependPrice, bondsAmount });
         this.changeFieldValue('bonds', `${bondsAmount}`);
 
         this.setState({ roi: defaultRoi, dependPrice });
-    }
-
-    componentDidMount() {
-        this.updatePriceField();
     }
 
     changeFieldValue(fname: string, value: string) {
@@ -163,11 +166,11 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
         const { waves } = formValues;
 
-        console.log({ roi,waves, controlPrice})
+        console.log({ roi, waves, controlPrice });
 
         if (waves) {
             const computedBonds = this.getComputedBondsFromROI(roi, waves, controlPrice);
-            console.log({  computedBonds })
+            console.log({ computedBonds });
 
             this.changeFieldValue('bonds', `${computedBonds}`);
         }
