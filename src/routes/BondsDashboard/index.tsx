@@ -199,11 +199,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         </>
                     ) : <OrderBook
                         controlPrice={controlPrice}
-                        orders={liquidateOrders}
+                        orders={bondOrders}
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
-                        formTab={FormTabEnum.LIQUIDATE}
+                        formTab={FormTabEnum.AUCTION}
                     />}
                     <div className={bem.element('forms')}>
                         <Nav
