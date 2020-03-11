@@ -25,7 +25,7 @@ const DEFAULT_ROI_DISCOUNT = 10;
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
-    HISTORY = 'history'
+    HISTORY = 'history',
 }
 
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
@@ -37,7 +37,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         super(props);
 
         this._updateListener = this._updateListener.bind(this);
-        this._updateTimeout = 3500;
+        this._updateTimeout = 4000;
         this._idUpdating = false;
 
         this.state = {
@@ -66,7 +66,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
 
         const currentDeficit = Number(deficitPercentResponse.data);
-        this.setState({ currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit)) : 0 });
+        this.setState({
+            currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit) - 1) : 0,
+        });
     }
 
     async _updateListener() {
@@ -92,6 +94,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     `/api/v1/bonds/user/${user.address}`
                 );
             }
+
+            await this.getAndUpdateROI();
 
             this.setState({
                 bondOrders: bondOrdersResponse.data,
@@ -144,8 +148,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     controlPrice,
                     bondOrders,
                 },
-            }
-        ]
+            },
+        ];
     }
 
     getBottomNavigationTabItems() {
@@ -186,25 +190,32 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             return null;
         }
 
-
         const { controlPrice, baseCurrency, quoteCurrency, user } = this.props;
         const { formTab } = this.state;
 
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    {(formTab === FormTabEnum.AUCTION) ? (
+                    {formTab === FormTabEnum.AUCTION ? (
                         <>
                             <AuctionDiscount roi={currentRoi} />
                         </>
-                    ) : <OrderBook
-                        controlPrice={controlPrice}
-                        orders={formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders}
-                        user={user}
-                        baseCurrency={baseCurrency}
-                        quoteCurrency={quoteCurrency}
-                        formTab={formTab === FormTabEnum.CONFIGURE ? FormTabEnum.AUCTION : FormTabEnum.LIQUIDATE}
-                    />}
+                    ) : (
+                        <OrderBook
+                            controlPrice={controlPrice}
+                            orders={
+                                formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders
+                            }
+                            user={user}
+                            baseCurrency={baseCurrency}
+                            quoteCurrency={quoteCurrency}
+                            formTab={
+                                formTab === FormTabEnum.CONFIGURE
+                                    ? FormTabEnum.AUCTION
+                                    : FormTabEnum.LIQUIDATE
+                            }
+                        />
+                    )}
                     <div className={bem.element('forms')}>
                         <Nav
                             isFullWidthTabs
