@@ -203,7 +203,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
-                        formTab={formTab}
+                        formTab={formTab === FormTabEnum.CONFIGURE ? FormTabEnum.AUCTION : FormTabEnum.LIQUIDATE}
                     />}
                     <div className={bem.element('forms')}>
                         <Nav
