@@ -143,7 +143,6 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         );
         const dependPrice = Math.round(FormDefaults.WAVES_AMOUNT / bondsAmount);
 
-        console.log({ dependPrice, bondsAmount });
         this.changeFieldValue('bonds', `${bondsAmount}`);
 
         this.setState({ roi: defaultRoi, dependPrice });
@@ -166,12 +165,8 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
         const { waves } = formValues;
 
-        console.log({ roi, waves, controlPrice });
-
         if (waves) {
             const computedBonds = this.getComputedBondsFromROI(roi, waves, controlPrice);
-            console.log({ computedBonds });
-
             this.changeFieldValue('bonds', `${computedBonds}`);
         }
     }
@@ -313,8 +308,6 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         const dependPrice = values.waves / values.bonds;
         const contractPrice = Math.round(dependPrice * 100);
         const position = this.computeOrderPosition(bondOrders, roi);
-
-        console.log({ position });
 
         return dal
             .setBondOrder(pairName, contractPrice, quoteCurrency, values.waves, position)
