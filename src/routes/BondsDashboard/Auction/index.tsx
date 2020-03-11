@@ -1,7 +1,7 @@
 import React from 'react';
 import { html } from 'components'
 // import usdnIcon from 'static/icons/usd-n.svg';
-import usdnIcon from 'static/icons/n_icon/light/N_ICON_2@2x.png';
+import usdnIcon from 'static/icons/n_icon/light-not-filled/Neutrino_N_ICON.svg';
 
 const bem = html.bem('AuctionDiscount');
 
