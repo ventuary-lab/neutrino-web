@@ -21,7 +21,7 @@ import './BondsDashboard.scss';
 
 const bem = html.bem('BondsDashboard');
 
-const DEFAULT_ROI_DISCOUNT = 25;
+const DEFAULT_ROI_DISCOUNT = 10;
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -120,7 +120,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return [
             {
                 id: FormTabEnum.AUCTION,
-                label: 'Buy',
+                label: 'Get USDNB',
                 content: BuyBondsForm,
                 contentProps: {
                     roi: currentRoi,
@@ -130,13 +130,13 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             },
             {
                 id: FormTabEnum.LIQUIDATE,
-                label: 'Liquidate',
+                label: 'Liquidation',
                 className: bem.element('danger-tab'),
                 content: LiquidateBondsForm,
             },
             {
                 id: FormTabEnum.CONFIGURE,
-                label: 'Configure',
+                label: 'Discounts',
                 content: BuyBondsForm,
                 contentProps: {
                     formType: 'full',
@@ -193,17 +193,17 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return (
             <div className={bem.block()}>
                 <div className={bem.element('column', 'left')}>
-                    {(formTab !== FormTabEnum.CONFIGURE) ? (
+                    {(formTab === FormTabEnum.AUCTION) ? (
                         <>
                             <AuctionDiscount roi={currentRoi} />
                         </>
                     ) : <OrderBook
                         controlPrice={controlPrice}
-                        orders={bondOrders}
+                        orders={formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders}
                         user={user}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
-                        formTab={FormTabEnum.AUCTION}
+                        formTab={formTab}
                     />}
                     <div className={bem.element('forms')}>
                         <Nav

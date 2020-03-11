@@ -197,7 +197,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
 
     render() {
         const { isButtonDisabled, roi } = this.state;
-        const { formType } = this.props;
+        const { formType, controlPrice, formValues } = this.props;
 
         return (
             <div className={bem.block()}>
