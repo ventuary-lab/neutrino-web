@@ -57,9 +57,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     }
 
     async getAndUpdateROI() {
-        const deficitPercentResponse = await axios.get<number>('/api/get_deficit_per_cent', {
-            baseURL: 'https://explorer.neutrino.at',
-        });
+        const deficitPercentResponse = await axios.get<number>(
+            '/api/explorer/get_deficit_per_cent'
+        );
 
         if (deficitPercentResponse.statusText !== 'OK') {
             return;
