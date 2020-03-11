@@ -129,7 +129,8 @@ $icons-dir: '../static/icons';
   &__usd-nb {
     min-width: 20px;
     min-height: 20px;
-    background-image: url('#{$icons-dir}/usd-nb.svg');
+    background-image: url('#{$icons-dir}/n_icon/light/N_ICON_2.svg');
+    background-size: contain;
   }
 
   &__eur-n {
