@@ -11,10 +11,20 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+  deploy:
+    machine: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST "cd /var/www/neutrino-web && bash deploy.sh --simple"
 workflows:
     build-and-test:
       jobs:
+        - deploy
         - build-and-test:
+            requires:
+              - deploy
             filters:
                 branches:
                     only:
