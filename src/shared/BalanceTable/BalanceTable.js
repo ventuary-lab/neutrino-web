@@ -8,7 +8,7 @@ import { openModal } from 'yii-steroids/actions/modal';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import CollectionEnum from 'enums/CollectionEnum';
+// import CollectionEnum from 'enums/CollectionEnum';
 import {
     getQuoteCurrency,
     getBaseCurrency,
@@ -31,22 +31,22 @@ const bem = html.bem('BalanceTable');
     sourceCurrency: getSourceCurrency(state),
     controlPrice: getControlPrice(state)
 }))
-@dal.hoc(props => [
-    {
-        url: `/api/v1/neutrino-config/${props.pairName}`,
-        key: 'neutrinoConfig',
-        collection: CollectionEnum.CONTROL_CONFIG,
-    },
-])
+// @dal.hoc(props => [
+//     {
+//         url: `/api/v1/neutrino-config/${props.pairName}`,
+//         key: 'neutrinoConfig',
+//         collection: CollectionEnum.CONTROL_CONFIG,
+//     },
+// ])
 export default class BalanceTable extends React.PureComponent {
     static propTypes = {
         user: PropTypes.object,
         quoteCurrency: PropTypes.string,
         baseCurrency: PropTypes.string,
         sourceCurrency: PropTypes.string,
-        neutrinoConfig: PropTypes.shape({
-            price: PropTypes.number,
-        }),
+        // neutrinoConfig: PropTypes.shape({
+        //     price: PropTypes.number,
+        // }),
     };
 
     constructor(props) {
@@ -109,9 +109,9 @@ export default class BalanceTable extends React.PureComponent {
     }
 
     render() {
-        const { user, neutrinoConfig } = this.props;
+        const { user } = this.props;
 
-        if (!user || !user.balances || !neutrinoConfig) {
+        if (!user || !user.balances) {
             return null;
         }
 

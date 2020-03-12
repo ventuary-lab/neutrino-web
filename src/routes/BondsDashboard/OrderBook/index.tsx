@@ -146,13 +146,13 @@ class OrderBook extends React.Component<Props, State> {
 
         return (
             <div className={bem.block()}>
-                <div
+                {/* <div
                     className={bem.element('title')}
                     style={{ display: !controlPrice ? 'none' : '' }}
                 >
                     <OrderBookTitle title={'WAVES / USD: '} amount={wavesByUsdAmount} />
                     <OrderBookTitle title={'USDN / WAVES: '} amount={usdnByWavesAmount} />
-                </div>
+                </div> */}
                 <div className={bem.element('header-row')}>
                     <div className={bem.element('header-column', 'upper-case')}>
                         {CurrencyEnum.getLabel(baseCurrency)}
