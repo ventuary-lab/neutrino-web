@@ -20,7 +20,7 @@ class ExplorerApiService {
         this.proxyRoutesCollection = new Set();
         this.storageKey = 'explorer_api_cache';
         this.updateFrequency = 15000;
-        this.maxRequestWait = 5000;
+        this.maxRequestWait = 12000;
     }
 
     async handleRequest (req: Request, res: Response) {
