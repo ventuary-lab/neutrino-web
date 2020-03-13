@@ -19,12 +19,20 @@ jobs:
           shell: /bin/bash
           command: |
             echo 'Performing connection...' 
-            ssh $SSH_USER@$SSH_HOST "cd /var/www/neutrino-web && git reset --hard && 
-            git checkout beta && git pull origin beta && echo 'Started deploying...' && bash deploy.sh --simple"
+            ssh $SSH_USER@$SSH_HOST "cd /var/www/neutrino-web && 
+            git reset --hard &&
+            git checkout beta &&
+            git pull origin beta &&
+            echo 'Started deploying...' &&
+            bash deploy.sh --simple"
 workflows:
     build-and-test:
       jobs:
-        - deploy
+        - deploy:
+            filters:
+                branches:
+                    only:
+                        - beta
         - build-and-test:
             requires:
               - deploy
@@ -32,4 +40,3 @@ workflows:
                 branches:
                     only:
                         - beta
-                        - circle-ci-configure
