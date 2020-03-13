@@ -19,8 +19,8 @@ stop_and_run () {
 }
 
 simple_deploy () {
-    git checkout beta
-    git pull origin beta
+    # git checkout beta
+    # git pull origin beta
     docker build -t neutrino .
     docker stop neutrino
     docker rm neutrino
@@ -41,5 +41,4 @@ main () {
     done
 }
 
-# docker run -itd --name neutrino -p 6000:6000 neutrino
-# docker exec -it neutrino bash server-wrap.sh --command serve --timeout 5s
+main $@
