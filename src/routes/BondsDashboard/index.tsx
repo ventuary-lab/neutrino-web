@@ -135,7 +135,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             {
                 id: FormTabEnum.LIQUIDATE,
                 label: 'Liquidation',
-                className: bem.element('danger-tab'),
                 content: LiquidateBondsForm,
             },
             {
