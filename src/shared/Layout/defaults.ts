@@ -1,12 +1,11 @@
 import {
     NEUTRINO_DASHBOARD_LABEL,
     STAKING_DASHBOARD_LABEL,
-    // TRANSFERS_LABEL,
-    // INVOICES_LABEL,
-    // EXCHANGE_LABEL,
-    DOCS_LABEL,
+    TRANSFERS_LABEL,
+    INVOICES_LABEL,
     BONDS_DASHBOARD_LABEL,
     WHITEPAPER_LABEL,
+    EXCHANGE_LABEL,
     FAQ_LABEL,
     BLOG_LABEL,
     DISCUSSIONS_LABEL,
@@ -26,21 +25,21 @@ export const defaultProductLinks = [
         label: STAKING_DASHBOARD_LABEL,
         url: 'rpd/usd-n',
     },
-    // {
-    //     label: EXCHANGE_LABEL,
-    //     url: `
-    //         https://waves.exchange/dex?assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS
-    //     `.trim(),
-    //     target: '_blank',
-    // },
-    // {
-    //     label: TRANSFERS_LABEL,
-    //     url: '/transfers/usd-n',
-    // },
-    // {
-    //     label: INVOICES_LABEL,
-    //     url: '/invoices/usd-n',
-    // },
+    {
+        label: EXCHANGE_LABEL,
+        url: `
+            https://waves.exchange/dex?assetId1=DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p&assetId2=8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS
+        `.trim(),
+        target: '_blank',
+    },
+    {
+        label: TRANSFERS_LABEL,
+        url: '/transfers/usd-n',
+    },
+    {
+        label: INVOICES_LABEL,
+        url: '/invoices/usd-n',
+    },
     {
         label: BONDS_DASHBOARD_LABEL,
         url: '/bonds/usd-n',
@@ -48,11 +47,6 @@ export const defaultProductLinks = [
 ];
 
 export const defaultLearnLinks = [
-    {
-        label: DOCS_LABEL,
-        url: 'https://docs.neutrino.at',
-        target: '_blank',
-    },
     {
         label: WHITEPAPER_LABEL,
         url: 'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit',
@@ -91,12 +85,13 @@ export const defaultLearnLinks = [
     },
     {
         label: STAKING_REWARDS_LABEL,
-        url: '/staking',
-    },
+        url: '/staking'
+    }
 ];
+
 
 export const defaultScreenSizeContext = {
     getEntries: () => [],
     listeners: new Map(),
-    isScreenNarrow: isScreenNarrowHelper,
+    isScreenNarrow: isScreenNarrowHelper
 };
