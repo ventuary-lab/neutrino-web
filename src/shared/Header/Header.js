@@ -126,12 +126,13 @@ export default class Header extends React.PureComponent {
                                     <DropDownField
                                         attribute={'section'}
                                         items={navItems}
-                                        onItemChange={item =>
-                                            this.onNavItemChange(
+                                        onItemChange={item => {
+                                            const exchangeLink = getExchangeLink(links.product);
+                                            return this.onNavItemChange(
                                                 item,
-                                                getExchangeLink(links.product).url
-                                            )
-                                        }
+                                                exchangeLink && exchangeLink.url
+                                            );
+                                        }}
                                         defaultItemLabel={'Products'}
                                     />
                                 </Form>
