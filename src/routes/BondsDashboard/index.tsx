@@ -66,8 +66,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
 
         const currentDeficit = Number(deficitPercentResponse.data);
+
         this.setState({
-            currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit) - 1) : 0,
+            currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit) - 1) : DEFAULT_ROI_DISCOUNT,
         });
     }
 
