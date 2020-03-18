@@ -7,11 +7,12 @@ import LeadingDashboard from './LeadingDashboard';
 import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
 import { defaultProductLinks } from 'shared/Layout/defaults';
-import { getExchangeLink } from 'shared/Layout/helpers';
+import { getArticleLink } from 'shared/Layout/helpers';
 import {
-    INVOICES_LABEL,
-    TRANSFERS_LABEL,
-    EXCHANGE_LABEL,
+    // INVOICES_LABEL,
+    // TRANSFERS_LABEL,
+    // EXCHANGE_LABEL,
+    ARTICLE_LABEL,
     NEUTRINO_DASHBOARD_LABEL,
     BONDS_DASHBOARD_LABEL,
     STAKING_DASHBOARD_LABEL,
@@ -144,6 +145,13 @@ export default {
             label: __(BONDS_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
+        },
+        [ARTICLE_LABEL]: {
+            exact: true,
+            label: __(ARTICLE_LABEL),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+            url: getArticleLink(defaultProductLinks).url,
         },
         [ROUTE_STAKING_LANDING_PAGE]: {
             exact: true,

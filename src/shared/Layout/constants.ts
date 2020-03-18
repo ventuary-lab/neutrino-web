@@ -5,6 +5,7 @@ export const EXCHANGE_LABEL = 'Exchange';
 export const INVOICES_LABEL = 'Invoices';
 export const BONDS_DASHBOARD_LABEL = 'Auction';
 
+export const ARTICLE_LABEL = 'USDNB -> NSBT';
 export const DOCS_LABEL = 'Docs';
 export const WHITEPAPER_LABEL = 'White paper';
 export const FAQ_LABEL = 'FAQ';

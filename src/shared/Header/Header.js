@@ -15,8 +15,8 @@ import {
     GlobalLinksContext,
     LoginTypeModalContext,
 } from 'shared/Layout/context';
-import { getExchangeLink } from 'shared/Layout/helpers';
-import { TRANSFERS_LABEL, INVOICES_LABEL } from 'shared/Layout/constants';
+import { getArticleLink } from 'shared/Layout/helpers';
+import { TRANSFERS_LABEL, ARTICLE_LABEL, INVOICES_LABEL } from 'shared/Layout/constants';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -68,7 +68,7 @@ export default class Header extends React.PureComponent {
     }
 
     onNavItemChange(item, dexLink) {
-        if (item.label === 'Exchange' && this.lastNavItem) {
+        if (item.label === ARTICLE_LABEL && this.lastNavItem) {
             window.open(dexLink);
             store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
         } else {
@@ -127,10 +127,10 @@ export default class Header extends React.PureComponent {
                                         attribute={'section'}
                                         items={navItems}
                                         onItemChange={item => {
-                                            const exchangeLink = getExchangeLink(links.product);
+                                            const link = getArticleLink(links.product);
                                             return this.onNavItemChange(
                                                 item,
-                                                exchangeLink && exchangeLink.url
+                                                link && link.url
                                             );
                                         }}
                                         defaultItemLabel={'Products'}

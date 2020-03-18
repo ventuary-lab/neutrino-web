@@ -4,6 +4,7 @@ import {
     // TRANSFERS_LABEL,
     // INVOICES_LABEL,
     // EXCHANGE_LABEL,
+    ARTICLE_LABEL,
     DOCS_LABEL,
     BONDS_DASHBOARD_LABEL,
     WHITEPAPER_LABEL,
@@ -45,7 +46,16 @@ export const defaultProductLinks = [
         label: BONDS_DASHBOARD_LABEL,
         url: '/bonds/usd-n',
     },
+    {
+        label: ARTICLE_LABEL,
+        url: 'https://medium.com/@neutrinoteam/new-major-update-usdnb-nsbt-1e0e544bba8c',
+    },
 ];
+
+export const getArticleUrl = () => {
+    const option = defaultProductLinks.find(opt => opt.label === ARTICLE_LABEL);
+    return option ? option.url : '';
+};
 
 export const defaultLearnLinks = [
     {
