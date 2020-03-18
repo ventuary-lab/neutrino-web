@@ -43,7 +43,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                 get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--',
             },
             usdnb: {
-                label: 'USDNB',
+                label: 'NSBT',
                 get: item =>
                     OrderTypeEnum.LIQUIDATE === item.type
                         ? Math.ceil(item.total)
