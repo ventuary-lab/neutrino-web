@@ -46,8 +46,8 @@ export default class OrdersTable extends React.Component<Props, State> implement
                 label: 'NSBT',
                 get: item =>
                     OrderTypeEnum.LIQUIDATE === item.type
-                        ? Math.ceil(item.total)
-                        : Math.ceil(item.amount),
+                        ? item.total
+                        : item.amount,
             },
             price: {
                 label: 'Price',

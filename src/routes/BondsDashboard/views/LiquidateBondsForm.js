@@ -66,7 +66,6 @@ export default class LiquidateBondsFrom extends React.PureComponent {
                     onSubmit={this._onSubmit}
                     validators={[
                         [['bonds'], 'required'],
-                        [['bonds'], 'integer', {min: 1/*, max: this.props.bondBalance*/}],
                     ]}
                 >
                     <NumberField
