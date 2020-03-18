@@ -58,7 +58,7 @@ class OrderBook extends React.Component<Props, State> {
                             })}
                         >
                             <div className={bem.element('body-column', 'bg')}>
-                                {_round(order.restTotal)}
+                                {order.restTotal}
                             </div>
                             <div className={bem.element('body-column', 'address')}>
                                 {order.owner}
