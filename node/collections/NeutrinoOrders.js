@@ -4,6 +4,7 @@ const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const { mapFieldsToNumber, getOpenedOrders } = require('./helpers');
+const CurrencyEnum = require('../enums/CurrencyEnum');
 
 module.exports = class NeutrinoOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})$') {
@@ -65,8 +66,8 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             timestamp: (await this.heightListener.getTimestamps([height]))[height],
             owner: item['order_owner_' + id],
             status: item['order_status_' + id],
-            total,
-            restTotal: total - filledTotal,
+            total: Number(total) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB),
+            restTotal: Number(total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB),
             type: OrderTypeEnum.LIQUIDATE,
             orderNext,
             orderPrev,
