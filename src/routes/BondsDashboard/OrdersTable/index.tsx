@@ -44,10 +44,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
             },
             usdnb: {
                 label: 'NSBT',
-                get: item =>
-                    OrderTypeEnum.LIQUIDATE === item.type
-                        ? item.total
-                        : item.amount,
+                get: item => (OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount),
             },
             price: {
                 label: 'Price',
@@ -73,7 +70,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
 
         this.state = {
             sort: ['time', SortTableEnum.DESC],
-            search: ''
+            search: '',
         };
     }
 

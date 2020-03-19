@@ -151,6 +151,14 @@ export default class Layout extends React.PureComponent {
             // unsubscribe: (fnName) => this.currentResizeObserverListeners.delete(fnName)
         };
 
+        this.installKeeperContext = {
+            onLogin: this.onWavesKeeperLogin,
+            onLogout: this.onWavesKeeperLogout,
+            onWebKeeperLogin: this.onWebKeeperLogin,
+            isVisible: false,
+            openModal: () => this.triggerInstallKeeperModalVisibility(true),
+        };
+
         this.state = {
             shouldShowInviteModal: false,
             isUserCongratsModalOpened: false,
@@ -207,6 +215,17 @@ export default class Layout extends React.PureComponent {
         // this.openWarningModal();
 
         this.handleQueryParams();
+
+        const invoiceQueryProvided = this._checkForInvoiceQuery();
+        if (invoiceQueryProvided && !this.props.user) {
+            try {
+                await this.onWavesKeeperLogin(() => {
+                    this._checkForInvoice();
+                });
+            } catch (err) {
+                console.warn('Automatic waves keeper login failed...');
+            }
+        }
     }
 
     handleQueryParams() {
@@ -294,7 +313,6 @@ export default class Layout extends React.PureComponent {
                 this.checkCurrentRoute();
             }
         }
-
         this._attachWavesDataController();
     }
 
@@ -387,7 +405,7 @@ export default class Layout extends React.PureComponent {
                         {this.props.status !== STATUS_LOADING && this.props.children}
                     </main>
                 </div>,
-            ]
+            ];
         }
 
         return elements;
@@ -435,12 +453,8 @@ export default class Layout extends React.PureComponent {
                                 >
                                     <InstallKeeperModalContext.Provider
                                         value={{
-                                            onLogin: this.onWavesKeeperLogin,
-                                            onLogout: this.onWavesKeeperLogout,
-                                            onWebKeeperLogin: this.onWebKeeperLogin,
-                                            isVisible: shouldShowInviteModal,
-                                            openModal: () =>
-                                                this.triggerInstallKeeperModalVisibility(true),
+                                            ...this.installKeeperContext,
+                                            isVisible: this.state.shouldShowInviteModal,
                                         }}
                                     >
                                         <ConfigContext.Provider value={configValue}>
@@ -467,10 +481,14 @@ export default class Layout extends React.PureComponent {
         );
     }
 
+    _checkForInvoiceQuery() {
+        const params = queryString.parse(location.search);
+        return params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency;
+    }
+
     _checkForInvoice() {
         const params = queryString.parse(location.search);
-
-        if (params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency) {
+        if (this._checkForInvoiceQuery()) {
             this.props.dispatch(
                 openModal(TransferInvoiceModal, {
                     amount: params.invoiceAmount,
