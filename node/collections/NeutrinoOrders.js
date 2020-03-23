@@ -65,7 +65,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
         let total = Number(item['order_total_' + id] || 0);
         let filledTotal = Number(item['order_filled_total_' + id] || 0);
 
-        if (moment(timestamp).isAfter(NSBT_ISSUE_TIMESTAMP)) {
+        if (moment(timestamp).isAfter(NSBT_ISSUE_TIMESTAMP) && status === OrderStatusEnum.FILLED) {
             total /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
             filledTotal /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
         }
