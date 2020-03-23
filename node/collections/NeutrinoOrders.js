@@ -1,10 +1,13 @@
 const _orderBy = require('lodash/orderBy');
+const moment = require('moment');
 
 const OrderTypeEnum = require('../enums/OrderTypeEnum');
 const OrderStatusEnum = require('../enums/OrderStatusEnum');
 const BaseCollection = require('../base/BaseCollection');
 const { mapFieldsToNumber, getOpenedOrders } = require('./helpers');
 const CurrencyEnum = require('../enums/CurrencyEnum');
+
+const NSBT_ISSUE_TIMESTAMP = 1583275175580;
 
 module.exports = class NeutrinoOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})$') {
@@ -58,16 +61,23 @@ module.exports = class NeutrinoOrders extends BaseCollection {
         const orderPrev = item['order_prev_' + id] || null;
 
         const height = item['order_height_' + id];
-        const total = item['order_total_' + id] || 0;
-        const filledTotal = item['order_filled_total_' + id] || 0;
+        const timestamp = Number((await this.heightListener.getTimestamps([height]))[height]);
+        let total = Number(item['order_total_' + id] || 0);
+        let filledTotal = Number(item['order_filled_total_' + id] || 0);
+
+        if (moment(timestamp).isAfter(NSBT_ISSUE_TIMESTAMP)) {
+            total /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+            filledTotal /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+        }
+
         return {
             height,
             currency: this.pairName.split('_')[0],
-            timestamp: (await this.heightListener.getTimestamps([height]))[height],
+            timestamp: timestamp,
             owner: item['order_owner_' + id],
             status: item['order_status_' + id],
-            total: Number(total) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB),
-            restTotal: Number(total - filledTotal) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB),
+            total: total,
+            restTotal: total - filledTotal,
             type: OrderTypeEnum.LIQUIDATE,
             orderNext,
             orderPrev,
