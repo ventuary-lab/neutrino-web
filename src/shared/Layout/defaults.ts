@@ -65,7 +65,7 @@ export const defaultLearnLinks = [
     },
     {
         label: WHITEPAPER_LABEL,
-        url: 'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit',
+        url: 'https://wp.neutrino.at/',
         target: '_blank',
     },
     {

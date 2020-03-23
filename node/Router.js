@@ -266,7 +266,7 @@ module.exports = class Router {
             },
             '/whitepaper': async (req, res) => {
                 res.redirect(
-                    'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit'
+                    'https://wp.neutrino.at/'
                 );
             },
         };
