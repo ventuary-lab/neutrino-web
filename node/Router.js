@@ -233,7 +233,6 @@ module.exports = class Router {
                     opened: [],
                     history: [],
                 };
-
                 for (let pairName of PairsEnum.getKeys()) {
                     for (let collectionName of [
                         CollectionEnum.BONDS_ORDERS,
@@ -246,12 +245,13 @@ module.exports = class Router {
                         );
                         result.history = result.history.concat(
                             await collection.getUserHistoryOrders(request.params.address)
-                        );
+                        )
                     }
                 }
 
                 result.opened = _orderBy(result.opened, 'height', 'desc');
                 result.history = _orderBy(result.history, 'height', 'desc');
+                
                 return result;
             },
             '/api/explorer/*': (req, res) => this.explorerApiService.handleRequest(req, res),

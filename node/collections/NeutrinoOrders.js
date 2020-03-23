@@ -8,7 +8,6 @@ const { mapFieldsToNumber, getOpenedOrders } = require('./helpers');
 const CurrencyEnum = require('../enums/CurrencyEnum');
 
 const NSBT_ISSUE_TIMESTAMP = 1583275175580;
-
 module.exports = class NeutrinoOrders extends BaseCollection {
     getKeys(id = '([A-Za-z0-9]{40,50})$') {
         return [
@@ -51,9 +50,19 @@ module.exports = class NeutrinoOrders extends BaseCollection {
 
     async getUserHistoryOrders(address) {
         let orders = await this.getOrders();
-        return orders.filter(
-            order => order.owner === address && order.status !== OrderStatusEnum.NEW
-        );
+
+        return orders
+            .filter(order => order.owner === address && order.status !== OrderStatusEnum.NEW)
+            .map(order =>
+                moment(order.timestamp).isBefore(moment(NSBT_ISSUE_TIMESTAMP))
+                    ? {
+                          ...order,
+                          total: CurrencyEnum.getContractPow(CurrencyEnum.USD_NB) * order.total,
+                          restTotal:
+                              CurrencyEnum.getContractPow(CurrencyEnum.USD_NB) * order.restTotal,
+                      }
+                    : order
+            );
     }
 
     async _prepareItem(id, item) {
@@ -62,13 +71,12 @@ module.exports = class NeutrinoOrders extends BaseCollection {
 
         const height = item['order_height_' + id];
         const timestamp = Number((await this.heightListener.getTimestamps([height]))[height]);
-        let total = Number(item['order_total_' + id] || 0) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
-        let filledTotal = Number(item['order_filled_total_' + id] || 0) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
-
-        if (moment(timestamp).isBefore(moment(NSBT_ISSUE_TIMESTAMP)) && status === OrderStatusEnum.FILLED) {
-            total *= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
-            filledTotal *= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
-        }
+        let total =
+            Number(item['order_total_' + id] || 0) /
+            CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+        let filledTotal =
+            Number(item['order_filled_total_' + id] || 0) /
+            CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
 
         return {
             height,
