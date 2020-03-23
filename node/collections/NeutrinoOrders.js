@@ -62,12 +62,12 @@ module.exports = class NeutrinoOrders extends BaseCollection {
 
         const height = item['order_height_' + id];
         const timestamp = Number((await this.heightListener.getTimestamps([height]))[height]);
-        let total = Number(item['order_total_' + id] || 0);
-        let filledTotal = Number(item['order_filled_total_' + id] || 0);
+        let total = Number(item['order_total_' + id] || 0) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+        let filledTotal = Number(item['order_filled_total_' + id] || 0) / CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
 
-        if (moment(timestamp).isAfter(NSBT_ISSUE_TIMESTAMP) && status === OrderStatusEnum.FILLED) {
-            total /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
-            filledTotal /= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+        if (moment(timestamp).isBefore(moment(NSBT_ISSUE_TIMESTAMP)) && status === OrderStatusEnum.FILLED) {
+            total *= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
+            filledTotal *= CurrencyEnum.getContractPow(CurrencyEnum.USD_NB);
         }
 
         return {
