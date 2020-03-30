@@ -22,6 +22,7 @@ import './BondsDashboard.scss';
 const bem = html.bem('BondsDashboard');
 
 const DEFAULT_ROI_DISCOUNT = 10;
+const ROI_LS_KEY = 'roi_discount';
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -41,7 +42,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this._idUpdating = false;
 
         this.state = {
-            currentRoi: DEFAULT_ROI_DISCOUNT,
+            currentRoi: Number(localStorage.getItem(ROI_LS_KEY)) || DEFAULT_ROI_DISCOUNT,
             formTab: FormTabEnum.AUCTION,
         };
     }
@@ -66,10 +67,13 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
 
         const currentDeficit = Number(deficitPercentResponse.data);
+        const validRoi = Math.round(Math.abs(currentDeficit) - 1)
 
         this.setState({
-            currentRoi: currentDeficit < 0 ? Math.round(Math.abs(currentDeficit) - 1) : DEFAULT_ROI_DISCOUNT,
+            currentRoi: currentDeficit < 0 ? validRoi : DEFAULT_ROI_DISCOUNT,
         });
+
+        localStorage.setItem(ROI_LS_KEY, String(validRoi))
     }
 
     async _updateListener() {

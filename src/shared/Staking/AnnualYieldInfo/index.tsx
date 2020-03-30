@@ -12,24 +12,30 @@ interface State {
     yieldPercent: number;
 }
 
+const ANNUAL_YIELD_DEFAULT = 53.7;
+const ANNUAL_YIELD_LS_KEY = 'staking_annual_yield';
+
 class AnnualYieldInfo extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
         this.state = {
-            yieldPercent: 53.7
-        }
+            yieldPercent: Number(localStorage.getItem(ANNUAL_YIELD_LS_KEY)) || ANNUAL_YIELD_DEFAULT,
+        };
     }
 
-    async updateYieldPercent () {
-        const res = await axios.get('/api/explorer/get_annual_yield') as AxiosResponse<number>;
+    async updateYieldPercent() {
+        const res = (await axios.get('/api/explorer/get_annual_yield')) as AxiosResponse<number>;
 
         if (res.statusText === 'OK') {
-            this.setState({ yieldPercent: _.round(res.data, 2) });
+            const yieldPercent = _.round(res.data, 2);
+            localStorage.setItem(ANNUAL_YIELD_LS_KEY, String(yieldPercent));
+
+            this.setState({ yieldPercent });
         }
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         await this.updateYieldPercent();
     }
 
