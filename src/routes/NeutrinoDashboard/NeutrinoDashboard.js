@@ -40,6 +40,14 @@ const bem = html.bem('NeutrinoDashboard');
 const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
+const SwapWarningMessage = () => (
+    <span className="SwapWarningMessage">
+        Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
+        the price of WAVES may fluctuate, which can lead to receiving a lower/higher WAVES amount
+        than expected.
+    </span>
+);
+
 @connect(state => ({
     sourceCurrency: getSourceCurrency(state),
     quoteCurrency: getQuoteCurrency(state),
@@ -259,7 +267,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         ];
         const computedClassName = [
             bem.block(),
-            isSwapLoading ? bem.element('swap-processing') : ''
+            isSwapLoading ? bem.element('swap-processing') : '',
         ].join(' ');
 
         return (
@@ -300,7 +308,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
-    getCurrencyLabels () {
+    getCurrencyLabels() {
         const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
         const replaceArgs = [/-/g, ''];
         const sourceCurrency = _sourceCurrency.toUpperCase().replace(...replaceArgs);
@@ -308,8 +316,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return {
             mapLabel: label => <span>{label}</span>,
-            totalIssuedLabels:  [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
-            currentPriceLabels:  [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+            totalIssuedLabels: [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
+            currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
         };
     }
 
@@ -327,8 +335,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
             // desktop: desktopLabels
             totalIssuedLabels,
             mapLabel,
-            currentPriceLabels
+            currentPriceLabels,
         } = this.getCurrencyLabels();
+
+        const { isWavesLeft } = this.state;
+
+        const swapWarning = 'Approximate WAVES value based on current price';
 
         return (
             <>
@@ -337,19 +349,19 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <div className={bem.element('input-label')}>{__('Send')}</div>
                         <InputField
                             className={bem.element('input')}
-                            attribute={this.state.isWavesLeft ? 'waves' : 'neutrino'}
+                            attribute={isWavesLeft ? 'waves' : 'neutrino'}
                             inners={{
-                                label: this.state.isWavesLeft
+                                label: isWavesLeft
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                icon: this.state.isWavesLeft
+                                icon: isWavesLeft
                                     ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getIconClass(CurrencyEnum.USD_N),
                             }}
                         />
                         <div className={bem.element('input-hint')}>
                             {__('Min. {currency} required: 1 {currency}', {
-                                currency: this.state.isWavesLeft
+                                currency: isWavesLeft
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.quoteCurrency),
                             })}
@@ -367,69 +379,82 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <div className={bem.element('input-label')}>{__('Receive')}</div>
                         <InputField
                             className={bem.element('input')}
-                            attribute={this.state.isWavesLeft ? 'neutrino' : 'waves'}
+                            attribute={isWavesLeft ? 'neutrino' : 'waves'}
                             inners={{
-                                label: this.state.isWavesLeft
+                                label: isWavesLeft
                                     ? CurrencyEnum.getLabel(this.props.quoteCurrency)
                                     : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
-                                icon: this.state.isWavesLeft
+                                icon: isWavesLeft
                                     ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
                                     : CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
                             }}
                         />
+                        <div className={bem.element('input-hint', 'swap')}>
+                            <span className={isWavesLeft ? 'hidden' : ''}>{swapWarning}</span>
+                        </div>
                     </div>
                 </div>
 
                 <div className={bem.element('info')}>
-                    <div className={bem.element('info-column')}>
-                        <ConfigContext.Consumer>
-                            {environmentConfig => (
-                                <div className={bem.element('info-row')}>
-                                    <div className={bem.element('info-string')}>
-                                        <div className={bem.element('info-hint')}>
-                                            <Hint
-                                                text={__(grabNeutrinoAddress(environmentConfig))}
-                                            />
+                    <div className={bem.element('info-cols')}>
+                        <div className={bem.element('info-column')}>
+                            <ConfigContext.Consumer>
+                                {environmentConfig => (
+                                    <div className={bem.element('info-row')}>
+                                        <div className={bem.element('info-string')}>
+                                            <div className={bem.element('info-hint')}>
+                                                <Hint
+                                                    text={__(
+                                                        grabNeutrinoAddress(environmentConfig)
+                                                    )}
+                                                />
+                                            </div>
+                                            <span>{__('Smart contract')}</span>
                                         </div>
-                                        <span>{__('Smart contract')}</span>
+                                        <a
+                                            href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
+                                                environmentConfig
+                                            )}`}
+                                            target="_blank"
+                                        >
+                                            <span>{grabNeutrinoAddress(environmentConfig)}</span>
+                                        </a>
                                     </div>
-                                    <a
-                                        href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
-                                            environmentConfig
-                                        )}`}
-                                        target="_blank"
-                                    >
-                                        <span>{grabNeutrinoAddress(environmentConfig)}</span>
-                                    </a>
+                                )}
+                            </ConfigContext.Consumer>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'without-hint')}>
+                                    <span>{__('Asset ID')}</span>
                                 </div>
-                            )}
-                        </ConfigContext.Consumer>
-                        <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string', 'without-hint')}>
-                                <span>{__('Asset ID')}</span>
+                                <a
+                                    href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(
+                                        dal
+                                    )}`}
+                                    target="_blank"
+                                >
+                                    <span>{getNeutrinoAssetId(dal)}</span>
+                                </a>
                             </div>
-                            <a href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(dal)}`} target='_blank'>
-                                <span>{getNeutrinoAssetId(dal)}</span>
-                            </a>
+                        </div>
+                        <div className={bem.element('info-column')}>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'with-mobile')}>
+                                    {totalIssuedLabels.map(mapLabel)}
+                                </div>
+                                <span>{prettyPrintNumber(this.getTotalIssued())}</span>
+                            </div>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'with-mobile')}>
+                                    {currentPriceLabels.map(mapLabel)}
+                                </div>
+                                <span>
+                                    {this.getControlPrice()}{' '}
+                                    {CurrencyEnum.getSign(this.props.sourceCurrency)}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <div className={bem.element('info-column')}>
-                        <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string', 'with-mobile')}>
-                                {totalIssuedLabels.map(mapLabel)}
-                            </div>
-                            <span>{prettyPrintNumber(this.getTotalIssued())}</span>
-                        </div>
-                        <div className={bem.element('info-row')}>
-                            <div className={bem.element('info-string', 'with-mobile')}>
-                                {currentPriceLabels.map(mapLabel)}
-                            </div>
-                            <span>
-                                {this.getControlPrice()}{' '}
-                                {CurrencyEnum.getSign(this.props.sourceCurrency)}
-                            </span>
-                        </div>
-                    </div>
+                    <SwapWarningMessage />
                 </div>
                 <div className={bem.element('generate-actions')}>
                     <Button
@@ -443,8 +468,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         label={
                             this.state.isWavesLeft
                                 ? __('Issue {currency}', {
-                                    currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                })
+                                      currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                  })
                                 : __('Redeem WAVES')
                         }
                         onClick={() => this.setState({ step: 'details' })}
@@ -462,6 +487,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <span className={bem.element('details-label')}>
                             {__('Please confirm the assets swap')}
                         </span>
+                        <SwapWarningMessage />
                         <div className={bem.element('details-inner', 'generation')}>
                             <div className={bem.element('values')}>
                                 <span className={bem.element('value-title')}>{__('Send')}:</span>
@@ -478,8 +504,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                                 bem.element('value-icon'),
                                                 `Icon ${
                                                     this.state.isWavesLeft
-                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                                        : CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                                        ? CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.WAVES
+                                                          )
+                                                        : CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.USD_N
+                                                          )
                                                 }`
                                             )}
                                         />
@@ -506,8 +536,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                                 bem.element('value-icon'),
                                                 `Icon ${
                                                     this.state.isWavesLeft
-                                                        ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                                        : CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                                        ? CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.USD_N
+                                                          )
+                                                        : CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.WAVES
+                                                          )
                                                 }`
                                             )}
                                         />
@@ -635,9 +669,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
         } catch (err) {
             console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
 
-            store.dispatch(openModal(MessageModal, {
-                text: `Error on Swap occured. ${err.message}`
-            }));
+            store.dispatch(
+                openModal(MessageModal, {
+                    text: `Error on Swap occured. ${err.message}`,
+                })
+            );
         }
     }
 }

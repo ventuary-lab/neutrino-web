@@ -1,6 +1,13 @@
 @import 'style/helpers/vars';
 @import 'style/helpers/mixins';
 
+.SwapWarningMessage {
+  font-weight: bold;
+  display: block;
+  padding-bottom: 16px;
+  line-height: 18px;
+}
+
 .NeutrinoDashboard {
   $root: &;
   $page-padding: 38px;
@@ -116,6 +123,11 @@
     justify-content: flex-end;
     align-items: center;
     margin-top: 11px;
+
+    &_swap {
+      font-weight: bold;
+      color: red;
+    }
   }
 
   &__input-hint-icon {
@@ -143,11 +155,23 @@
     margin-right: -$page-padding;
     margin-bottom: 67px;
     background-color: #292959;
-    display: flex;
-    align-items: center;
     padding: 28px 0;
     font-size: 13px;
     line-height: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    & > :nth-child(2) {
+      padding: 0 36px;
+    }
+  }
+
+  &__info-cols {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   &__info-column {
@@ -176,6 +200,10 @@
 
     &_without-hint {
       padding-left: 30px;
+    }
+
+    & > :nth-child(2) {
+      padding-right: 18px;
     }
 
     &_with-mobile {
@@ -358,7 +386,7 @@
       flex-direction: column;
 
       & > :nth-child(2) {
-        padding-left: 66px;
+        padding: 4px 36px;
       }
     }
     &__info-column {
