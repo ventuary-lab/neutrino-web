@@ -24,6 +24,7 @@ simple_deploy () {
     docker build -t neutrino .
     docker stop neutrino
     docker rm neutrino
+    docker rmi neutrino
     docker run -itd --name neutrino -p 5001:5001 -p 5000:5000 --env-file .env neutrino
 }
 
