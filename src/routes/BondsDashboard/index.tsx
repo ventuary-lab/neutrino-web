@@ -14,6 +14,7 @@ import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
 // import OrderBook from './OrderBook';
 import OrderBook from 'shared/Auction/Orderbook';
+import ReserveHeading from 'shared/Auction/ReserveHeading';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -203,9 +204,10 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             <div className={bem.block()}>
                 <div>
                     <OrderBook />
+                    <OrderBook />
                 </div>
                 <div>
-
+                    <ReserveHeading/>
                 </div>
             </div>
         )

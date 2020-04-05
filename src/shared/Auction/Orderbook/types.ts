@@ -12,6 +12,7 @@ export type TableRecord = Record<string, string | number | boolean | null> &
     Pick<TableHeader, 'style'>;
 
 export interface Props {
+    title?: string;
     tableHeaders: TableHeader[];
     tableRecords: TableRecord[];
 }

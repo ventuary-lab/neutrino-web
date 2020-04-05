@@ -1,4 +1,5 @@
-
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 .OrderbookReworked {
     
@@ -37,6 +38,29 @@
         & tbody tr td:nth-child(odd) {
             background: #26274F;
         }
+
+        &_scrollable {
+            
+            & tbody {
+                display: block;
+                overflow-y: auto;
+                height: 246px;
+                width: 300px;
+
+                @include scrollbar
+            }
+
+            & tbody tr {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+            & tbody tr td {
+                display: block;
+                width: 100%;
+                padding: 11px;
+            }
+        }
     }
 
     &__heading {
@@ -49,10 +73,5 @@
     &__styled-1 {
         color: #00F59E;
         font-weight: 600;
-    }
-
-    .OrderBook__columns::-webkit-scrollbar-thumb {
-        background: #11122f;
-        border: 1px solid #00f5ff;
     }
 }

@@ -13,10 +13,15 @@
   $orderbook-width: 300px;
   & > :nth-child(1) {
     width: $orderbook-width;
+    border-radius: 4px;
   }
+
   & > :nth-child(2) {
-    width: calc(100% - $orderbook-width)
+    width: calc(100% - #{$orderbook-width});
+    padding-left: 8px;
   }
+
+  padding-bottom: 8px;
 
   // &__column {
   //   border-top-right-radius: 4px;

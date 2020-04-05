@@ -1,0 +1,16 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.ReserveHeading {
+    
+
+    &__flex {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        background: #26274F;
+        padding: 14px 55px;
+        justify-content: space-between;
+        border-radius: 4px;
+    }
+}
