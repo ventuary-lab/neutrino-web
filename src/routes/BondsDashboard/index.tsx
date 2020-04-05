@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
+
 import { getUser } from 'yii-steroids/reducers/auth';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 import { getControlPrice } from 'reducers/contract/selectors';
@@ -11,7 +12,8 @@ import OrdersTable from './OrdersTable';
 import AuctionDiscount from './Auction';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
-import OrderBook from './OrderBook';
+// import OrderBook from './OrderBook';
+import OrderBook from 'shared/Auction/Orderbook';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -67,13 +69,13 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
 
         const currentDeficit = Number(deficitPercentResponse.data);
-        const validRoi = Math.round(Math.abs(currentDeficit) - 1)
+        const validRoi = Math.round(Math.abs(currentDeficit) - 1);
 
         this.setState({
             currentRoi: currentDeficit < 0 ? validRoi : DEFAULT_ROI_DISCOUNT,
         });
 
-        localStorage.setItem(ROI_LS_KEY, String(validRoi))
+        localStorage.setItem(ROI_LS_KEY, String(validRoi));
     }
 
     async _updateListener() {
@@ -199,48 +201,58 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
         return (
             <div className={bem.block()}>
-                <div className={bem.element('column', 'left')}>
-                    {formTab === FormTabEnum.AUCTION ? (
-                        <>
-                            <AuctionDiscount roi={currentRoi} />
-                        </>
-                    ) : (
-                        <OrderBook
-                            controlPrice={controlPrice}
-                            orders={
-                                formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders
-                            }
-                            user={user}
-                            baseCurrency={baseCurrency}
-                            quoteCurrency={quoteCurrency}
-                            formTab={
-                                formTab === FormTabEnum.CONFIGURE
-                                    ? FormTabEnum.AUCTION
-                                    : FormTabEnum.LIQUIDATE
-                            }
-                        />
-                    )}
-                    <div className={bem.element('forms')}>
-                        <Nav
-                            isFullWidthTabs
-                            layout={'tabs'}
-                            onChange={formTab => this.setState({ formTab })}
-                            items={this.getTopNavigationTabItems()}
-                        />
-                    </div>
+                <div>
+                    <OrderBook />
                 </div>
-                <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('orders', userOrders ? undefined : 'hidden')}>
-                        <Nav
-                            className={bem.element('orders-nav')}
-                            layout={'tabs'}
-                            activeTab={OrdersTableTabEnum.ACTIVE}
-                            items={this.getBottomNavigationTabItems()}
-                        />
-                    </div>
+                <div>
+
                 </div>
             </div>
-        );
+        )
+        // return (
+        //     <div className={bem.block()}>
+        //         <div className={bem.element('column', 'left')}>
+        //             {formTab === FormTabEnum.AUCTION ? (
+        //                 <>
+        //                     <AuctionDiscount roi={currentRoi} />
+        //                 </>
+        //             ) : (
+        //                 <OrderBook
+        //                     controlPrice={controlPrice}
+        //                     orders={
+        //                         formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders
+        //                     }
+        //                     user={user}
+        //                     baseCurrency={baseCurrency}
+        //                     quoteCurrency={quoteCurrency}
+        //                     formTab={
+        //                         formTab === FormTabEnum.CONFIGURE
+        //                             ? FormTabEnum.AUCTION
+        //                             : FormTabEnum.LIQUIDATE
+        //                     }
+        //                 />
+        //             )}
+        //             <div className={bem.element('forms')}>
+        //                 <Nav
+        //                     isFullWidthTabs
+        //                     layout={'tabs'}
+        //                     onChange={formTab => this.setState({ formTab })}
+        //                     items={this.getTopNavigationTabItems()}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={bem.element('column', 'right')}>
+        //             <div className={bem.element('orders', userOrders ? undefined : 'hidden')}>
+        //                 <Nav
+        //                     className={bem.element('orders-nav')}
+        //                     layout={'tabs'}
+        //                     activeTab={OrdersTableTabEnum.ACTIVE}
+        //                     items={this.getBottomNavigationTabItems()}
+        //                 />
+        //             </div>
+        //         </div>
+        //     </div>
+        // );
     }
 }
 

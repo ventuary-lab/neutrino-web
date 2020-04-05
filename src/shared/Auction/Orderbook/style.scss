@@ -1,0 +1,58 @@
+
+
+.OrderbookReworked {
+    
+
+    $main-gradient: linear-gradient(245.38deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+    background: $main-gradient;
+
+    &__table {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        border-spacing: 0px;
+        table-layout: fixed;
+
+        & tr {
+            height: 42px;
+            // border: 1px solid #343869;
+        }
+
+
+        & thead tr td {
+            border: 1px solid #343869;
+            border-left: none;
+            border-right: none;
+        }
+        & > thead:not(:first-child) {
+            & tr td {
+                border-top: none;
+            }
+        }
+
+        & tbody tr td {
+            font-size: 0.95em
+        }
+
+        & tbody tr td:nth-child(odd) {
+            background: #26274F;
+        }
+    }
+
+    &__heading {
+        padding: 14px 38px;
+        font-size: 16px;
+        line-height: 20px;
+        color: #fff;
+    }
+
+    &__styled-1 {
+        color: #00F59E;
+        font-weight: 600;
+    }
+
+    .OrderBook__columns::-webkit-scrollbar-thumb {
+        background: #11122f;
+        border: 1px solid #00f5ff;
+    }
+}
