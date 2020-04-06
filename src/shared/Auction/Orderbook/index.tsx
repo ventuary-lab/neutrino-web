@@ -32,9 +32,9 @@ const greenHeaders = [
     { label: '1000', style: TableRecordStyle.green },
     { label: '-', style: TableRecordStyle.green },
     { label: '5433', style: TableRecordStyle.green },
-];
+] as TableHeader[];
 
-class Orderbook extends React.Component<Props, State> {
+class Orderbook extends React.Component<any, State> {
     constructor(props) {
         super(props);
         this.mapTableHeaders = this.mapTableHeaders.bind(this);

@@ -9,8 +9,20 @@
         flex-direction: row;
         flex-wrap: nowrap;
         background: #26274F;
-        padding: 14px 55px;
+        padding: 10px 51px;
         justify-content: space-between;
         border-radius: 4px;
+
+        & > * {
+            padding: 4px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+
+            & > :nth-child(2) {
+                padding: 0 4px;
+            }
+            
+        }
     }
 }

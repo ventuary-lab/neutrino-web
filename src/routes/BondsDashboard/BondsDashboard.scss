@@ -13,7 +13,12 @@
   $orderbook-width: 300px;
   & > :nth-child(1) {
     width: $orderbook-width;
-    border-radius: 4px;
+    
+    & > :nth-child(1) {
+      border-radius: 4px;
+      border-bottom-left-radius: none;
+      border-bottom-right-radius: none;
+    }
   }
 
   & > :nth-child(2) {
@@ -22,6 +27,15 @@
   }
 
   padding-bottom: 8px;
+
+  &__orders {
+    padding: 27px;
+  }
+  
+  &__user-orders {
+    padding: 8px 0;
+    background: linear-gradient(197.87deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+  }
 
   // &__column {
   //   border-top-right-radius: 4px;

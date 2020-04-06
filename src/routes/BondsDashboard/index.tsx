@@ -207,10 +207,21 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     <OrderBook />
                 </div>
                 <div>
-                    <ReserveHeading/>
+                    <ReserveHeading />
+                    
+                    <div className={bem.element('user-orders') + ` ${!userOrders && 'hidden'}`}>
+                        <div className={bem.element('orders')}>
+                            <Nav
+                                className={bem.element('orders-nav')}
+                                layout={'tabs'}
+                                activeTab={OrdersTableTabEnum.ACTIVE}
+                                items={this.getBottomNavigationTabItems()}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
-        )
+        );
         // return (
         //     <div className={bem.block()}>
         //         <div className={bem.element('column', 'left')}>
