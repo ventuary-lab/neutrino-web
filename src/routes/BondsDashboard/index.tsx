@@ -15,6 +15,7 @@ import LiquidateBondsForm from './views/LiquidateBondsForm';
 // import OrderBook from './OrderBook';
 import OrderBook from 'shared/Auction/Orderbook';
 import ReserveHeading from 'shared/Auction/ReserveHeading';
+import OrderProvider from 'shared/Auction/OrderProvider';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -208,8 +209,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 </div>
                 <div>
                     <ReserveHeading />
-                    
-                    <div className={bem.element('user-orders') + ` ${!userOrders && 'hidden'}`}>
+                    <OrderProvider />
+                    {/* <div className={bem.element('user-orders') + ` ${!userOrders && 'hidden'}`}>
                         <div className={bem.element('orders')}>
                             <Nav
                                 className={bem.element('orders-nav')}
@@ -218,7 +219,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                                 items={this.getBottomNavigationTabItems()}
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

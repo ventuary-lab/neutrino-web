@@ -65,3 +65,10 @@ code {
 .hidden {
     display: none;
 }
+
+.blue-gradient {
+    background: linear-gradient(6.59deg, #6121A1 18.12%, #00AEFF 101.23%);
+}
+.red-gradient {
+    background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
+}
