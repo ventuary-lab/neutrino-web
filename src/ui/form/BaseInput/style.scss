@@ -61,7 +61,9 @@
         flex-direction: column;
         flex-wrap: nowrap;
         height: unset;
-
+        
+        font-style: normal;
+        font-size: 14px;
     }
 
     &__input {
@@ -76,26 +78,36 @@
         color: #fff;
         padding: 0 20px;
         height: 37px;
+
+        font-family: Montserrat;
+        font-weight: 800;
+
+        &[disabled] {
+            background: #2E2E5A;
+            border-color: transparent;
+        }
     }
 
     &__icon {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        width: 84px;
+        width: 85px;
         margin: auto;
         position: absolute;
-        right: 1px;
-        height: 35px;
-        top: 1px;
+        right: 0px;
         background: #35356F;
         border-bottom-right-radius: 17.5px;
         border-top-right-radius: 17.5px;
+        border-color: #35356F;
+        height: 37px;
 
         & > img {
             max-height: 20px;
             max-width: 20px;
             margin: auto;
+            margin-left: 10px;
+            margin-right: 10px;
         }
         & > span {
             font-weight: 800;
@@ -105,7 +117,12 @@
             display: block;
             margin: auto;
             margin-left: 0;
+                
+            font-family: Montserrat;
+            font-weight: bold;
         }
+
+        
     }
 
     &__field-name {

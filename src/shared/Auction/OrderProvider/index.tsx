@@ -3,7 +3,8 @@ import BaseInput from 'ui/form/BaseInput';
 import PercentButton from 'ui/form/PercentButton';
 import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import Button from 'yii-steroids/ui/form/Button';
-import CurrencyEnum from 'enums/CurrencyEnum'
+import CurrencyEnum from 'enums/CurrencyEnum';
+import BaseSelectInput from 'ui/form/BaseSelectInput';
 
 // import usdnLogo from 'static/icons/usd-n.svg';
 import nsbtLogo from 'static/icons/n_icon/light-not-filled/Neutrino_N_ICON.svg';
@@ -38,11 +39,16 @@ class OrderProvider extends React.Component<Props, State> {
         return (
             <div className="OrderProvider">
                 <div className="buy">
+                    <BaseSelectInput
+                        onSelect={opt => console.log(opt)}
+                        options={[
+                            { label: 'By request', value: 1 },
+                            { label: 'Instant', value: 2 },
+                        ]}
+                    />
                     <div className="buy-form">
                         <div>
-                            <BaseInput
-                                fieldName="Price"
-                            />
+                            <BaseInput fieldName="Price" />
                             <ExpectedValueSpan expected="4" />
                         </div>
                         <div className="percents">{this.percentage.map(this.mapPercentage)}</div>
@@ -52,6 +58,7 @@ class OrderProvider extends React.Component<Props, State> {
                             value={nsbtValue}
                             fieldName="Receive"
                             required={true}
+                            disabled
                         />
                         <BaseInput
                             iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
@@ -60,7 +67,10 @@ class OrderProvider extends React.Component<Props, State> {
                             fieldName="Send"
                             required={true}
                         />
-                        <p>You will receive {nsbtValue} NSBT for {wavesValue} WAVES when BR reaches X%</p>
+                        <p>
+                            You will receive {nsbtValue} NSBT for {wavesValue} WAVES when BR reaches
+                            X%
+                        </p>
                         <Button label="Place Request" />
                     </div>
                 </div>
