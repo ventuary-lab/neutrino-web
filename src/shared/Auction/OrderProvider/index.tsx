@@ -3,9 +3,11 @@ import BaseInput from 'ui/form/BaseInput';
 import PercentButton from 'ui/form/PercentButton';
 import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import Button from 'yii-steroids/ui/form/Button';
+import CurrencyEnum from 'enums/CurrencyEnum'
 
-import usdnLogo from 'static/icons/usd-n.svg';
+// import usdnLogo from 'static/icons/usd-n.svg';
 import nsbtLogo from 'static/icons/n_icon/light-not-filled/Neutrino_N_ICON.svg';
+import wavesLogo from 'static/icons/wave.svg';
 
 import './style.scss';
 
@@ -31,7 +33,7 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     render() {
-        const { nsbt, waves } = { nsbt: 1273, waves: 1000 }
+        const { nsbt: nsbtValue, waves: wavesValue } = { nsbt: 1273, waves: 1000 };
 
         return (
             <div className="OrderProvider">
@@ -40,32 +42,25 @@ class OrderProvider extends React.Component<Props, State> {
                         <div>
                             <BaseInput
                                 fieldName="Price"
-                                iconLabel="USDN"
-                                // icon={usdnLogo}
-                                // value={0}
-                                // onChange={this.onChangeUsdn}
                             />
                             <ExpectedValueSpan expected="4" />
                         </div>
                         <div className="percents">{this.percentage.map(this.mapPercentage)}</div>
-
                         <BaseInput
-                            iconLabel="USDN"
+                            iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
                             icon={nsbtLogo}
-                            value={nsbt}
+                            value={nsbtValue}
                             fieldName="Receive"
                             required={true}
-                            // onChange={this.onChangeUsdn}
                         />
                         <BaseInput
-                            iconLabel="WAVES"
-                            icon={nsbtLogo}
-                            value={waves}
+                            iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
+                            icon={wavesLogo}
+                            value={wavesValue}
                             fieldName="Send"
                             required={true}
-                            // onChange={this.onChangeUsdn}
                         />
-                        <p>You will receive 1278 NSBT for 1000 WAVES when BR reaches X%</p>
+                        <p>You will receive {nsbtValue} NSBT for {wavesValue} WAVES when BR reaches X%</p>
                         <Button label="Place Request" />
                     </div>
                 </div>
