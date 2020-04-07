@@ -210,7 +210,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 <div>
                     <ReserveHeading />
                     <OrderProvider />
-                    {/* <div className={bem.element('user-orders') + ` ${!userOrders && 'hidden'}`}>
+                    <div className={bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`}>
                         <div className={bem.element('orders')}>
                             <Nav
                                 className={bem.element('orders-nav')}
@@ -219,7 +219,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                                 items={this.getBottomNavigationTabItems()}
                             />
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
         );
