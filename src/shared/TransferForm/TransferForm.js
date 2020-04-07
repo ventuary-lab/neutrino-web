@@ -8,7 +8,6 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 import CurrencyEnum from 'enums/CurrencyEnum';
-// import { onlyDecimalRegex } from 'ui/global/helpers';
 
 import { html, store, dal } from 'components';
 import './TransferForm.scss';
@@ -49,7 +48,8 @@ export default class TransferForm extends React.PureComponent {
     render() {
         const address = _get(this.props, 'formValues.address');
         const amount = _get(this.props, 'formValues.amount');
-        const transeftAmountLabel = `Transfer amount (${_get(this.props, 'currency', '').toUpperCase().replace(/[-|_]/, '')})`;
+        const { currency } = this.props;
+        const transeftAmountLabel = `Transfer amount (${CurrencyEnum.getLabels()[currency]})`;
 
         return (
             <Form
