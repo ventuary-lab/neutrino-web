@@ -95,14 +95,13 @@ export const defaultLearnLinks = [
     },
     {
         label: TERMS_OF_USE_LABEL,
-        url:
-            'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
+        url: 'https://legal.neutrino.at/',
         target: '_blank',
     },
-    {
-        label: STAKING_REWARDS_LABEL,
-        url: '/staking',
-    },
+    // {
+    //     label: STAKING_REWARDS_LABEL,
+    //     url: '/staking',
+    // },
 ];
 
 export const defaultScreenSizeContext = {
