@@ -6,14 +6,28 @@ import './style.scss';
 const bem = html.bem('BaseInput');
 
 interface Props {
+    fieldName?: string;
     icon?: string;
     iconLabel?: string;
+    required?: boolean;
 }
 
-const BaseInput: React.FC<Props & React.HTMLProps<HTMLInputElement>> = ({ icon, iconLabel, ...restProps }) => {
+const BaseInput: React.FC<Props & React.HTMLProps<HTMLInputElement>> = ({
+    icon,
+    fieldName,
+    iconLabel,
+    required = false,
+    ...restProps
+}) => {
     return (
         <div className={bem.element('main')}>
-            <input {...restProps} />
+            {fieldName && (
+                <span className={bem.element('field-name')}>
+                    <span>{fieldName}</span>
+                    <span>{required ? ' *' : ''}</span>
+                </span>
+            )}
+            <input className={bem.element('input')} {...restProps} />
             {icon && (
                 <div className={bem.element('icon')}>
                     <img src={icon} />

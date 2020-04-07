@@ -10,6 +10,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import { openModal } from 'yii-steroids/actions/modal';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import MessageModal from 'modals/MessageModal';
+import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import PercentButton from 'ui/form/PercentButton';
 import {
     computeROI,
@@ -112,7 +113,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { controlPrice } = this.props;
 
         if (controlPrice) {
@@ -231,10 +232,14 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                                 }}
                                 disabled
                             />
-                            <span className={bem.element('roi')} style={this.getROIStyle()}>
+                            {/* <span className={bem.element('roi')} style={this.getROIStyle()}>
                                 <span>Exp. ROI</span>
                                 <span>{roi ? Math.round(roi) : ''}%</span>
-                            </span>
+                            </span> */}
+                            <ExpectedValueSpan
+                                label="Exp. ROI"
+                                expected={`${roi ? Math.round(roi) : ''}%`}
+                            />
                             <div className={bem.element('percent-btns')}>
                                 {this.getPercentButtons()}
                             </div>

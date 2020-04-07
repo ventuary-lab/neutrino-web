@@ -2,5 +2,56 @@
 
 
 .OrderProvider {
-    
+    background: linear-gradient(205.7deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+    border-radius: 4px;
+    padding: 15px 32px 34px;
+    margin-top: 8px;
+
+    & .buy {
+        width: 50%;
+
+        & > :nth-child(1) {
+            position: relative;
+        }
+    }
+
+    & .buy-form {
+        width: 300px;
+
+        & > :nth-child(1) {
+            padding-top: 18px;
+        }
+
+
+        & > .BaseInput__main {
+            margin: 16px 0;
+        }
+
+        & > .BaseInput__main:last-of-type {
+            margin-top: 32px;
+        }
+
+        & button {
+            width: 100%;
+        }
+    }
+
+    & .percents {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: 14px 0;
+        justify-content: space-between;
+
+        & > * {
+            width: 46px;
+            text-align: center;
+            padding: 4px 11px;
+        }
+    }
+
+
+    & .ExpectedValueSpan {
+        top: 26px;
+    }
 }

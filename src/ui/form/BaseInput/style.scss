@@ -52,26 +52,30 @@
     &__main {
         // $color-brand-purple-light
         background-color: transparent;
-        height: 37px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+
         width: 300px;
         position: relative;
         // margin-top: 14px;
 
-        & > :nth-child(1) {
-            background-color: transparent;
-            border: 1px solid #4A4A7F;
-            height: 37px;
-            border-radius: 100px;
-            width: 100%;
-            font-weight: 800;
-            font-size: 14px;
-            line-height: 17px;
-            color: #fff;
-            padding: 0 20px;
-        }
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: unset;
+
+    }
+
+    &__input {
+        background-color: transparent;
+        border: 1px solid #4A4A7F;
+        height: 37px;
+        border-radius: 100px;
+        width: 100%;
+        font-weight: 800;
+        font-size: 14px;
+        line-height: 17px;
+        color: #fff;
+        padding: 0 20px;
+        height: 37px;
     }
 
     &__icon {
@@ -101,6 +105,26 @@
             display: block;
             margin: auto;
             margin-left: 0;
+        }
+    }
+
+    &__field-name {
+        font-weight: 300;
+        font-size: 13px;
+        line-height: 15px;
+        /* identical to box height */
+        color: #FFFFFF;
+
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: -18px;
+
+        & > :nth-child(2) {
+            margin-left: 2px;
+            color: red;
         }
     }
 }
