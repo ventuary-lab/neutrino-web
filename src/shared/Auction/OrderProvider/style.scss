@@ -4,18 +4,37 @@
 .OrderProvider {
     background: linear-gradient(205.7deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
     border-radius: 4px;
-    padding: 15px 32px 34px;
+    // padding: 15px 32px 34px;
+    padding: 0 32px 34px;
     margin-top: 8px;
 
-    & .buy {
-        width: 50%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-around;
 
+    & .buy, & .liquidate {
+        margin: 0 8px;
+        margin-top: 15px;
+    
         & > :nth-child(1) {
             position: relative;
         }
     }
 
-    & .buy-form {
+    & .price {
+        & > :nth-child(1) {
+            background: unset;
+            & input {
+                border: 1px solid #4A4A7F;
+
+            }
+            
+        }
+    }
+
+    & .buy-form, & .liquidate-form {
         width: 300px;
 
         & > :nth-child(1) {

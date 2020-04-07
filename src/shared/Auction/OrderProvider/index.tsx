@@ -6,7 +6,7 @@ import Button from 'yii-steroids/ui/form/Button';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import BaseSelectInput from 'ui/form/BaseSelectInput';
 
-// import usdnLogo from 'static/icons/usd-n.svg';
+import usdnLogo from 'static/icons/usd-n.svg';
 import nsbtLogo from 'static/icons/n_icon/light-not-filled/Neutrino_N_ICON.svg';
 import wavesLogo from 'static/icons/wave.svg';
 
@@ -34,7 +34,11 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     render() {
-        const { nsbt: nsbtValue, waves: wavesValue } = { nsbt: 1273, waves: 1000 };
+        const { nsbt: nsbtValue, usdn: usdnValue, waves: wavesValue } = {
+            nsbt: 1273,
+            waves: 1000,
+            usdn: 352345,
+        };
 
         return (
             <div className="OrderProvider">
@@ -47,7 +51,7 @@ class OrderProvider extends React.Component<Props, State> {
                         ]}
                     />
                     <div className="buy-form">
-                        <div>
+                        <div className="price">
                             <BaseInput fieldName="Price" />
                             <ExpectedValueSpan expected="4" />
                         </div>
@@ -71,11 +75,42 @@ class OrderProvider extends React.Component<Props, State> {
                             You will receive {nsbtValue} NSBT for {wavesValue} WAVES when BR reaches
                             X%
                         </p>
-                        <Button label="Place Request" />
+                        <Button label={`Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`} />
                     </div>
                 </div>
 
-                <div className="liquidate"></div>
+                <div className="liquidate">
+                    <div className="liquidate-form">
+                        <div className="price">
+                            <BaseInput fieldName="Price" />
+                            <ExpectedValueSpan expected="4" />
+                        </div>
+                        <div className="percents">{this.percentage.map(this.mapPercentage)}</div>
+                        <BaseInput
+                            iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}
+                            icon={usdnLogo}
+                            value={usdnValue}
+                            fieldName="Receive"
+                            required={true}
+                            disabled
+                        />
+                        <BaseInput
+                            iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
+                            icon={wavesLogo}
+                            value={wavesValue}
+                            fieldName="Send"
+                            required={true}
+                        />
+                        <p>
+                            You will receive {nsbtValue} USDN for {wavesValue} WAVES when BR reaches
+                            X%
+                        </p>
+                        <Button
+                            color="danger"
+                            label={`Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
