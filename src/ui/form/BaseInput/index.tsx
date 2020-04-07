@@ -28,12 +28,10 @@ const BaseInput: React.FC<Props & React.HTMLProps<HTMLInputElement>> = ({
                 </span>
             )}
             <input className={bem.element('input')} {...restProps} />
-            {icon && (
-                <div className={bem.element('icon')}>
-                    <img src={icon} />
-                    <span>{iconLabel}</span>
-                </div>
-            )}
+            <div className={bem.element('icon') + ' ' + (!icon ? 'hidden' : '')}>
+                <img src={icon} />
+                <span>{iconLabel}</span>
+            </div>
         </div>
     );
 };

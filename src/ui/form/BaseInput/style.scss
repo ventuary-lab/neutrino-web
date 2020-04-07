@@ -66,6 +66,7 @@
         font-size: 14px;
     }
 
+    $root-icon: &__icon;
     &__input {
         background-color: transparent;
         border: 1px solid #4A4A7F;
@@ -85,6 +86,13 @@
         &[disabled] {
             background: #2E2E5A;
             border-color: transparent;
+        }
+
+        &:focus, &:focus + * {
+            border: none;
+            outline: 0;
+            box-shadow: $base-neon;
+            transition: box-shadow .05s linear;
         }
     }
 
