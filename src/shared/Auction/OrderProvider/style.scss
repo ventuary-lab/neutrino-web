@@ -74,3 +74,11 @@
         top: 26px;
     }
 }
+
+.OrderProviderTab {
+    
+    & > :nth-child(1) {
+        display: block;
+        margin: 12px auto;
+    }
+}

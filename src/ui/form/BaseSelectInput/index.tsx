@@ -2,7 +2,7 @@ import React from 'react';
 
 import './style.scss';
 
-type SelectOption = { value: number | string | string[]; label: string };
+export type SelectOption = { value: number | string | string[]; label: string };
 type Props = {
     options: SelectOption[];
     onSelect?: (opt: SelectOption) => void;
@@ -26,23 +26,22 @@ class BaseSelectInput extends React.Component<Props, State> {
     mapSelectOption(option: SelectOption, index: number) {
         const { value, label } = option;
         return (
-            <option value={value} onClick={() => this.onSelect(option)} selected={index === 0}>
+            <option value={value} selected={index === 0}>
                 {label}
             </option>
         );
     }
 
-    onSelect(option: SelectOption) {
+    onSelect(event) {
         const { onSelect = () => {} } = this.props;
-
-        onSelect(option);
+        onSelect(event);
     }
 
     render() {
         const { options, onSelect, ...restProps } = this.props;
 
         return (
-            <select className="BaseSelectInput" {...restProps}>
+            <select className="BaseSelectInput" {...restProps} onChange={this.onSelect}>
                 {options.map(this.mapSelectOption)}
             </select>
         );

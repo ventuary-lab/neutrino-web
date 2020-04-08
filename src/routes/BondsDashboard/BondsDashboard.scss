@@ -41,6 +41,23 @@
     background: linear-gradient(197.87deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
   }
 
+  @media screen and (max-width: 668px) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    & tbody {
+      width: 100vw;
+    }
+
+    & > :nth-child(1) {
+      width: 100vw;
+    };
+    & > :nth-child(2) {
+      width: 100%;
+      padding: 8px;
+    }
+  }
+
   // &__column {
   //   border-top-right-radius: 4px;
   //   border-top-left-radius: 4px;
