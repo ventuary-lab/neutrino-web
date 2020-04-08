@@ -14,6 +14,7 @@
     align-items: flex-end;
     justify-content: space-around;
 
+
     & .buy, & .liquidate {
         margin: 0 8px;
         margin-top: 15px;
@@ -74,8 +75,19 @@
         top: 26px;
     }
 
+
+    &-mobile {
+        display: none;
+    }
+
     @media screen and (max-width: 668px) {
         padding: 32px;
+        display: none;
+        
+        &-mobile {
+            display: flex;
+
+        }
     }
 }
 

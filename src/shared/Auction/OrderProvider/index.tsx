@@ -13,16 +13,14 @@ import wavesLogo from 'static/icons/wave.svg';
 
 import './style.scss';
 
-
 enum OrderUrgency {
     BY_REQUEST = 0,
     INSTANT,
 }
 interface Props {}
 interface State {
-    orderUrgency: OrderUrgency
+    orderUrgency: OrderUrgency;
 }
-
 
 class OrderProvider extends React.Component<Props, State> {
     percentage: number[];
@@ -36,17 +34,17 @@ class OrderProvider extends React.Component<Props, State> {
         this.percentage = [5, 10, 15, 20, 25];
 
         this.state = {
-            orderUrgency: OrderUrgency.BY_REQUEST
-        }
+            orderUrgency: OrderUrgency.BY_REQUEST,
+        };
     }
 
     onSelectOption(event) {
         switch (Number(event.target.value)) {
             case OrderUrgency.BY_REQUEST:
-                this.setState({ orderUrgency: OrderUrgency.BY_REQUEST })
+                this.setState({ orderUrgency: OrderUrgency.BY_REQUEST });
                 break;
             case OrderUrgency.INSTANT:
-                this.setState({ orderUrgency: OrderUrgency.INSTANT })
+                this.setState({ orderUrgency: OrderUrgency.INSTANT });
                 break;
         }
     }
@@ -139,40 +137,39 @@ class OrderProvider extends React.Component<Props, State> {
         );
 
         return (
-            <div className="OrderProvider">
-                <TabSelector
-                    tabs={[
-                        {
-                            label: 'Buy NSBT',
-                            node: (
-                                <div className='OrderProviderTab'>
-                                    {selectInput}
-                                    {buyForm}
-                                </div>
-                            ),
-                        },
-                        {
-                            label: 'Sell NSBT',
-                            node: (
-                                <div className='OrderProviderTab'>
-                                    {selectInput}
-                                    {sellForm}
-                                </div>
-                            ),
-                        },
-                    ]}
-                />
-            </div>
-        );
-
-        return (
-            <div className="OrderProvider">
-                <div className="buy">
-                    {selectInput}
-                    {buyForm}
+            <>
+                <div className="OrderProvider">
+                    <div className="buy">
+                        {selectInput}
+                        {buyForm}
+                    </div>
+                    <div className="liquidate">{sellForm}</div>
                 </div>
-                <div className="liquidate">{sellForm}</div>
-            </div>
+                <div className="OrderProvider OrderProvider-mobile">
+                    <TabSelector
+                        tabs={[
+                            {
+                                label: 'Buy NSBT',
+                                node: (
+                                    <div className="OrderProviderTab">
+                                        {selectInput}
+                                        {buyForm}
+                                    </div>
+                                ),
+                            },
+                            {
+                                label: 'Sell NSBT',
+                                node: (
+                                    <div className="OrderProviderTab">
+                                        {selectInput}
+                                        {sellForm}
+                                    </div>
+                                ),
+                            },
+                        ]}
+                    />
+                </div>
+            </>
         );
     }
 }
