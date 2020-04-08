@@ -100,7 +100,8 @@ export const defaultLearnLinks = [
     },
     {
         label: SECURITY_AUDIT_LABEL,
-        url: 'audit.neutrino.at',
+        url: 'http://audit.neutrino.at/',
+        target: '_blank',
     },
 ];
 
