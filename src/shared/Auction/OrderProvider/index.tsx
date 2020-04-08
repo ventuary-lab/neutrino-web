@@ -82,6 +82,10 @@ class OrderProvider extends React.Component<Props, State> {
         const { state } = this;
         const { orderUrgency } = state;
 
+        if (isNaN(Number(value))) {
+            return
+        }
+
         _set(state, name, Number(value));
 
         this.setState(state);
