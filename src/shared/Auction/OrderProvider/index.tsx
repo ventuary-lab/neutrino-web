@@ -80,7 +80,7 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     onInputChange(event) {
-        const { name, value } = event.target;
+        let { name, value } = event.target;
         const { state } = this;
         const { orderUrgency } = state;
 
@@ -172,8 +172,8 @@ class OrderProvider extends React.Component<Props, State> {
         if (isNaN(+wavesAmount)) return;
 
         const updatedValue = _round((num / 100) * Number(wavesAmount), 2);
-        _set(state, path, updatedValue)
-        this.setState(state)
+        _set(state, path, updatedValue);
+        this.setState(state);
 
         this.recalculateFormFields({
             name: path,
