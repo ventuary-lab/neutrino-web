@@ -14,7 +14,7 @@ import {
     GITHUB_LABEL,
     SMART_CONTRACT_LABEL,
     TERMS_OF_USE_LABEL,
-    STAKING_REWARDS_LABEL,
+    SECURITY_AUDIT_LABEL,
 } from './constants';
 import { isScreenNarrowHelper } from './helpers';
 
@@ -98,10 +98,10 @@ export const defaultLearnLinks = [
         url: 'https://legal.neutrino.at/',
         target: '_blank',
     },
-    // {
-    //     label: STAKING_REWARDS_LABEL,
-    //     url: '/staking',
-    // },
+    {
+        label: SECURITY_AUDIT_LABEL,
+        url: 'audit.neutrino.at',
+    },
 ];
 
 export const defaultScreenSizeContext = {
