@@ -13,6 +13,7 @@ import {
     computeWavesAmountFromROI,
     getComputedBondsFromROI,
 } from 'reducers/contract/helpers';
+import { dal } from 'components';
 
 import { Props, State, FormDefaults, OrderUrgency } from './types';
 
@@ -37,9 +38,13 @@ class OrderProvider extends React.Component<Props, State> {
 
         this.getForms = this.getForms.bind(this);
         this.onSelectOption = this.onSelectOption.bind(this);
+        this.setAmountPercentForField = this.setAmountPercentForField.bind(this);
+        this.mapLiquidatePercentage = this.mapLiquidatePercentage.bind(this);
+        this.mapBuyPercentage = this.mapBuyPercentage.bind(this);
+        this.setAmountPercentForField = this.setAmountPercentForField.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
 
-        this.percentage = [5, 10, 15, 20, 25];
+        this.percentage = [25, 50, 75, 100];
 
         this.state = {
             orderUrgency: OrderUrgency.BY_REQUEST,
@@ -83,7 +88,7 @@ class OrderProvider extends React.Component<Props, State> {
         const { orderUrgency } = state;
 
         if (isNaN(Number(value))) {
-            return
+            return;
         }
 
         _set(state, name, Number(value));
@@ -126,7 +131,7 @@ class OrderProvider extends React.Component<Props, State> {
         const { roi, controlPrice } = this.props;
         const bondsAmount = computeBondsAmountFromROI(roi, wavesAmount, controlPrice / 100);
 
-        console.log({ wavesAmount, roi, bondsAmount, controlPrice });
+        // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
         _set(state, path, Math.round(bondsAmount));
         this.setState(state);
     }
@@ -136,7 +141,7 @@ class OrderProvider extends React.Component<Props, State> {
         const { roi, controlPrice } = this.props;
         const wavesAmount = computeWavesAmountFromROI(roi, bondsAmount, controlPrice / 100);
 
-        console.log({ wavesAmount, roi, bondsAmount, controlPrice });
+        // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
         _set(state, path, Math.round(wavesAmount));
         this.setState(state);
     }
@@ -152,8 +157,38 @@ class OrderProvider extends React.Component<Props, State> {
         }
     }
 
-    mapPercentage(num: number) {
-        return <PercentButton label={`${num}%`} />;
+    mapBuyPercentage(num: number) {
+        return (
+            <PercentButton
+                onClick={() =>
+                    this.setAmountPercentForField(`${BUY_FORM_NAME}.${SEND_FIELD_NAME}`, num)
+                }
+                label={`${num}%`}
+            />
+        );
+    }
+
+    // Percents
+    setAmountPercentForField(path: string, num: number) {
+        // const wavesAmount = dal.balance._balances[CurrencyEnum.WAVES.toLowerCase()];
+        // console.log({ wavesAmount, dal })
+        // if (isNaN(+wavesAmount)) return;
+
+        // this.recalculateFormFields({
+        //     name: path,
+        //     value: Math.round((num / 100) * Number(wavesAmount)),
+        // });
+    }
+
+    mapLiquidatePercentage(num: number) {
+        return (
+            <PercentButton
+                onClick={() =>
+                    this.setAmountPercentForField(`${LIQUIDATE_FORM_NAME}.${SEND_FIELD_NAME}`, num)
+                }
+                label={`${num}%`}
+            />
+        );
     }
 
     getForms() {
@@ -165,7 +200,6 @@ class OrderProvider extends React.Component<Props, State> {
                     <BaseInput fieldName="Price" disabled />
                     <ExpectedValueSpan label="Exp. BR" expected={buy.price} />
                 </div>
-                <div className="percents">{this.percentage.map(this.mapPercentage)}</div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
                     icon={nsbtLogo}
@@ -185,6 +219,7 @@ class OrderProvider extends React.Component<Props, State> {
                     fieldName="Send"
                     required={true}
                 />
+                <div className="percents">{this.percentage.map(this.mapBuyPercentage)}</div>
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
@@ -197,7 +232,6 @@ class OrderProvider extends React.Component<Props, State> {
                     <BaseInput fieldName="Price" disabled />
                     <ExpectedValueSpan label="Exp. BR" expected={liquidate.price} />
                 </div>
-                <div className="percents">{this.percentage.map(this.mapPercentage)}</div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}
                     icon={usdnLogo}
@@ -217,6 +251,7 @@ class OrderProvider extends React.Component<Props, State> {
                     fieldName="Send"
                     required={true}
                 />
+                <div className="percents">{this.percentage.map(this.mapLiquidatePercentage)}</div>
                 <p>
                     You will receive {liquidate.receive} USDN for {liquidate.send} WAVES when BR
                     reaches X%

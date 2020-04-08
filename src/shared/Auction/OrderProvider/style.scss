@@ -43,14 +43,13 @@
             position: relative;
         }
 
-
         & > .BaseInput__main {
-            margin: 16px 0;
+            margin: 32px 0 16px 0;
         }
 
-        & > .BaseInput__main:last-of-type {
-            margin-top: 32px;
-        }
+        // & > .BaseInput__main:last-of-type {
+        //     margin-top: 32px;
+        // }
 
         & button {
             width: 100%;
@@ -61,7 +60,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        padding: 14px 0;
+        padding: 4px 0;
         justify-content: space-between;
 
         & > * {
