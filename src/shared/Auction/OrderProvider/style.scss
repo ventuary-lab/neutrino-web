@@ -28,7 +28,7 @@
         & > :nth-child(1) {
             background: unset;
             & input {
-                border: 1px solid #4A4A7F;
+                // border: 1px solid #4A4A7F;
 
             }
             
@@ -40,6 +40,7 @@
 
         & > :nth-child(1) {
             padding-top: 18px;
+            position: relative;
         }
 
 
@@ -73,6 +74,7 @@
 
     & .ExpectedValueSpan {
         top: 26px;
+        right: 26px;
     }
 
 

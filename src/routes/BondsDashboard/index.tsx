@@ -201,15 +201,22 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const { controlPrice, baseCurrency, quoteCurrency, user } = this.props;
         const { formTab } = this.state;
 
+        // bondOrders : liquidateOrders
         return (
             <div className={bem.block()}>
                 <div>
-                    <OrderBook />
-                    <OrderBook />
+                    <OrderBook orders={bondOrders} title='Auction'/>
+                    <OrderBook orders={liquidateOrders} title='Liquidate'/>
                 </div>
                 <div>
                     <ReserveHeading />
-                    <OrderProvider />
+                    <OrderProvider
+                        bondOrders={bondOrders}
+                        controlPrice={controlPrice}
+                        baseCurrency={baseCurrency}
+                        quoteCurrency={quoteCurrency}
+                        roi={currentRoi}
+                    />
                     <div className={bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`}>
                         <div className={bem.element('orders')}>
                             <Nav
@@ -223,50 +230,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 </div>
             </div>
         );
-        // return (
-        //     <div className={bem.block()}>
-        //         <div className={bem.element('column', 'left')}>
-        //             {formTab === FormTabEnum.AUCTION ? (
-        //                 <>
-        //                     <AuctionDiscount roi={currentRoi} />
-        //                 </>
-        //             ) : (
-        //                 <OrderBook
-        //                     controlPrice={controlPrice}
-        //                     orders={
-        //                         formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders
-        //                     }
-        //                     user={user}
-        //                     baseCurrency={baseCurrency}
-        //                     quoteCurrency={quoteCurrency}
-        //                     formTab={
-        //                         formTab === FormTabEnum.CONFIGURE
-        //                             ? FormTabEnum.AUCTION
-        //                             : FormTabEnum.LIQUIDATE
-        //                     }
-        //                 />
-        //             )}
-        //             <div className={bem.element('forms')}>
-        //                 <Nav
-        //                     isFullWidthTabs
-        //                     layout={'tabs'}
-        //                     onChange={formTab => this.setState({ formTab })}
-        //                     items={this.getTopNavigationTabItems()}
-        //                 />
-        //             </div>
-        //         </div>
-        //         <div className={bem.element('column', 'right')}>
-        //             <div className={bem.element('orders', userOrders ? undefined : 'hidden')}>
-        //                 <Nav
-        //                     className={bem.element('orders-nav')}
-        //                     layout={'tabs'}
-        //                     activeTab={OrdersTableTabEnum.ACTIVE}
-        //                     items={this.getBottomNavigationTabItems()}
-        //                 />
-        //             </div>
-        //         </div>
-        //     </div>
-        // );
     }
 }
 

@@ -10,7 +10,6 @@ type Props = {
 type State = {
     isOpened: boolean;
 };
-
 class BaseSelectInput extends React.Component<Props, State> {
     constructor(props) {
         super(props);
@@ -19,7 +18,7 @@ class BaseSelectInput extends React.Component<Props, State> {
         this.onSelect = this.onSelect.bind(this);
 
         this.state = {
-            isOpened: false,
+            isOpened: false
         };
     }
 

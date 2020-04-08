@@ -12,6 +12,7 @@ import { generateRandomRecords } from './helpers';
 const bem = html.bem('OrderbookReworked');
 
 const props: Props = {
+    title: '',
     tableHeaders: [
         {
             key: 'nsbt',
@@ -61,10 +62,12 @@ class Orderbook extends React.Component<any, State> {
     }
 
     render() {
+        const { title } = this.props;
+
         return (
             <div className={bem.block()}>
                 <div className={bem.element('heading')}>
-                    <span>Auction</span>
+                    <span>{title}</span>
                 </div>
                 <table className={bem.element('table', 'scrollable')}>
                     <thead>{this.mapTableHeaders(props.tableHeaders)}</thead>
