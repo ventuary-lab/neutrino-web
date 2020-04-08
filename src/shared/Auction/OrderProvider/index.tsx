@@ -1,5 +1,5 @@
 import React from 'react';
-import { set as _set, get as _get } from 'lodash';
+import { set as _set, get as _get, round as _round } from 'lodash';
 import BaseInput from 'ui/form/BaseInput';
 import PercentButton from 'ui/form/PercentButton';
 import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
@@ -13,7 +13,6 @@ import {
     computeWavesAmountFromROI,
     getComputedBondsFromROI,
 } from 'reducers/contract/helpers';
-import { dal } from 'components';
 
 import { Props, State, FormDefaults, OrderUrgency } from './types';
 
@@ -82,8 +81,6 @@ class OrderProvider extends React.Component<Props, State> {
 
     onInputChange(event) {
         const { name, value } = event.target;
-        console.log({ [name]: value });
-
         const { state } = this;
         const { orderUrgency } = state;
 
@@ -99,12 +96,10 @@ class OrderProvider extends React.Component<Props, State> {
         //     return;
         // }
 
-        this.recalculateFormFields(event);
+        this.recalculateFormFields({ name, value });
     }
 
-    recalculateFormFields(event) {
-        const { name, value } = event.target;
-
+    recalculateFormFields({ name, value }: { name: string; value: string | number }) {
         const [formType, formField] = name.split('.');
         const computedFormPath = [
             formType,
@@ -170,14 +165,20 @@ class OrderProvider extends React.Component<Props, State> {
 
     // Percents
     setAmountPercentForField(path: string, num: number) {
-        // const wavesAmount = dal.balance._balances[CurrencyEnum.WAVES.toLowerCase()];
-        // console.log({ wavesAmount, dal })
-        // if (isNaN(+wavesAmount)) return;
+        const { state } = this;
+        const { user } = this.props;
+        const wavesAmount = user.balances[CurrencyEnum.WAVES];
 
-        // this.recalculateFormFields({
-        //     name: path,
-        //     value: Math.round((num / 100) * Number(wavesAmount)),
-        // });
+        if (isNaN(+wavesAmount)) return;
+
+        const updatedValue = _round((num / 100) * Number(wavesAmount), 2);
+        _set(state, path, updatedValue)
+        this.setState(state)
+
+        this.recalculateFormFields({
+            name: path,
+            value: updatedValue,
+        });
     }
 
     mapLiquidatePercentage(num: number) {

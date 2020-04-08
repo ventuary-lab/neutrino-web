@@ -1,3 +1,4 @@
+import { IUser } from 'contractControllers/types';
 import { IOrder } from 'routes/BondsDashboard/types';
 
 export enum OrderUrgency {
@@ -10,6 +11,7 @@ export enum FormDefaults {
     USDN_AMOUNT = 1000,
 }
 export interface Props {
+    user: IUser;
     bondOrders: Record<string, string>[] | IOrder[];
     controlPrice: number;
     baseCurrency: string;
@@ -17,7 +19,7 @@ export interface Props {
     // pairName: string;
     roi: number; // like wavelets
 }
-export type InputForm = { send: number; receive: number; price: number; };
+export type InputForm = { send: number; receive: number; price: number };
 export type State = {
     orderUrgency: OrderUrgency;
     buy: InputForm;

@@ -211,6 +211,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 <div>
                     <ReserveHeading />
                     <OrderProvider
+                        user={user}
                         bondOrders={bondOrders}
                         controlPrice={controlPrice}
                         baseCurrency={baseCurrency}
