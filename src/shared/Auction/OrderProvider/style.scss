@@ -73,6 +73,10 @@
     & .ExpectedValueSpan {
         top: 26px;
     }
+
+    @media screen and (max-width: 668px) {
+        padding: 32px;
+    }
 }
 
 .OrderProviderTab {
