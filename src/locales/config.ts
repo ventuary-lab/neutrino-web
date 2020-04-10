@@ -21,7 +21,7 @@ i18next.use(initReactI18next).init({
     resources: {
         en: englishTranslation,
         ru: russianTranslation,
-        ch: pureMerge({ ...englishTranslation }, chineseTranslation),
+        ch: chineseTranslation,
     },
 });
 
