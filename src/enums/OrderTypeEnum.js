@@ -1,4 +1,5 @@
 import Enum from './Enum';
+import { t } from 'locales/config';
 
 export default class OrderTypeEnum extends Enum {
 
@@ -14,8 +15,8 @@ export default class OrderTypeEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.BUY]: 'Buy',
-            [this.LIQUIDATE]: 'Liquidate',
+            [this.BUY]: t('enums.buy.label'),
+            [this.LIQUIDATE]: t('enums.liquidate.label'),
         };
     }
 };

@@ -126,6 +126,21 @@ export default {
             confirm_details: {
                 label: 'Confirm details',
             },
+            blocked_app: {
+                label: 'Blocked illustration'
+            },
+            fraud_prevent: {
+                label: 'For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required'
+            },
+            order_filled: {
+                label: 'Filled'
+            },
+            order_cancelled: {
+                label: 'Cancelled'
+            },
+            order_new: {
+                label: 'Opened'
+            },
         },
         modals: {
             create_invoice: {

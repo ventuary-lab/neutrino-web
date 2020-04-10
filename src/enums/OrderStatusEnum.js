@@ -1,4 +1,5 @@
 import Enum from './Enum';
+import { t } from 'locales/config';
 
 export default class OrderStatusEnum extends Enum {
 
@@ -16,9 +17,9 @@ export default class OrderStatusEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.NEW]: 'Opened',
-            [this.FILLED]: 'Filled',
-            [this.CANCELED]: 'Cancelled',
+            [this.NEW]: t('common.order_new.label'),
+            [this.FILLED]: t('common.order_filled.label'),
+            [this.CANCELED]: t('common.order_cancelled.label'),
         };
     }
 };

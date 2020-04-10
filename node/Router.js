@@ -5,17 +5,10 @@ const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
-<<<<<<< HEAD
-const fs = require('fs');
-const path = require('path');
-const moment = require('moment');
-const Utils = require('./utils');
-=======
 const moment = require('moment');
 const { default: Utils } = require('./utils');
 const fs = require('fs');
 const path = require('path');
->>>>>>> beta
 
 module.exports = class Router {
     constructor(contractApp, expressApp) {
