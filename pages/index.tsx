@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+import { Translation } from 'react-i18next';
+
 import Head from 'next/head';
 import 'locales/config';
+import { GlobalLinksContext } from 'shared/Layout/context';
+import { getDefaultLearnLinks, getDefaultProductLinks } from './defaults';
 
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
@@ -35,39 +39,49 @@ class LandingPage extends React.Component<{}, State> {
         }
     }
 
+    getGlobalLinksContextValue(t) {
+        return { links: getDefaultLearnLinks(t), product: getDefaultProductLinks(t) };
+    }
+
     render() {
         const { googleTagId } = this.state;
         const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: false });
 
         return (
-            <div>
-                <Head>
-                    <title>Neutrino</title>
-                    <link rel="icon" href={'static/images/favicon.ico'} />
-                    <title>Neutrino</title>
-                </Head>
-                <div className="Layout">
-                    <div></div>
-                    <DynamicLandingPage />
-                </div>
-                <script
-                    async
-                    src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}
-                ></script>
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
+            <Translation>
+                {(t) => (
+                    <GlobalLinksContext.Provider value={this.getGlobalLinksContextValue(t)}>
+                        <div>
+                            <Head>
+                                <title>Neutrino</title>
+                                <link rel="icon" href={'static/images/favicon.ico'} />
+                                <title>Neutrino</title>
+                            </Head>
+                            <div className="Layout">
+                                <div></div>
+                                <DynamicLandingPage />
+                            </div>
+                            <script
+                                async
+                                src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}
+                            ></script>
+                            <script
+                                dangerouslySetInnerHTML={{
+                                    __html: `
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
                     gtag('config', '${googleTagId}');
                     `,
-                    }}
-                />
-                <style jsx>{`
-                    background: #f1f1f1;
-                `}</style>
-            </div>
+                                }}
+                            />
+                            <style jsx>{`
+                                background: #f1f1f1;
+                            `}</style>
+                        </div>
+                    </GlobalLinksContext.Provider>
+                )}
+            </Translation>
         );
     }
 }
