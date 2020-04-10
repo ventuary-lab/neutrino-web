@@ -24,4 +24,16 @@
     width: 200px;
     background: linear-gradient(1.04deg, #00ADFF -339.25%, #3E3E79 36.53%);
   }
+
+  .LanguageDropdown__main {
+    background: transparent;
+    border: none;
+    padding: 0 12px;
+    position: relative;
+
+    & > :nth-child(1) {
+      position: absolute;
+      top: -30px;
+    }
+  }
 }

@@ -22,7 +22,6 @@ import { isPhone } from 'yii-steroids/reducers/screen';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
-import LanguageDropdown from 'shared/LanguageDropdown';
 
 import wrongNetworkImage from 'static/images/warning-image.svg';
 import CollectionEnum from 'enums/CollectionEnum';

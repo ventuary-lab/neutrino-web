@@ -57,7 +57,7 @@ class LanguageDropdown extends React.Component<Props, State> {
     getLinkStyles() {
         const { isOpened } = this.state;
         const { langs } = this.props;
-        const itemHeight = 65;
+        const itemHeight = 63;
         const topPadding = 24;
 
         return {

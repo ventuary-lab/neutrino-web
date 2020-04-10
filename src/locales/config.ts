@@ -25,4 +25,10 @@ i18next.use(initReactI18next).init({
 
 export const t = (text) => i18next.t(text);
 
+export const LanguageEnum = {
+    EN: 'en-us',
+    RU: 'ru-ru',
+    CH: 'ch'
+}
+
 export default i18next;

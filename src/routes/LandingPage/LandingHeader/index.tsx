@@ -1,14 +1,14 @@
 import React from 'react';
 import { buildBem } from 'ui/global/helpers';
-// import { goToPage } from 'yii-steroids/actions/navigation';
+import { goToPage } from 'yii-steroids/actions/navigation';
 import LanguageDropdown from 'shared/LanguageDropdown';
-// import { html, store, dal } from 'components';
-// import { buildBem } from '../helpers';
-// import { goToPage } from 'yii-steroids/actions/navigation';
+import { Link as RRLink } from 'react-router';
+
 import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 import { Translation } from 'react-i18next';
+import { LanguageEnum } from 'locales/config'
 import { LayoutUrlParams } from 'shared/Layout/constants';
 
 import { Link } from 'ui/global/types';
@@ -21,6 +21,26 @@ const crossIcon = 'static/images/landing/cross-icon.svg';
 import './style.scss';
 
 const bem = buildBem('LandingHeader');
+
+export const getLanguageDropdownProps = i18n => ({
+    default: {
+        label: 'English',
+        flag: '🇬🇧',
+        onClick: () => i18n.changeLanguage(LanguageEnum.EN),
+    },
+    langs: [
+        {
+            label: 'English',
+            flag: '🇬🇧',
+            onClick: () => i18n.changeLanguage(LanguageEnum.EN),
+        },
+        {
+            label: 'Russian',
+            flag: '🇷🇺',
+            onClick: () => i18n.changeLanguage(LanguageEnum.RU),
+        },
+    ],
+});
 
 interface Props {}
 interface State {
@@ -112,6 +132,9 @@ class LandingHeader extends React.Component<Props, State> {
                     {icon && <img src={icon} alt="" />}
                 </a>
             </li>
+            // <li>
+            //     <RRLink to={url || '#'} label={label}/>
+            // </li>
         );
     }
 
@@ -127,26 +150,6 @@ class LandingHeader extends React.Component<Props, State> {
     render() {
         // const productLinks = this.productLinks.map(this.mapLink);
         const { isProductsListVisible, isLearnListVisible, isMobileMenuVisible } = this.state;
-
-        const getLanguageDropdownProps = i18n => ({
-            default: {
-                label: 'English',
-                flag: '🇬🇧',
-                onClick: () => i18n.changeLanguage('en-us'),
-            },
-            langs: [
-                {
-                    label: 'English',
-                    flag: '🇬🇧',
-                    onClick: () => i18n.changeLanguage('en-us'),
-                },
-                {
-                    label: 'Russian',
-                    flag: '🇷🇺',
-                    onClick: () => i18n.changeLanguage('ru-ru'),
-                },
-            ],
-        });
 
         return (
             <Translation>

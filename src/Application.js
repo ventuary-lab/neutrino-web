@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'yii-steroids/ui/nav/Router';
 
-import {ui} from 'components';
+import { ui } from 'components';
 import Layout from 'shared/Layout';
 import routes from './routes';
 import './static/images/favicon.ico';
@@ -15,15 +15,8 @@ ui.addViews({
 });
 ui.addViews(require.context('./ui', true, /View.js$/));
 
-
-
 export default class Application extends React.PureComponent {
     render() {
-        return (
-            <Router
-                wrapperView={Layout}
-                routes={routes}
-            />
-        );
+        return <Router wrapperView={Layout} routes={routes} />;
     }
 }

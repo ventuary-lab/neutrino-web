@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {store} from 'components';
+import { Provider } from 'react-redux';
+import { store } from 'components';
 import 'locales/config';
 
 import './style/index.scss';
 
-(init => {
+((init) => {
     const sentryDsn = {
         dev: 'https://258769261d4f44cc8f7f9fdd8db16549@sentry.io/1798433',
         alpha: 'https://0768277c4fd74cb388978b52b4176398@sentry.io/1798430',
@@ -26,13 +26,12 @@ import './style/index.scss';
     } else {
         init();
     }
-
 })(() => {
     const Application = require('./Application').default;
     ReactDOM.render(
         <Provider store={store.store}>
-            <Application/>
+            <Application />
         </Provider>,
-        document.getElementById('root'),
+        document.getElementById('root')
     );
 });

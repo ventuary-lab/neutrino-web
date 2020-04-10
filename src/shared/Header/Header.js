@@ -25,13 +25,15 @@ import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
 import { ROUTE_ROOT, ROUTE_STAKING_LANDING_PAGE } from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
+import { getLanguageDropdownProps } from 'routes/LandingPage/LandingHeader';
+import LanguageDropdown from 'shared/LanguageDropdown';
 
 import './Header.scss';
 
 const bem = html.bem('Header');
 const FORM_ID = 'SectionToggle';
 
-@connect(state => ({
+@connect((state) => ({
     formValues: getFormValues(FORM_ID)(state),
     navItems: getNavItems(state, ROUTE_ROOT),
     currentItem: getCurrentItem(state),
@@ -98,16 +100,16 @@ export default class Header extends React.PureComponent {
     }
 
     render() {
-        const showNav = !!this.props.navItems.find(item =>
+        const showNav = !!this.props.navItems.find((item) =>
             item.roles.includes(this.props.userRole)
         );
         const navItems = this.props.navItems.filter(
-            item => [ROUTE_STAKING_LANDING_PAGE].indexOf(item.id) === -1
+            (item) => [ROUTE_STAKING_LANDING_PAGE].indexOf(item.id) === -1
         );
 
         return (
             <GlobalLinksContext.Consumer>
-                {links => (
+                {(links) => (
                     <header className={bem.block()}>
                         <Link className={bem.element('logo')} noStyles toRoute={ROUTE_ROOT}>
                             <img className={bem.element('logo-image')} src={logo} alt="Neutrino" />
@@ -118,7 +120,7 @@ export default class Header extends React.PureComponent {
                                     formId={FORM_ID}
                                     initialValues={{
                                         section: navItems
-                                            .map(item => item.id)
+                                            .map((item) => item.id)
                                             .includes(this.props.currentItem.id)
                                             ? this.props.currentItem.id
                                             : null,
@@ -127,12 +129,9 @@ export default class Header extends React.PureComponent {
                                     <DropDownField
                                         attribute={'section'}
                                         items={navItems}
-                                        onItemChange={item => {
+                                        onItemChange={(item) => {
                                             const link = getArticleLink(links.product);
-                                            return this.onNavItemChange(
-                                                item,
-                                                link && link.url
-                                            );
+                                            return this.onNavItemChange(item, link && link.url);
                                         }}
                                         defaultItemLabel={'Products'}
                                     />
@@ -140,7 +139,7 @@ export default class Header extends React.PureComponent {
                             </div>
                         )) || (
                             <LoginTypeModalContext.Consumer>
-                                {loginContext => (
+                                {(loginContext) => (
                                     <Button
                                         className={bem.element('auth-button')}
                                         label={__('Login')}
@@ -156,9 +155,15 @@ export default class Header extends React.PureComponent {
                             <InfoDropDown
                                 icon={'Icon__learn'}
                                 label={__('Learn')}
-                                items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
+                                items={links.links.map((link) => ({ ...link, linkUrl: link.url }))}
                             />
                         </div>
+
+                        <Translation>
+                            {(t, { i18n }) => {
+                                return <LanguageDropdown {...getLanguageDropdownProps(i18n)} />;
+                            }}
+                        </Translation>
                     </header>
                 )}
             </GlobalLinksContext.Consumer>

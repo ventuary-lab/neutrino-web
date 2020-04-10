@@ -197,7 +197,7 @@ export default {
                 label: 'Get USD-N',
             },
             neutrino_main_title: {
-                label: 'Decentralized price stable currency',
+                label: 'Децентралайзд price stable currency',
             },
             first_paragraph: {
                 label:

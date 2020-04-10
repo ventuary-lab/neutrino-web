@@ -1,6 +1,7 @@
 import React from 'react';
 import { html } from 'components';
 import usdnLogo from 'static/icons/usd-n.svg';
+import { t } from 'locales/config';
 import CurrencyEnum from 'enums/CurrencyEnum';
 
 import './style.scss';
@@ -30,7 +31,7 @@ const AccountBalanceTitle: React.FC<Props & React.HTMLAttributes<HTMLDivElement>
                 <img src={usdnLogo} />
             </span>
             <span>{amount}</span>
-            <span>{CurrencyEnum.USD_N.toUpperCase()}</span>
+            <span>{t('enums.currency.usdn.label')}</span>
         </div>
     </div>
 );

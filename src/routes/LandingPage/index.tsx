@@ -45,20 +45,16 @@ class LandingPage extends React.Component<Props> {
             { icon: twitterIcon, route: NEUTRINO_TWITTER_LINK },
         ];
 
-        const getParagraph = t => (
+        const getParagraph = (t) => (
             <p>
-                <span>
-                    {t('landing.first_paragraph.label')}&nbsp;
-                </span>
-                <span>
-                    {t('landing.second_paragraph.label')}
-                </span>
+                <span>{t('landing.first_paragraph.label')}&nbsp;</span>
+                <span>{t('landing.second_paragraph.label')}</span>
             </p>
         );
 
         return (
             <Translation>
-                {t => (
+                {(t) => (
                     <div className={bem.element('main')}>
                         <div
                             className={bem.element('first-part')}
@@ -102,9 +98,9 @@ class LandingPage extends React.Component<Props> {
                             </div>
                             <div className={bem.element('mobile-info')}>{getParagraph(t)}</div>
                             <GlobalLinksContext.Consumer>
-                                {context => {
+                                {(context) => {
                                     const tosLink = context.links.find(
-                                        link => link.label === TERMS_OF_USE_LABEL
+                                        (link) => link.label === TERMS_OF_USE_LABEL
                                     ).url;
                                     return (
                                         <div className={bem.element('tos')}>
@@ -115,50 +111,11 @@ class LandingPage extends React.Component<Props> {
                                     );
                                 }}
                             </GlobalLinksContext.Consumer>
-                            {/* <div className={bem.element('soc-links')}>{socLinks}</div>
-                            <div className={bem.element('powered-by-waves')}>
-                                <img src={poweredByWavesLogo} alt="powered by waves" />
-                            </div> */}
-                            <LandingFooter links={socLinks}/>
+                            <LandingFooter links={socLinks} />
                         </div>
                     </div>
                 )}
             </Translation>
-                //     </div>
-                //     <div className={bem.element('action-buttons')}>
-                //         <a className="base-button" target="_blank" href="/neutrino/usd-n">
-                //             Get USD-N
-                //         </a>
-                //         <a
-                //             className="base-button alt"
-                //             target="_blank"
-                //             href="https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354"
-                //         >
-                //             How it works
-                //         </a>
-                //     </div>
-                //     <div className={bem.element('mobile-info')}>{paragraph}</div>
-                //     <GlobalLinksContext.Consumer>
-                //         {context => {
-                //             const tosLink = context.links.find(
-                //                 link => link.label === TERMS_OF_USE_LABEL
-                //             ).url;
-                //             return (
-                //                 <div className={bem.element('tos')}>
-                //                     <a href={tosLink} target="_blank">
-                //                         {TERMS_OF_USE_LABEL}
-                //                     </a>
-                //                 </div>
-                //             );
-                //         }}
-                //     </GlobalLinksContext.Consumer>
-                //     {/* <div className={bem.element('soc-links')}>{socLinks}</div>
-                //     <div className={bem.element('powered-by-waves')}>
-                //         <img src={poweredByWavesLogo} alt="powered by waves" />
-                //     </div> */}
-                //     <LandingFooter links={socLinks}/>
-                // </div>
-            // </div>
         );
     }
 }
