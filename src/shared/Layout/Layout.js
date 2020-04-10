@@ -53,11 +53,7 @@ import {
     ScreenSizeContext,
 } from './context';
 import { LayoutUrlParams } from './constants';
-import {
-    defaultScreenSizeContext,
-    getDefaultLearnLinks,
-    getDefaultProductLinks,
-} from './defaults';
+import { defaultScreenSizeContext, getDefaultLearnLinks, getDefaultProductLinks } from './defaults';
 import { isScreenNarrow } from './helpers';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
@@ -71,7 +67,7 @@ const bem = html.bem('Layout');
     // Initialize websocket
     // TODO ws.wsUrl = process.env.APP_WS_URL || 'ws://localhost:5000';
     ws.wsUrl = location.port ? 'ws://localhost:5000' : location.origin.replace('http', 'ws');
-    ws.onMessage = event =>
+    ws.onMessage = (event) =>
         store.dispatch([
             apiWsHandler(event),
             // currencyWsHandler(event),
@@ -84,7 +80,7 @@ const bem = html.bem('Layout');
     return data;
 })
 @screenWatcherHoc()
-@connect(state => ({
+@connect((state) => ({
     isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
     matchParams: state.navigation.params,
     data: getData(state),
@@ -94,7 +90,7 @@ const bem = html.bem('Layout');
     isPhone: isPhone(state),
     // prices: getPrices(state),
 }))
-@dal.hoc(props => [
+@dal.hoc((props) => [
     {
         url: `/api/v1/neutrino-config/${props.pairName}`,
         key: 'neutrinoConfig',
@@ -138,6 +134,7 @@ export default class Layout extends React.PureComponent {
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
 
+        // this.globalLinksContextValue = this.getGlobalLinksContextValue(t)
         // this.globalLinksContextValue = { links, product };
 
         this.loginTypeContextValue = {
@@ -413,11 +410,9 @@ export default class Layout extends React.PureComponent {
         return elements;
     }
 
-
     getGlobalLinksContextValue(t) {
         return { links: getDefaultLearnLinks(t), product: getDefaultProductLinks(t) };
     }
-
 
     render() {
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
@@ -453,98 +448,49 @@ export default class Layout extends React.PureComponent {
                             isOpened={shouldShowInviteModal}
                             onClose={() => this.triggerInstallKeeperModalVisibility(false)}
                         />
-                        <GlobalLinksContext.Provider value={this.getGlobalLinksContextValue(t)}>
-                            <BlurContext.Provider value={this.blurContextValue}>
-                                <UserCongratsModalContext.Provider
-                                    value={this.userCongratsModalContextValue}
-                                >
-                                    <InstallKeeperModalContext.Provider
-                                        value={{
-                                            onLogin: this.onWavesKeeperLogin,
-                                            onLogout: this.onWavesKeeperLogout,
-                                            isVisible: shouldShowInviteModal,
-                                            openModal: () =>
-                                                this.triggerInstallKeeperModalVisibility(true),
-                                        }}
+                        <ScreenSizeContext.Provider value={this.screenSizeContextValue}>
+                            <GlobalLinksContext.Provider value={this.getGlobalLinksContextValue(t)}>
+                                <BlurContext.Provider value={this.blurContextValue}>
+                                    <LoginTypeModalContext.Provider
+                                        value={this.loginTypeContextValue}
                                     >
-                                        <ConfigContext.Provider value={configValue}>
-                                            <UserCongratsModal
-                                                isOpened={isUserCongratsModalOpened}
-                                                onClose={this.userCongratsModalContextValue.onClose}
-                                                onOpen={this.userCongratsModalContextValue.onOpen}
-                                            />
-                                            {/* <div>
-                                                {isRootPage && (
-                                                    <LanguageDropdown
-                                                        default={{
-                                                            label: 'English',
-                                                            flag: '🇬🇧',
-                                                            onClick: () =>
-                                                                i18n.changeLanguage('en-us'),
-                                                        }}
-                                                        langs={[
-                                                            {
-                                                                label: 'English',
-                                                                flag: '🇬🇧',
-                                                                onClick: () =>
-                                                                    i18n.changeLanguage('en-us'),
-                                                            },
-                                                            {
-                                                                label: 'Russian',
-                                                                flag: '🇷🇺',
-                                                                onClick: () =>
-                                                                    i18n.changeLanguage('ru-ru'),
-                                                            },
-                                                        ]}
+                                        <UserCongratsModalContext.Provider
+                                            value={this.userCongratsModalContextValue}
+                                        >
+                                            <InstallKeeperModalContext.Provider
+                                                value={{
+                                                    ...this.installKeeperContext,
+                                                    isVisible: this.state.shouldShowInviteModal,
+                                                }}
+                                            >
+                                                <ConfigContext.Provider value={configValue}>
+                                                    <LoginTypeModal
+                                                        isOpened={isLoginTypeModalOpened}
+                                                        onClose={this.loginTypeContextValue.onClose}
+                                                        onOpen={this.loginTypeContextValue.onOpen}
                                                     />
-                                                )}
-                                            </div> */}
-                                            {children}
-                                        </ConfigContext.Provider>
-                                        <ModalWrapper />
-                                    </InstallKeeperModalContext.Provider>
-                                </UserCongratsModalContext.Provider>
-                            </BlurContext.Provider>
-                        </GlobalLinksContext.Provider>
+                                                    <UserCongratsModal
+                                                        isOpened={isUserCongratsModalOpened}
+                                                        onClose={
+                                                            this.userCongratsModalContextValue
+                                                                .onClose
+                                                        }
+                                                        onOpen={
+                                                            this.userCongratsModalContextValue
+                                                                .onOpen
+                                                        }
+                                                    />
+                                                    {children}
+                                                </ConfigContext.Provider>
+                                                <ModalWrapper />
+                                            </InstallKeeperModalContext.Provider>
+                                        </UserCongratsModalContext.Provider>
+                                    </LoginTypeModalContext.Provider>
+                                </BlurContext.Provider>
+                            </GlobalLinksContext.Provider>
+                        </ScreenSizeContext.Provider>
                     </div>
                 )}
-                {/* <div
-                className={bem.block({
-                    'is-show-left-sidebar': this.props.isShowLeftSidebar,
-                    is_custom: customViewRoutes.indexOf(this.props.currentItem.id) !== -1,
-                })}
-            >
-                <InstallKeeperModal
-                    isOpened={shouldShowInviteModal}
-                    onClose={() => this.triggerInstallKeeperModalVisibility(false)}
-                />
-                <GlobalLinksContext.Provider value={this.globalLinksContextValue}>
-                    <BlurContext.Provider value={this.blurContextValue}>
-                        <UserCongratsModalContext.Provider
-                            value={this.userCongratsModalContextValue}
-                        >
-                            <InstallKeeperModalContext.Provider
-                                value={{
-                                    onLogin: this.onWavesKeeperLogin,
-                                    onLogout: this.onWavesKeeperLogout,
-                                    isVisible: shouldShowInviteModal,
-                                    openModal: () => this.triggerInstallKeeperModalVisibility(true),
-                                }}
-                            >
-                                <ConfigContext.Provider value={configValue}>
-                                    <UserCongratsModal
-                                        isOpened={isUserCongratsModalOpened}
-                                        onClose={this.userCongratsModalContextValue.onClose}
-                                        onOpen={this.userCongratsModalContextValue.onOpen}
-                                    />
-                                    {children}
-                                </ConfigContext.Provider>
-                                <ModalWrapper />
-                            </InstallKeeperModalContext.Provider>
-                        </UserCongratsModalContext.Provider>
-                    </BlurContext.Provider>
-                </GlobalLinksContext.Provider>
-            </div> */}
             </Translation>
         );
     }

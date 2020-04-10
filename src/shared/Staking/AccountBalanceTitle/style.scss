@@ -7,6 +7,7 @@
         font-size: 14px;
         line-height: 17px;
         font-weight: normal;
+        display: block;
         position: relative;
 
         &_vertical {
@@ -27,7 +28,7 @@
     }
 
     &__balance {
-        position: relative;
+        position: absolute;
         right: 0;
         top: 0;
         display: block !important;

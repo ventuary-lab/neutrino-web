@@ -70,7 +70,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
     onErrorOccur(err: Error) {
         store.dispatch(
             openModal(MessageModal, {
-                text: `Error occured. ${err.message}`
+                text: `Error occured. ${err.message}`,
             })
         );
     }
@@ -156,7 +156,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
 
         return (
             <Translation>
-                {t => (
+                {(t) => (
                     <Modal
                         className={bem.block()}
                         isOpen={this.props.isOpened}
@@ -170,10 +170,12 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                                     <AccountBalanceTitle
                                         title={`${t('staking_dashboard.account_balance.label')}:`}
                                         amount={accountBalance}
+                                        type={AccountBalanceTitleOption.VERTICAL}
                                     />
                                     <AccountBalanceTitle
                                         title={`${t('staking_dashboard.staking_balance.label')}:`}
                                         amount={stakingBalance}
+                                        type={AccountBalanceTitleOption.VERTICAL}
                                     />
                                 </div>
                                 <div className={bem.element('actions')}>
