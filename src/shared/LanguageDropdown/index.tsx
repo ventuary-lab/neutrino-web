@@ -16,6 +16,7 @@ interface Props {
     default: LanguageItem;
 }
 interface State {
+    itemIndex: number;
     isOpened: boolean;
     currentLang: LanguageItem;
 }
@@ -25,24 +26,33 @@ class LanguageDropdown extends React.Component<Props, State> {
         super(props);
 
         this.mapLink = this.mapLink.bind(this);
+        this.onLinkClick = this.onLinkClick.bind(this);
         this.getLinkStyles = this.getLinkStyles.bind(this);
 
         this.state = {
             isOpened: false,
-            currentLang: this.props.default
+            currentLang: this.props.default,
+            itemIndex: 0,
         };
     }
 
+    onLinkClick(langItem: LanguageItem) {
+        const { langs } = this.props;
+        const { itemIndex } = this.state;
+        const newIndex = itemIndex === 0 ? 1 : 0
+        const newItem = langs[newIndex];
+
+        this.setState({ currentLang: newItem })
+
+        newItem.onClick();
+    }
+
     mapLink(langItem: LanguageItem, itemIndex: number) {
-        const { label, flag, onClick } = langItem;
+        const { label, flag } = langItem;
         const { isOpened } = this.state;
-        const _onClick = () => {
-            this.setState(prevState => ({ isOpened: !prevState.isOpened, currentLang: langItem }));
-            onClick();
-        };
 
         return (
-            <a onClick={_onClick}>
+            <a onClick={() => this.onLinkClick(langItem)}>
                 <span>{flag}</span>
                 <span>{label}</span>
                 <img

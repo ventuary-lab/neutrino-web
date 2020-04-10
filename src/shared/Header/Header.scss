@@ -36,4 +36,17 @@
       top: -30px;
     }
   }
+  
+
+  @media screen and (max-width: 768px) {
+    & .LanguageDropdown__main {
+      left: -22px;
+      padding-left: 20px;
+      & a {
+        & > :nth-child(2) {
+          display: none
+        }
+      }
+    }
+  }
 }

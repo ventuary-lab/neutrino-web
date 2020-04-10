@@ -5,12 +5,18 @@
 .LanguageDropdown {
     $li-pd: 24px;
 
+
+
     &__main {
         background-color: rgb(41, 32, 95);
         border: 2px solid rgb(14, 8, 66);
         font-size: 18px;
         font-weight: 600;
         z-index: 20;
+
+        & img {
+            display: none;
+        }
 
         & > :first-child {
             padding: $li-pd;

@@ -8,8 +8,14 @@ import chineseTranslation from './ch';
 
 const pureMerge = (obj1, obj2) => {
     const result = { ...obj1 };
-    _.merge(result, obj2)
+    _.merge(result, obj2);
     return result;
+};
+
+export const LanguageEnum = {
+    EN: 'en',
+    RU: 'ru',
+    CH: 'ch',
 };
 
 i18next.use(initReactI18next).init({
@@ -17,20 +23,39 @@ i18next.use(initReactI18next).init({
         // React already does escaping
         escapeValue: false,
     },
-    lng: 'en',
+    lng: LanguageEnum.EN,
     resources: {
-        en: englishTranslation,
-        ru: russianTranslation,
-        ch: chineseTranslation,
+        [LanguageEnum.EN]: englishTranslation,
+        [LanguageEnum.RU]: russianTranslation,
+        [LanguageEnum.CH]: chineseTranslation,
     },
 });
 
-export const t = (text) => i18next.t(text);
+export const getLanguageDropdownProps = i18n => ({
+    default: {
+        label: 'English',
+        flag: '🇬🇧',
+        onClick: () => i18n.changeLanguage(LanguageEnum.EN),
+    },
+    langs: [
+        {
+            label: 'English',
+            flag: '🇬🇧',
+            onClick: () => i18n.changeLanguage(LanguageEnum.EN),
+        },
+        // {
+        //     label: 'Russian',
+        //     flag: '🇷🇺',
+        //     onClick: () => i18n.changeLanguage(LanguageEnum.RU),
+        // },
+        {
+            label: '文言',
+            flag: '🇨🇳',
+            onClick: () => i18n.changeLanguage(LanguageEnum.CH),
+        },
+    ],
+});
 
-export const LanguageEnum = {
-    EN: 'en-us',
-    RU: 'ru-ru',
-    CH: 'ch',
-};
+export const t = (text) => i18next.t(text);
 
 export default i18next;

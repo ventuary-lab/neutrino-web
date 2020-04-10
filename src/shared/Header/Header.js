@@ -25,7 +25,7 @@ import InfoDropDown from 'shared/InfoDropDown';
 import logo from 'static/images/logo.svg';
 import { ROUTE_ROOT, ROUTE_STAKING_LANDING_PAGE } from 'routes';
 import NavItemSchema from 'types/NavItemSchema';
-import { getLanguageDropdownProps } from 'routes/LandingPage/LandingHeader';
+import { getLanguageDropdownProps } from 'locales/config';
 import LanguageDropdown from 'shared/LanguageDropdown';
 
 import './Header.scss';

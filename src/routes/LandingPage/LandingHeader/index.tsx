@@ -8,7 +8,7 @@ import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 import { Translation } from 'react-i18next';
-import { LanguageEnum } from 'locales/config'
+import { LanguageEnum, getLanguageDropdownProps } from 'locales/config';
 import { LayoutUrlParams } from 'shared/Layout/constants';
 
 import { Link } from 'ui/global/types';
@@ -21,31 +21,6 @@ const crossIcon = 'static/images/landing/cross-icon.svg';
 import './style.scss';
 
 const bem = buildBem('LandingHeader');
-
-export const getLanguageDropdownProps = i18n => ({
-    default: {
-        label: 'English',
-        flag: '🇬🇧',
-        onClick: () => i18n.changeLanguage(LanguageEnum.EN),
-    },
-    langs: [
-        {
-            label: 'English',
-            flag: '🇬🇧',
-            onClick: () => i18n.changeLanguage(LanguageEnum.EN),
-        },
-        // {
-        //     label: 'Russian',
-        //     flag: '🇷🇺',
-        //     onClick: () => i18n.changeLanguage(LanguageEnum.RU),
-        // },
-        {
-            label: '文言',
-            flag: '🇨🇳',
-            onClick: () => i18n.changeLanguage(LanguageEnum.CH),
-        },
-    ],
-});
 
 interface Props {}
 interface State {
@@ -104,14 +79,14 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     triggerLearnList() {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             isProductsListVisible: false,
             isLearnListVisible: !prevState.isLearnListVisible,
         }));
     }
 
     triggerProductsList() {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             isLearnListVisible: false,
             isProductsListVisible: !prevState.isProductsListVisible,
         }));
@@ -161,9 +136,9 @@ class LandingHeader extends React.Component<Props, State> {
                 {(t, { i18n }) => (
                     <div className={bem.element('main')}>
                         <GlobalLinksContext.Consumer>
-                            {context => (
+                            {(context) => (
                                 <InstallKeeperModalContext.Consumer>
-                                    {installKeeperContext => {
+                                    {(installKeeperContext) => {
                                         const currentLinks = this.getLinks(t);
 
                                         currentLinks[currentLinks.length - 1] = {
@@ -208,7 +183,9 @@ class LandingHeader extends React.Component<Props, State> {
                                                         {context.links.map(this.mapLink)}
                                                     </ul>
                                                 </div>
-                                                <LanguageDropdown {...getLanguageDropdownProps(i18n)} />
+                                                <LanguageDropdown
+                                                    {...getLanguageDropdownProps(i18n)}
+                                                />
                                                 <OutsideAlerter
                                                     handler={this.outsideHandler}
                                                     className={bem.element('actions')}

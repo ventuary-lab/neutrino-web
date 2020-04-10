@@ -188,5 +188,13 @@
             border-radius: 25px;
         }
     }
+
+
+    @media screen and (max-width: 768px) {
+        &__main .LanguageDropdown__main {
+            margin-right: 0;
+            margin-top: 20px;
+        }
+    }
 }
 
