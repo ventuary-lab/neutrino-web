@@ -97,7 +97,7 @@ class LandingPage extends React.Component<Props> {
                                 </a>
                             </div>
                             <div className={bem.element('mobile-info')}>{getParagraph(t)}</div>
-                            <Translation>
+                            {/* <Translation>
                                 {(t) => (
                                     <GlobalLinksContext.Consumer>
                                         {(context) => {
@@ -115,7 +115,7 @@ class LandingPage extends React.Component<Props> {
                                         }}
                                     </GlobalLinksContext.Consumer>
                                 )}
-                            </Translation>
+                            </Translation> */}
                             <LandingFooter links={socLinks} />
                         </div>
                     </div>
