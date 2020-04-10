@@ -55,6 +55,7 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "websocket": "^1.0.29",
     "winston": "^3.2.1",
+    "xlsx": "^0.15.6",
     "yii-steroids": "^1.14.0"
   },
   "devDependencies": {

@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 import englishTranslation from './en-us';
 import russianTranslation from './ru-ru';
+import chineseTranslation from './ch';
 
 i18next.use(initReactI18next).init({
     interpolation: {
@@ -12,14 +13,8 @@ i18next.use(initReactI18next).init({
     lng: 'en',
     resources: {
         en: englishTranslation,
-        ru: russianTranslation
-        // es: {
-        //     translation: {
-        //         age: { label: 'Años' },
-        //         home: { label: 'Casa' },
-        //         name: { label: 'Nombre' },
-        //     },
-        // },
+        ru: russianTranslation,
+        ch: chineseTranslation
     },
 });
 

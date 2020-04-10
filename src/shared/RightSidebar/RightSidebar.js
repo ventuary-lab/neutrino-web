@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Translation } from 'react-i18next';
+
 import Button from 'yii-steroids/ui/form/Button';
 import { getUser } from 'yii-steroids/reducers/auth';
 import _upperFirst from 'lodash-es/upperFirst';
@@ -20,7 +22,7 @@ import './RightSidebar.scss';
 
 const bem = html.bem('RightSidebar');
 
-@connect(state => ({
+@connect((state) => ({
     user: getUser(state),
 }))
 export default class RightSidebar extends React.PureComponent {
@@ -36,33 +38,23 @@ export default class RightSidebar extends React.PureComponent {
 
         return (
             <LoginTypeModalContext.Consumer>
-                {loginTypeContext => (
+                {(loginTypeContext) => (
                     <InstallKeeperModalContext.Consumer>
-                        {installKeeperContext => (
+                        {(installKeeperContext) => (
                             <div className={bem.block()}>
                                 {(this.props.user && (
                                     <>
                                         <div className={bem.element('user-info')}>
-                                            {/* <div
-                                                className={bem(
-                                                    bem.element('user-info-icon'),
-                                                    'Icon Icon__waves-keeper'
-                                                )}
-                                            /> */}
-                                            <img src={wavesRawLogo} className={bem.element('waves-logo')} />
+                                            <img
+                                                src={wavesRawLogo}
+                                                className={bem.element('waves-logo')}
+                                            />
                                             <div className={bem.element('address-container')}>
                                                 <span className={bem.element('address-value')}>
                                                     <a href={addressUrl} target="_blank">
                                                         {this.props.user.address}
                                                     </a>
                                                 </span>
-                                                {/* <a
-                                    href={addressUrl}
-                                    target={'_blank'}
-                                    className={bem.element('address-link')}
-                                >
-                                    <span className={'Icon Icon__arrow-right-2'} />
-                                </a> */}
                                             </div>
                                             <button
                                                 className={bem.element('logout')}
@@ -75,20 +67,15 @@ export default class RightSidebar extends React.PureComponent {
                                         <div className={bem.element('balance-table')}>
                                             <BalanceTable />
                                         </div>
-                                        {/* <div className={bem.element('user-network-container')}>
-                                            <div className={bem.element('user-network')}>
-                                                <div className={bem.element('user-network-icon')}>
-                                                    <span
-                                                        className={
-                                                            'Icon Icon__point-in-circle_green'
-                                                        }
-                                                    />
-                                                </div>
-                                                {_upperFirst(this.props.user.network)}
-                                            </div>
-                                        </div> */}
                                     </>
-                                )) || <>{this.renderAuthBlock({ loginTypeContext, installKeeperContext })}</>}
+                                )) || (
+                                    <>
+                                        {this.renderAuthBlock({
+                                            loginTypeContext,
+                                            installKeeperContext,
+                                        })}
+                                    </>
+                                )}
                                 {/* <WavesExchangeChart /> */}
                             </div>
                         )}
@@ -116,18 +103,24 @@ export default class RightSidebar extends React.PureComponent {
                     onClick={() => loginTypeContext.onOpen()}
                 />
                 <p className={bem.element('auth-info')}>
-                    <GlobalLinksContext.Consumer>
-                        {context => {
-                            const tosLink = context.links.find(
-                                link => link.label === TERMS_OF_USE_LABEL
-                            ).url;
-                            return (
-                                <a href={tosLink} target={'_blank'}>
-                                    {TERMS_OF_USE_LABEL}
-                                </a>
-                            );
-                        }}
-                    </GlobalLinksContext.Consumer>
+                    <Translation>
+                        {(t) => (
+                            <GlobalLinksContext.Consumer>
+                                {(context) => {
+                                    const tosLink = context.links.find(
+                                        (link) => link.label === t('common.terms_of_use.label')
+                                    ).url;
+                                    return (
+                                        <div className={bem.element('tos')}>
+                                            <a href={tosLink} target="_blank">
+                                                {t('common.terms_of_use.label')}
+                                            </a>
+                                        </div>
+                                    );
+                                }}
+                            </GlobalLinksContext.Consumer>
+                        )}
+                    </Translation>
                     <br />
                     <a
                         href="https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit?usp=sharing"

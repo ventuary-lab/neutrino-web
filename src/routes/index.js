@@ -4,7 +4,7 @@ import { t as translateGetter } from 'locales/config';
 // import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
 import BondsDashboard from './BondsDashboard';
-import LeadingDashboard from './LeadingDashboard';
+// import LeadingDashboard from './LeadingDashboard';
 import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
 import { getDefaultProductLinks } from 'shared/Layout/defaults';
@@ -78,25 +78,25 @@ export default {
             isVisible: false,
             roles: UserRole.getAuth(),
         },
-        [ROUTE_LEASING_REDIRECT]: {
-            exact: true,
-            path: '/leasing',
-            component: Route,
-            componentProps: {
-                render: () => <Redirect to={`/leasing/${activeCurrency}`} />,
-            },
-            isVisible: false,
-            roles: UserRole.getAuth(),
-        },
-        [ROUTE_LEASING]: {
-            exact: true,
-            isVisible: false, //TODO del when leasing dashboard was ready
-            path: '/leasing/:currency',
-            component: LeadingDashboard,
-            label: 'Leasing dashboard',
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-        },
+        // [ROUTE_LEASING_REDIRECT]: {
+        //     exact: true,
+        //     path: '/leasing',
+        //     component: Route,
+        //     componentProps: {
+        //         render: () => <Redirect to={`/leasing/${activeCurrency}`} />,
+        //     },
+        //     isVisible: false,
+        //     roles: UserRole.getAuth(),
+        // },
+        // [ROUTE_LEASING]: {
+        //     exact: true,
+        //     isVisible: false, //TODO del when leasing dashboard was ready
+        //     path: '/leasing/:currency',
+        //     component: LeadingDashboard,
+        //     label: 'Leasing dashboard',
+        //     roles: UserRole.getAuth(),
+        //     isShowLeftSidebar: true,
+        // },
         [ROUTE_RPD_REDIRECT]: {
             exact: true,
             path: '/rpd',
