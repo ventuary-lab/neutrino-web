@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import 'locales/config';
 
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
