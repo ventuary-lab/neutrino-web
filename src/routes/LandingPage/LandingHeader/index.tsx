@@ -40,7 +40,7 @@ export const getLanguageDropdownProps = i18n => ({
         //     onClick: () => i18n.changeLanguage(LanguageEnum.RU),
         // },
         {
-            label: 'Chinese',
+            label: '文言',
             flag: '🇨🇳',
             onClick: () => i18n.changeLanguage(LanguageEnum.CH),
         },
