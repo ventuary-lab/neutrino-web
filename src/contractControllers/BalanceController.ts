@@ -1,14 +1,11 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { round as _round, isEqual as _isEqual, get as _get, floor as _floor } from 'lodash';
 
 import CurrencyEnum from '../enums/CurrencyEnum';
 import DalComponent from '../components/DalComponent';
 
+import { BalanceDictionary } from './types';
 import { getAddressDefaultBalance, getAssetBalanceInfo } from './helpers';
-
-interface BalanceDictionary {
-    [key: string]: number | null;
-}
 
 export default class BalanceController {
     private dal: DalComponent | null;
@@ -30,6 +27,10 @@ export default class BalanceController {
         this._next = this._next.bind(this);
     }
 
+    updateAddress(address) {
+        this._address = address;
+    }
+
     getBalances() {
         return this._balances;
     }
@@ -42,10 +43,6 @@ export default class BalanceController {
         this._address = address;
         this._balances = null;
         this._lastTransactionId = null;
-
-        // if (!this._address) {
-        //     return;
-        // }
 
         return await this._next();
     }
@@ -101,6 +98,7 @@ export default class BalanceController {
         for (const currency in this.dal.assets) {
             if (this.dal.assets.hasOwnProperty(currency)) {
                 const assetId = this.dal.assets[currency];
+
                 const newBalanceRes = await getAssetBalanceInfo({
                     nodeUrl: this.dal.nodeUrl,
                     address,

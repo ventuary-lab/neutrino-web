@@ -264,10 +264,16 @@
         }
     }
 
-    &__tos {
-        // padding-top: 28px;
-        // padding-bottom: 48px;
-        padding: 12px 0;
+    &__links-cont {
+        padding: 14px 0;
+
+        @media screen and (max-width: 768px) {
+            padding-bottom: 24px;
+        }
+    }
+
+    &__custom-link {
+        // padding: 2px 0;
         font-style: normal;
         font-weight: 300;
         font-size: .41em;

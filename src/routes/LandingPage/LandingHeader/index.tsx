@@ -9,6 +9,7 @@ import OutsideAlerter from 'ui/global/OutsideAlerter';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/context';
 import { Translation } from 'react-i18next';
+import { LayoutUrlParams } from 'shared/Layout/constants';
 
 import { Link } from 'ui/global/types';
 

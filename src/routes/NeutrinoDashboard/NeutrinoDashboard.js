@@ -20,6 +20,8 @@ import Button from 'yii-steroids/ui/form/Button';
 import CheckboxField from 'yii-steroids/ui/form/CheckboxField';
 import { getUser } from 'yii-steroids/reducers/auth';
 import { ConfigContext, GlobalLinksContext, UserCongratsModalContext } from 'shared/Layout/context';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
 import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 
@@ -39,7 +41,15 @@ const bem = html.bem('NeutrinoDashboard');
 const FORM_ID = 'GenerationForm';
 const PRICE_FEED_PERIOD = 1000;
 
-@connect(state => ({
+const SwapWarningMessage = () => (
+    <span className="SwapWarningMessage">
+        Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
+        the price of WAVES may fluctuate, which can lead to receiving a lower/higher WAVES amount
+        than expected.
+    </span>
+);
+
+@connect((state) => ({
     sourceCurrency: getSourceCurrency(state),
     quoteCurrency: getQuoteCurrency(state),
     pairName: getPairName(state),
@@ -48,7 +58,7 @@ const PRICE_FEED_PERIOD = 1000;
     controlPrice: getControlPrice(state),
     totalIssued: getTotalIssued(state),
 }))
-@dal.hoc(props => [
+@dal.hoc((props) => [
     {
         url: `/api/v1/neutrino-balances/${props.pairName}`,
         key: 'neutrinoBalances',
@@ -128,7 +138,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
             return;
         }
 
-        await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        try {
+            await this._updateBalanceIndices(dAppAddress, currentAccountAddress);
+        } catch (err) {
+            console.warn('Error on balance indices update', err);
+        }
         await this._checkForSwap();
     }
 
@@ -173,29 +187,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
         } else {
             this._isProgramChange = false;
         }
-
-        // const thisWithdraw = _get(this.props, 'withdraw');
-        // const nextWithdraw = _get(nextProps, 'withdraw');
-        // const nextUnblockBlock = Number(_get(nextProps, 'withdraw.unblockBlock'));
-        // const nextHeight = Number(_get(nextProps, 'withdraw.height'));
-        // //first loading component
-        // if (!thisWithdraw && nextWithdraw && nextUnblockBlock > nextHeight) {
-        //     this.setState({ isSwapLoading: true });
-        // }
-
-        // //changing withdraw
-        // if (thisWithdraw && nextWithdraw) {
-        //     if (nextUnblockBlock > nextHeight && !this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: true });
-        //     } else if (nextUnblockBlock < nextHeight && this.state.isSwapLoading) {
-        //         this.setState({ isSwapLoading: false });
-        //     } else if (nextUnblockBlock === nextHeight && this.state.isSwapLoading) {
-        //         //close delay
-        //         setTimeout(() => this.setState({ isSwapLoading: false }), 3000);
-        //     }
-        // } else if (this.state.isSwapLoading) {
-        //     this.setState({ isSwapLoading: false });
-        // }
     }
 
     mapToSwapLoaderProps({ currentHeight, lockedWaves, lockedNeutrino, unlockBlock }) {
@@ -208,8 +199,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     async _checkForSwap() {
-        // (balance_lock_waves_{address} > 0 || balance_lock_neutrino_{address} > 0) && balance_unlock_block_{address} >= height
-
         const { lockedWaves, lockedNeutrino, unlockBlock } = this.state.lastBalanceIndices;
         const currentHeight = await nodeInteraction.currentHeight(dal.nodeUrl);
 
@@ -224,12 +213,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 unlockBlock,
             }),
         });
-
-        // height: 1822964
-        // - id: "3P8ZzvkLGWtaoPVYDozhbWavqgYgZJWbq9j"
-        // neutrinoBlocked: 0
-        // unblockBlock: 1821919
-        // wavesBlocked: 0
     }
 
     async _updateBalanceIndices(dAppAddress, address) {
@@ -273,7 +256,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     render() {
         const { isSwapLoading, swapLoaderProps } = this.state;
 
-        const getSteps = t => [
+        const getSteps = (t) => [
             {
                 id: 'generation',
                 label: t('common.tokens_swap.label'),
@@ -283,17 +266,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 label: t('common.confirm_details.label'),
             },
         ];
+        const computedClassName = [
+            bem.block(),
+            isSwapLoading ? bem.element('swap-processing') : '',
+        ].join(' ');
 
         return (
             <UserCongratsModalContext.Consumer>
-                {context => (
-                    <div className={bem.block()}>
+                {(context) => (
+                    <div className={computedClassName}>
                         {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
                         {this.renderStepChanger(getSteps)}
                         <Form
                             className={bem.element('form')}
                             formId={FORM_ID}
-                            onSubmit={formData => this._onSubmit(formData, context)}
+                            onSubmit={(formData) => this._onSubmit(formData, context)}
                         >
                             {this.state.step === 'generation' && this.renderGenerationStep()}
                             {this.state.step === 'details' && this.renderDetailsStep()}
@@ -308,7 +295,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         return (
             <div className={bem.element('steps')}>
                 <Translation>
-                    {t => (
+                    {(t) =>
                         getSteps(t).map((item, index) => (
                             <div
                                 key={item.id}
@@ -320,14 +307,27 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 <span className={bem.element('step-label')}>{item.label}</span>
                             </div>
                         ))
-                    )}
+                    }
                 </Translation>
             </div>
         );
     }
 
+    getCurrencyLabels() {
+        const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
+        const replaceArgs = [/-/g, ''];
+        const sourceCurrency = _sourceCurrency.toUpperCase().replace(...replaceArgs);
+        const quoteCurrency = _quoteCurrency.toUpperCase().replace(...replaceArgs);
+
+        return {
+            mapLabel: (label) => <span>{label}</span>,
+            totalIssuedLabels: [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
+            currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+        };
+    }
+
     renderGenerationStep() {
-        const grabNeutrinoAddress = config => {
+        const grabNeutrinoAddress = (config) => {
             try {
                 return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
             } catch (err) {
@@ -335,9 +335,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
             }
         };
 
+        const {
+            // mobile: mobileLabels,
+            // desktop: desktopLabels
+            totalIssuedLabels,
+            mapLabel,
+            currentPriceLabels,
+        } = this.getCurrencyLabels();
+
+        const { isWavesLeft } = this.state;
+
+        const swapWarning = 'Approximate WAVES value based on current price';
+
         return (
             <Translation>
-                {t => (
+                {(t) => (
                     <>
                         <div className={bem.element('inputs')}>
                             <div className={bem.element('input-container')}>
@@ -403,7 +415,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <div className={bem.element('info')}>
                             <div className={bem.element('info-column')}>
                                 <ConfigContext.Consumer>
-                                    {environmentConfig => (
+                                    {(environmentConfig) => (
                                         <div className={bem.element('info-row')}>
                                             <div className={bem.element('info-string')}>
                                                 <div className={bem.element('info-hint')}>
@@ -500,7 +512,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     renderDetailsStep() {
         return (
             <Translation>
-                {t => (
+                {(t) => (
                     <>
                         <div className={bem.element('details')}>
                             <div className={bem.element('details-item')}>
@@ -579,9 +591,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 </div>
                             </div>
                             <GlobalLinksContext.Consumer>
-                                {context => {
+                                {(context) => {
                                     const tosLink = context.links.find(
-                                        link => link.label === TERMS_OF_USE_LABEL
+                                        (link) => link.label === TERMS_OF_USE_LABEL
                                     ).url;
                                     return (
                                         <CheckboxField
@@ -654,7 +666,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         return !isNaN(parseFloat(result)) && isFinite(result) ? result : 0;
     }
 
-    _toFixedSpecial = function(num, n) {
+    _toFixedSpecial = function (num, n) {
         const str = num.toFixed(n);
         if (str.indexOf('e+') < 0) {
             return str;
@@ -665,7 +677,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             str
                 .replace('.', '')
                 .split('e+')
-                .reduce(function(p, b) {
+                .reduce(function (p, b) {
                     return p + new Array(b - p.length + 2).join(0);
                 }) +
             '.' +
@@ -693,7 +705,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
             await this._updateAndCheckBalanceIndices();
         } catch (err) {
             console.log('Swap Error: ', err.stack || err); // eslint-disable-line no-console
-            throw new Error(err.data);
+
+            store.dispatch(
+                openModal(MessageModal, {
+                    text: `Error on Swap occured. ${err.message}`,
+                })
+            );
         }
     }
 }

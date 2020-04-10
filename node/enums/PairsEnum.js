@@ -38,8 +38,8 @@ module.exports = class PairsEnum {
 
     static getLabels() {
         return {
-            [this.USDNB_USDN]: 'USD-NB/USD-N',
-            [this.EURNB_EURN]: 'EUR-NB/EUR-N',
+            [this.USDNB_USDN]: 'NSBT/WAVES',
+            [this.EURNB_EURN]: 'EUR-NB/WAVES',
         }
     }
 };

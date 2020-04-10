@@ -16,7 +16,6 @@ const getGoogleTag = (config: AppConfig) => config.env.google_tag_id;
 interface State {
     googleTagId?: string;
 }
-
 class LandingPage extends React.Component<{}, State> {
     constructor(props) {
         super(props);

@@ -1,20 +1,28 @@
-const ExplorerApiService = require('./services/ExplorerApiService');
+const { default: ExplorerApiService } = require('./services/ExplorerApiService');
 const CollectionEnum = require('./enums/CollectionEnum');
 const WavesExchangePeriodEnum = require('./enums/WavesExchangePeriodEnum');
 const PairsEnum = require('./enums/PairsEnum');
 const _orderBy = require('lodash/orderBy');
 const _min = require('lodash/min');
 const meanBy = require('lodash/meanBy');
+<<<<<<< HEAD
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const Utils = require('./utils');
+=======
+const moment = require('moment');
+const { default: Utils } = require('./utils');
+const fs = require('fs');
+const path = require('path');
+>>>>>>> beta
 
 module.exports = class Router {
     constructor(contractApp, expressApp) {
         this.app = contractApp;
         this.expressApp = expressApp;
-        this.explorerApiService = new ExplorerApiService.default();
+        this.explorerApiService = new ExplorerApiService(contractApp);
+        this.explorerApiService.startPulling();
 
         this._routes = {
             '/api/v1/init': async () => {
@@ -203,34 +211,24 @@ module.exports = class Router {
                 const orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
-                let position = 0;
+                let position = "";
                 orders.forEach(order => {
                     if (price <= order.price) {
-                        position++;
+                        position = order.id
                     }
                 });
                 return { position };
             },
-            '/api/v1/bonds/:pairName/chart/:blockAmount': async request => {
-                let orders = await this.app
-                    .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS_HISTORY)
-                    .getItemsAll();
-                const timestamps = await this.app.heightListener.getTimestamps(
-                    orders.map(order => order.height)
-                );
-
-                orders = Utils.orderBy(orders, 'height', 'desc', {
-                    toNumber: true,
-                });
-
-                orders = orders.slice(-1 * Math.abs(parseInt(request.params.blockAmount)));
-
-                return orders.map(order => [timestamps[order.height], order.discountPercent]);
-            },
             '/api/v1/bonds/:pairName/orders': async request => {
-                return await this.app
+                var orders = await this.app
                     .getCollection(request.params.pairName, CollectionEnum.BONDS_ORDERS)
                     .getOpenedOrders();
+
+                orders = Utils.orderBy(orders, 'price', 'desc', {
+                    isNumber: true,
+                });
+
+                return orders;
             },
             '/api/v1/liquidate/:pairName/orders': async request => {
                 return await this.app
@@ -248,17 +246,19 @@ module.exports = class Router {
                         CollectionEnum.NEUTRINO_ORDERS,
                     ]) {
                         const collection = this.app.getCollection(pairName, collectionName);
+
                         result.opened = result.opened.concat(
                             await collection.getUserOpenedOrders(request.params.address)
                         );
                         result.history = result.history.concat(
                             await collection.getUserHistoryOrders(request.params.address)
-                        );
+                        )
                     }
                 }
 
                 result.opened = _orderBy(result.opened, 'height', 'desc');
                 result.history = _orderBy(result.history, 'height', 'desc');
+                
                 return result;
             },
             '/api/explorer/*': (req, res) => this.explorerApiService.handleRequest(req, res),
@@ -273,7 +273,7 @@ module.exports = class Router {
             },
             '/whitepaper': async (req, res) => {
                 res.redirect(
-                    'https://docs.google.com/document/d/1eyUnLZB1HE2uYx4UNyakaecW9FR9n-yJkTjZJ85MVPo/edit'
+                    'https://wp.neutrino.at/'
                 );
             },
         };
@@ -298,6 +298,7 @@ module.exports = class Router {
 
                 response.writeHead(content && content.error ? 500 : 200, {
                     'Content-Type': 'text/html',
+                    'Access-Control-Allow-Origin': '*'
                 });
                 response.end(JSON.stringify(content));
             });

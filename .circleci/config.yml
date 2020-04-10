@@ -1,0 +1,24 @@
+version: 2.1
+jobs:
+  deploy:
+    machine: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          shell: /bin/bash
+          command: |
+            echo 'Performing connection...' 
+            ssh $SSH_USER@$SSH_HOST "cd /var/www/neutrino-web && 
+            git reset --hard &&
+            git checkout beta &&
+            git pull origin beta &&
+            echo 'Started deploying...' &&
+            bash deploy.sh --simple"
+workflows:
+    build-and-test:
+      jobs:
+        - deploy:
+            filters:
+                branches:
+                    only:
+                        - beta

@@ -7,6 +7,7 @@ import LandingHeader from 'routes/LandingPage/LandingHeader';
 import { GlobalLinksContext } from 'shared/Layout/context';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
 import { omitThousandsNumber } from 'ui/global/helpers';
+import { ILongPullingComponent } from 'ui/global/types';
 
 import {
     NEUTRINO_FACEBOOK_LINK,
@@ -32,11 +33,30 @@ interface State {
     totalStaked?: number;
 }
 
-class StakingLanding extends React.Component<Props, State> {
+class StakingLanding extends React.Component<Props, State> implements ILongPullingComponent {
+    _updateInterval;
+    _updateTimeout;
+
     constructor(props) {
         super(props);
 
+        this._updateListener = this._updateListener.bind(this);
+
+        this._updateTimeout = 3000;
+
         this.state = {};
+    }
+
+    async _updateListener () {
+        await this.loadExplorerData();
+    }
+
+    startListening () {
+        this._updateInterval = setInterval(async () => await this._updateListener(), this._updateTimeout);
+    }
+
+    stopListening () {
+        clearInterval(this._updateInterval);
     }
 
     async loadExplorerData() {
@@ -56,7 +76,14 @@ class StakingLanding extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.loadExplorerData();
+        (async () => {
+            await this.loadExplorerData();
+            this.startListening();
+        })()
+    }
+
+    componentWillUnmount() {
+        this.stopListening();
     }
 
     render() {
@@ -67,7 +94,7 @@ class StakingLanding extends React.Component<Props, State> {
             { icon: twitterIcon, route: NEUTRINO_TWITTER_LINK },
         ];
 
-        let { annualYield = 52.51, totalIssued = 100000, totalStaked = 10000 } = this.state;
+        let { annualYield = 53.7, totalIssued = 100000, totalStaked = 10000 } = this.state;
         annualYield = _round(annualYield, 2);
         totalIssued = _round(totalIssued, 2);
         totalStaked = _round(totalStaked, 2);
@@ -91,7 +118,7 @@ class StakingLanding extends React.Component<Props, State> {
                         </span>
                         <p className={bem.element('yield-section-item-body')}>
                             <span className="bold">Neutrino dApp</span> distributes staking rewards
-                            in <span className="bold">USD-N</span> tokens derived from Waves LPoS
+                            in <span className="bold">USDN</span> tokens derived from Waves LPoS
                             decentralized monetary policy.
                         </p>
                         <a className="base-button" href="/rpd/usd-n">
@@ -112,7 +139,7 @@ class StakingLanding extends React.Component<Props, State> {
                                 This value comprises <span className="bold">6.7%</span> annual yield
                                 from leasing of Waves tokens on the smart contract and{' '}
                                 <span className="bold">~{stakedFromIssuedPercent}%</span> of total{' '}
-                                <span className="bold">USD-N</span> supply in staking: *[
+                                <span className="bold">USDN</span> supply in staking: *[
                                     {mapBigNumber(totalStaked)} from {mapBigNumber(totalIssued)}
                                 ]
                             </p>

@@ -52,6 +52,7 @@
         top: 60px;
         border: 1px solid #25233C;
         border-radius: 7px;
+        z-index: 2;
 
         & > ul:nth-child(1) {
             padding: 22px 20px;
@@ -66,7 +67,7 @@
             left: -120px;
         }
         &_products {
-            left: -60px;
+            left: 15px;
         }
         &_learn {
             left: 100px;

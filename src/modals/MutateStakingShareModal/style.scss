@@ -82,4 +82,38 @@
             width: 49%;
         }
     }
+
+    @media screen and (max-width: 768px) {
+        max-width: calc(100vw - 16px);
+        left: 50%;
+
+        &__body {
+            max-width: calc(100vw - 16px);
+        }
+
+        &__percents {
+            margin: auto;
+            padding: 32px 16px;
+            width: 100%;
+            max-width: unset;
+        }
+
+        &__balances {
+            margin: 0;
+            padding: 42px 0 48px;
+        }
+
+        &__buttons {
+            flex-wrap: wrap;
+            padding: 18px;
+
+            & > :not(:last-child) {
+                margin-bottom: 18px;
+            }
+
+            & > * {
+                width: 100%;
+            }
+        }
+    }
 }

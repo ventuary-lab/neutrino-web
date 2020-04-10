@@ -1,15 +1,18 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { html, dal } from 'components';
+import { html, dal, store } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
 import BaseInput from 'ui/form/BaseInput';
-import AccountBalanceTitle from 'shared/Staking/AccountBalanceTitle';
+import AccountBalanceTitle, { AccountBalanceTitleOption } from 'shared/Staking/AccountBalanceTitle';
 import PercentButton from 'ui/form/PercentButton';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { BlurContext } from 'shared/Layout/context';
 import usdnLogo from 'static/icons/usd-n.svg';
 import { onlyDecimalRegex2 } from 'ui/global/helpers';
 import { Translation } from 'react-i18next';
+import { hasBooleanPropChanged } from 'shared/Layout/helpers';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
 
 import './style.scss';
 
@@ -54,20 +57,22 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {}
+    componentDidUpdate(prevProps) {
+        const { isOpened } = this.props;
+        const { isOpened: wasOpened } = prevProps;
 
-    componentDidUpdate() {
-        if (this.props.isOpened) {
-            this.context.blur();
-        } else {
-            this.context.unblur();
-
-            this.emptyField();
-        }
+        hasBooleanPropChanged(prevProps, this.props, 'isOpened', {
+            becameTrue: () => this.context.blur(),
+            becameFalse: () => this.context.unblur(),
+        });
     }
 
-    componentWillUnmount() {
-        this.context.unblur();
+    onErrorOccur(err: Error) {
+        store.dispatch(
+            openModal(MessageModal, {
+                text: `Error occured. ${err.message}`
+            })
+        );
     }
 
     getParentSelector() {
@@ -92,7 +97,11 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         const { pairName } = this.props;
         const { usdnValue } = this.state;
 
-        await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
+        try {
+            await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
+        } catch (err) {
+            this.onErrorOccur(err);
+        }
 
         this.props.onClose();
     }
@@ -100,11 +109,15 @@ class MutateStakingShareModal extends React.Component<Props, State> {
     async decreaseStaking() {
         const { usdnValue } = this.state;
 
-        await dal.unlockNeutrino(
-            this.props.pairName,
-            CurrencyEnum.USD_N,
-            Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
-        );
+        try {
+            await dal.unlockNeutrino(
+                this.props.pairName,
+                CurrencyEnum.USD_N,
+                Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N)
+            );
+        } catch (err) {
+            this.onErrorOccur(err);
+        }
 
         this.props.onClose();
     }

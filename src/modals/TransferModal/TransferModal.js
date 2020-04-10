@@ -5,11 +5,15 @@ import { getFormValues, reset } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
 import { Translation } from 'react-i18next';
 
-import { html, dal } from 'components';
-import validate from 'shared/validate';
+import { html, dal, store } from 'components';
+// import validate from 'shared/validate';
 import TransferForm from 'shared/TransferForm';
 import TransferInfo from 'shared/TransferInfo';
+// import { getPairName } from 'reducers/currency';
 import PairsEnum from 'enums/PairsEnum';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
+// import {getPairName} from 'reducers/currency';
 
 import './TransferModal.scss';
 
@@ -36,7 +40,7 @@ export default class TransferModal extends React.PureComponent {
     }
 
     render() {
-        const { currency, formValues } = this.props;
+        const { formValues } = this.props;
 
         return (
             <Translation>
@@ -90,16 +94,16 @@ export default class TransferModal extends React.PureComponent {
     }
 
     _onSubmit(address, amount, t) {
-        validate(address, [
-            [
-                'address',
-                function(address) {
-                    if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
-                        return t('modals.recipient_address_is_invalid.label');
-                    }
-                },
-            ],
-        ]);
+        // validate(address, [
+        //     [
+        //         'address',
+        //         function(address) {
+        //             if (/^[A-Za-z0-9]{30,40}$/.test(address) === false) {
+        //                 return t('modals.recipient_address_is_invalid.label');
+        //             }
+        //         },
+        //     ],
+        // ]);
 
         dal.transferFunds(
             PairsEnum.USDNB_USDN, //TODO

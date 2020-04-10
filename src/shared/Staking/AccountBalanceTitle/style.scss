@@ -8,15 +8,21 @@
         line-height: 17px;
         font-weight: normal;
         position: relative;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
 
-        & > :first-child {
-            position: relative;
-            display: block;
-            margin-bottom: 8px;
+        &_vertical {
+            & > :nth-child(1) {
+                display: block;
+                text-align: center;
+            }
+
+            & > :nth-child(2) {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                padding-top: 6px;
+            }
         }
     }
 

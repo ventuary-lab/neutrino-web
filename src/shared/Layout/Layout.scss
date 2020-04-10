@@ -21,14 +21,14 @@ body {
   height: 100%;
 
   &_is_custom {
-    background-color: #fff !important;
+    background-color: #F2F2F2 !important;
   }
 
-  &_is-show-left-sidebar {
-    #{$root}__center {
-      width: calc(100% - #{$left-width} - #{$right-width} - #{$gap * 2});
-    }
-  }
+  // &_is-show-left-sidebar {
+  //   #{$root}__center {
+  //     width: calc(100% - #{$left-width} - #{$right-width} - #{$gap * 2});
+  //   }
+  // }
 
   &__inner {
     flex-grow: 1;
@@ -76,8 +76,8 @@ body {
   &__right {
     width: $right-width;
     min-width: $right-width;
-    margin-left: $gap;
     @include gradient-bg(242.05deg);
+    margin-left: $gap;
   }
 
   @media screen and (max-width: 1024px) {
@@ -87,6 +87,22 @@ body {
 
     &__center {
       width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__right {
+      margin-left: unset;
+    }
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+
+      & > * {
+        width: 100%;
+      }
     }
   }
 }

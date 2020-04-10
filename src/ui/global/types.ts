@@ -8,3 +8,11 @@ export interface Link extends React.HTMLProps<HTMLAnchorElement> {
 }
 
 export type SocLink = { icon: string; route: string };
+
+export interface ILongPullingComponent {
+    _updateInterval: NodeJS.Timeout | null;
+    _updateTimeout: number;
+    _updateListener: () => Promise<void>;
+    startListening: () => void;
+    stopListening: () => void;
+}

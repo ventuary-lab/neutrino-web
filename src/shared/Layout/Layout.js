@@ -18,7 +18,7 @@ import { getCurrentItem, getCurrentItemParam } from 'yii-steroids/reducers/navig
 import { getData, getUser } from 'yii-steroids/reducers/auth';
 import { openModal } from 'yii-steroids/actions/modal';
 import { isPhone } from 'yii-steroids/reducers/screen';
-import WarningMobileModal from 'modals/WarningMobileModal';
+// import WarningMobileModal from 'modals/WarningMobileModal';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
@@ -37,6 +37,7 @@ import { apiWsHandler } from 'actions/api';
 import { currencySetCurrent } from 'actions/currency';
 import {
     ROUTE_ROOT,
+    // ROUTE_RPD,
     ROUTE_NEUTRINO_SHOW_TRANSFERS,
     ROUTE_NEUTRINO_SHOW_INVOICE_GEN,
     ROUTE_STAKING_LANDING_PAGE,
@@ -45,16 +46,23 @@ import { getPairName } from 'reducers/currency';
 import {
     ConfigContext,
     InstallKeeperModalContext,
+    LoginTypeModalContext,
     BlurContext,
     UserCongratsModalContext,
-    // LearnLinksContext,
     GlobalLinksContext,
+    ScreenSizeContext,
 } from './context';
-import { getDefaultProductLinks, getDefaultLearnLinks } from 'shared/Layout/defaults';
+import { LayoutUrlParams } from './constants';
+import {
+    defaultScreenSizeContext,
+    getDefaultLearnLinks,
+    getDefaultProductLinks,
+} from './defaults';
+import { isScreenNarrow } from './helpers';
 import { WavesContractDataController } from 'contractControllers/WavesContractController';
 import TransferInvoiceModal from 'modals/TransferInvoiceModal';
 import UserCongratsModal from 'modals/UserCongratsModal';
-
+import LoginTypeModal from 'modals/LoginTypeModal';
 import './Layout.scss';
 
 const bem = html.bem('Layout');
@@ -105,9 +113,10 @@ export default class Layout extends React.PureComponent {
         this.controllerInitialized = false;
 
         this.onScreenResize = this.onScreenResize.bind(this);
-        this.openWarningModal = this.openWarningModal.bind(this);
+        // this.openWarningModal = this.openWarningModal.bind(this);
         this.onWavesKeeperLogin = this.onWavesKeeperLogin.bind(this);
         this.onWavesKeeperLogout = this.onWavesKeeperLogout.bind(this);
+        this.onWebKeeperLogin = this.onWebKeeperLogin.bind(this);
         this.checkCurrentRoute = this.checkCurrentRoute.bind(this);
         this.handleQueryParams = this.handleQueryParams.bind(this);
         this.handleUserWithNoKeeper = this.handleUserWithNoKeeper.bind(this);
@@ -115,6 +124,10 @@ export default class Layout extends React.PureComponent {
 
         this.resizeObserver = null;
         this.wcc = null;
+        // this.learnLinksContextValue = { links };
+        this.currentResizeObserverEntries = [];
+        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
         this.blurContextValue = {
             blur: () => this.setState({ isBlurred: true }),
             unblur: () => this.setState({ isBlurred: false }),
@@ -124,12 +137,34 @@ export default class Layout extends React.PureComponent {
             onClose: () => this.setState({ isUserCongratsModalOpened: false }),
             onOpen: () => this.setState({ isUserCongratsModalOpened: true }),
         };
+
         // this.globalLinksContextValue = { links, product };
-        this.customViewRoutes = [ROUTE_STAKING_LANDING_PAGE, ROUTE_ROOT];
+
+        this.loginTypeContextValue = {
+            onClose: () => this.setState({ isLoginTypeModalOpened: false }),
+            onOpen: () => this.setState({ isLoginTypeModalOpened: true }),
+        };
+
+        this.screenSizeContextValue = {
+            ...defaultScreenSizeContext,
+            getEntries: () => this.currentResizeObserverEntries,
+            // getListeners: () => this.currentResizeObserverListeners,
+            // subscribe: (name, fn) => this.currentResizeObserverListeners.add(name, fn),
+            // unsubscribe: (fnName) => this.currentResizeObserverListeners.delete(fnName)
+        };
+
+        this.installKeeperContext = {
+            onLogin: this.onWavesKeeperLogin,
+            onLogout: this.onWavesKeeperLogout,
+            onWebKeeperLogin: this.onWebKeeperLogin,
+            isVisible: false,
+            openModal: () => this.triggerInstallKeeperModalVisibility(true),
+        };
 
         this.state = {
             shouldShowInviteModal: false,
             isUserCongratsModalOpened: false,
+            isLoginTypeModalOpened: false,
             isBlurred: false,
         };
     }
@@ -141,8 +176,8 @@ export default class Layout extends React.PureComponent {
             const { page } = this.props;
             const { customViewRoutes } = this;
 
-            if (!isKeeperInstalled && page.id !== ROUTE_ROOT) {
-                if (customViewRoutes.indexOf(page.id) === -1) {
+            if (page.id !== ROUTE_ROOT) {
+                if ([...customViewRoutes, ROUTE_NEUTRINO_SHOW_TRANSFERS].indexOf(page.id) === -1) {
                     store.dispatch(goToPage(ROUTE_ROOT));
                 }
 
@@ -159,9 +194,9 @@ export default class Layout extends React.PureComponent {
     checkCurrentRoute() {
         const { page, user } = this.props;
 
-        if (document.body.offsetWidth < 600 || !user) {
-            return;
-        }
+        // if (document.body.offsetWidth < 600 || !user) {
+        //     return;
+        // }
 
         switch (page.id) {
             case ROUTE_NEUTRINO_SHOW_TRANSFERS:
@@ -174,42 +209,49 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.handleUserWithNoKeeper(() => this.checkCurrentRoute());
+        this.checkCurrentRoute();
     }
 
     async componentDidMount() {
-        // this.attachResizeObserver();
-        this.openWarningModal();
+        this.attachResizeObserver();
+        // this.openWarningModal();
 
         this.handleQueryParams();
+
+        const invoiceQueryProvided = this._checkForInvoiceQuery();
+        if (invoiceQueryProvided && !this.props.user) {
+            try {
+                await this.onWavesKeeperLogin(() => {
+                    this._checkForInvoice();
+                });
+            } catch (err) {
+                console.warn('Automatic waves keeper login failed...');
+            }
+        }
     }
 
     handleQueryParams() {
         const url = new URL(window.location.href);
 
-        if (url.searchParams.get('openKeeperWarning')) {
-            this.triggerInstallKeeperModalVisibility(true);
+        if (url.searchParams.get(LayoutUrlParams.LOGIN_WARNING_PARAM)) {
+            this.loginTypeContextValue.onOpen();
         }
     }
 
-    openWarningModal(width = document.body.offsetWidth) {
-        if (width < 600) {
-            store.dispatch(openModal(WarningMobileModal));
-        }
-    }
-
-    onScreenResize(entry) {
-        const width = _get(entry[0], 'contentRect.width', null);
-
-        this.openWarningModal(width);
+    onScreenResize(entries) {
+        this.currentResizeObserverEntries = entries;
     }
 
     attachResizeObserver() {
         try {
+            if (typeof ResizeObserver === 'undefined') {
+                throw new Error('ResizeObserver is not supported');
+            }
+
             this.resizeObserver = new ResizeObserver(this.onScreenResize);
             this.resizeObserver.observe(document.body);
         } catch (err) {
-            console.warn({ err }, 'ResizeObserver is not supported');
+            console.warn({ err });
         }
     }
 
@@ -222,7 +264,9 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillUnmount() {
-        this.wcc.stopUpdating();
+        if (this.wcc) {
+            this.wcc.stopUpdating();
+        }
         this.detachResizeObserver();
     }
 
@@ -257,7 +301,10 @@ export default class Layout extends React.PureComponent {
 
     async onWavesKeeperLogout() {
         await dal.logout();
-        store.dispatch(goToPage(ROUTE_ROOT));
+    }
+
+    async onWebKeeperLogin() {
+        await dal.loginByWebKeeper();
     }
 
     componentDidUpdate(prevProps) {
@@ -268,7 +315,6 @@ export default class Layout extends React.PureComponent {
                 this.checkCurrentRoute();
             }
         }
-
         this._attachWavesDataController();
     }
 
@@ -277,14 +323,14 @@ export default class Layout extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
-                store.dispatch([
-                    // currencySetPrices(nextProps.data.prices),
-                    setUser(user),
-                ]);
-            });
-        }
+        // if (this.props.data !== nextProps.data) {
+        //     Promise.resolve(dal.isLogged() ? dal.login() : null).then(user => {
+        //         store.dispatch([
+        //             // currencySetPrices(nextProps.data.prices),
+        //             setUser(user),
+        //         ]);
+        //     });
+        // }
 
         if (_get(this.props, 'matchParams.currency') !== _get(nextProps, 'matchParams.currency')) {
             store.dispatch(currencySetCurrent(nextProps.matchParams.currency));
@@ -325,46 +371,75 @@ export default class Layout extends React.PureComponent {
         }
     }
 
+    getDefaultBody() {
+        const { isBlurred } = this.state;
+        const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
+
+        let elements = [
+            this.props.isShowLeftSidebar && (
+                <aside className={bem.element('left')}>
+                    <LeftSidebar />
+                </aside>
+            ),
+            <div className={bem.element('center')}>
+                {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                <header className={bem.element('header')}>
+                    <Header />
+                </header>
+                <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                    {this.props.status !== STATUS_LOADING && this.props.children}
+                </main>
+            </div>,
+            <aside className={bem.element('right')}>
+                <RightSidebar />
+            </aside>,
+        ];
+
+        if (isScreenNarrow()) {
+            elements = [
+                <div className={bem.element('center')}>
+                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
+                    <header className={bem.element('header')}>
+                        <Header />
+                    </header>
+                    <RightSidebar />
+                    <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
+                        {this.props.status !== STATUS_LOADING && this.props.children}
+                    </main>
+                </div>,
+            ];
+        }
+
+        return elements;
+    }
+
+
     getGlobalLinksContextValue(t) {
         return { links: getDefaultLearnLinks(t), product: getDefaultProductLinks(t) };
     }
 
-    render() {
-        const isBlocked = _get(this.props, 'neutrinoConfig.isBlocked');
 
+    render() {
         // if (this.props.status === STATUS_RENDER_ERROR || !this.props.prices) {
         if (this.props.status === STATUS_RENDER_ERROR) {
             return null;
         }
 
         const configValue = { ...this.props.config };
-        const { shouldShowInviteModal, isBlurred, isUserCongratsModalOpened } = this.state;
+        const {
+            shouldShowInviteModal,
+            isUserCongratsModalOpened,
+            isLoginTypeModalOpened,
+        } = this.state;
 
-        const isRootPage = this.props.currentItem.id === ROUTE_ROOT;
+        const { customViewRoutes } = this;
 
-        const children = !isRootPage ? (
-            <div className={bem.element('inner')}>
-                {this.props.isShowLeftSidebar && (
-                    <aside className={bem.element('left')}>
-                        <LeftSidebar />
-                    </aside>
-                )}
-                <div className={bem.element('center')}>
-                    {isBlocked && this.props.currentItem.id !== ROUTE_ROOT && <BlockedApp />}
-                    <header className={bem.element('header')}>
-                        <Header />
-                    </header>
-                    <main className={bem.element('content', isBlurred ? 'blurred' : '')}>
-                        {this.props.status !== STATUS_LOADING && this.props.children}
-                    </main>
-                </div>
-                <aside className={bem.element('right')}>
-                    <RightSidebar />
-                </aside>
-            </div>
-        ) : (
-            this.props.children
-        );
+        const children =
+            customViewRoutes.indexOf(this.props.currentItem.id) === -1 ? (
+                <div className={bem.element('inner')}>{this.getDefaultBody()}</div>
+            ) : (
+                this.props.children
+            );
 
         return (
             <Translation>
@@ -436,7 +511,7 @@ export default class Layout extends React.PureComponent {
                 {/* <div
                 className={bem.block({
                     'is-show-left-sidebar': this.props.isShowLeftSidebar,
-                    'is_custom': customViewRoutes.indexOf(this.props.currentItem.id) !== -1
+                    is_custom: customViewRoutes.indexOf(this.props.currentItem.id) !== -1,
                 })}
             >
                 <InstallKeeperModal
@@ -474,10 +549,14 @@ export default class Layout extends React.PureComponent {
         );
     }
 
+    _checkForInvoiceQuery() {
+        const params = queryString.parse(location.search);
+        return params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency;
+    }
+
     _checkForInvoice() {
         const params = queryString.parse(location.search);
-
-        if (params && params.invoiceAddress && params.invoiceAmount && params.invoiceCurrency) {
+        if (this._checkForInvoiceQuery()) {
             this.props.dispatch(
                 openModal(TransferInvoiceModal, {
                     amount: params.invoiceAmount,

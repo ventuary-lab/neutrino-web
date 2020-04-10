@@ -33,11 +33,6 @@ class StakingBalance extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
-        // const { blur, unblur } = this.context;
-        // blur();
-    }
-
     triggerStakingShareModal(isVisible: boolean) {
         this.setState({ isStakingShareModalOpened: isVisible });
     }
@@ -55,7 +50,7 @@ class StakingBalance extends React.Component<Props, State> {
         const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
         const { title, buttonLabel } = {
             buttonLabel: actionLabel,
-            title: `${actionLabel} neutrino (USD-N) staking share`,
+            title: `${actionLabel} neutrino (USDN) staking share`,
         };
 
         return (

@@ -1,5 +1,7 @@
 import { t as translateGetter } from 'locales/config';
-import { STAKING_REWARDS_LABEL } from './constants'; // Temp
+// import { STAKING_REWARDS_LABEL } from './constants'; // Temp
+import { isScreenNarrowHelper } from './helpers';
+import { ARTICLE_LABEL } from './constants';
 
 export const getDefaultProductLinks = (t = translateGetter) => [
     {
@@ -28,6 +30,10 @@ export const getDefaultProductLinks = (t = translateGetter) => [
     {
         label: t('heading.bonds_dashboard.label'),
         url: '/bonds/usd-n',
+    },
+    {
+        label: ARTICLE_LABEL,
+        url: 'https://medium.com/@neutrinoteam/new-major-update-usdnb-nsbt-1e0e544bba8c',
     },
 ];
 
@@ -64,12 +70,18 @@ export const getDefaultLearnLinks = (t = translateGetter) => [
     },
     {
         label: t('common.terms_of_use.label'),
-        url:
-            'https://docs.google.com/document/d/1gQPtVj5LZ9tbZlyBUYlSYvqAjPpKmEH3ksfiIYlp5CM/edit#heading=h.lvi5m440j6n3',
+        url: 'https://legal.neutrino.at/',
         target: '_blank',
     },
     {
-        label: STAKING_REWARDS_LABEL,
-        url: '/staking'
-    }
+        label: 'Security audit',
+        url: 'http://audit.neutrino.at/',
+        target: '_blank',
+    },
 ];
+
+export const defaultScreenSizeContext = {
+    getEntries: () => [],
+    listeners: new Map(),
+    isScreenNarrow: isScreenNarrowHelper,
+};

@@ -1,0 +1,52 @@
+@import 'style/helpers/vars';
+
+.LiquidateBondsFrom {
+
+  $root: &;
+
+  padding: 0 18px;
+
+  &__input {
+    margin-bottom: 15px;
+
+    &_with-hint {
+      margin-bottom: 0;
+    }
+
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__submit-button {
+    margin-top: 24px;
+  }
+
+  &__percents {
+    display: flex;
+    align-items: center;
+    margin: 18px 0px;
+  }
+
+  &__percent {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+    min-width: 58px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3E3E79;
+    border-radius: 4px;
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+}

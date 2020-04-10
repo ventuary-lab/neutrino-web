@@ -1,16 +1,19 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router';
+import { t as translateGetter } from 'locales/config';
+// import IndexPage from './IndexPage';
 import NeutrinoDashboard from './NeutrinoDashboard';
-import BoundsDashboard from './BoundsDashboard';
+import BondsDashboard from './BondsDashboard';
 import LeadingDashboard from './LeadingDashboard';
 import StakingLanding from 'shared/Staking/StakingLanding';
 import LandingPage from './LandingPage';
 import { getDefaultProductLinks } from 'shared/Layout/defaults';
-import { getExchangeLink } from 'shared/Layout/helpers';
+import { getArticleLink } from 'shared/Layout/helpers';
 import {
-    INVOICES_LABEL,
-    TRANSFERS_LABEL,
-    EXCHANGE_LABEL,
+    // INVOICES_LABEL,
+    // TRANSFERS_LABEL,
+    // EXCHANGE_LABEL,
+    ARTICLE_LABEL,
     NEUTRINO_DASHBOARD_LABEL,
     BONDS_DASHBOARD_LABEL,
     STAKING_DASHBOARD_LABEL,
@@ -29,7 +32,7 @@ export const ROUTE_NEUTRINO_SHOW_TRANSFERS = 'neutrino_show_transfers';
 export const ROUTE_NEUTRINO_SHOW_INVOICE_GEN = 'neutrino_show_invoice_gen';
 export const ROUTE_NEUTRINO_REDIRECT = 'neutrino_redirect';
 export const ROUTE_BONDS = 'bonds';
-export const ROUTE_BONDS_REDIRECT = 'bounds_redirect';
+export const ROUTE_BONDS_REDIRECT = 'bonds_redirect';
 export const ROUTE_LEASING = 'leasing';
 export const ROUTE_LEASING_REDIRECT = 'leasing_redirect';
 export const ROUTE_RPD = 'rpd';
@@ -112,37 +115,44 @@ export default {
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         },
-        Exchange: {
-            exact: true,
-            // path: '#',
-            label: EXCHANGE_LABEL,
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-            url: getExchangeLink(getDefaultProductLinks()),
-        },
-        [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
-            exact: true,
-            path: '/transfers/:currency',
-            component: NeutrinoDashboard,
-            label: TRANSFERS_LABEL,
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-        },
-        [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
-            exact: true,
-            path: '/invoices/:currency',
-            component: NeutrinoDashboard,
-            label: INVOICES_LABEL,
-            roles: UserRole.getAuth(),
-            isShowLeftSidebar: true,
-        },
+        // Exchange: {
+        //     exact: true,
+        //     // path: '#',
+        //     label: __(EXCHANGE_LABEL),
+        //     roles: UserRole.getAuth(),
+        //     isShowLeftSidebar: true,
+        //     url: getExchangeLink(defaultProductLinks),
+        // },
+        // [ROUTE_NEUTRINO_SHOW_TRANSFERS]: {
+        //     exact: true,
+        //     path: '/transfers/:currency',
+        //     component: NeutrinoDashboard,
+        //     label: __(TRANSFERS_LABEL),
+        //     roles: UserRole.getAuth(),
+        //     isShowLeftSidebar: true,
+        // },
+        // [ROUTE_NEUTRINO_SHOW_INVOICE_GEN]: {
+        //     exact: true,
+        //     path: '/invoices/:currency',
+        //     component: NeutrinoDashboard,
+        //     label: __(INVOICES_LABEL),
+        //     roles: UserRole.getAuth(),
+        //     isShowLeftSidebar: true,
+        // },
         [ROUTE_BONDS]: {
             exact: true,
             path: '/bonds/:currency',
-            component: BoundsDashboard,
-            label: BONDS_DASHBOARD_LABEL,
+            component: BondsDashboard,
+            label: __(BONDS_DASHBOARD_LABEL),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
+        },
+        [ARTICLE_LABEL]: {
+            exact: true,
+            label: __(ARTICLE_LABEL),
+            roles: UserRole.getAuth(),
+            isShowLeftSidebar: true,
+            url: getArticleLink(getDefaultProductLinks(translateGetter)).url,
         },
         [ROUTE_STAKING_LANDING_PAGE]: {
             exact: true,

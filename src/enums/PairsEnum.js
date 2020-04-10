@@ -23,7 +23,7 @@ export default class PairsEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.USDNB_USDN]: 'USD-NB/USD-N',
+            [this.USDNB_USDN]: 'NSBT/WAVES',
             //[this.EURNB_EURN]: 'EUR-NB/EUR-N'
         };
     }

@@ -1,0 +1,60 @@
+@import 'style/helpers/vars';
+
+.BuyBondsForm {
+
+  $root: &;
+
+  padding: 0 18px;
+
+  &__input {
+    margin-bottom: 15px;
+
+    &_with-hint {
+      margin-bottom: 0;
+    }
+
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__submit-button {
+    margin-top: 24px;
+  }
+
+  &__form {
+    position: relative;
+  }
+
+  &__roi {
+    position: absolute;
+    top: 35px;
+    right: 15px;
+    color: #00F59E;
+    display: block;
+    width: 150px;
+    text-align: right;
+
+    & > :nth-child(1) {
+      padding-right: 4px;
+      color: #fff;
+    }
+
+    & > :nth-child(2) {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
+
+  &__percent-btns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-bottom: 16px;
+    justify-content: space-between;
+
+    & > * {
+      padding: 4px 16px;
+    }
+  }
+}

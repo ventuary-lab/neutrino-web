@@ -11,9 +11,13 @@ import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
-import { InstallKeeperModalContext, GlobalLinksContext } from 'shared/Layout/context';
-import { getExchangeLink } from 'shared/Layout/helpers';
-import { TRANSFERS_LABEL, INVOICES_LABEL } from 'shared/Layout/constants';
+import {
+    // InstallKeeperModalContext,
+    GlobalLinksContext,
+    LoginTypeModalContext,
+} from 'shared/Layout/context';
+import { getArticleLink } from 'shared/Layout/helpers';
+import { TRANSFERS_LABEL, ARTICLE_LABEL, INVOICES_LABEL } from 'shared/Layout/constants';
 
 import { html, store } from 'components';
 import { getQuoteCurrency } from 'reducers/currency';
@@ -65,7 +69,7 @@ export default class Header extends React.PureComponent {
     }
 
     onNavItemChange(item, dexLink) {
-        if (item.label === 'Exchange' && this.lastNavItem) {
+        if (item.label === ARTICLE_LABEL && this.lastNavItem) {
             window.open(dexLink);
             store.dispatch(change(FORM_ID, 'section', this.lastNavItem.id));
         } else {
@@ -123,27 +127,30 @@ export default class Header extends React.PureComponent {
                                     <DropDownField
                                         attribute={'section'}
                                         items={navItems}
-                                        onItemChange={item =>
-                                            this.onNavItemChange(
+                                        onItemChange={item => {
+                                            const link = getArticleLink(links.product);
+                                            return this.onNavItemChange(
                                                 item,
-                                                getExchangeLink(links.product).url
-                                            )
-                                        }
+                                                link && link.url
+                                            );
+                                        }}
                                         defaultItemLabel={'Products'}
                                     />
                                 </Form>
                             </div>
                         )) || (
-                            <InstallKeeperModalContext.Consumer>
-                                {context => (
+                            <LoginTypeModalContext.Consumer>
+                                {loginContext => (
                                     <Button
                                         className={bem.element('auth-button')}
-                                        label={__('Login with Keeper')}
+                                        label={__('Login')}
                                         color="secondary"
-                                        onClick={() => context.onLogin()}
+                                        onClick={() => {
+                                            loginContext.onOpen();
+                                        }}
                                     />
                                 )}
-                            </InstallKeeperModalContext.Consumer>
+                            </LoginTypeModalContext.Consumer>
                         )}
                         <div className={'info-dropdown'}>
                             <InfoDropDown
