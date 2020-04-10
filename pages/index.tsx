@@ -6,7 +6,7 @@ import { Translation } from 'react-i18next';
 import Head from 'next/head';
 import 'locales/config';
 import { GlobalLinksContext } from 'shared/Layout/context';
-import { getDefaultLearnLinks, getDefaultProductLinks } from './defaults';
+import { getDefaultLearnLinks, getDefaultProductLinks } from 'shared/Layout/defaults';
 
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
