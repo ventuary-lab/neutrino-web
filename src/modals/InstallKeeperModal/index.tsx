@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from 'locales/config';
 import _ from 'lodash';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
@@ -155,7 +156,7 @@ class InstallKeeperModal extends React.Component<Props, State> {
         return (
             <div>
                 <div className={bem.element('main-view')}>
-                    <h3>Please install Waves Keeper first</h3>
+                    <h3>{t('common.install_waves_keeper.label')}</h3>
                     <p>
                         It is a browser extension that allows to create your Waves wallet and manage
                         your private keys to interact with our platform
