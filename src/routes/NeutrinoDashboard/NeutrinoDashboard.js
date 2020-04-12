@@ -23,6 +23,7 @@ import MessageModal from 'modals/MessageModal';
 import { openModal } from 'yii-steroids/actions/modal';
 import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
+import { Translation } from 'react-i18next';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
@@ -42,13 +43,11 @@ const PRICE_FEED_PERIOD = 1000;
 
 const SwapWarningMessage = () => (
     <span className="SwapWarningMessage">
-        Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
-        the price of WAVES may fluctuate, which can lead to receiving a lower/higher WAVES amount
-        than expected.
+        <Translation>{(t) => t('common.swap_wait_warning.label')}</Translation>
     </span>
 );
 
-@connect(state => ({
+@connect((state) => ({
     sourceCurrency: getSourceCurrency(state),
     quoteCurrency: getQuoteCurrency(state),
     pairName: getPairName(state),
@@ -57,7 +56,7 @@ const SwapWarningMessage = () => (
     controlPrice: getControlPrice(state),
     totalIssued: getTotalIssued(state),
 }))
-@dal.hoc(props => [
+@dal.hoc((props) => [
     {
         url: `/api/v1/neutrino-balances/${props.pairName}`,
         key: 'neutrinoBalances',
@@ -246,39 +245,42 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
     render() {
         const { isSwapLoading, swapLoaderProps } = this.state;
-
-        const steps = [
-            {
-                id: 'generation',
-                label: __('Tokens swap'),
-            },
-            {
-                id: 'details',
-                label: __('Confirm details'),
-            },
-        ];
         const computedClassName = [
             bem.block(),
             isSwapLoading ? bem.element('swap-processing') : '',
         ].join(' ');
 
         return (
-            <UserCongratsModalContext.Consumer>
-                {context => (
-                    <div className={computedClassName}>
-                        {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
-                        {this.renderStepChanger(steps)}
-                        <Form
-                            className={bem.element('form')}
-                            formId={FORM_ID}
-                            onSubmit={formData => this._onSubmit(formData, context)}
-                        >
-                            {this.state.step === 'generation' && this.renderGenerationStep()}
-                            {this.state.step === 'details' && this.renderDetailsStep()}
-                        </Form>
-                    </div>
+            <Translation>
+                {(t) => (
+                    <UserCongratsModalContext.Consumer>
+                        {(context) => (
+                            <div className={computedClassName}>
+                                {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
+                                {this.renderStepChanger([
+                                    {
+                                        id: 'generation',
+                                        label: t('common.tokens_swap.label'),
+                                    },
+                                    {
+                                        id: 'details',
+                                        label: t('common.confirm_details.label'),
+                                    },
+                                ])}
+                                <Form
+                                    className={bem.element('form')}
+                                    formId={FORM_ID}
+                                    onSubmit={(formData) => this._onSubmit(formData, context, t)}
+                                >
+                                    {this.state.step === 'generation' &&
+                                        this.renderGenerationStep(t)}
+                                    {this.state.step === 'details' && this.renderDetailsStep(t)}
+                                </Form>
+                            </div>
+                        )}
+                    </UserCongratsModalContext.Consumer>
                 )}
-            </UserCongratsModalContext.Consumer>
+            </Translation>
         );
     }
 
@@ -300,21 +302,21 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
-    getCurrencyLabels() {
+    getCurrencyLabels(t) {
         const { quoteCurrency: _quoteCurrency, sourceCurrency: _sourceCurrency } = this.props;
         const replaceArgs = [/-/g, ''];
         const sourceCurrency = _sourceCurrency.toUpperCase().replace(...replaceArgs);
         const quoteCurrency = _quoteCurrency.toUpperCase().replace(...replaceArgs);
 
         return {
-            mapLabel: label => <span>{label}</span>,
-            totalIssuedLabels: [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
-            currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
+            mapLabel: (label) => <span>{label}</span>,
+            totalIssuedLabels: [`${t('common.total_issued.label')} ${quoteCurrency}`, `${t('common.issued.label')} ${quoteCurrency}`],
+            currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} ${t('common.price.label')}`],
         };
     }
 
-    renderGenerationStep() {
-        const grabNeutrinoAddress = config => {
+    renderGenerationStep(t) {
+        const grabNeutrinoAddress = (config) => {
             try {
                 return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
             } catch (err) {
@@ -328,11 +330,15 @@ export default class NeutrinoDashboard extends React.PureComponent {
             totalIssuedLabels,
             mapLabel,
             currentPriceLabels,
-        } = this.getCurrencyLabels();
+        } = this.getCurrencyLabels(t);
 
         const { isWavesLeft } = this.state;
 
-        const swapWarning = 'Approximate WAVES value based on current price';
+        const swapWarning = t('common.swap_approx_waves.label');
+
+        const minCurrency = isWavesLeft
+            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+            : CurrencyEnum.getLabel(this.props.quoteCurrency);
 
         return (
             <>
@@ -352,11 +358,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: 1 {currency}', {
-                                currency: isWavesLeft
-                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                            })}
+                            {`${t('common.minimum.label')}. ${minCurrency} ${t('common.required.label')}: 1 ${minCurrency}`}
                         </div>
                     </div>
 
@@ -368,7 +370,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
 
                     <div className={bem.element('input-container')}>
-                        <div className={bem.element('input-label')}>{__('Receive')}</div>
+                        <div className={bem.element('input-label')}>{t('common.receive.label')}</div>
                         <InputField
                             className={bem.element('input')}
                             attribute={isWavesLeft ? 'neutrino' : 'waves'}
@@ -391,7 +393,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <div className={bem.element('info-cols')}>
                         <div className={bem.element('info-column')}>
                             <ConfigContext.Consumer>
-                                {environmentConfig => (
+                                {(environmentConfig) => (
                                     <div className={bem.element('info-row')}>
                                         <div className={bem.element('info-string')}>
                                             <div className={bem.element('info-hint')}>
@@ -401,7 +403,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                                     )}
                                                 />
                                             </div>
-                                            <span>{__('Smart contract')}</span>
+                                            <span>{t('common.smart_contract.label')}</span>
                                         </div>
                                         <a
                                             href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
@@ -416,7 +418,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             </ConfigContext.Consumer>
                             <div className={bem.element('info-row')}>
                                 <div className={bem.element('info-string', 'without-hint')}>
-                                    <span>{__('Asset ID')}</span>
+                                    <span>{t('common.asset_id.label')}</span>
                                 </div>
                                 <a
                                     href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(
@@ -459,10 +461,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         className={bem.element('submit-button')}
                         label={
                             this.state.isWavesLeft
-                                ? __('Issue {currency}', {
-                                      currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                  })
-                                : __('Redeem WAVES')
+                                ? `${t('common.issue.label')} ${CurrencyEnum.getLabel(this.props.quoteCurrency)}`
+                                : `${t('common.redeem.label')} WAVES`
                         }
                         onClick={() => this.setState({ step: 'details' })}
                     />
@@ -471,7 +471,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
-    renderDetailsStep() {
+    renderDetailsStep(t) {
         return (
             <>
                 <div className={bem.element('details')}>
@@ -548,16 +548,16 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         </div>
                     </div>
                     <GlobalLinksContext.Consumer>
-                        {context => {
+                        {(context) => {
                             const tosLink = context.links.find(
-                                link => link.label === TERMS_OF_USE_LABEL
+                                (link) => link.label === TERMS_OF_USE_LABEL
                             ).url;
                             return (
                                 <CheckboxField
                                     className={bem.element('terms-checkbox')}
                                     label={
                                         <span>
-                                            {__('I have read and accept the')}{' '}
+                                            {t('common.have_read_terms_of_use.label')}{' '}
                                             <a href={tosLink} target="_blank">
                                                 {__(TERMS_OF_USE_LABEL)}
                                             </a>
@@ -572,14 +572,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <Button
                             color={'secondary'}
                             className={bem.element('back-button')}
-                            label={__('Go back')}
+                            label={t('common.go_back.label')}
                             onClick={() => this.setState({ step: 'generation' })}
                         />
                         <Button
                             type={'submit'}
                             className={bem.element('finalize-button')}
                             disabled={!_get(this.props.formValues, 'terms')}
-                            label={__('Confirm')}
+                            label={t('common.confirm.label')}
                         />
                     </div>
                 </div>
@@ -621,7 +621,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         return !isNaN(parseFloat(result)) && isFinite(result) ? result : 0;
     }
 
-    _toFixedSpecial = function(num, n) {
+    _toFixedSpecial = function (num, n) {
         const str = num.toFixed(n);
         if (str.indexOf('e+') < 0) {
             return str;
@@ -632,7 +632,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             str
                 .replace('.', '')
                 .split('e+')
-                .reduce(function(p, b) {
+                .reduce(function (p, b) {
                     return p + new Array(b - p.length + 2).join(0);
                 }) +
             '.' +
@@ -640,7 +640,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     };
 
-    async _onSubmit(values, congratsModalContext) {
+    async _onSubmit(values, congratsModalContext, t) {
         this.setState({ step: 'generation' });
 
         store.dispatch(reset(FORM_ID));
@@ -663,7 +663,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
             store.dispatch(
                 openModal(MessageModal, {
-                    text: `Error on Swap occured. ${err.message}`,
+                    text: `${t('common.swap_error.label')}. ${err.message}`,
                 })
             );
         }

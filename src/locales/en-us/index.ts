@@ -38,12 +38,19 @@ export default {
             },
         },
         common: {
+            get: { label: 'Get' },
+            price: { label: 'price' },
+            total_issued: { label: 'Total issued' },
+            issue: { label: 'Issue' },
+            redeem: { label: 'Redeem' },
+            issued: { label: 'Issued' },
+            discounts: { label: 'Discounts' },
+            have_read_terms_of_use: { label: 'I have read and accept the' },
             login: {
                 label: 'Login',
             },
-            product: {
-                label: 'Product',
-            },
+            product: { label: 'Product' },
+            products: { label: 'Products' },
             learn: {
                 label: 'Learn',
             },
@@ -122,6 +129,23 @@ export default {
             },
             tokens_swap: {
                 label: 'Tokens swap',
+            },
+            swap_error: {
+                label: 'Error on Swap occured',
+            },
+            minimum: {
+                label: 'Min.'
+            },
+            required: {
+                label: 'required'
+            },
+            swap_wait_warning: {
+                label: `Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
+                the price of WAVES may fluctuate, which can lead to receiving a lower/higher WAVES amount
+                than expected.`,
+            },
+            swap_approx_waves: {
+                label: 'Approximate WAVES value based on current price'
             },
             confirm_details: {
                 label: 'Confirm details',
@@ -234,6 +258,7 @@ export default {
             no_payout_checks: {
                 label: 'No Payout checks',
             },
+
             staking_description: {
                 label: `
                     Neutrino dApp will distribute staking rewards proportionately to users

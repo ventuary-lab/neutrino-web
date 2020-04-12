@@ -155,7 +155,7 @@ export default class Header extends React.PureComponent {
                                                             link && link.url
                                                         );
                                                     }}
-                                                    defaultItemLabel={'Products'}
+                                                    defaultItemLabel={t('common.products.label')}
                                                 />
                                             </Form>
                                         </div>
@@ -164,7 +164,7 @@ export default class Header extends React.PureComponent {
                                             {(loginContext) => (
                                                 <Button
                                                     className={bem.element('auth-button')}
-                                                    label={__('Login')}
+                                                    label={t('common.login.label')}
                                                     color="secondary"
                                                     onClick={() => {
                                                         loginContext.onOpen();
@@ -176,7 +176,7 @@ export default class Header extends React.PureComponent {
                                     <div className={'info-dropdown'}>
                                         <InfoDropDown
                                             icon={'Icon__learn'}
-                                            label={__('Learn')}
+                                            label={t('common.learn.label')}
                                             items={links.links.map((link) => ({
                                                 ...link,
                                                 linkUrl: link.url,
