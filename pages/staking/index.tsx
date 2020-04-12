@@ -36,7 +36,7 @@ class LandingPage extends React.Component<{}, State> {
 
     render() {
         const { googleTagId } = this.state;
-        const DynamicPage = dynamic(() => import('shared/Staking/StakingLanding'), { ssr: false });
+        const DynamicPage = dynamic(() => import('shared/Staking/StakingLanding'), { ssr: true });
 
         return (
             <div>

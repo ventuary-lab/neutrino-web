@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { mergeDeepRight } from 'ramda'
+import { mergeDeepRight } from 'ramda';
 import { initReactI18next } from 'react-i18next';
 
 import englishTranslation from './en-us';
@@ -12,16 +12,19 @@ export const LanguageEnum = {
     CH: 'ch',
 };
 
+let window = { localStorage: { getItem: () => {}, setItem: () => {} } };
 const localStorageKey = 'default-locale';
 const getDefaultLanguage = () => {
     return (
-        (typeof window !== undefined && window.localStorage.getItem(localStorageKey)) || LanguageEnum.EN
+        // @ts-ignore
+        (typeof window !== undefined && window.localStorage.getItem(localStorageKey)) ||
+        LanguageEnum.EN
+        // (window?.localStorage?.getItem(localStorageKey)) || LanguageEnum.EN
     );
 };
 const onChangeLanguage = (i18n, language) => {
-    if (typeof window !== undefined) {
-        window.localStorage.setItem(localStorageKey, language);
-    }
+    // @ts-ignore
+    if (typeof window !== undefined) window.localStorage.setItem(localStorageKey, language);
     i18n.changeLanguage(language);
 };
 
@@ -51,9 +54,9 @@ export const getLangDropdownItems = (i18n) => [
         lng: LanguageEnum.CH,
         onClick: () => onChangeLanguage(i18n, LanguageEnum.CH),
     },
-]
+];
 export const getLanguageDropdownProps = (i18n) => ({
-    default: getLangDropdownItems(i18n).find(lang => lang.lng === getDefaultLanguage()),
+    default: getLangDropdownItems(i18n).find((lang) => lang.lng === getDefaultLanguage()),
     langs: getLangDropdownItems(i18n),
 });
 
