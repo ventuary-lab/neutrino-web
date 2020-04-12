@@ -7,7 +7,6 @@ import { Translation } from 'react-i18next';
 import queryString from 'query-string';
 import ModalWrapper from 'yii-steroids/ui/modal/ModalWrapper';
 import { goToPage } from 'yii-steroids/actions/navigation';
-import { setUser } from 'yii-steroids/actions/auth';
 import layoutHoc, {
     STATUS_ACCESS_DENIED,
     STATUS_LOADING,

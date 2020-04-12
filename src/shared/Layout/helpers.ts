@@ -1,8 +1,9 @@
 import { IScreenSizeContext } from './types';
+import { t } from 'locales/config';
 import { Link } from 'ui/global/types';
-import { EXCHANGE_LABEL, ARTICLE_LABEL } from 'shared/Layout/constants';
+import { ARTICLE_LABEL } from 'shared/Layout/constants';
 
-export const getExchangeLink = (links: Link[]) => links.find(link => link.label === EXCHANGE_LABEL);
+export const getExchangeLink = (links: Link[]) => links.find(link => link.label === t('common.exchange.label'));
 export const getArticleLink = (links: Link[]) => links.find(link => link.label === ARTICLE_LABEL);
 
 export const hasBooleanPropChanged = <T, F extends (...args: string[]) => void>(

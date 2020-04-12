@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
 import { Translation } from 'react-i18next';
+import { getItems } from 'routes';
 import Link from 'yii-steroids/ui/nav/Link';
 import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
@@ -103,70 +104,92 @@ export default class Header extends React.PureComponent {
         const showNav = !!this.props.navItems.find((item) =>
             item.roles.includes(this.props.userRole)
         );
-        const navItems = this.props.navItems.filter(
-            (item) => [ROUTE_STAKING_LANDING_PAGE].indexOf(item.id) === -1
-        );
+        const mapNavItem = (items, item) => ({
+            ...item,
+            label: items[item.id].label || item.label,
+        });
 
         return (
-            <GlobalLinksContext.Consumer>
-                {(links) => (
-                    <header className={bem.block()}>
-                        <Link className={bem.element('logo')} noStyles toRoute={ROUTE_ROOT}>
-                            <img className={bem.element('logo-image')} src={logo} alt="Neutrino" />
-                        </Link>
-                        {(showNav && (
-                            <div className={bem.element('section-toggle')}>
-                                <Form
-                                    formId={FORM_ID}
-                                    initialValues={{
-                                        section: navItems
-                                            .map((item) => item.id)
-                                            .includes(this.props.currentItem.id)
-                                            ? this.props.currentItem.id
-                                            : null,
-                                    }}
-                                >
-                                    <DropDownField
-                                        attribute={'section'}
-                                        items={navItems}
-                                        onItemChange={(item) => {
-                                            const link = getArticleLink(links.product);
-                                            return this.onNavItemChange(item, link && link.url);
-                                        }}
-                                        defaultItemLabel={'Products'}
-                                    />
-                                </Form>
-                            </div>
-                        )) || (
-                            <LoginTypeModalContext.Consumer>
-                                {(loginContext) => (
-                                    <Button
-                                        className={bem.element('auth-button')}
-                                        label={__('Login')}
-                                        color="secondary"
-                                        onClick={() => {
-                                            loginContext.onOpen();
-                                        }}
-                                    />
-                                )}
-                            </LoginTypeModalContext.Consumer>
-                        )}
-                        <div className={'info-dropdown'}>
-                            <InfoDropDown
-                                icon={'Icon__learn'}
-                                label={__('Learn')}
-                                items={links.links.map((link) => ({ ...link, linkUrl: link.url }))}
-                            />
-                        </div>
+            <Translation>
+                {(t, { i18n }) => {
+                    const renamedItems = getItems(t);
+                    const navItems = this.props.navItems
+                        .filter((item) => [ROUTE_STAKING_LANDING_PAGE].indexOf(item.id) === -1)
+                        .map((...args) => mapNavItem(renamedItems, ...args));
+                    const currentItem = mapNavItem(renamedItems, this.props.currentItem);
 
-                        <Translation>
-                            {(t, { i18n }) => {
-                                return <LanguageDropdown {...getLanguageDropdownProps(i18n)} />;
-                            }}
-                        </Translation>
-                    </header>
-                )}
-            </GlobalLinksContext.Consumer>
+                    return (
+                        <GlobalLinksContext.Consumer>
+                            {(links) => (
+                                <header className={bem.block()}>
+                                    <Link
+                                        className={bem.element('logo')}
+                                        noStyles
+                                        toRoute={ROUTE_ROOT}
+                                    >
+                                        <img
+                                            className={bem.element('logo-image')}
+                                            src={logo}
+                                            alt="Neutrino"
+                                        />
+                                    </Link>
+                                    {(showNav && (
+                                        <div className={bem.element('section-toggle')}>
+                                            <Form
+                                                formId={FORM_ID}
+                                                initialValues={{
+                                                    section: navItems
+                                                        .map((item) => item.id)
+                                                        .includes(currentItem.id)
+                                                        ? currentItem.id
+                                                        : null,
+                                                }}
+                                            >
+                                                <DropDownField
+                                                    attribute={'section'}
+                                                    items={navItems}
+                                                    onItemChange={(item) => {
+                                                        const link = getArticleLink(links.product);
+                                                        return this.onNavItemChange(
+                                                            item,
+                                                            link && link.url
+                                                        );
+                                                    }}
+                                                    defaultItemLabel={'Products'}
+                                                />
+                                            </Form>
+                                        </div>
+                                    )) || (
+                                        <LoginTypeModalContext.Consumer>
+                                            {(loginContext) => (
+                                                <Button
+                                                    className={bem.element('auth-button')}
+                                                    label={__('Login')}
+                                                    color="secondary"
+                                                    onClick={() => {
+                                                        loginContext.onOpen();
+                                                    }}
+                                                />
+                                            )}
+                                        </LoginTypeModalContext.Consumer>
+                                    )}
+                                    <div className={'info-dropdown'}>
+                                        <InfoDropDown
+                                            icon={'Icon__learn'}
+                                            label={__('Learn')}
+                                            items={links.links.map((link) => ({
+                                                ...link,
+                                                linkUrl: link.url,
+                                            }))}
+                                        />
+                                    </div>
+                                    <LanguageDropdown {...getLanguageDropdownProps(i18n)} />
+                                </header>
+                            )}
+                        </GlobalLinksContext.Consumer>
+                    );
+                }}
+            </Translation>
         );
     }
 }

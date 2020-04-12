@@ -39,13 +39,13 @@ export default {
         },
         common: {
             login: {
-                label: 'Login'
+                label: 'Login',
             },
             product: {
-                label: 'Product'
+                label: 'Product',
             },
             learn: {
-                label: 'Learn'
+                label: 'Learn',
             },
             profit: {
                 label: 'Profit',
@@ -127,19 +127,20 @@ export default {
                 label: 'Confirm details',
             },
             blocked_app: {
-                label: 'Blocked illustration'
+                label: 'Blocked illustration',
             },
             fraud_prevent: {
-                label: 'For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required'
+                label:
+                    'For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required',
             },
             order_filled: {
-                label: 'Filled'
+                label: 'Filled',
             },
             order_cancelled: {
-                label: 'Cancelled'
+                label: 'Cancelled',
             },
             order_new: {
-                label: 'Opened'
+                label: 'Opened',
             },
         },
         modals: {
@@ -209,6 +210,7 @@ export default {
             invoice_generator: {
                 label: 'Invoice Generator',
             },
+            staking_rewards: { label: 'Staking Rewards' },
         },
         staking_dashboard: {
             account_balance: {

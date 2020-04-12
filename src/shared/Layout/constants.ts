@@ -1,11 +1,6 @@
 import { t } from 'locales/config';
 
-export const NEUTRINO_DASHBOARD_LABEL = t('heading.neutrino_dashboard.label');
-export const STAKING_DASHBOARD_LABEL = t('heading.staking_dashboard.label');
-export const TRANSFERS_LABEL = t('heading.transfers.label');
-export const EXCHANGE_LABEL = t('common.exchange.label');
 export const INVOICES_LABEL = t('heading.invoice_generator.label');
-export const BONDS_DASHBOARD_LABEL = t('heading.bonds_dashboard.label');
 
 export const WHITEPAPER_LABEL = t('common.white_paper.label');
 export const FAQ_LABEL = t('common.faq.label');
