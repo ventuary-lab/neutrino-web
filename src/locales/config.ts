@@ -18,12 +18,25 @@ export const LanguageEnum = {
     CH: 'ch',
 };
 
+const localStorageKey = 'default-locale';
+const getDefaultLanguage = () => {
+    return (
+        (typeof window !== undefined && localStorage.getItem(localStorageKey)) || LanguageEnum.EN
+    );
+};
+const onChangeLanguage = (i18n, language) => {
+    if (typeof window !== undefined) {
+        localStorage.setItem(localStorageKey, language);
+    }
+    i18n.changeLanguage(language);
+};
+
 i18next.use(initReactI18next).init({
     interpolation: {
         // React already does escaping
         escapeValue: false,
     },
-    lng: LanguageEnum.EN,
+    lng: getDefaultLanguage(),
     resources: {
         [LanguageEnum.EN]: englishTranslation,
         [LanguageEnum.RU]: russianTranslation,
@@ -31,29 +44,23 @@ i18next.use(initReactI18next).init({
     },
 });
 
-export const getLanguageDropdownProps = i18n => ({
-    default: {
+export const getLangDropdownItems = (i18n) => [
+    {
         label: 'English',
         flag: '🇬🇧',
-        onClick: () => i18n.changeLanguage(LanguageEnum.EN),
+        lng: LanguageEnum.EN,
+        onClick: () => onChangeLanguage(i18n, LanguageEnum.EN),
     },
-    langs: [
-        {
-            label: 'English',
-            flag: '🇬🇧',
-            onClick: () => i18n.changeLanguage(LanguageEnum.EN),
-        },
-        // {
-        //     label: 'Russian',
-        //     flag: '🇷🇺',
-        //     onClick: () => i18n.changeLanguage(LanguageEnum.RU),
-        // },
-        {
-            label: '文言',
-            flag: '🇨🇳',
-            onClick: () => i18n.changeLanguage(LanguageEnum.CH),
-        },
-    ],
+    {
+        label: '文言',
+        flag: '🇨🇳',
+        lng: LanguageEnum.CH,
+        onClick: () => onChangeLanguage(i18n, LanguageEnum.CH),
+    },
+]
+export const getLanguageDropdownProps = (i18n) => ({
+    default: getLangDropdownItems(i18n).find(lang => lang.lng === getDefaultLanguage()),
+    langs: getLangDropdownItems(i18n),
 });
 
 export const t = (text) => i18next.t(text);
