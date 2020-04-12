@@ -30,7 +30,7 @@ class AnnualYieldInfo extends React.Component<Props, State> {
 
         if (res.statusText === 'OK') {
             const yieldPercent = _.round(res.data, 2);
-            localStorage.setItem(ANNUAL_YIELD_LS_KEY, String(yieldPercent));
+            window.localStorage.setItem(ANNUAL_YIELD_LS_KEY, String(yieldPercent));
 
             this.setState({ yieldPercent });
         }

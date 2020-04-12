@@ -15,12 +15,12 @@ export const LanguageEnum = {
 const localStorageKey = 'default-locale';
 const getDefaultLanguage = () => {
     return (
-        (typeof window !== undefined && localStorage.getItem(localStorageKey)) || LanguageEnum.EN
+        (typeof window !== undefined && window.localStorage.getItem(localStorageKey)) || LanguageEnum.EN
     );
 };
 const onChangeLanguage = (i18n, language) => {
     if (typeof window !== undefined) {
-        localStorage.setItem(localStorageKey, language);
+        window.localStorage.setItem(localStorageKey, language);
     }
     i18n.changeLanguage(language);
 };

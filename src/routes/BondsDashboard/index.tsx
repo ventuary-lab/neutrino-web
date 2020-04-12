@@ -74,7 +74,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             currentRoi: currentDeficit < 0 ? validRoi : DEFAULT_ROI_DISCOUNT,
         });
 
-        localStorage.setItem(ROI_LS_KEY, String(validRoi));
+        window.localStorage.setItem(ROI_LS_KEY, String(validRoi));
     }
 
     async _updateListener() {
