@@ -49,7 +49,7 @@ export const getLangDropdownItems = (i18n) => [
         onClick: () => onChangeLanguage(i18n, LanguageEnum.EN),
     },
     {
-        label: '文言',
+        label: '中文',
         flag: '🇨🇳',
         lng: LanguageEnum.CH,
         onClick: () => onChangeLanguage(i18n, LanguageEnum.CH),

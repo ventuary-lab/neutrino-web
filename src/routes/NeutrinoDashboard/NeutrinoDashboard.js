@@ -310,8 +310,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return {
             mapLabel: (label) => <span>{label}</span>,
-            totalIssuedLabels: [`${t('common.total_issued.label')} ${quoteCurrency}`, `${t('common.issued.label')} ${quoteCurrency}`],
-            currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} ${t('common.price.label')}`],
+            totalIssuedLabels: [
+                `${t('common.total_issued.label')} ${quoteCurrency}`,
+                `${t('common.issued.label')} ${quoteCurrency}`,
+            ],
+            currentPriceLabels: [
+                `WAVES / ${quoteCurrency}`,
+                `WAVES / ${sourceCurrency} ${t('common.price.label')}`,
+            ],
         };
     }
 
@@ -358,7 +364,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {`${t('common.minimum.label')}. ${minCurrency} ${t('common.required.label')}: 1 ${minCurrency}`}
+                            {`${t('common.minimum.label')}. ${minCurrency} ${t(
+                                'common.required.label'
+                            )}: 1 ${minCurrency}`}
                         </div>
                     </div>
 
@@ -370,7 +378,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
 
                     <div className={bem.element('input-container')}>
-                        <div className={bem.element('input-label')}>{t('common.receive.label')}</div>
+                        <div className={bem.element('input-label')}>
+                            {t('common.receive.label')}
+                        </div>
                         <InputField
                             className={bem.element('input')}
                             attribute={isWavesLeft ? 'neutrino' : 'waves'}
@@ -461,7 +471,9 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         className={bem.element('submit-button')}
                         label={
                             this.state.isWavesLeft
-                                ? `${t('common.issue.label')} ${CurrencyEnum.getLabel(this.props.quoteCurrency)}`
+                                ? `${t('common.issue.label')} ${CurrencyEnum.getLabel(
+                                      this.props.quoteCurrency
+                                  )}`
                                 : `${t('common.redeem.label')} WAVES`
                         }
                         onClick={() => this.setState({ step: 'details' })}
@@ -550,7 +562,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     <GlobalLinksContext.Consumer>
                         {(context) => {
                             const tosLink = context.links.find(
-                                (link) => link.label === TERMS_OF_USE_LABEL
+                                (link) => link.label === t('common.terms_of_use.label')
                             ).url;
                             return (
                                 <CheckboxField
@@ -559,7 +571,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                         <span>
                                             {t('common.have_read_terms_of_use.label')}{' '}
                                             <a href={tosLink} target="_blank">
-                                                {__(TERMS_OF_USE_LABEL)}
+                                                {t('common.terms_of_use.label')}
                                             </a>
                                         </span>
                                     }

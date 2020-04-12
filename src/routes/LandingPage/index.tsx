@@ -97,25 +97,6 @@ class LandingPage extends React.Component<Props> {
                                 </a>
                             </div>
                             <div className={bem.element('mobile-info')}>{getParagraph(t)}</div>
-                            {/* <Translation>
-                                {(t) => (
-                                    <GlobalLinksContext.Consumer>
-                                        {(context) => {
-                                            console.log({ links: context.links })
-                                            // const tosLink = context.links.find(
-                                            //     (link) => link.label === t('common.terms_of_use.label');
-                                            // ).url;
-                                            // return (
-                                            //     <div className={bem.element('tos')}>
-                                            //         <a href={tosLink} target="_blank">
-                                            //              {t('common.terms_of_use.label')}
-                                            //         </a>
-                                            //     </div>
-                                            // );
-                                        }}
-                                    </GlobalLinksContext.Consumer>
-                                )}
-                            </Translation> */}
                             <LandingFooter links={socLinks} />
                         </div>
                     </div>
