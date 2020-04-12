@@ -45,7 +45,7 @@ class LandingPage extends React.Component<{}, State> {
 
     render() {
         const { googleTagId } = this.state;
-        const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: false });
+        const DynamicLandingPage = dynamic(() => import('routes/LandingPage'), { ssr: true });
 
         return (
             <Translation>
