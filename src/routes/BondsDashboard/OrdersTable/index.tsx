@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { dal, html } from 'components';
 import { orderBy as _orderBy, round as _round } from 'lodash';
+import { Translation } from 'react-i18next';
 
 import './OrdersTable.scss';
 import PairsEnum from 'enums/PairsEnum';
@@ -24,31 +25,39 @@ export default class OrdersTable extends React.Component<Props, State> implement
         super(props);
 
         this.getTableHead = this.getTableHead.bind(this);
+        this.getFieldTable = this.getFieldTable.bind(this);
         this.getTableBody = this.getTableBody.bind(this);
 
-        this.fieldTable = {
+        this.state = {
+            sort: ['time', SortTableEnum.DESC],
+            search: '',
+        };
+    }
+
+    getFieldTable(t) {
+        return {
             name: {
-                label: 'Name',
-                get: item =>
+                label: t('common.name.label'),
+                get: (item) =>
                     item.type === OrderTypeEnum.LIQUIDATE
                         ? CurrencyEnum.getLabel(item.currency)
                         : PairsEnum.getLabel(item.pairName),
             },
             type: {
-                label: 'Type',
-                get: item => OrderTypeEnum.getLabel(item.type) || '--',
+                label: t('common.type.label'),
+                get: (item) => OrderTypeEnum.getLabel(item.type) || '--',
             },
             time: {
-                label: 'Time',
-                get: item => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--',
+                label: t('common.time.label'),
+                get: (item) => moment(item.timestamp).format('DD/MM/YYYY hh:mm:ss') || '--',
             },
             usdnb: {
                 label: 'NSBT',
-                get: item => (OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount),
+                get: (item) => (OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount),
             },
             price: {
-                label: 'Price',
-                get: item => _round(item.price / 100, 2) || '--',
+                label: t('common.price.label'),
+                get: (item) => _round(item.price / 100, 2) || '--',
             },
             roi: {
                 label: 'ROI',
@@ -60,23 +69,18 @@ export default class OrdersTable extends React.Component<Props, State> implement
                     OrderTypeEnum.LIQUIDATE === item.type ? '--' : item.total,
             },
             status: {
-                label: 'Status',
-                get: item => item.status || '--',
+                label: t('common.status.label'),
+                get: (item) => item.status || '--',
             },
             cancelall: {
-                label: 'Cancel All',
+                label: t('common.cancel_all.label'),
             },
-        };
-
-        this.state = {
-            sort: ['time', SortTableEnum.DESC],
-            search: '',
         };
     }
 
-    getTableHead(items) {
+    getTableHead(items, t) {
         const { isHistory } = this.props;
-        const { fieldTable } = this;
+        const fieldTable = this.getFieldTable(t);
 
         return (
             <thead>
@@ -112,7 +116,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                             <div
                                 className={bem.element('cancel')}
                                 onClick={() => {
-                                    items.forEach(item =>
+                                    items.forEach((item) =>
                                         dal.cancelOrder(this.props.pairName, item.type, item.id)
                                     );
                                 }}
@@ -129,10 +133,10 @@ export default class OrdersTable extends React.Component<Props, State> implement
         );
     }
 
-    getTableBody(rawItems) {
+    getTableBody(rawItems, t) {
         const { controlPrice } = this.props;
-        const { fieldTable } = this;
-        const items = rawItems.filter(item =>
+        const fieldTable = this.getFieldTable(t);
+        const items = rawItems.filter((item) =>
             item.type !== 'liquidate'
                 ? moment(new Date(item.timestamp)).isAfter(moment('01/12/2020'))
                 : true
@@ -182,9 +186,15 @@ export default class OrdersTable extends React.Component<Props, State> implement
                 )) || (
                     <tr>
                         <td colSpan={this.props.isHistory ? 6 : 7}>
-                            <div className={bem.element('empty')}>
-                                {this.props.isHistory ? 'No history' : 'No orders'}
-                            </div>
+                            <Translation>
+                                {(t) => (
+                                    <div className={bem.element('empty')}>
+                                        {this.props.isHistory
+                                            ? t('common.no_history.label')
+                                            : t('common.no_orders.label')}
+                                    </div>
+                                )}
+                            </Translation>
                         </td>
                     </tr>
                 )}
@@ -215,7 +225,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                         asc: true,
                         active: sortColumn === column && sortOrder === SortTableEnum.ASC,
                     })}
-                    onClick={e => {
+                    onClick={(e) => {
                         e.preventDefault();
                         this.setState({ sort: [column, SortTableEnum.ASC] });
                     }}
@@ -225,7 +235,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                         desc: true,
                         active: sortColumn === column && sortOrder === SortTableEnum.DESC,
                     })}
-                    onClick={e => {
+                    onClick={(e) => {
                         e.preventDefault();
                         this.setState({ sort: [column, SortTableEnum.DESC] });
                     }}
@@ -244,12 +254,16 @@ export default class OrdersTable extends React.Component<Props, State> implement
         const items = _orderBy(this.props.items, [sortOrder[0]], [sortOrder[1]]);
 
         return (
-            <div className={bem.block()}>
-                <table>
-                    {this.getTableHead(items)}
-                    {this.getTableBody(items)}
-                </table>
-            </div>
+            <Translation>
+                {(t) => (
+                    <div className={bem.block()}>
+                        <table>
+                            {this.getTableHead(items, t)}
+                            {this.getTableBody(items, t)}
+                        </table>
+                    </div>
+                )}
+            </Translation>
         );
     }
 }

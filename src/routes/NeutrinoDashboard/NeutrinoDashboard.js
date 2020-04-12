@@ -477,7 +477,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('details')}>
                     <div className={bem.element('details-item')}>
                         <span className={bem.element('details-label')}>
-                            {__('Please confirm the assets swap')}
+                            {t('views.please_confirm_the_swap.label')}
                         </span>
                         <SwapWarningMessage />
                         <div className={bem.element('details-inner', 'generation')}>

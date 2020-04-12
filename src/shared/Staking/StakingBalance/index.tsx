@@ -47,48 +47,56 @@ class StakingBalance extends React.Component<Props, State> {
     render() {
         const { isStakingShareModalOpened, isStakingShareDecreaseSelected } = this.state;
         const { stakingBalance, accountBalance, pairName } = this.props;
-        const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
-        const { title, buttonLabel } = {
-            buttonLabel: actionLabel,
-            title: `${actionLabel} neutrino (USDN) staking share`,
-        };
 
         return (
             <Translation>
-                {t => (
-                    <div>
-                        <MutateStakingShareModal
-                            pairName={pairName}
-                            title={title}
-                            buttonLabel={buttonLabel}
-                            accountBalance={accountBalance}
-                            stakingBalance={stakingBalance}
-                            isOpened={isStakingShareModalOpened}
-                            onClose={() => this.triggerStakingShareModal(false)}
-                            isDecrease={isStakingShareDecreaseSelected}
-                        />
-                        <AccountBalanceTitle title={t('staking_dashboard.staking_balance.label')} amount={stakingBalance} />
-                        <div className={bem.element('main')}>
-                            <div className={bem.element('action-buttons')}>
-                                <Button
-                                    type={'submit'}
-                                    block
-                                    label={t('staking_dashboard.staking_decrease_button.label')}
-                                    onClick={this.onStakingCancel}
-                                />
-                                <Button
-                                    type={'submit'}
-                                    block
-                                    label={t('staking_dashboard.staking_increase_button.label')}
-                                    onClick={this.onStakingIncrease}
-                                />
+                {(t) => {
+                    const actionLabel = !isStakingShareDecreaseSelected
+                        ? t('staking_dashboard.staking_increase_button.label')
+                        : t('staking_dashboard.staking_decrease_button.label');
+                    const { title, buttonLabel } = {
+                        buttonLabel: actionLabel,
+                        title: `${actionLabel} neutrino (USDN) ${t('staking_dashboard.staking_share.label')}`,
+                    };
+
+                    return (
+                        <div>
+                            <MutateStakingShareModal
+                                pairName={pairName}
+                                title={title}
+                                buttonLabel={buttonLabel}
+                                accountBalance={accountBalance}
+                                stakingBalance={stakingBalance}
+                                isOpened={isStakingShareModalOpened}
+                                onClose={() => this.triggerStakingShareModal(false)}
+                                isDecrease={isStakingShareDecreaseSelected}
+                            />
+                            <AccountBalanceTitle
+                                title={t('staking_dashboard.staking_balance.label')}
+                                amount={stakingBalance}
+                            />
+                            <div className={bem.element('main')}>
+                                <div className={bem.element('action-buttons')}>
+                                    <Button
+                                        type={'submit'}
+                                        block
+                                        label={t('staking_dashboard.staking_decrease_button.label')}
+                                        onClick={this.onStakingCancel}
+                                    />
+                                    <Button
+                                        type={'submit'}
+                                        block
+                                        label={t('staking_dashboard.staking_increase_button.label')}
+                                        onClick={this.onStakingIncrease}
+                                    />
+                                </div>
                             </div>
+                            <p className={bem.element('info')}>
+                                {t('staking_dashboard.staking_description.label')}
+                            </p>
                         </div>
-                        <p className={bem.element('info')}>
-                            {t('staking_dashboard.staking_description.label')}
-                        </p>
-                    </div>
-                )}
+                    );
+                }}
             </Translation>
         );
     }

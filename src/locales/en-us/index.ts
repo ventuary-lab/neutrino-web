@@ -38,11 +38,17 @@ export default {
             },
         },
         common: {
+            now: { label: 'NOW' },
+            security_audit: { label: 'Security audit' },
+            with: { label: 'with' },
+            current_discount: { label: 'current discount' },
             get: { label: 'Get' },
-            price: { label: 'price' },
+            price: { label: 'Price' },
             total_issued: { label: 'Total issued' },
             issue: { label: 'Issue' },
+            cancel_all: { label: 'Cancel All' },
             redeem: { label: 'Redeem' },
+            status: { label: 'Status' },
             issued: { label: 'Issued' },
             discounts: { label: 'Discounts' },
             have_read_terms_of_use: { label: 'I have read and accept the' },
@@ -53,6 +59,15 @@ export default {
             products: { label: 'Products' },
             learn: {
                 label: 'Learn',
+            },
+            name: {
+                label: 'Name',
+            },
+            type: {
+                label: 'Type',
+            },
+            time: {
+                label: 'Time',
             },
             profit: {
                 label: 'Profit',
@@ -133,11 +148,17 @@ export default {
             swap_error: {
                 label: 'Error on Swap occured',
             },
+            no_history: {
+                label: 'No History',
+            },
+            no_orders: {
+                label: 'No Orders',
+            },
             minimum: {
-                label: 'Min.'
+                label: 'Min.',
             },
             required: {
-                label: 'required'
+                label: 'required',
             },
             swap_wait_warning: {
                 label: `Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
@@ -145,7 +166,7 @@ export default {
                 than expected.`,
             },
             swap_approx_waves: {
-                label: 'Approximate WAVES value based on current price'
+                label: 'Approximate WAVES value based on current price',
             },
             confirm_details: {
                 label: 'Confirm details',
@@ -274,7 +295,10 @@ export default {
                 label: 'Increase',
             },
             staking_decrease_button: {
-                label: 'Cancel',
+                label: 'Decrease',
+            },
+            staking_share: {
+                label: 'staking share',
             },
         },
         landing: {

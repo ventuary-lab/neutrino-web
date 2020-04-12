@@ -74,7 +74,7 @@ export const getDefaultLearnLinks = (t = translateGetter) => [
         target: '_blank',
     },
     {
-        label: 'Security audit',
+        label: t('common.security_audit.label'),
         url: 'http://audit.neutrino.at/',
         target: '_blank',
     },
