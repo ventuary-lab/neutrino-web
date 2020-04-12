@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
 import _, { get as _get, orderBy as _orderBy } from 'lodash';
 import _round from 'lodash-es/round';
+import { Translation } from 'react-i18next';
+
 import Form from 'yii-steroids/ui/form/Form';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
@@ -203,82 +205,86 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
         const { formType, controlPrice, formValues } = this.props;
 
         return (
-            <div className={bem.block()}>
-                <Form
-                    className={bem.element('form')}
-                    formId={FORM_ID}
-                    initialValues={{
-                        price: 1,
-                        waves: FormDefaults.WAVES_AMOUNT,
-                        bonds: FormDefaults.BONDS_AMOUNT,
-                    }}
-                    onSubmit={this._onSubmit}
-                    validators={[[['bonds'], 'required']]}
-                >
-                    {formType === 'full' && (
-                        <>
-                            <NumberField
-                                inputProps={{
-                                    autoComplete: 'off',
-                                    value: this.getPriceValue(),
-                                    type: 'text',
-                                }}
-                                label="Price"
-                                layoutClassName={bem.element('input')}
-                                attribute={'price'}
-                                inners={{
-                                    label: '',
-                                }}
-                                disabled
-                            />
-                            <span className={bem.element('roi')} style={this.getROIStyle()}>
-                                <span>Exp. ROI</span>
-                                <span>{roi ? Math.round(roi) : ''}%</span>
-                            </span>
-                            <div className={bem.element('percent-btns')}>
-                                {this.getPercentButtons()}
-                            </div>
-                        </>
-                    )}
-                    <NumberField
-                        required
-                        inputProps={{
-                            autoComplete: 'off',
-                            onFocus: () => (this.isBondsFieldFocused = true),
-                            type: 'text',
+            <Translation>
+                {t => (
+                    <div className={bem.block()}>
+                    <Form
+                        className={bem.element('form')}
+                        formId={FORM_ID}
+                        initialValues={{
+                            price: 1,
+                            waves: FormDefaults.WAVES_AMOUNT,
+                            bonds: FormDefaults.BONDS_AMOUNT,
                         }}
-                        label="Receive"
-                        layoutClassName={bem.element('input')}
-                        attribute={'bonds'}
-                        inners={{
-                            label: CurrencyEnum.getLabel(this.props.baseCurrency),
-                            icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
-                        }}
-                    />
-                    <NumberField
-                        required
-                        inputProps={{
-                            autoComplete: 'off',
-                            onFocus: () => (this.isBondsFieldFocused = false),
-                            type: 'text',
-                        }}
-                        label="Send"
-                        layoutClassName={bem.element('input')}
-                        attribute={'waves'}
-                        inners={{
-                            label: CurrencyEnum.getLabel(CurrencyEnum.WAVES),
-                            icon: CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
-                        }}
-                    />
-                    <Button
-                        type={'submit'}
-                        block
-                        disabled={isButtonDisabled}
-                        className={bem.element('submit-button')}
-                        label={`Buy ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
-                    />
-                </Form>
-            </div>
+                        onSubmit={this._onSubmit}
+                        validators={[[['bonds'], 'required']]}
+                    >
+                        {formType === 'full' && (
+                            <>
+                                <NumberField
+                                    inputProps={{
+                                        autoComplete: 'off',
+                                        value: this.getPriceValue(),
+                                        type: 'text',
+                                    }}
+                                    label={t('common.price.label')}
+                                    layoutClassName={bem.element('input')}
+                                    attribute={'price'}
+                                    inners={{
+                                        label: '',
+                                    }}
+                                    disabled
+                                />
+                                <span className={bem.element('roi')} style={this.getROIStyle()}>
+                                    <span>Exp. ROI</span>
+                                    <span>{roi ? Math.round(roi) : ''}%</span>
+                                </span>
+                                <div className={bem.element('percent-btns')}>
+                                    {this.getPercentButtons()}
+                                </div>
+                            </>
+                        )}
+                        <NumberField
+                            required
+                            inputProps={{
+                                autoComplete: 'off',
+                                onFocus: () => (this.isBondsFieldFocused = true),
+                                type: 'text',
+                            }}
+                            label={t('common.receive.label')}
+                            layoutClassName={bem.element('input')}
+                            attribute={'bonds'}
+                            inners={{
+                                label: CurrencyEnum.getLabel(this.props.baseCurrency),
+                                icon: CurrencyEnum.getIconClass(this.props.baseCurrency),
+                            }}
+                        />
+                        <NumberField
+                            required
+                            inputProps={{
+                                autoComplete: 'off',
+                                onFocus: () => (this.isBondsFieldFocused = false),
+                                type: 'text',
+                            }}
+                            label={t('common.send.label')}
+                            layoutClassName={bem.element('input')}
+                            attribute={'waves'}
+                            inners={{
+                                label: CurrencyEnum.getLabel(CurrencyEnum.WAVES),
+                                icon: CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
+                            }}
+                        />
+                        <Button
+                            type={'submit'}
+                            block
+                            disabled={isButtonDisabled}
+                            className={bem.element('submit-button')}
+                            label={`${t('enums.buy.label')} ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
+                        />
+                    </Form>
+                </div>
+                )}
+            </Translation>
         );
     }
 

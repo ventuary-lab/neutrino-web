@@ -98,12 +98,8 @@ export default class LiquidateBondsFrom extends React.PureComponent {
                                 color={'danger'}
                                 block
                                 className={bem.element('submit-button')}
-                                // label={__('Set liquidate {bonds} order', {
-                                //     bonds: this.props.baseCurrency,
-                                // })}
-                                label={`${t('bonds.set_liquidate_bonds_order.label')} (${
-                                    this.props.baseCurrency
-                                })`}
+
+                                label={`${t('bonds.set_liquidate_bonds_order.label')} ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
                             />
                         </Form>
                     </div>

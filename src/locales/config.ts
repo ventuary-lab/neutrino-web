@@ -12,7 +12,6 @@ export const LanguageEnum = {
     CH: 'ch',
 };
 
-let window = { localStorage: { getItem: () => {}, setItem: () => {} } };
 const localStorageKey = 'default-locale';
 const getDefaultLanguage = () => {
     return (
