@@ -24,10 +24,10 @@ export default {
                     label: 'WAVES',
                 },
                 usdn: {
-                    label: 'USD-N',
+                    label: 'USDN',
                 },
                 usdnb: {
-                    label: 'USD-NB',
+                    label: 'NSBT',
                 },
                 eurn: {
                     label: 'EUR-N',

@@ -1,16 +1,10 @@
 import i18next from 'i18next';
-import _ from 'lodash';
+import { mergeDeepRight } from 'ramda'
 import { initReactI18next } from 'react-i18next';
 
 import englishTranslation from './en-us';
 import russianTranslation from './ru-ru';
 import chineseTranslation from './ch';
-
-const pureMerge = (obj1, obj2) => {
-    const result = { ...obj1 };
-    _.merge(result, obj2);
-    return result;
-};
 
 export const LanguageEnum = {
     EN: 'en',
@@ -40,7 +34,7 @@ i18next.use(initReactI18next).init({
     resources: {
         [LanguageEnum.EN]: englishTranslation,
         [LanguageEnum.RU]: russianTranslation,
-        [LanguageEnum.CH]: chineseTranslation,
+        [LanguageEnum.CH]: mergeDeepRight(englishTranslation, chineseTranslation),
     },
 });
 

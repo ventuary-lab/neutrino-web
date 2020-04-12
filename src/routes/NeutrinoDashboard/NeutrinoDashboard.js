@@ -6,7 +6,6 @@ import {
     getCurrentAccountAddress,
     getNeutrinoAssetId,
 } from 'components/selectors';
-import { Translation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change, reset } from 'redux-form';
@@ -49,7 +48,7 @@ const SwapWarningMessage = () => (
     </span>
 );
 
-@connect((state) => ({
+@connect(state => ({
     sourceCurrency: getSourceCurrency(state),
     quoteCurrency: getQuoteCurrency(state),
     pairName: getPairName(state),
@@ -58,16 +57,11 @@ const SwapWarningMessage = () => (
     controlPrice: getControlPrice(state),
     totalIssued: getTotalIssued(state),
 }))
-@dal.hoc((props) => [
+@dal.hoc(props => [
     {
         url: `/api/v1/neutrino-balances/${props.pairName}`,
         key: 'neutrinoBalances',
         collection: CollectionEnum.NEUTRINO_BALANCES,
-    },
-    {
-        url: `/api/v1/neutrino-config/${props.pairName}`,
-        key: 'neutrinoConfig',
-        collection: CollectionEnum.CONTROL_CONFIG,
     },
     {
         url: `/api/v1/price-feed/${props.sourceCurrency}/${PRICE_FEED_PERIOD}`,
@@ -88,9 +82,6 @@ export default class NeutrinoDashboard extends React.PureComponent {
             totalIssued: PropTypes.number,
             totalUsed: PropTypes.number,
             contractBalance: PropTypes.number,
-        }),
-        neutrinoConfig: PropTypes.shape({
-            price: PropTypes.number,
         }),
         priceFeed: PropTypes.number,
         withdraw: PropTypes.shape({
@@ -171,8 +162,8 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const nextWaves = _get(nextProps.formValues, 'waves');
         const thisNeutrino = _get(this.props.formValues, 'neutrino');
         const nextNeutrino = _get(nextProps.formValues, 'neutrino');
-        const thisPrice = _get(this.props, 'neutrinoConfig.price');
-        const nextPrice = _get(nextProps, 'neutrinoConfig.price');
+        const thisPrice = this.getControlPrice();
+        const nextPrice = this.getControlPrice();
 
         const isChangeWavesAmount = thisWaves !== nextWaves;
         const isChangeCurrencyAmount = thisNeutrino !== nextNeutrino;
@@ -256,14 +247,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
     render() {
         const { isSwapLoading, swapLoaderProps } = this.state;
 
-        const getSteps = (t) => [
+        const steps = [
             {
                 id: 'generation',
-                label: t('common.tokens_swap.label'),
+                label: __('Tokens swap'),
             },
             {
                 id: 'details',
-                label: t('common.confirm_details.label'),
+                label: __('Confirm details'),
             },
         ];
         const computedClassName = [
@@ -273,14 +264,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         return (
             <UserCongratsModalContext.Consumer>
-                {(context) => (
+                {context => (
                     <div className={computedClassName}>
                         {isSwapLoading && <SwapLoader {...swapLoaderProps} />}
-                        {this.renderStepChanger(getSteps)}
+                        {this.renderStepChanger(steps)}
                         <Form
                             className={bem.element('form')}
                             formId={FORM_ID}
-                            onSubmit={(formData) => this._onSubmit(formData, context)}
+                            onSubmit={formData => this._onSubmit(formData, context)}
                         >
                             {this.state.step === 'generation' && this.renderGenerationStep()}
                             {this.state.step === 'details' && this.renderDetailsStep()}
@@ -291,24 +282,20 @@ export default class NeutrinoDashboard extends React.PureComponent {
         );
     }
 
-    renderStepChanger(getSteps) {
+    renderStepChanger(steps) {
         return (
             <div className={bem.element('steps')}>
-                <Translation>
-                    {(t) =>
-                        getSteps(t).map((item, index) => (
-                            <div
-                                key={item.id}
-                                className={bem.element('step', {
-                                    active: this.state.step === item.id,
-                                })}
-                            >
-                                <span className={bem.element('step-count')}>{index + 1}</span>
-                                <span className={bem.element('step-label')}>{item.label}</span>
-                            </div>
-                        ))
-                    }
-                </Translation>
+                {steps.map((item, index) => (
+                    <div
+                        key={item.id}
+                        className={bem.element('step', {
+                            active: this.state.step === item.id,
+                        })}
+                    >
+                        <span className={bem.element('step-count')}>{index + 1}</span>
+                        <span className={bem.element('step-label')}>{item.label}</span>
+                    </div>
+                ))}
             </div>
         );
     }
@@ -320,14 +307,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const quoteCurrency = _quoteCurrency.toUpperCase().replace(...replaceArgs);
 
         return {
-            mapLabel: (label) => <span>{label}</span>,
+            mapLabel: label => <span>{label}</span>,
             totalIssuedLabels: [`Total issued ${quoteCurrency}`, `Issued ${quoteCurrency}`],
             currentPriceLabels: [`WAVES / ${quoteCurrency}`, `WAVES / ${sourceCurrency} price`],
         };
     }
 
     renderGenerationStep() {
-        const grabNeutrinoAddress = (config) => {
+        const grabNeutrinoAddress = config => {
             try {
                 return config.dal.contracts[PairsEnum.USDNB_USDN][ContractEnum.NEUTRINO];
             } catch (err) {
@@ -348,287 +335,255 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const swapWarning = 'Approximate WAVES value based on current price';
 
         return (
-            <Translation>
-                {(t) => (
-                    <>
-                        <div className={bem.element('inputs')}>
-                            <div className={bem.element('input-container')}>
-                                <div className={bem.element('input-label')}>
-                                    {t('common.send.label')}
-                                </div>
-                                <InputField
-                                    className={bem.element('input')}
-                                    attribute={this.state.isWavesLeft ? 'waves' : 'neutrino'}
-                                    inners={{
-                                        label: this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                            : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                        icon: this.state.isWavesLeft
-                                            ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
-                                            : CurrencyEnum.getIconClass(CurrencyEnum.USD_N),
-                                    }}
-                                />
-                                <div className={bem.element('input-hint')}>
-                                    {__('Min. {currency} required: 1 {currency}', {
-                                        currency: this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                            : CurrencyEnum.getLabel(this.props.quoteCurrency),
-                                    })}
-                                </div>
-                            </div>
-
-                            <div
-                                className={bem.element('exchange-button')}
-                                onClick={() =>
-                                    this.setState({ isWavesLeft: !this.state.isWavesLeft })
-                                }
-                            >
-                                <span className={'Icon Icon__exchange'} />
-                            </div>
-
-                            <div className={bem.element('input-container')}>
-                                <div className={bem.element('input-label')}>
-                                    {t('common.receive.label')}
-                                </div>
-                                <InputField
-                                    className={bem.element('input')}
-                                    attribute={this.state.isWavesLeft ? 'neutrino' : 'waves'}
-                                    inners={{
-                                        label: this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                            : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
-                                        icon: this.state.isWavesLeft
-                                            ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
-                                            : CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
-                                    }}
-                                />
-                                <div className={bem.element('input-hint')}>
-                                    {__('Max {currency} available to generate: 10k {currency}', {
-                                        currency: this.state.isWavesLeft
-                                            ? CurrencyEnum.getLabel(this.props.quoteCurrency)
-                                            : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
-                                    })}
-                                </div>
-                            </div>
+            <>
+                <div className={bem.element('inputs')}>
+                    <div className={bem.element('input-container')}>
+                        <div className={bem.element('input-label')}>{__('Send')}</div>
+                        <InputField
+                            className={bem.element('input')}
+                            attribute={isWavesLeft ? 'waves' : 'neutrino'}
+                            inners={{
+                                label: isWavesLeft
+                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                icon: isWavesLeft
+                                    ? CurrencyEnum.getIconClass(CurrencyEnum.WAVES)
+                                    : CurrencyEnum.getIconClass(CurrencyEnum.USD_N),
+                            }}
+                        />
+                        <div className={bem.element('input-hint')}>
+                            {__('Min. {currency} required: 1 {currency}', {
+                                currency: isWavesLeft
+                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                    : CurrencyEnum.getLabel(this.props.quoteCurrency),
+                            })}
                         </div>
+                    </div>
 
-                        <div className={bem.element('info')}>
-                            <div className={bem.element('info-column')}>
-                                <ConfigContext.Consumer>
-                                    {(environmentConfig) => (
-                                        <div className={bem.element('info-row')}>
-                                            <div className={bem.element('info-string')}>
-                                                <div className={bem.element('info-hint')}>
-                                                    <Hint
-                                                        text={grabNeutrinoAddress(
-                                                            environmentConfig
-                                                        )}
-                                                    />
-                                                </div>
-                                                <span>{t('common.smart_contract.label')}</span>
+                    <div
+                        className={bem.element('exchange-button')}
+                        onClick={() => this.setState({ isWavesLeft: !this.state.isWavesLeft })}
+                    >
+                        <span className={'Icon Icon__exchange'} />
+                    </div>
+
+                    <div className={bem.element('input-container')}>
+                        <div className={bem.element('input-label')}>{__('Receive')}</div>
+                        <InputField
+                            className={bem.element('input')}
+                            attribute={isWavesLeft ? 'neutrino' : 'waves'}
+                            inners={{
+                                label: isWavesLeft
+                                    ? CurrencyEnum.getLabel(this.props.quoteCurrency)
+                                    : CurrencyEnum.getLabel(CurrencyEnum.WAVES),
+                                icon: isWavesLeft
+                                    ? CurrencyEnum.getIconClass(CurrencyEnum.USD_N)
+                                    : CurrencyEnum.getIconClass(CurrencyEnum.WAVES),
+                            }}
+                        />
+                        <div className={bem.element('input-hint', 'swap')}>
+                            <span className={isWavesLeft ? 'hidden' : ''}>{swapWarning}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={bem.element('info')}>
+                    <div className={bem.element('info-cols')}>
+                        <div className={bem.element('info-column')}>
+                            <ConfigContext.Consumer>
+                                {environmentConfig => (
+                                    <div className={bem.element('info-row')}>
+                                        <div className={bem.element('info-string')}>
+                                            <div className={bem.element('info-hint')}>
+                                                <Hint
+                                                    text={__(
+                                                        grabNeutrinoAddress(environmentConfig)
+                                                    )}
+                                                />
                                             </div>
-                                            <a
-                                                href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
-                                                    environmentConfig
-                                                )}`}
-                                                target="_blank"
-                                            >
-                                                <span>
-                                                    {grabNeutrinoAddress(environmentConfig)}
-                                                </span>
-                                            </a>
+                                            <span>{__('Smart contract')}</span>
                                         </div>
-                                    )}
-                                </ConfigContext.Consumer>
-                                <div className={bem.element('info-row')}>
-                                    <div className={bem.element('info-string', 'without-hint')}>
-                                        <span>{t('common.asset_id.label')}</span>
+                                        <a
+                                            href={`https://wavesexplorer.com/address/${grabNeutrinoAddress(
+                                                environmentConfig
+                                            )}`}
+                                            target="_blank"
+                                        >
+                                            <span>{grabNeutrinoAddress(environmentConfig)}</span>
+                                        </a>
                                     </div>
-                                    <a
-                                        href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(
-                                            dal
-                                        )}`}
-                                        target="_blank"
-                                    >
-                                        <span>{getNeutrinoAssetId(dal)}</span>
-                                    </a>
+                                )}
+                            </ConfigContext.Consumer>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'without-hint')}>
+                                    <span>{__('Asset ID')}</span>
                                 </div>
-                            </div>
-                            <div className={bem.element('info-column')}>
-                                <div className={bem.element('info-row')}>
-                                    <div className={bem.element('info-string')}>
-                                        <span>
-                                            {__('Total issued {currency}', {
-                                                currency: CurrencyEnum.getLabel(
-                                                    this.props.quoteCurrency
-                                                ),
-                                            })}
-                                        </span>
-                                    </div>
-                                    <span>{prettyPrintNumber(this.getTotalIssued())}</span>
-                                </div>
-                                <div className={bem.element('info-row')}>
-                                    <div className={bem.element('info-string')}>
-                                        <span>
-                                            {__('Current WAVES / {currency} price', {
-                                                currency: this.props.sourceCurrency.toUpperCase(),
-                                            })}
-                                        </span>
-                                    </div>
-                                    <span>
-                                        {this.getControlPrice()}{' '}
-                                        {CurrencyEnum.getSign(this.props.sourceCurrency)}
-                                    </span>
-                                </div>
+                                <a
+                                    href={`https://wavesexplorer.com/assets/${getNeutrinoAssetId(
+                                        dal
+                                    )}`}
+                                    target="_blank"
+                                >
+                                    <span>{getNeutrinoAssetId(dal)}</span>
+                                </a>
                             </div>
                         </div>
-                        <div className={bem.element('generate-actions')}>
-                            <Button
-                                disabled={
-                                    !_get(this.props.formValues, 'waves') ||
-                                    !_get(this.props.formValues, 'neutrino') ||
-                                    !_toNumber(_get(this.props.formValues, 'waves')) ||
-                                    !_toNumber(_get(this.props.formValues, 'neutrino'))
-                                }
-                                className={bem.element('submit-button')}
-                                label={
-                                    this.state.isWavesLeft
-                                        ? __('Issue {currency}', {
-                                              currency: CurrencyEnum.getLabel(
-                                                  this.props.quoteCurrency
-                                              ),
-                                          })
-                                        : t('common.redeem_waves.label')
-                                }
-                                onClick={() => this.setState({ step: 'details' })}
-                            />
+                        <div className={bem.element('info-column')}>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'with-mobile')}>
+                                    {totalIssuedLabels.map(mapLabel)}
+                                </div>
+                                <span>{prettyPrintNumber(this.getTotalIssued())}</span>
+                            </div>
+                            <div className={bem.element('info-row')}>
+                                <div className={bem.element('info-string', 'with-mobile')}>
+                                    {currentPriceLabels.map(mapLabel)}
+                                </div>
+                                <span>
+                                    {this.getControlPrice()}{' '}
+                                    {CurrencyEnum.getSign(this.props.sourceCurrency)}
+                                </span>
+                            </div>
                         </div>
-                    </>
-                )}
-            </Translation>
+                    </div>
+                    <SwapWarningMessage />
+                </div>
+                <div className={bem.element('generate-actions')}>
+                    <Button
+                        disabled={
+                            !_get(this.props.formValues, 'waves') ||
+                            !_get(this.props.formValues, 'neutrino') ||
+                            !_toNumber(_get(this.props.formValues, 'waves')) ||
+                            !_toNumber(_get(this.props.formValues, 'neutrino'))
+                        }
+                        className={bem.element('submit-button')}
+                        label={
+                            this.state.isWavesLeft
+                                ? __('Issue {currency}', {
+                                      currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
+                                  })
+                                : __('Redeem WAVES')
+                        }
+                        onClick={() => this.setState({ step: 'details' })}
+                    />
+                </div>
+            </>
         );
     }
 
     renderDetailsStep() {
         return (
-            <Translation>
-                {(t) => (
-                    <>
-                        <div className={bem.element('details')}>
-                            <div className={bem.element('details-item')}>
-                                <span className={bem.element('details-label')}>
-                                    {t('views.please_confirm_the_swap.label')}
-                                </span>
-                                <div className={bem.element('details-inner', 'generation')}>
-                                    <div className={bem.element('values')}>
-                                        <span className={bem.element('value-title')}>
-                                            {t('common.send.label')}:
+            <>
+                <div className={bem.element('details')}>
+                    <div className={bem.element('details-item')}>
+                        <span className={bem.element('details-label')}>
+                            {__('Please confirm the assets swap')}
+                        </span>
+                        <SwapWarningMessage />
+                        <div className={bem.element('details-inner', 'generation')}>
+                            <div className={bem.element('values')}>
+                                <span className={bem.element('value-title')}>{__('Send')}:</span>
+                                <div className={bem.element('value-item')}>
+                                    <span className={bem.element('value-number')}>
+                                        {_get(
+                                            this.props.formValues,
+                                            this.state.isWavesLeft ? 'waves' : 'neutrino'
+                                        )}
+                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.WAVES
+                                                          )
+                                                        : CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.USD_N
+                                                          )
+                                                }`
+                                            )}
+                                        />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
+                                                : CurrencyEnum.getLabel(this.props.quoteCurrency)}
                                         </span>
-                                        <div className={bem.element('value-item')}>
-                                            <span className={bem.element('value-number')}>
-                                                {_get(
-                                                    this.props.formValues,
-                                                    this.state.isWavesLeft ? 'waves' : 'neutrino'
-                                                )}
-                                            </span>
-                                            <span
-                                                className={bem(
-                                                    bem.element('value-icon'),
-                                                    `Icon ${
-                                                        this.state.isWavesLeft
-                                                            ? CurrencyEnum.getIconClass(
-                                                                  CurrencyEnum.WAVES
-                                                              )
-                                                            : CurrencyEnum.getIconClass(
-                                                                  CurrencyEnum.USD_N
-                                                              )
-                                                    }`
-                                                )}
-                                            />
-                                            <span className={bem.element('value-name')}>
-                                                {this.state.isWavesLeft
-                                                    ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
-                                                    : CurrencyEnum.getLabel(
-                                                          this.props.quoteCurrency
-                                                      )}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className={bem.element('values')}>
-                                        <span className={bem.element('value-title')}>
-                                            {t('common.receive.label')}:
-                                        </span>
-                                        <div className={bem.element('value-item')}>
-                                            <span className={bem.element('value-number')}>
-                                                {_get(
-                                                    this.props.formValues,
-                                                    this.state.isWavesLeft ? 'neutrino' : 'waves'
-                                                )}
-                                            </span>
-                                            <span
-                                                className={bem(
-                                                    bem.element('value-icon'),
-                                                    `Icon ${
-                                                        this.state.isWavesLeft
-                                                            ? CurrencyEnum.getIconClass(
-                                                                  CurrencyEnum.USD_N
-                                                              )
-                                                            : CurrencyEnum.getIconClass(
-                                                                  CurrencyEnum.WAVES
-                                                              )
-                                                    }`
-                                                )}
-                                            />
-                                            <span className={bem.element('value-name')}>
-                                                {this.state.isWavesLeft
-                                                    ? CurrencyEnum.getLabel(
-                                                          this.props.quoteCurrency
-                                                      )
-                                                    : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <GlobalLinksContext.Consumer>
-                                {(context) => {
-                                    const tosLink = context.links.find(
-                                        (link) => link.label === TERMS_OF_USE_LABEL
-                                    ).url;
-                                    return (
-                                        <CheckboxField
-                                            className={bem.element('terms-checkbox')}
-                                            label={
-                                                <span>
-                                                    {t('views.have_read_and_accept.label')}{' '}
-                                                    <a href={tosLink} target="_blank">
-                                                        {TERMS_OF_USE_LABEL}
-                                                    </a>
-                                                </span>
-                                            }
-                                            attribute={'terms'}
+                            <div className={bem.element('values')}>
+                                <span className={bem.element('value-title')}>{__('Receive')}:</span>
+                                <div className={bem.element('value-item')}>
+                                    <span className={bem.element('value-number')}>
+                                        {_get(
+                                            this.props.formValues,
+                                            this.state.isWavesLeft ? 'neutrino' : 'waves'
+                                        )}
+                                    </span>
+                                    <div>
+                                        <span
+                                            className={bem(
+                                                bem.element('value-icon'),
+                                                `Icon ${
+                                                    this.state.isWavesLeft
+                                                        ? CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.USD_N
+                                                          )
+                                                        : CurrencyEnum.getIconClass(
+                                                              CurrencyEnum.WAVES
+                                                          )
+                                                }`
+                                            )}
                                         />
-                                    );
-                                }}
-                            </GlobalLinksContext.Consumer>
-                            <div className={bem.element('details-actions')}>
-                                <Button
-                                    color={'secondary'}
-                                    className={bem.element('back-button')}
-                                    label={t('common.go_back.label')}
-                                    onClick={() => this.setState({ step: 'generation' })}
-                                />
-                                <Button
-                                    type={'submit'}
-                                    className={bem.element('finalize-button')}
-                                    disabled={!_get(this.props.formValues, 'terms')}
-                                    label={t('common.confirm.label')}
-                                />
+                                        <span className={bem.element('value-name')}>
+                                            {this.state.isWavesLeft
+                                                ? CurrencyEnum.getLabel(this.props.quoteCurrency)
+                                                : CurrencyEnum.getLabel(CurrencyEnum.WAVES)}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </>
-                )}
-            </Translation>
+                    </div>
+                    <GlobalLinksContext.Consumer>
+                        {context => {
+                            const tosLink = context.links.find(
+                                link => link.label === TERMS_OF_USE_LABEL
+                            ).url;
+                            return (
+                                <CheckboxField
+                                    className={bem.element('terms-checkbox')}
+                                    label={
+                                        <span>
+                                            {__('I have read and accept the')}{' '}
+                                            <a href={tosLink} target="_blank">
+                                                {__(TERMS_OF_USE_LABEL)}
+                                            </a>
+                                        </span>
+                                    }
+                                    attribute={'terms'}
+                                />
+                            );
+                        }}
+                    </GlobalLinksContext.Consumer>
+                    <div className={bem.element('details-actions')}>
+                        <Button
+                            color={'secondary'}
+                            className={bem.element('back-button')}
+                            label={__('Go back')}
+                            onClick={() => this.setState({ step: 'generation' })}
+                        />
+                        <Button
+                            type={'submit'}
+                            className={bem.element('finalize-button')}
+                            disabled={!_get(this.props.formValues, 'terms')}
+                            label={__('Confirm')}
+                        />
+                    </div>
+                </div>
+            </>
         );
     }
 
@@ -641,7 +596,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = _get(props, 'neutrinoConfig.price');
+        const rate = this.getControlPrice();
 
         let amount = this._parseAmount(
             isRefreshToAmount
@@ -666,7 +621,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         return !isNaN(parseFloat(result)) && isFinite(result) ? result : 0;
     }
 
-    _toFixedSpecial = function (num, n) {
+    _toFixedSpecial = function(num, n) {
         const str = num.toFixed(n);
         if (str.indexOf('e+') < 0) {
             return str;
@@ -677,7 +632,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
             str
                 .replace('.', '')
                 .split('e+')
-                .reduce(function (p, b) {
+                .reduce(function(p, b) {
                     return p + new Array(b - p.length + 2).join(0);
                 }) +
             '.' +
