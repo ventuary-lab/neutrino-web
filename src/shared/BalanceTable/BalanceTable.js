@@ -119,8 +119,8 @@ export default class BalanceTable extends React.PureComponent {
             <table className={bem.block()}>
                 <thead>
                     <tr>
-                        <th>{__('ASSET')}</th>
-                        <th>{__('BALANCE')}</th>
+                        <th>{__('加密货币')}</th>
+                        <th>{__('钱余额')}</th>
                         <th />
                     </tr>
                 </thead>

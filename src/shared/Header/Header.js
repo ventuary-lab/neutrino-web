@@ -133,7 +133,7 @@ export default class Header extends React.PureComponent {
                                                 link && link.url
                                             );
                                         }}
-                                        defaultItemLabel={'Products'}
+                                        defaultItemLabel={'获得'}
                                     />
                                 </Form>
                             </div>
@@ -142,7 +142,7 @@ export default class Header extends React.PureComponent {
                                 {loginContext => (
                                     <Button
                                         className={bem.element('auth-button')}
-                                        label={__('Login')}
+                                        label={__('登录')}
                                         color="secondary"
                                         onClick={() => {
                                             loginContext.onOpen();
@@ -154,7 +154,7 @@ export default class Header extends React.PureComponent {
                         <div className={'info-dropdown'}>
                             <InfoDropDown
                                 icon={'Icon__learn'}
-                                label={__('Learn')}
+                                label={__('学习')}
                                 items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
                             />
                         </div>

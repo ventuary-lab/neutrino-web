@@ -102,7 +102,7 @@ class LoginTypeModal extends React.Component<Props> {
                         {keeperContext => (
                             <div className={bem.element('main')}>
                                 <div className={bem.element('head')}>
-                                    <span>Connect a wallet to get started</span>
+                                    <span>连接钱包开始</span>
                                     <div
                                         className={bem.element('head-icon')}
                                         onClick={this.props.onClose}

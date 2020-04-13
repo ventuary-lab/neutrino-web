@@ -37,7 +37,7 @@ export default class CheckItem extends React.PureComponent {
                 <div className={bem.element('inner')}>
                     <div className={bem.element('header')}>
                         <span>
-                            {__('Check № {number}', {
+                            {__('检查编号 № {number}', {
                                 number: this.props.item.index,
                             })}
                         </span>

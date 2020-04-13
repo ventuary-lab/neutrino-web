@@ -44,16 +44,15 @@ class AnnualYieldInfo extends React.Component<Props, State> {
 
         return (
             <div className={bem.block()}>
-                <span>Info</span>
+                <span>信息</span>
                 <div className={bem.element('main')}>
                     <div className={bem.element('yield-percent')}>
                         <span>{yieldPercent}</span>
                         <span>%</span>
                     </div>
-                    <span className={bem.element('title')}>Average Estimated Annual Yield</span>
+                    <span className={bem.element('title')}>平均估计年收益</span>
                     <span className={bem.element('body')}>
-                        Estimated Annual Yield is depending on waves token price, can be 1%-100%
-                        based on market situation
+                        “预计的年收益率取决于波币价格，根据市场情况1％-100％”
                     </span>
                 </div>
             </div>

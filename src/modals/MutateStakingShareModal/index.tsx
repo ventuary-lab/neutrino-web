@@ -165,12 +165,12 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                         <span className={bem.element('title')}>{title}</span>
                         <div className={bem.element('balances')}>
                             <AccountBalanceTitle
-                                title="Account balance:"
+                                title="账户余额:"
                                 amount={accountBalance}
                                 type={AccountBalanceTitleOption.VERTICAL}
                             />
                             <AccountBalanceTitle
-                                title="Staking balance:"
+                                title="抵押余额:"
                                 amount={stakingBalance}
                                 type={AccountBalanceTitleOption.VERTICAL}
                             />

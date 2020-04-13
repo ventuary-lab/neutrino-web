@@ -42,9 +42,7 @@ const PRICE_FEED_PERIOD = 1000;
 
 const SwapWarningMessage = () => (
     <span className="SwapWarningMessage">
-        Please note that USDN to WAVES swap takes 1440 blocks (or about 24 hours). During that time,
-        the price of WAVES may fluctuate, which can lead to receiving a lower/higher WAVES amount
-        than expected.
+        请注意，USDN到WAVES的交换需要1440个区块（或大约24小时）。在此期间 WAVES的价格可能会波动，这可能会导致收到较低/较高的WAVES金额 超出了预期。 ”
     </span>
 );
 
@@ -258,11 +256,11 @@ export default class NeutrinoDashboard extends React.PureComponent {
         const steps = [
             {
                 id: 'generation',
-                label: __('Tokens swap'),
+                label: __('代币交换'),
             },
             {
                 id: 'details',
-                label: __('Confirm details'),
+                label: __('确认详情'),
             },
         ];
         const computedClassName = [
@@ -340,13 +338,13 @@ export default class NeutrinoDashboard extends React.PureComponent {
 
         const { isWavesLeft } = this.state;
 
-        const swapWarning = 'Approximate WAVES value based on current price';
+        const swapWarning = '基于当前价格的近似WAVES值';
 
         return (
             <>
                 <div className={bem.element('inputs')}>
                     <div className={bem.element('input-container')}>
-                        <div className={bem.element('input-label')}>{__('Send')}</div>
+                        <div className={bem.element('input-label')}>{__('发送')}</div>
                         <InputField
                             className={bem.element('input')}
                             attribute={isWavesLeft ? 'waves' : 'neutrino'}
@@ -360,7 +358,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                             }}
                         />
                         <div className={bem.element('input-hint')}>
-                            {__('Min. {currency} required: 1 {currency}', {
+                            {__('最低. {currency} 需要: 1 {currency}', {
                                 currency: isWavesLeft
                                     ? CurrencyEnum.getLabel(CurrencyEnum.WAVES)
                                     : CurrencyEnum.getLabel(this.props.quoteCurrency),
@@ -376,7 +374,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                     </div>
 
                     <div className={bem.element('input-container')}>
-                        <div className={bem.element('input-label')}>{__('Receive')}</div>
+                        <div className={bem.element('input-label')}>{__('接收')}</div>
                         <InputField
                             className={bem.element('input')}
                             attribute={isWavesLeft ? 'neutrino' : 'waves'}
@@ -467,10 +465,10 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         className={bem.element('submit-button')}
                         label={
                             this.state.isWavesLeft
-                                ? __('Issue {currency}', {
+                                ? __('发行 {currency}', {
                                       currency: CurrencyEnum.getLabel(this.props.quoteCurrency),
                                   })
-                                : __('Redeem WAVES')
+                                : __('兑换波浪')
                         }
                         onClick={() => this.setState({ step: 'details' })}
                     />
@@ -485,12 +483,12 @@ export default class NeutrinoDashboard extends React.PureComponent {
                 <div className={bem.element('details')}>
                     <div className={bem.element('details-item')}>
                         <span className={bem.element('details-label')}>
-                            {__('Please confirm the assets swap')}
+                            {__('请确认资产交换')}
                         </span>
                         <SwapWarningMessage />
                         <div className={bem.element('details-inner', 'generation')}>
                             <div className={bem.element('values')}>
-                                <span className={bem.element('value-title')}>{__('Send')}:</span>
+                                <span className={bem.element('value-title')}>{__('发送')}:</span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>
                                         {_get(
@@ -522,7 +520,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                 </div>
                             </div>
                             <div className={bem.element('values')}>
-                                <span className={bem.element('value-title')}>{__('Receive')}:</span>
+                                <span className={bem.element('value-title')}>{__('接收')}:</span>
                                 <div className={bem.element('value-item')}>
                                     <span className={bem.element('value-number')}>
                                         {_get(
@@ -565,7 +563,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
                                     className={bem.element('terms-checkbox')}
                                     label={
                                         <span>
-                                            {__('I have read and accept the')}{' '}
+                                            {__('我已阅读并接受')}{' '}
                                             <a href={tosLink} target="_blank">
                                                 {__(TERMS_OF_USE_LABEL)}
                                             </a>
@@ -580,14 +578,14 @@ export default class NeutrinoDashboard extends React.PureComponent {
                         <Button
                             color={'secondary'}
                             className={bem.element('back-button')}
-                            label={__('Go back')}
+                            label={__('回去')}
                             onClick={() => this.setState({ step: 'generation' })}
                         />
                         <Button
                             type={'submit'}
                             className={bem.element('finalize-button')}
                             disabled={!_get(this.props.formValues, 'terms')}
-                            label={__('Confirm')}
+                            label={__('确认')}
                         />
                     </div>
                 </div>

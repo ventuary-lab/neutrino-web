@@ -14,7 +14,7 @@ export default class UserRole extends Enum {
 
     static getLabels() {
         return {
-            [this.BUY]: __('Buy'),
+            [this.BUY]: __('买入'),
             [this.LIQUIDATE]: __('Liquidate'),
         };
     }

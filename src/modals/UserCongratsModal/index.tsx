@@ -68,7 +68,7 @@ class UserCongratsModal extends React.Component<Props> {
         const { title = 'Congratulations!' } = this.props;
         const links = [
             {
-                label: 'Collect staking rewards',
+                label: '恭喜你！',
                 url: '#',
                 icon: neutrinoManIcon,
                 onClick: () => {
@@ -103,10 +103,7 @@ class UserCongratsModal extends React.Component<Props> {
                         <div className={bem.element('body')}>
                             <img className={bem.element('usdn-logo')} src={usdnLogo} alt="" />
                             <div className={bem.element('msg')}>
-                                <span>
-                                    You are holder of USD-Neutrino (USDN) - crypto-backed
-                                    stablecoin.
-                                </span>
+                                <span>您现在是USDN的持有者。</span>
                             </div>
                             <img className={bem.element('spot')} src={spotImage} />
                             <div className={bem.element('logos-flex')}>{links}</div>

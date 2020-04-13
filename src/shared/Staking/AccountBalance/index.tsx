@@ -25,9 +25,9 @@ class AccountBalance extends React.Component<Props> {
 
         return (
             <div className={bem.block()}>
-                <AccountBalanceTitle title="Account balance" amount={accountBalance} />
+                <AccountBalanceTitle title="账户余额" amount={accountBalance} />
                 <div className={bem.element('buy-btn')}>
-                    <Button type={'submit'} block label={'Buy'} onClick={onClick} />
+                    <Button type={'submit'} block label={'买入'} onClick={onClick} />
                 </div>
             </div>
         );

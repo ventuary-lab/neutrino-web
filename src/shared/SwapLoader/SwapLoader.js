@@ -85,9 +85,9 @@ export default class SwapLoader extends React.PureComponent {
                             </div>
                         </div>
                         <div className={bem.element('text')}>
-                            {__('The swap procedure has been started.')}
+                            {__('交换过程已开始')}
                             <br />
-                            {__('Please wait for it to finish in {value} blocks.', {
+                            {__('请等待几分钟。{value}.', {
                                 value: Math.abs(this.props.unblockBlock - this.props.height) + 1,
                             })}
                         </div>
@@ -95,7 +95,7 @@ export default class SwapLoader extends React.PureComponent {
                     <div className={bem.element('footer')}>
                         <div className={bem.element('progress-block')}>
                             <span className={bem.element('progress-status')}>
-                                {isCompleted ? __('Completed') : __('In progress...')}
+                                {isCompleted ? __('Completed') : __('进行中...')}
                             </span>
                             <div
                                 className={bem.element('progress-scale', {

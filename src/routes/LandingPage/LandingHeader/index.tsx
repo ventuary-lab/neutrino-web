@@ -45,17 +45,17 @@ class LandingHeader extends React.Component<Props, State> {
 
         this.links = [
             {
-                label: 'Products',
+                label: '获得',
                 onClick: this.triggerProductsList,
                 icon: arrowDown,
             },
             {
-                label: 'Learn',
+                label: '学习',
                 onClick: this.triggerLearnList,
                 icon: arrowDown,
             },
             {
-                label: 'Login',
+                label: '登录',
             },
         ];
 
@@ -91,8 +91,8 @@ class LandingHeader extends React.Component<Props, State> {
     mapLink({ onClick = () => {}, label, icon, url, ...restProps }: Link) {
         const { isProductsListVisible, isLearnListVisible } = this.state;
         const isChecked =
-            (label === 'Products' && isProductsListVisible) ||
-            (label === 'Learn' && isLearnListVisible)
+            (label === '获得' && isProductsListVisible) ||
+            (label === '学习' && isLearnListVisible)
                 ? 'opened'
                 : '';
 

@@ -14,7 +14,7 @@ export default class OrderTypeEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.BUY]: 'Buy',
+            [this.BUY]: '买入',
             [this.LIQUIDATE]: 'Liquidate',
         };
     }

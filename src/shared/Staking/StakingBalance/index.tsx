@@ -46,10 +46,13 @@ class StakingBalance extends React.Component<Props, State> {
     render() {
         const { isStakingShareModalOpened, isStakingShareDecreaseSelected } = this.state;
         const { stakingBalance, accountBalance, pairName } = this.props;
-        const actionLabel = !isStakingShareDecreaseSelected ? 'Increase' : 'Decrease';
+        const actionLabel = !isStakingShareDecreaseSelected ? '增加' : '减少';
         const { title, buttonLabel } = {
             buttonLabel: actionLabel,
-            title: `${actionLabel} neutrino (USDN) staking share`,
+            // title: `${actionLabel} neutrino (USDN) staking share`,
+            title: !isStakingShareDecreaseSelected
+                ? '增加中微子（USDN）权益份额'
+                : '减少中微子（USDN）权益份额',
         };
 
         return (
@@ -64,27 +67,27 @@ class StakingBalance extends React.Component<Props, State> {
                     onClose={() => this.triggerStakingShareModal(false)}
                     isDecrease={isStakingShareDecreaseSelected}
                 />
-                <AccountBalanceTitle title="Staking balance" amount={stakingBalance} />
+                <AccountBalanceTitle title="抵押余额" amount={stakingBalance} />
                 <div className={bem.element('main')}>
                     <div className={bem.element('action-buttons')}>
                         <Button
                             type={'submit'}
                             block
-                            label={'Cancel'}
+                            label={'全部取消'}
                             onClick={this.onStakingCancel}
                         />
                         <Button
                             type={'submit'}
                             block
-                            label={'Increase'}
+                            label={'增加'}
                             onClick={this.onStakingIncrease}
                         />
                     </div>
                 </div>
                 <p className={bem.element('info')}>
-                    Neutrino dApp will distribute staking rewards proportionately to users each day
-                    based on their daily average USDN staking share from the total amount of staked
-                    USDN. These rewards are coming from waves lPoS decentralized monetary policy.
+                    Neutrino
+                    dApp将按比例分配抽奖奖励给用户每周基于他们在每日的平均USD-N权益份额中所占的比例USD-N的累积金额。这些奖励来自浪潮lPoS
+                    分散的货币政策。
                 </p>
             </div>
         );

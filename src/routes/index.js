@@ -157,7 +157,7 @@ export default {
             exact: true,
             path: '/staking',
             component: StakingLanding,
-            label: __('Staking Rewards'),
+            label: __('减少 Rewards'),
             roles: UserRole.getAuth(),
             isShowLeftSidebar: true,
         }

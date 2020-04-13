@@ -172,7 +172,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                                                     'Icon Icon__cancel'
                                                 )}
                                             />
-                                            Cancel
+                                            全部取消
                                         </div>
                                     </td>
                                 )}

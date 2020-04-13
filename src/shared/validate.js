@@ -21,7 +21,7 @@ const validate = function (data, rules) {
             switch (rule) {
                 case 'required':
                     if (!value) {
-                        errors[attribute] = __('Field is required');
+                        errors[attribute] = __('Field is 需要');
                     }
                     break;
 

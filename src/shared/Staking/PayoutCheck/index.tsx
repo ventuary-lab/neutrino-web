@@ -23,7 +23,7 @@ const PayoutCheck = (props: Props) => {
         <div className={bem.block()}>
             <div className={bem.element('body')}>
                 <div className={bem.element('date')}>
-                    <span>Check № {checkNumber}</span>
+                    <span>检查编号 № {checkNumber}</span>
                     <span>
                         {moment(date).format('DD.MM.YY')} | {moment(date).format('hh:mm')}
                     </span>
@@ -31,9 +31,9 @@ const PayoutCheck = (props: Props) => {
                 <div className={bem.element('profit')}>Profit: {profit}</div>
                 <div className={bem.element('see-tx')}>
                     <img src={logo} />
-                    {/* <Button label="See transaction" onClick={onSeeTransaction}/> */}
+                    {/* <Button label="查看交易" onClick={onSeeTransaction}/> */}
                     <a href={`https://wavesexplorer.com/tx/${prefix}${transactionUrl}`} target="_blank">
-                        See transaction
+                        查看交易
                     </a>
                 </div>
             </div>

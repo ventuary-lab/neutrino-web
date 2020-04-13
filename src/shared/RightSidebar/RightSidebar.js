@@ -20,7 +20,7 @@ import './RightSidebar.scss';
 
 const bem = html.bem('RightSidebar');
 
-@connect(state => ({
+@connect((state) => ({
     user: getUser(state),
 }))
 export default class RightSidebar extends React.PureComponent {
@@ -36,9 +36,9 @@ export default class RightSidebar extends React.PureComponent {
 
         return (
             <LoginTypeModalContext.Consumer>
-                {loginTypeContext => (
+                {(loginTypeContext) => (
                     <InstallKeeperModalContext.Consumer>
-                        {installKeeperContext => (
+                        {(installKeeperContext) => (
                             <div className={bem.block()}>
                                 {(this.props.user && (
                                     <>
@@ -49,7 +49,10 @@ export default class RightSidebar extends React.PureComponent {
                                                     'Icon Icon__waves-keeper'
                                                 )}
                                             /> */}
-                                            <img src={wavesRawLogo} className={bem.element('waves-logo')} />
+                                            <img
+                                                src={wavesRawLogo}
+                                                className={bem.element('waves-logo')}
+                                            />
                                             <div className={bem.element('address-container')}>
                                                 <span className={bem.element('address-value')}>
                                                     <a href={addressUrl} target="_blank">
@@ -88,7 +91,14 @@ export default class RightSidebar extends React.PureComponent {
                                             </div>
                                         </div> */}
                                     </>
-                                )) || <>{this.renderAuthBlock({ loginTypeContext, installKeeperContext })}</>}
+                                )) || (
+                                    <>
+                                        {this.renderAuthBlock({
+                                            loginTypeContext,
+                                            installKeeperContext,
+                                        })}
+                                    </>
+                                )}
                                 {/* <WavesExchangeChart /> */}
                             </div>
                         )}
@@ -104,22 +114,22 @@ export default class RightSidebar extends React.PureComponent {
                 {/* <div className={bem(bem.element('auth-icon'), 'Icon Icon__waves-keeper')} /> */}
                 <img src={wavesRawLogo} className={bem.element('waves-logo')} />
                 <p className={bem.element('auth-title')}>
-                    <span>Get started by connecting</span>
+                    <span>通过连接开始</span>
                     <br />
-                    <span>Waves account</span>
+                    <span>WAVES钱包</span>
                 </p>
 
                 <Button
                     className={bem.element('auth-button')}
                     block
-                    label={'Login'}
+                    label={'登录'}
                     onClick={() => loginTypeContext.onOpen()}
                 />
                 <p className={bem.element('auth-info')}>
                     <GlobalLinksContext.Consumer>
-                        {context => {
+                        {(context) => {
                             const tosLink = context.links.find(
-                                link => link.label === TERMS_OF_USE_LABEL
+                                (link) => link.label === TERMS_OF_USE_LABEL
                             ).url;
                             return (
                                 <a href={tosLink} target={'_blank'}>
@@ -133,7 +143,7 @@ export default class RightSidebar extends React.PureComponent {
                         href="https://docs.google.com/document/d/1SGVvWrbqWOZ4WtGUqAom0ZBYCBw88u_lGz7eo1GAEUs/edit?usp=sharing"
                         target={'_blank'}
                     >
-                        Privacy Policy
+                        隐私政策
                     </a>
                 </p>
             </div>

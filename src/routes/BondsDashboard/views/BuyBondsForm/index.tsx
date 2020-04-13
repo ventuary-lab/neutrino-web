@@ -247,7 +247,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                             onFocus: () => (this.isBondsFieldFocused = true),
                             type: 'text',
                         }}
-                        label="Receive"
+                        label="接收"
                         layoutClassName={bem.element('input')}
                         attribute={'bonds'}
                         inners={{
@@ -262,7 +262,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                             onFocus: () => (this.isBondsFieldFocused = false),
                             type: 'text',
                         }}
-                        label="Send"
+                        label="发送"
                         layoutClassName={bem.element('input')}
                         attribute={'waves'}
                         inners={{
@@ -275,7 +275,7 @@ class BuyBondsForm extends React.Component<Props, State> implements IBuyBondsFor
                         block
                         disabled={isButtonDisabled}
                         className={bem.element('submit-button')}
-                        label={`Buy ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
+                        label={`买入 ${CurrencyEnum.getLabel(this.props.baseCurrency)}`}
                     />
                 </Form>
             </div>

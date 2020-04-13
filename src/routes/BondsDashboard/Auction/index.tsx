@@ -22,7 +22,7 @@ const AuctionDiscount: React.FC<Props> = ({ roi }) => {
                 </div>
                 <div>
                     <div className={bem.element('y-title', 'get-usdn')}>
-                        <div>Get</div>
+                        <div>获得</div>
                         <div className={bem.element('w-title')}>USDN</div>
                     </div>
                     <div className={bem.element('y-title')}>

@@ -129,7 +129,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return [
             {
                 id: FormTabEnum.AUCTION,
-                label: 'Get NSBT',
+                label: '获得 NSBT',
                 content: BuyBondsForm,
                 contentProps: {
                     roi: currentRoi,
