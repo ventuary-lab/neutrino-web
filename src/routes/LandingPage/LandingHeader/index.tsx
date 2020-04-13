@@ -8,11 +8,8 @@ import { GlobalLinksContext, InstallKeeperModalContext } from 'shared/Layout/con
 import { LayoutUrlParams } from 'shared/Layout/constants';
 
 import { Link } from 'ui/global/types';
+import LanguageSwitcher from 'shared/LanguageSwitcher';
 
-// import mainLogo from 'static/images/logo.svg';
-// import arrowDown from 'static/images/landing/arrow-down.svg';
-// import burgerIcon from 'static/images/landing/burger.svg';
-// import crossIcon from 'static/images/landing/cross-icon.svg';
 const mainLogo = 'static/images/logo.svg';
 const arrowDown = 'static/images/landing/arrow-down.svg';
 const burgerIcon = 'static/images/landing/burger.svg';
@@ -78,14 +75,14 @@ class LandingHeader extends React.Component<Props, State> {
     }
 
     triggerLearnList() {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             isProductsListVisible: false,
             isLearnListVisible: !prevState.isLearnListVisible,
         }));
     }
 
     triggerProductsList() {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             isLearnListVisible: false,
             isProductsListVisible: !prevState.isProductsListVisible,
         }));
@@ -134,9 +131,9 @@ class LandingHeader extends React.Component<Props, State> {
         return (
             <div className={bem.element('main')}>
                 <GlobalLinksContext.Consumer>
-                    {context => (
+                    {(context) => (
                         <InstallKeeperModalContext.Consumer>
-                            {installKeeperContext => {
+                            {(installKeeperContext) => {
                                 const { links: currentLinks } = this;
 
                                 currentLinks[currentLinks.length - 1] = {
@@ -191,6 +188,7 @@ class LandingHeader extends React.Component<Props, State> {
                                                 {context.links.map(this.mapLink)}
                                             </ul>
                                         </div>
+                                        <LanguageSwitcher />
                                         <OutsideAlerter
                                             handler={this.outsideHandler}
                                             className={bem.element('actions')}
