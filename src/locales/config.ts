@@ -1,6 +1,5 @@
 import i18next from 'i18next';
 import { mergeDeepRight } from 'ramda';
-import { initReactI18next } from 'react-i18next';
 
 import englishTranslation from './en-us';
 import russianTranslation from './ru-ru';
@@ -13,7 +12,7 @@ export const LanguageEnum = {
 };
 
 const localStorageKey = 'default-locale';
-const getDefaultLanguage = () => {
+const getDefaultLanguage = (window) => {
     return (
         // @ts-ignore
         (typeof window !== undefined && window.localStorage.getItem(localStorageKey)) ||
@@ -27,18 +26,18 @@ const onChangeLanguage = (i18n, language) => {
     i18n.changeLanguage(language);
 };
 
-i18next.use(initReactI18next).init({
+export const i18nConfig = {
     interpolation: {
         // React already does escaping
         escapeValue: false,
     },
-    lng: getDefaultLanguage(),
+    lng: getDefaultLanguage(undefined),
     resources: {
         [LanguageEnum.EN]: englishTranslation,
         [LanguageEnum.RU]: russianTranslation,
         [LanguageEnum.CH]: mergeDeepRight(englishTranslation, chineseTranslation),
     },
-});
+}
 
 export const getLangDropdownItems = (i18n) => [
     {
