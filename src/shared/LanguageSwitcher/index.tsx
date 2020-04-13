@@ -33,7 +33,7 @@ const defaultLangs: LanguageItem[] = [
         label: '🇬🇧',
         onClick: () => handleRedirect('en'),
     },
-];
+].reverse();
 
 class LanguageSwitcher extends React.Component<Props, State> {
     constructor(props) {
@@ -62,7 +62,7 @@ class LanguageSwitcher extends React.Component<Props, State> {
                 onClick={() => this.handleItem(item, index)}
                 className={`${index === 0 ? 'first' : !isOpened ? 'hidden' : ''} lang-item`}
             >
-                <div onClick={item.onClick}>{item.label}</div>
+                <div onClick={() => isOpened && item.onClick() }>{item.label}</div>
                 {index === 0 && <img className={isOpened ? 'opened' : ''} src={arrowIcon} />}
             </div>
         );
