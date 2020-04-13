@@ -65,17 +65,17 @@ export const defaultLearnLinks = [
     },
     {
         label: WHITEPAPER_LABEL,
-        url: 'wp.cn.neutrino.at',
+        url: 'https://wp.cn.neutrino.at',
         target: '_blank',
     },
     {
         label: FAQ_LABEL,
-        url: 'faq.cn.neutrino.at',
+        url: 'https://faq.cn.neutrino.at',
         target: '_blank',
     },
     {
         label: BLOG_LABEL,
-        url: 'vision.cn.neutrino.at',
+        url: 'https://vision.cn.neutrino.at',
         target: '_blank',
     },
     {
