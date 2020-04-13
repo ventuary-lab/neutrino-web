@@ -1,5 +1,4 @@
 import React from 'react';
-import arrowIcon from 'static/icons/arrow-up.svg';
 
 import './style.scss';
 
@@ -63,7 +62,7 @@ class LanguageSwitcher extends React.Component<Props, State> {
                 className={`${index === 0 ? 'first' : !isOpened ? 'hidden' : ''} lang-item`}
             >
                 <div onClick={() => isOpened && item.onClick() }>{item.label}</div>
-                {index === 0 && <img className={isOpened ? 'opened' : ''} src={arrowIcon} />}
+                {index === 0 && <img className={isOpened ? 'opened' : ''} src={'/static/icons/arrow-up.svg'} />}
             </div>
         );
     }
