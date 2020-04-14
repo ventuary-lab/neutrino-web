@@ -47,6 +47,8 @@ class OrderProvider extends React.Component<Props, State> {
         this.mapBuyPercentage = this.mapBuyPercentage.bind(this);
         this.setAmountPercentForField = this.setAmountPercentForField.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
+        this.handleBuyOrder = this.handleBuyOrder.bind(this);
+        this.handleLiquidateOrder = this.handleLiquidateOrder.bind(this);
 
         this.percentage = [25, 50, 75, 100];
 
