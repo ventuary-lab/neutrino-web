@@ -198,19 +198,20 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             return null;
         }
 
-        const { controlPrice, baseCurrency, quoteCurrency, user } = this.props;
+        const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
         const { formTab } = this.state;
 
         // bondOrders : liquidateOrders
         return (
             <div className={bem.block()}>
                 <div>
-                    <OrderBook orders={bondOrders} title='Auction'/>
-                    <OrderBook orders={liquidateOrders} title='Liquidate'/>
+                    <OrderBook orders={bondOrders} title="Auction" />
+                    <OrderBook orders={liquidateOrders} title="Liquidate" />
                 </div>
                 <div>
                     <ReserveHeading />
                     <OrderProvider
+                        pairName={pairName}
                         user={user}
                         bondOrders={bondOrders}
                         controlPrice={controlPrice}
@@ -234,7 +235,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
     pairName: getPairName(state),
     baseCurrency: getBaseCurrency(state),
     quoteCurrency: getQuoteCurrency(state),

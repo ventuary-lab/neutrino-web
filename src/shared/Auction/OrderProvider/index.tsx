@@ -1,6 +1,10 @@
 import React from 'react';
+import { dal, store } from 'components';
 import { set as _set, get as _get, round as _round } from 'lodash';
 import BaseInput from 'ui/form/BaseInput';
+import MessageModal from 'modals/MessageModal';
+import { openModal } from 'yii-steroids/actions/modal';
+
 import PercentButton from 'ui/form/PercentButton';
 import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import Button from 'yii-steroids/ui/form/Button';
@@ -14,6 +18,7 @@ import {
     getComputedBondsFromROI,
 } from 'reducers/contract/helpers';
 
+import { computeOrderPosition } from './helpers';
 import { Props, State, FormDefaults, OrderUrgency } from './types';
 
 import usdnLogo from 'static/icons/usd-n.svg';
@@ -141,6 +146,57 @@ class OrderProvider extends React.Component<Props, State> {
         this.setState(state);
     }
 
+    async handleLiquidateOrder() {
+        const { state } = this;
+        const { pairName, baseCurrency } = this.props;
+
+        const bondsAmount = _get(state, `${LIQUIDATE_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
+
+        try {
+            const response = await dal.setLiquidateOrder(pairName, baseCurrency, bondsAmount);
+            console.log({ response });
+        } catch (err) {
+            console.log('---liquidate error', err);
+
+            store.dispatch(
+                openModal(MessageModal, {
+                    text: `Fail on liquidate order add.\n Error: ${err.message}`,
+                })
+            );
+        }
+    }
+
+    async handleBuyOrder() {
+        const { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
+        const { state } = this;
+        const wavesAmount = _get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
+        const bondsAmount = _get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
+        const dependPrice = wavesAmount / bondsAmount;
+        const roi = computeROI(wavesAmount, bondsAmount, controlPrice / 100);
+
+        const contractPrice = Math.round(dependPrice * 100);
+        const position = computeOrderPosition(bondOrders, roi);
+
+        try {
+            const response = await dal.setBondOrder(
+                pairName,
+                contractPrice,
+                quoteCurrency,
+                wavesAmount,
+                position
+            );
+            console.log({ response });
+        } catch (err) {
+            console.log('---setBondOrder error', err);
+
+            store.dispatch(
+                openModal(MessageModal, {
+                    text: `The order was canceled.\n Error: ${err.message}`,
+                })
+            );
+        }
+    }
+
     onSelectOption(event) {
         switch (Number(event.target.value)) {
             case OrderUrgency.BY_REQUEST:
@@ -224,7 +280,10 @@ class OrderProvider extends React.Component<Props, State> {
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
-                <Button label={`Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`} />
+                <Button
+                    onClick={this.handleBuyOrder}
+                    label={`Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
+                />
             </div>
         );
         const sellForm = (
@@ -259,6 +318,7 @@ class OrderProvider extends React.Component<Props, State> {
                 </p>
                 <Button
                     color="danger"
+                    onClick={this.handleLiquidateOrder}
                     label={`Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
                 />
             </div>

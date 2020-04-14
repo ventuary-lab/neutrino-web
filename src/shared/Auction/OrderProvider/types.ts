@@ -16,7 +16,7 @@ export interface Props {
     controlPrice: number;
     baseCurrency: string;
     quoteCurrency: string;
-    // pairName: string;
+    pairName: string;
     roi: number; // like wavelets
 }
 export type InputForm = { send: number; receive: number; price: number };
