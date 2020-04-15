@@ -104,7 +104,7 @@ export const defaultLearnLinks = [
         target: '_blank',
     },
     {
-        label: 'Charts',
+        label: '圖表',
         url: 'https://coinmarketcap.com/currencies/neutrino-dollar/',
         target: '_blank'
     }
