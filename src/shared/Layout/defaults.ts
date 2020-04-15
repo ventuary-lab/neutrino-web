@@ -103,6 +103,11 @@ export const defaultLearnLinks = [
         url: 'http://audit.neutrino.at/',
         target: '_blank',
     },
+    {
+        label: 'Charts',
+        url: 'https://coinmarketcap.com/currencies/neutrino-dollar/',
+        target: '_blank'
+    }
 ];
 
 export const defaultScreenSizeContext = {
