@@ -53,7 +53,7 @@ export const defaultProductLinks = [
 ];
 
 export const getArticleUrl = () => {
-    const option = defaultProductLinks.find((opt) => opt.label === ARTICLE_LABEL);
+    const option = defaultProductLinks.find(opt => opt.label === ARTICLE_LABEL);
     return option ? option.url : '';
 };
 
@@ -65,22 +65,22 @@ export const defaultLearnLinks = [
     },
     {
         label: WHITEPAPER_LABEL,
-        url: 'https://wp.cn.neutrino.at',
+        url: 'https://wp.neutrino.at/',
         target: '_blank',
     },
     {
         label: FAQ_LABEL,
-        url: 'https://faq.cn.neutrino.at',
+        url: 'https://medium.com/@neutrinoteam/neutrino-protocol-faq-bf19c79eb354',
         target: '_blank',
     },
     {
         label: BLOG_LABEL,
-        url: 'https://vision.cn.neutrino.at',
+        url: 'https://twitter.com/neutrino_proto',
         target: '_blank',
     },
     {
         label: DISCUSSIONS_LABEL,
-        url: 'https://t.me/WavesChina',
+        url: 'https://t.me/neutrino_protocol_group',
         target: '_blank',
     },
     {
@@ -103,6 +103,11 @@ export const defaultLearnLinks = [
         url: 'http://audit.neutrino.at/',
         target: '_blank',
     },
+    {
+        label: 'Charts',
+        url: 'https://coinmarketcap.com/currencies/neutrino-dollar/',
+        target: '_blank'
+    }
 ];
 
 export const defaultScreenSizeContext = {
