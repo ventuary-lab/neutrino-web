@@ -3,6 +3,20 @@
 .MenuSwitcher {
     position: relative;
 
+
+    & .icon {
+        transform: rotate(180deg);
+        transition: transform .2s linear;
+        margin-left: 4px;
+    }
+
+    &.opened {
+        
+        & .icon {
+            transform: rotate(360deg);
+        }
+    }
+
     &:not(.opened) {
         & > .current {
             display: block;
@@ -36,4 +50,11 @@
             color: #00f5ff;
         }
     }
+
+    & .main {
+        display: flex !important;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
 }

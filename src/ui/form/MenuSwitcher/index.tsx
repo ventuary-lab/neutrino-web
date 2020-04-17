@@ -1,5 +1,6 @@
 import React from 'react';
 
+import arrowUpIcon from 'static/icons/arrow-up.svg';
 export interface MenuOption {
     isSelected?: boolean;
     label: string;
@@ -79,7 +80,10 @@ class MenuSwitcher extends React.Component<Props, State> {
 
         return (
             <div className={`MenuSwitcher ${openedClassName}`}>
-                {currentTab}
+                <div className='main'>
+                    {currentTab}
+                    <img className='icon' src={arrowUpIcon} />
+                </div>
                 <div className={`menu ${openedClassName}`}>{otherTabs}</div>
             </div>
         );
