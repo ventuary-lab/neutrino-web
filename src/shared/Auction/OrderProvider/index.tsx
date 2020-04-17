@@ -9,7 +9,9 @@ import PercentButton from 'ui/form/PercentButton';
 import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import Button from 'yii-steroids/ui/form/Button';
 import CurrencyEnum from 'enums/CurrencyEnum';
-import BaseSelectInput, { SelectOption } from 'ui/form/BaseSelectInput';
+// import BaseSelectInput, { SelectOption } from 'ui/form/BaseSelectInput';
+import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher'
+
 import TabSelector from 'ui/global/TabSelector';
 import {
     computeROI,
@@ -199,8 +201,8 @@ class OrderProvider extends React.Component<Props, State> {
         }
     }
 
-    onSelectOption(event) {
-        switch (Number(event.target.value)) {
+    onSelectOption(optionValue: Pick<MenuOption, 'value'>) {
+        switch (Number(optionValue)) {
             case OrderUrgency.BY_REQUEST:
                 this.setState({ orderUrgency: OrderUrgency.BY_REQUEST });
                 break;
@@ -332,10 +334,10 @@ class OrderProvider extends React.Component<Props, State> {
         const { buyForm, sellForm } = this.getForms();
 
         const selectInput = (
-            <BaseSelectInput
+            <MenuSwitcher
                 onSelect={this.onSelectOption}
                 options={[
-                    { label: 'By request', value: OrderUrgency.BY_REQUEST },
+                    { label: 'By request', value: OrderUrgency.BY_REQUEST, isSelected: true },
                     { label: 'Instant', value: OrderUrgency.INSTANT },
                 ]}
             />
