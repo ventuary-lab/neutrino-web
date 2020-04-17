@@ -14,3 +14,16 @@ export const computeWavesAmountFromROI = (roi: number, bondsAmount: number, curr
 export const getComputedBondsFromROI = (roi: number, waves: number, controlPrice: number) => {
     return Math.round(computeBondsAmountFromROI(roi, waves, controlPrice) / 100);
 };
+
+export const computeBR = (
+    values: {
+        reserveInNeutrino: number;
+        supplyInWaves: number;
+    },
+    currentPrice: number
+) => {
+    const { reserveInNeutrino, supplyInWaves } = values;
+    const supplyInNeutrino = supplyInWaves * currentPrice;
+
+    return reserveInNeutrino / supplyInNeutrino;
+};
