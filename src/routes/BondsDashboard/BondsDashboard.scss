@@ -41,6 +41,14 @@
     background: linear-gradient(197.87deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
   }
 
+  & .OrderbookReworked {
+    // height: calc(50vh - 40px);
+
+    & tbody {
+      // height: calc(25vh + 108px);
+    }
+  }
+
   @media screen and (max-width: 668px) {
     flex-direction: column;
     flex-wrap: nowrap;
@@ -57,6 +65,8 @@
       padding: 8px;
     }
   }
+
+
 
   // &__column {
   //   border-top-right-radius: 4px;

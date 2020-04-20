@@ -78,16 +78,19 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             const response = await axios.get(`/addresses/balance/${neutrinoAddress}`, {
                 baseURL: dal.nodeUrl,
             });
+            const balanceLockWavesResponse = await axios.get(`/addresses/data/${neutrinoAddress}/balance_lock_waves`, {
+                baseURL: dal.nodeUrl,
+            });
 
+            const { value: balanceLockWaves } = balanceLockWavesResponse.data
             const { balance } = response.data
-            // const response = await axios.get(`/addresses/data/${neutrinoAddress}/balance_lock_waves`, {
-            //     baseURL: dal.nodeUrl,
-            // });
-
             // const { value: balance } = response.data
             console.log({ balance, circSupply, controlPrice });
 
-            const reserveInWaves = balance / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
+            let reserveInWaves = balance - balanceLockWaves
+            reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
+            // const reserveInWaves = balance / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
+
             const neutrinoReserves = reserveInWaves * (controlPrice / 100)
 
             const BR = computeBR(
@@ -236,11 +239,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return [
             {
                 label: 'Reserves',
-                value: prettyPrintNumber(neutrinoReserves),
+                value: prettyPrintNumber(Math.round(neutrinoReserves)),
             },
             {
                 label: 'Supply',
-                value: prettyPrintNumber(neutrinoSupply),
+                value: prettyPrintNumber(Math.round(neutrinoSupply)),
             },
             {
                 label: 'Backing ratio (BR)',

@@ -10,7 +10,7 @@ import ExpectedValueSpan from 'shared/Auction/ExpectedValueSpan';
 import Button from 'yii-steroids/ui/form/Button';
 import CurrencyEnum from 'enums/CurrencyEnum';
 // import BaseSelectInput, { SelectOption } from 'ui/form/BaseSelectInput';
-import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher'
+import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher';
 
 import TabSelector from 'ui/global/TabSelector';
 import {
@@ -51,6 +51,7 @@ class OrderProvider extends React.Component<Props, State> {
         this.onInputChange = this.onInputChange.bind(this);
         this.handleBuyOrder = this.handleBuyOrder.bind(this);
         this.handleLiquidateOrder = this.handleLiquidateOrder.bind(this);
+        this.handleOnCondition = this.handleOnCondition.bind(this);
 
         this.percentage = [25, 50, 75, 100];
 
@@ -148,6 +149,10 @@ class OrderProvider extends React.Component<Props, State> {
         // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
         _set(state, path, Math.round(wavesAmount));
         this.setState(state);
+    }
+
+    handleOnCondition() {
+        this.setState({ orderUrgency: OrderUrgency.BY_REQUEST });
     }
 
     async handleLiquidateOrder() {
@@ -255,6 +260,17 @@ class OrderProvider extends React.Component<Props, State> {
     getForms() {
         const { orderUrgency, buy, liquidate } = this.state;
 
+        const isBrAbove = orderUrgency == OrderUrgency.INSTANT;
+
+        const brWarning = (
+            <div className="br-warning">
+                <span>
+                    <b>Instant liquidation is possible only when BR &gt;= 100%.</b> Please use an
+                    "on condition" request instead.
+                </span>
+            </div>
+        );
+
         const buyForm = (
             <div className="buy-form">
                 <div className="price">
@@ -291,7 +307,7 @@ class OrderProvider extends React.Component<Props, State> {
             </div>
         );
         const sellForm = (
-            <div className="liquidate-form">
+            <div className={`liquidate-form ${isBrAbove ? 'on-condition' : ''}`}>
                 <div className="price">
                     <BaseInput fieldName="Price" disabled />
                     <ExpectedValueSpan label="Exp. BR" expected={liquidate.price} />
@@ -320,11 +336,18 @@ class OrderProvider extends React.Component<Props, State> {
                     You will receive {liquidate.receive} USDN for {liquidate.send} WAVES when BR
                     reaches X%
                 </p>
-                <Button
-                    color="danger"
-                    onClick={this.handleLiquidateOrder}
-                    label={`Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
-                />
+                {isBrAbove ? (
+                    <>
+                        {brWarning}
+                        <Button onClick={this.handleOnCondition} label={`On condition ⟶`} />
+                    </>
+                ) : (
+                    <Button
+                        color="danger"
+                        onClick={this.handleLiquidateOrder}
+                        label={`Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
+                    />
+                )}
             </div>
         );
         return { buyForm, sellForm };

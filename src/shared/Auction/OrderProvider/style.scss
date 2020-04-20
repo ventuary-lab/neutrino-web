@@ -1,5 +1,5 @@
-
-
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
 
 .OrderProvider {
     background: linear-gradient(205.7deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
@@ -33,10 +33,9 @@
     & .price {
         & > :nth-child(1) {
             background: unset;
-            & input {
-                // border: 1px solid #4A4A7F;
-
-            }
+            // & input {
+            //     // border: 1px solid #4A4A7F;
+            // }
             
         }
     }
@@ -59,6 +58,28 @@
 
         & button {
             width: 100%;
+        }
+    }
+
+    & .on-condition {
+        & > :not(:last-child) {
+            opacity: .35;
+        }
+        & > :last-child {
+            background: transparent;
+            border: 1px solid #00F5FF;
+        }
+        & :not(.br-warning) {
+            @include prevent-text-select
+        }
+
+        & > .br-warning {
+            position: absolute;
+            opacity: 1;
+            display: block;
+            top: calc(50% - 49px);
+            width: 80%;
+            left: 10%;
         }
     }
 

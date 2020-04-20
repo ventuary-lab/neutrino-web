@@ -8,13 +8,15 @@ import 'shared/Layout/Layout.scss';
 
 const bem = html.bem('ReserveHeading');
 
-type Props = {};
-
 type HeadingValue = {
     label: string;
     value?: string | number | boolean;
     additional?: React.ReactNode;
 }
+
+type Props = {
+    values: HeadingValue[]
+};
 
 const values: HeadingValue[] = [];
 const mapValue = ({ value, label, additional  }) => (
@@ -24,7 +26,7 @@ const mapValue = ({ value, label, additional  }) => (
     </div>
 );
 
-const ReserveHeading: React.FC<Props> = () => {
+const ReserveHeading: React.FC<Props> = ({ values }) => {
     return (
         <div className={bem.block()}>
             <div className={bem.element('flex')}>{values.map(mapValue)}</div>

@@ -17,10 +17,12 @@ export interface Props {
     baseCurrency: string;
     quoteCurrency: string;
     pairName: string;
+    backingRatio: number;
     roi: number; // like wavelets
 }
 export type InputForm = { send: number; receive: number; price: number };
 export type State = {
+    // backingRatio: number;
     orderUrgency: OrderUrgency;
     buy: InputForm;
     liquidate: InputForm;
