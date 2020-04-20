@@ -21,19 +21,19 @@ stop_and_run () {
 simple_deploy () {
     # git checkout beta
     # git pull origin beta
-    docker build -t neutrino .
-    docker stop neutrino
-    docker rm neutrino
-    docker run -itd --name neutrino -p 5001:5001 -p 5000:5000 --env-file .env neutrino
+    docker rmi "$image_name"
+    docker build -t "$image_name" .
+    docker stop "$image_name"
+    docker rm "$image_name"
+    docker run -itd --name "$container_name" -p 5001:5001 -p 5000:5000 --env-file .env "$image_name"
 }
 
 main () {
     while [ -n "$1" ]
     do
         case "$1" in
-            # --image-name) image_name=$2 ;;
-            # --container-name) container_name=$2 ;;
-
+            --in) image_name=$2 ;;
+            --cn) container_name=$2 ;;
             # --stop-and-run) stop_and_run ;;
             --simple) simple_deploy ;;
         esac
