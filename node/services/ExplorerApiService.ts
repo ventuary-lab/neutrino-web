@@ -31,7 +31,7 @@ class ExplorerApiService {
                 baseURL: this.apiUrl,
             });
 
-            res.send(200, response.data);
+            return response.data
         } catch (err) {
             if (axios.isCancel(err)) {
                 console.log(err.message);
@@ -39,7 +39,7 @@ class ExplorerApiService {
                 console.log(`Error occured on Explorer API call. Route: ${route}`, err);
             }
 
-            res.send(500);
+            return null
         }
     }
 
