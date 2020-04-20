@@ -7,6 +7,7 @@ const bem = html.bem('BaseInput');
 
 interface Props {
     fieldName?: string;
+    smallWarning?: string;
     icon?: string;
     iconLabel?: string;
     required?: boolean;
@@ -16,6 +17,7 @@ const BaseInput: React.FC<Props & React.HTMLProps<HTMLInputElement>> = ({
     icon,
     fieldName,
     iconLabel,
+    smallWarning,
     required = false,
     ...restProps
 }) => {
@@ -27,6 +29,7 @@ const BaseInput: React.FC<Props & React.HTMLProps<HTMLInputElement>> = ({
                     <span>{required ? ' *' : ''}</span>
                 </span>
             )}
+            {smallWarning && <span className={bem.element('small-warning')}>{smallWarning}</span>}
             <input className={bem.element('input')} {...restProps} />
             <div className={bem.element('icon') + ' ' + (!icon ? 'hidden' : '')}>
                 <img src={icon} />

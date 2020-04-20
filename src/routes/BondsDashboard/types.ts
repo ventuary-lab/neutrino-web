@@ -38,6 +38,7 @@ export interface State {
     userOrders?: IUserOrders;
     backingRatio: number;
     formTab: FormTabEnum;
+    currentDeficitPercent: number;
     neutrinoSupply: number;
     neutrinoReserves: number;
 }

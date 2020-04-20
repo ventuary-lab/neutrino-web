@@ -31,8 +31,10 @@ import './BondsDashboard.scss';
 const bem = html.bem('BondsDashboard');
 
 const DEFAULT_ROI_DISCOUNT = 10;
+
 const ROI_LS_KEY = 'roi_discount';
 const BR_LS_KEY = 'backing_ratio';
+const DEFICIT_LS_KEY = 'deficit_percent'
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -56,6 +58,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             formTab: FormTabEnum.AUCTION,
             backingRatio: Number(localStorage.getItem(BR_LS_KEY)) || 0,
             neutrinoSupply: 0,
+            currentDeficitPercent: Number(localStorage.getItem(DEFICIT_LS_KEY)) || 0,
             neutrinoReserves: 0,
         };
     }
@@ -147,6 +150,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 this.updateROI(currentDeficitResponse.data);
                 this.updateBR(totalSupplyResponse.data);
                 this.setState({
+                    currentDeficitPercent: currentDeficitResponse.data,
                     bondOrders: bondOrdersResponse.data,
                     liquidateOrders: liquidateOrdersResponse.data,
                     userOrders: userOrdersResponse && userOrdersResponse.data,
@@ -279,7 +283,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         }
 
         const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
-        const { formTab } = this.state;
+        const { formTab, currentDeficitPercent } = this.state;
 
         // bondOrders : liquidateOrders
         return (
@@ -293,6 +297,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     <OrderProvider
                         pairName={pairName}
                         user={user}
+                        currentDeficitPercent={currentDeficitPercent}
                         backingRatio={backingRatio}
                         bondOrders={bondOrders}
                         controlPrice={controlPrice}

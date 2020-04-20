@@ -1,3 +1,5 @@
+import { floor as _floor } from 'lodash'
+
 // roi = 100*(b - w*cp)/(w*cp)
 export const computeROI = (bondsAmount: number, wavesAmount: number, currentPrice: number) =>
     (100 * (bondsAmount - wavesAmount * (currentPrice / 100))) /

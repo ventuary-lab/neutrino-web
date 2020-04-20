@@ -18,6 +18,7 @@ export interface Props {
     quoteCurrency: string;
     pairName: string;
     backingRatio: number;
+    currentDeficitPercent: number;
     roi: number; // like wavelets
 }
 export type InputForm = { send: number; receive: number; price: number };
