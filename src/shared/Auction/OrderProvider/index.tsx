@@ -151,8 +151,8 @@ class OrderProvider extends React.Component<Props, State> {
 
     recalculateReceiveAmount(path: string, wavesAmount: number) {
         const { state } = this;
-        const { backingRatio, controlPrice } = this.props;
-        const bondsAmount = computeBondsAmountFromROI(backingRatio, wavesAmount, controlPrice / 100);
+        const { roi, controlPrice } = this.props;
+        const bondsAmount = computeBondsAmountFromROI(roi, wavesAmount, controlPrice / 100);
 
         // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
         _set(state, path, Math.round(bondsAmount));
@@ -161,8 +161,8 @@ class OrderProvider extends React.Component<Props, State> {
 
     recalculateSendAmount(path: string, bondsAmount: number) {
         const { state } = this;
-        const { backingRatio, controlPrice } = this.props;
-        const wavesAmount = computeWavesAmountFromROI(backingRatio, bondsAmount, controlPrice / 100);
+        const { roi, controlPrice } = this.props;
+        const wavesAmount = computeWavesAmountFromROI(roi, bondsAmount, controlPrice / 100);
 
         // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
         _set(state, path, Math.round(wavesAmount));
