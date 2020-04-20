@@ -17,13 +17,13 @@ export const getComputedBondsFromROI = (roi: number, waves: number, controlPrice
 
 export const computeBR = (
     values: {
-        reserveInNeutrino: number;
-        supplyInWaves: number;
+        reserveInWaves: number;
+        supplyInNeutrino: number;
     },
     currentPrice: number
 ) => {
-    const { reserveInNeutrino, supplyInWaves } = values;
-    const supplyInNeutrino = supplyInWaves * currentPrice;
+    const { reserveInWaves, supplyInNeutrino } = values;
+    const reserveInNeutrino = reserveInWaves * currentPrice;
 
     return reserveInNeutrino / supplyInNeutrino;
 };

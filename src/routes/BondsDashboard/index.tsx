@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
 
 import { getUser } from 'yii-steroids/reducers/auth';
@@ -10,12 +10,17 @@ import { getControlPrice } from 'reducers/contract/selectors';
 import { html, dal } from 'components';
 import OrdersTable from './OrdersTable';
 import AuctionDiscount from './Auction';
+import QuestionMarkData from 'shared/Auction/QuestionMarkData';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
 // import OrderBook from './OrderBook';
+import { getNeutrinoDappAddress } from 'components/selectors';
 import OrderBook from 'shared/Auction/Orderbook';
 import ReserveHeading from 'shared/Auction/ReserveHeading';
 import OrderProvider from 'shared/Auction/OrderProvider';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import { prettyPrintNumber } from 'ui/global/helpers';
+import { computeBR } from 'reducers/contract/helpers';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -27,6 +32,7 @@ const bem = html.bem('BondsDashboard');
 
 const DEFAULT_ROI_DISCOUNT = 10;
 const ROI_LS_KEY = 'roi_discount';
+const BR_LS_KEY = 'backing_ratio';
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -36,24 +42,27 @@ enum OrdersTableTabEnum {
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
-    _idUpdating: boolean;
+    _isUpdating: boolean;
 
     constructor(props) {
         super(props);
 
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 4000;
-        this._idUpdating = false;
+        this._isUpdating = false;
 
         this.state = {
             currentRoi: Number(localStorage.getItem(ROI_LS_KEY)) || DEFAULT_ROI_DISCOUNT,
             formTab: FormTabEnum.AUCTION,
+            backingRatio: Number(localStorage.getItem(BR_LS_KEY)) || 0,
+            neutrinoSupply: 0,
+            neutrinoReserves: 0
         };
     }
 
     async componentDidMount() {
         await this._updateListener();
-        await this.getAndUpdateROI();
+        // await this.getAndUpdateROI();
         this.startListening();
     }
 
@@ -61,16 +70,41 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this.stopListening();
     }
 
-    async getAndUpdateROI() {
-        const deficitPercentResponse = await axios.get<number>(
-            '/api/explorer/get_deficit_per_cent'
-        );
+    async updateBR(circSupply: number) {
+        const { controlPrice } = this.props;
+        const neutrinoAddress = getNeutrinoDappAddress(dal);
 
-        if (deficitPercentResponse.statusText !== 'OK') {
-            return;
+        try {
+            const response = await axios.get(`/addresses/balance/${neutrinoAddress}`, {
+                baseURL: dal.nodeUrl,
+            });
+
+            const { balance } = response.data
+            // const response = await axios.get(`/addresses/data/${neutrinoAddress}/balance_lock_waves`, {
+            //     baseURL: dal.nodeUrl,
+            // });
+
+            // const { value: balance } = response.data
+            console.log({ balance, circSupply, controlPrice });
+
+            const reserveInWaves = balance / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
+            const neutrinoReserves = reserveInWaves * (controlPrice / 100)
+
+            const BR = computeBR(
+                { reserveInWaves, supplyInNeutrino: circSupply },
+                controlPrice
+            );
+
+            console.log({ BR });
+
+            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: circSupply })
+            localStorage.setItem(BR_LS_KEY, String(BR));
+        } catch (err) {
+            console.log({ err });
         }
+    }
 
-        const currentDeficit = Number(deficitPercentResponse.data);
+    updateROI(currentDeficit: number) {
         const validRoi = Math.round(Math.abs(currentDeficit) - 1);
 
         this.setState({
@@ -83,39 +117,44 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     async _updateListener() {
         const { user, pairName } = this.props;
 
-        if (!pairName || this._idUpdating) {
+        if (!pairName || this._isUpdating) {
             return;
         }
 
-        this._idUpdating = true;
+        this._isUpdating = true;
 
-        try {
-            const bondOrdersResponse = await axios.get<IOrder[]>(
-                `/api/v1/bonds/${pairName}/orders`
-            );
-            const liquidateOrdersResponse = await axios.get<IOrder[]>(
-                `/api/v1/liquidate/${pairName}/orders`
-            );
-            let userOrdersResponse;
+        const promiseList = [
+            axios.get<IOrder[]>(`/api/v1/bonds/${pairName}/orders`),
+            axios.get<IOrder[]>(`/api/v1/liquidate/${pairName}/orders`),
+            axios.get<number>('/api/explorer/get_deficit_per_cent'),
+            axios.get<number>('/api/explorer/get_circulating_supply'),
+            user ? axios.get<IUserOrders>(`/api/v1/bonds/user/${user.address}`) : undefined,
+        ].filter(Boolean) as [Promise<AxiosResponse<any>>];
 
-            if (user) {
-                userOrdersResponse = await axios.get<IUserOrders>(
-                    `/api/v1/bonds/user/${user.address}`
-                );
-            }
+        Promise.all(promiseList)
+            .then((values) => {
+                const [
+                    bondOrdersResponse,
+                    liquidateOrdersResponse,
+                    currentDeficitResponse,
+                    circulatingSupplyResponse,
+                    userOrdersResponse,
+                ] = values;
 
-            await this.getAndUpdateROI();
+                this.updateROI(currentDeficitResponse.data);
+                this.updateBR(circulatingSupplyResponse.data);
+                this.setState({
+                    bondOrders: bondOrdersResponse.data,
+                    liquidateOrders: liquidateOrdersResponse.data,
+                    userOrders: userOrdersResponse && userOrdersResponse.data,
+                });
 
-            this.setState({
-                bondOrders: bondOrdersResponse.data,
-                liquidateOrders: liquidateOrdersResponse.data,
-                userOrders: userOrdersResponse && userOrdersResponse.data,
+                this._isUpdating = false;
+            })
+            .catch((err) => {
+                console.warn('Error on updating orders...', err);
+                this._isUpdating = false;
             });
-        } catch (err) {
-            console.warn('Error on updating orders...', err);
-        } finally {
-            this._idUpdating = false;
-        }
     }
 
     startListening() {
@@ -191,8 +230,31 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
+    getReserveHeadingValues() {
+        const { backingRatio, neutrinoSupply, neutrinoReserves } = this.state;
+
+        return [
+            {
+                label: 'Reserves',
+                value: prettyPrintNumber(neutrinoReserves),
+            },
+            {
+                label: 'Supply',
+                value: prettyPrintNumber(neutrinoSupply),
+            },
+            {
+                label: 'Backing ratio (BR)',
+                value: Math.round(backingRatio),
+            },
+            {
+                label: 'What does it mean',
+                additional: <QuestionMarkData />
+            },
+        ]
+    }
+
     render() {
-        const { liquidateOrders, bondOrders, userOrders, currentRoi } = this.state;
+        const { liquidateOrders, bondOrders, userOrders, currentRoi, backingRatio } = this.state;
 
         if (!bondOrders || !liquidateOrders) {
             return null;
@@ -209,10 +271,13 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     <OrderBook orders={liquidateOrders} title="Liquidate" />
                 </div>
                 <div>
-                    <ReserveHeading />
+                    <ReserveHeading
+                        values={this.getReserveHeadingValues()}
+                    />
                     <OrderProvider
                         pairName={pairName}
                         user={user}
+                        backingRatio={backingRatio}
                         bondOrders={bondOrders}
                         controlPrice={controlPrice}
                         baseCurrency={baseCurrency}

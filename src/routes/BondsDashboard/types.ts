@@ -36,5 +36,8 @@ export interface State {
     bondOrders?: IOrder[],
     liquidateOrders?: IOrder[],
     userOrders?: IUserOrders;
+    backingRatio: number;
     formTab: FormTabEnum;
+    neutrinoSupply: number;
+    neutrinoReserves: number;
 }

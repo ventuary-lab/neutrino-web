@@ -15,7 +15,6 @@ module.exports = class Router {
         this.app = contractApp;
         this.expressApp = expressApp;
         this.explorerApiService = new ExplorerApiService(contractApp);
-        this.explorerApiService.startPulling();
 
         this._routes = {
             '/api/v1/init': async () => {

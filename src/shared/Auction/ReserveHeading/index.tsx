@@ -16,24 +16,7 @@ type HeadingValue = {
     additional?: React.ReactNode;
 }
 
-const values: HeadingValue[] = [
-    {
-        label: 'Reserves',
-        value: 60,
-    },
-    {
-        label: 'Supply',
-        value: 120,
-    },
-    {
-        label: 'Backing ratio (BR)',
-        value: 50,
-    },
-    {
-        label: 'What does it mean',
-        additional: <QuestionMarkData />
-    },
-];
+const values: HeadingValue[] = [];
 const mapValue = ({ value, label, additional  }) => (
     <div>
         <span>{value ? `${label}: ${value}` : label}</span>
