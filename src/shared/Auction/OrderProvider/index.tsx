@@ -56,7 +56,7 @@ class OrderProvider extends React.Component<Props, State> {
         this.percentage = [25, 50, 75, 100];
 
         this.state = {
-            orderUrgency: OrderUrgency.BY_REQUEST,
+            orderUrgency: OrderUrgency.INSTANT,
             [BUY_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.WAVES_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
@@ -384,8 +384,8 @@ class OrderProvider extends React.Component<Props, State> {
     getMenuOptions() {
         const { orderUrgency } = this.state;
         return [
-            { label: 'By request', value: OrderUrgency.BY_REQUEST, isSelected: true },
-            { label: 'Instant', value: OrderUrgency.INSTANT },
+            { label: 'Instant', value: OrderUrgency.INSTANT, isSelected: true },
+            { label: 'By request', value: OrderUrgency.BY_REQUEST },
         ].map((option) => ({
             ...option,
             isSelected: orderUrgency === option.value,
