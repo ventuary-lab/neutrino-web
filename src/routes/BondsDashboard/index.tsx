@@ -56,7 +56,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             formTab: FormTabEnum.AUCTION,
             backingRatio: Number(localStorage.getItem(BR_LS_KEY)) || 0,
             neutrinoSupply: 0,
-            neutrinoReserves: 0
+            neutrinoReserves: 0,
         };
     }
 
@@ -78,29 +78,29 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             const response = await axios.get(`/addresses/balance/${neutrinoAddress}`, {
                 baseURL: dal.nodeUrl,
             });
-            const balanceLockWavesResponse = await axios.get(`/addresses/data/${neutrinoAddress}/balance_lock_waves`, {
-                baseURL: dal.nodeUrl,
-            });
+            const balanceLockWavesResponse = await axios.get(
+                `/addresses/data/${neutrinoAddress}/balance_lock_waves`,
+                {
+                    baseURL: dal.nodeUrl,
+                }
+            );
 
-            const { value: balanceLockWaves } = balanceLockWavesResponse.data
-            const { balance } = response.data
+            const { value: balanceLockWaves } = balanceLockWavesResponse.data;
+            const { balance } = response.data;
             // const { value: balance } = response.data
             console.log({ balance, circSupply, controlPrice });
 
-            let reserveInWaves = balance - balanceLockWaves
-            reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
+            let reserveInWaves = balance - balanceLockWaves;
+            reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES);
             // const reserveInWaves = balance / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
 
-            const neutrinoReserves = reserveInWaves * (controlPrice / 100)
+            const neutrinoReserves = reserveInWaves * (controlPrice / 100);
 
-            const BR = computeBR(
-                { reserveInWaves, supplyInNeutrino: circSupply },
-                controlPrice
-            );
+            const BR = computeBR({ reserveInWaves, supplyInNeutrino: circSupply }, controlPrice);
 
             console.log({ BR });
 
-            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: circSupply })
+            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: circSupply });
             localStorage.setItem(BR_LS_KEY, String(BR));
         } catch (err) {
             console.log({ err });
@@ -236,6 +236,21 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     getReserveHeadingValues() {
         const { backingRatio, neutrinoSupply, neutrinoReserves } = this.state;
 
+        const link =
+            'https://medium.com/@neutrinoteam/neutrino-system-base-token-nsbt-new-auction-utility-liquidation-mechanics-d1589a2d5e25';
+        const brText = (
+            <div>
+                <span>
+                    Backing Ratio (BR) is the share of WAVES reserves in relation to the Neutrino
+                    supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.
+                </span>
+                <br />
+                <a href={link}>
+                    <b>Read more</b>
+                </a>
+            </div>
+        );
+
         return [
             {
                 label: 'Reserves',
@@ -251,9 +266,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             },
             {
                 label: 'What does it mean',
-                additional: <QuestionMarkData />
+                additional: <QuestionMarkData text={brText} />,
             },
-        ]
+        ];
     }
 
     render() {
@@ -274,9 +289,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     <OrderBook orders={liquidateOrders} title="Liquidate" />
                 </div>
                 <div>
-                    <ReserveHeading
-                        values={this.getReserveHeadingValues()}
-                    />
+                    <ReserveHeading values={this.getReserveHeadingValues()} />
                     <OrderProvider
                         pairName={pairName}
                         user={user}
