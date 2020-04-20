@@ -27,7 +27,7 @@ class OutsideAlerter extends React.Component<Props> {
             this.wrapperRef.current &&
             !this.wrapperRef.current.contains(event.target as HTMLDivElement)
         ) {
-            this.props.handler();
+            this.props.handler(event);
         }
     }
 

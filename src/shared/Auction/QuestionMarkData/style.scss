@@ -15,6 +15,7 @@
         background-color: #494991;
         opacity: 1;
         transition: opacity .5s linear;
+        visibility: visible;
     }
 
     & > .hint {
@@ -25,6 +26,7 @@
 
     & .text.not-hovered {
         opacity: 0;
+        visibility: hidden;
     }
 
     & .cap {

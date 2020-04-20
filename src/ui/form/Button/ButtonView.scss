@@ -29,24 +29,49 @@
     outline: none;
   }
 
+
+  $primary-gradient: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
+  $secondary-gradient: linear-gradient(1.04deg, #00ADFF -339.25%, #3E3E79 36.53%);
+  $danger-gradient: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
+
   &_color_primary {
     border: none;
-    background: linear-gradient(16.03deg, #6121A1 18.12%, #00AEFF 101.23%);
+    background: $primary-gradient;
+
+    &.border-only {
+      background: transparent;
+      border: 1px solid #00AEFF;
+    }
+
+    &:hover {
+      background: #08a3f8;
+    }
   }
 
   &_color_secondary {
     border: none;
-    background: linear-gradient(1.04deg, #00ADFF -339.25%, #3E3E79 36.53%);
+    background: $secondary-gradient;
+
+    &.border-only {
+      background: transparent;
+      border: 1px solid #3E3E79;
+    }
   }
 
   &_color_danger {
     border: none;
-    background: linear-gradient(6.59deg, #6121A1 18.12%, #FF5C5C 101.23%);
+    background: $danger-gradient;
+
+    &.border-only {
+      background: transparent;
+      border: 1px solid #FF5C5C;
+    }
 
     &:hover {
       background: #ff536d;
     }
   }
+
 
   &_color_secondary {
     border: 1px solid #4A4A7F;

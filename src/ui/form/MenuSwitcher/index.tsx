@@ -1,4 +1,6 @@
 import React from 'react';
+import OutsideAlerter from 'ui/global/OutsideAlerter';
+import { isEqual } from 'lodash';
 
 import arrowUpIcon from 'static/icons/arrow-up.svg';
 export interface MenuOption {
@@ -19,16 +21,29 @@ interface State {
 import './style.scss';
 
 class MenuSwitcher extends React.Component<Props, State> {
+    mainRef;
+
     constructor(props) {
         super(props);
 
         this.mapOption = this.mapOption.bind(this);
         this.onOptionClick = this.onOptionClick.bind(this);
+        this.handleCloseMenu = this.handleCloseMenu.bind(this);
+
+        this.mainRef = React.createRef();
 
         this.state = {
             options: this.props.options,
             isOpened: false,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        const { options } = this.props;
+
+        if (!isEqual(prevProps.options, options)) {
+            this.setState({ options: options });
+        }
     }
 
     onOptionClick(event: React.SyntheticEvent, opt: MenuOption) {
@@ -48,6 +63,10 @@ class MenuSwitcher extends React.Component<Props, State> {
         }
 
         onSelect(opt.value);
+    }
+
+    handleCloseMenu() {
+        this.setState({ isOpened: false });
     }
 
     mapOption(opt: MenuOption) {
@@ -79,13 +98,16 @@ class MenuSwitcher extends React.Component<Props, State> {
         const openedClassName = isOpened ? 'opened' : '';
 
         return (
-            <div className={`MenuSwitcher ${openedClassName}`}>
-                <div className='main'>
+            <OutsideAlerter
+                handler={this.handleCloseMenu}
+                className={`MenuSwitcher ${openedClassName}`}
+            >
+                <div className="main" ref={this.mainRef}>
                     {currentTab}
-                    <img className='icon' src={arrowUpIcon} />
+                    <img className="icon" src={arrowUpIcon} />
                 </div>
                 <div className={`menu ${openedClassName}`}>{otherTabs}</div>
-            </div>
+            </OutsideAlerter>
         );
     }
 }

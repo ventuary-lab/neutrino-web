@@ -70,7 +70,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this.stopListening();
     }
 
-    async updateBR(circSupply: number) {
+    async updateBR(totalSupply: number) {
         const { controlPrice } = this.props;
         const neutrinoAddress = getNeutrinoDappAddress(dal);
 
@@ -88,7 +88,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             const { value: balanceLockWaves } = balanceLockWavesResponse.data;
             const { balance } = response.data;
             // const { value: balance } = response.data
-            console.log({ balance, circSupply, controlPrice });
+            // console.log({ balance, totalSupply, controlPrice });
 
             let reserveInWaves = balance - balanceLockWaves;
             reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES);
@@ -96,11 +96,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
             const neutrinoReserves = reserveInWaves * (controlPrice / 100);
 
-            const BR = computeBR({ reserveInWaves, supplyInNeutrino: circSupply }, controlPrice);
+            const BR = computeBR({ reserveInWaves, supplyInNeutrino: totalSupply }, controlPrice);
 
             console.log({ BR });
 
-            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: circSupply });
+            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: totalSupply });
             localStorage.setItem(BR_LS_KEY, String(BR));
         } catch (err) {
             console.log({ err });
@@ -130,7 +130,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             axios.get<IOrder[]>(`/api/v1/bonds/${pairName}/orders`),
             axios.get<IOrder[]>(`/api/v1/liquidate/${pairName}/orders`),
             axios.get<number>('/api/explorer/get_deficit_per_cent'),
-            axios.get<number>('/api/explorer/get_circulating_supply'),
+            axios.get<number>('/api/explorer/get_total_issued'),
             user ? axios.get<IUserOrders>(`/api/v1/bonds/user/${user.address}`) : undefined,
         ].filter(Boolean) as [Promise<AxiosResponse<any>>];
 
@@ -140,12 +140,12 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     bondOrdersResponse,
                     liquidateOrdersResponse,
                     currentDeficitResponse,
-                    circulatingSupplyResponse,
+                    totalSupplyResponse,
                     userOrdersResponse,
                 ] = values;
 
                 this.updateROI(currentDeficitResponse.data);
-                this.updateBR(circulatingSupplyResponse.data);
+                this.updateBR(totalSupplyResponse.data);
                 this.setState({
                     bondOrders: bondOrdersResponse.data,
                     liquidateOrders: liquidateOrdersResponse.data,
@@ -245,7 +245,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.
                 </span>
                 <br />
-                <a href={link}>
+                <a href={link} target="_blank">
                     <b>Read more</b>
                 </a>
             </div>
@@ -262,7 +262,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             },
             {
                 label: 'Backing ratio (BR)',
-                value: Math.round(backingRatio),
+                value: `${Math.round(backingRatio)}%`,
             },
             {
                 label: 'What does it mean',

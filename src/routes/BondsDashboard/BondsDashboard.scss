@@ -13,6 +13,8 @@
   $orderbook-width: 300px;
   & > :nth-child(1) {
     width: $orderbook-width;
+    height: 1006px;
+
     
     & > :nth-child(1) {
       border-radius: 4px;
@@ -42,7 +44,7 @@
   }
 
   & .OrderbookReworked {
-    // height: calc(50vh - 40px);
+    height: 50%;
 
     & tbody {
       // height: calc(25vh + 108px);
@@ -63,6 +65,14 @@
     & > :nth-child(2) {
       width: 100%;
       padding: 8px;
+    }
+
+    & .ReserveHeading__flex {
+      padding: 12px;
+
+      & > :nth-child(4) {
+        display: none;
+      }
     }
   }
 

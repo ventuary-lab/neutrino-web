@@ -47,11 +47,11 @@ class OrderProvider extends React.Component<Props, State> {
         this.setAmountPercentForField = this.setAmountPercentForField.bind(this);
         this.mapLiquidatePercentage = this.mapLiquidatePercentage.bind(this);
         this.mapBuyPercentage = this.mapBuyPercentage.bind(this);
-        this.setAmountPercentForField = this.setAmountPercentForField.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.handleBuyOrder = this.handleBuyOrder.bind(this);
         this.handleLiquidateOrder = this.handleLiquidateOrder.bind(this);
         this.handleOnCondition = this.handleOnCondition.bind(this);
+        this.getMenuOptions = this.getMenuOptions.bind(this);
 
         this.percentage = [25, 50, 75, 100];
 
@@ -63,7 +63,7 @@ class OrderProvider extends React.Component<Props, State> {
                 price: 0,
             },
             [LIQUIDATE_FORM_NAME]: {
-                [SEND_FIELD_NAME]: FormDefaults.WAVES_AMOUNT,
+                [SEND_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.USDN_AMOUNT,
                 price: 0,
             },
@@ -159,7 +159,7 @@ class OrderProvider extends React.Component<Props, State> {
         const { state } = this;
         const { pairName, baseCurrency } = this.props;
 
-        const bondsAmount = _get(state, `${LIQUIDATE_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
+        const bondsAmount = _get(state, `${LIQUIDATE_FORM_NAME}.${SEND_FIELD_NAME}`);
 
         try {
             const response = await dal.setLiquidateOrder(pairName, baseCurrency, bondsAmount);
@@ -232,11 +232,14 @@ class OrderProvider extends React.Component<Props, State> {
     setAmountPercentForField(path: string, num: number) {
         const { state } = this;
         const { user } = this.props;
-        const wavesAmount = user.balances[CurrencyEnum.WAVES];
 
-        if (isNaN(+wavesAmount)) return;
+        const [formName] = path.split('.');
+        const currency = formName === BUY_FORM_NAME ? CurrencyEnum.WAVES : CurrencyEnum.USD_NB;
+        const currencyAmount = user.balances[currency];
 
-        const updatedValue = _round((num / 100) * Number(wavesAmount), 2);
+        if (isNaN(+currencyAmount)) return;
+
+        const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
         _set(state, path, updatedValue);
         this.setState(state);
 
@@ -257,8 +260,35 @@ class OrderProvider extends React.Component<Props, State> {
         );
     }
 
+    getButtonLabels(): { buyLabel: string; liquidateLabel: string } {
+        const { orderUrgency } = this.state;
+        let buyLabel = `Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`;
+        let liquidateLabel = `Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`;
+
+        if (orderUrgency === OrderUrgency.BY_REQUEST) {
+            return {
+                buyLabel: 'Place request',
+                liquidateLabel: 'Place request',
+            };
+        }
+
+        return { buyLabel, liquidateLabel };
+    }
+
+    getButtonClassNames(): { buyClassName: string; liquidateClassName: string } {
+        const { orderUrgency } = this.state;
+
+        if (orderUrgency === OrderUrgency.BY_REQUEST) {
+            return { buyClassName: 'border-only', liquidateClassName: 'border-only' };
+        }
+
+        return { buyClassName: '', liquidateClassName: ' ' };
+    }
+
     getForms() {
         const { orderUrgency, buy, liquidate } = this.state;
+        const { buyLabel, liquidateLabel } = this.getButtonLabels();
+        const { buyClassName, liquidateClassName } = this.getButtonClassNames();
 
         const isBrAbove = orderUrgency == OrderUrgency.INSTANT;
 
@@ -300,10 +330,7 @@ class OrderProvider extends React.Component<Props, State> {
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
-                <Button
-                    onClick={this.handleBuyOrder}
-                    label={`Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
-                />
+                <Button onClick={this.handleBuyOrder} label={buyLabel} className={buyClassName} />
             </div>
         );
         const sellForm = (
@@ -323,8 +350,8 @@ class OrderProvider extends React.Component<Props, State> {
                     disabled={orderUrgency == OrderUrgency.INSTANT}
                 />
                 <BaseInput
-                    iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
-                    icon={wavesLogo}
+                    iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
+                    icon={nsbtLogo}
                     onChange={this.onInputChange}
                     value={liquidate.send}
                     name="liquidate.send"
@@ -333,7 +360,7 @@ class OrderProvider extends React.Component<Props, State> {
                 />
                 <div className="percents">{this.percentage.map(this.mapLiquidatePercentage)}</div>
                 <p>
-                    You will receive {liquidate.receive} USDN for {liquidate.send} WAVES when BR
+                    You will receive {liquidate.receive} USDN for {liquidate.send} NSBT when BR
                     reaches X%
                 </p>
                 {isBrAbove ? (
@@ -345,7 +372,8 @@ class OrderProvider extends React.Component<Props, State> {
                     <Button
                         color="danger"
                         onClick={this.handleLiquidateOrder}
-                        label={`Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`}
+                        label={liquidateLabel}
+                        className={liquidateClassName}
                     />
                 )}
             </div>
@@ -353,17 +381,22 @@ class OrderProvider extends React.Component<Props, State> {
         return { buyForm, sellForm };
     }
 
+    getMenuOptions() {
+        const { orderUrgency } = this.state;
+        return [
+            { label: 'By request', value: OrderUrgency.BY_REQUEST, isSelected: true },
+            { label: 'Instant', value: OrderUrgency.INSTANT },
+        ].map((option) => ({
+            ...option,
+            isSelected: orderUrgency === option.value,
+        }));
+    }
+
     render() {
         const { buyForm, sellForm } = this.getForms();
 
         const selectInput = (
-            <MenuSwitcher
-                onSelect={this.onSelectOption}
-                options={[
-                    { label: 'By request', value: OrderUrgency.BY_REQUEST, isSelected: true },
-                    { label: 'Instant', value: OrderUrgency.INSTANT },
-                ]}
-            />
+            <MenuSwitcher onSelect={this.onSelectOption} options={this.getMenuOptions()} />
         );
 
         return (
