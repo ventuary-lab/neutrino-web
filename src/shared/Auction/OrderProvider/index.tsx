@@ -1,6 +1,7 @@
 import React from 'react';
 import { dal, store } from 'components';
 import { set as _set, get as _get, round as _round, floor as _floor } from 'lodash';
+import * as Rx from 'rxjs';
 import BaseInput from 'ui/form/BaseInput';
 import MessageModal from 'modals/MessageModal';
 import { openModal } from 'yii-steroids/actions/modal';
@@ -14,6 +15,7 @@ import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher';
 
 import TabSelector from 'ui/global/TabSelector';
 import {
+    computeBRFromROI,
     computeROI,
     computeBondsAmountFromROI,
     computeWavesAmountFromROI,
@@ -38,6 +40,9 @@ const RECEIVE_FIELD_NAME = 'receive';
 
 class OrderProvider extends React.Component<Props, State> {
     percentage: number[];
+    buyFormSubject;
+    liquidateFormSubject;
+    subscriptions;
 
     constructor(props) {
         super(props);
@@ -68,6 +73,12 @@ class OrderProvider extends React.Component<Props, State> {
                 price: _floor(this.props.backingRatio, 2) || 0,
             },
         };
+
+        // RX
+        this.buyFormSubject = new Rx.Subject()
+        this.liquidateFormSubject = new Rx.Subject()
+
+        this.subscriptions = []
     }
 
     calculateDefaults() {
@@ -88,6 +99,46 @@ class OrderProvider extends React.Component<Props, State> {
 
     componentDidMount() {
         this.calculateDefaults();
+
+        const sub1 = this.buyFormSubject
+            .subscribe((next: State) => {
+                const { controlPrice } = this.props;
+
+                let sendAmount, br, receiveAmount: number;
+
+                switch(next.orderUrgency) {
+                    case OrderUrgency.INSTANT:
+                        br = _round(computeBRFromROI(this.props.roi), 2)
+                        _set(next, `${BUY_FORM_NAME}.price`, br)
+
+                        sendAmount = _get(next, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
+                        receiveAmount = computeBondsAmountFromROI(br, sendAmount, controlPrice / 100)
+
+                        _set(next, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount))
+
+                        this.setState(next)
+
+                        break;
+                    case OrderUrgency.BY_REQUEST:
+                        sendAmount = _get(next, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
+                        receiveAmount = _get(next, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
+
+                        const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100)
+                        br = Math.abs(computeBRFromROI(roi / 100))
+
+                        _set(next, `${BUY_FORM_NAME}.price`, _round(br, 2))
+                        this.setState(next)
+                        break;
+                }
+            })
+
+        this.subscriptions.push(sub1)
+    }
+
+    componentWillUnmount() {
+        this.subscriptions.forEach(element => {
+            element.unsubscribe()
+        });
     }
 
     onInputChange(event) {
@@ -102,71 +153,14 @@ class OrderProvider extends React.Component<Props, State> {
 
         this.setState(state);
 
-        this.recalculateFormFields({ name, value });
-        this.recalculateBR({ name, value });
+        // this.recalculateFormFields({ name, value });
+        // this.recalculateBR({ name, value });
+
+        this.buyFormSubject.next(state)
     }
 
-    recalculateBR({ name, value }: { name: string; value: string | number }) {
-        const { controlPrice } = this.props;
-        const { state } = this;
-        const [formType] = name.split('.');
+    onBuyFormUpdate() {
 
-        const sendAmount: number = _get(state, `${formType}.${SEND_FIELD_NAME}`);
-        const receiveAmount: number = _get(state, `${formType}.${RECEIVE_FIELD_NAME}`);
-
-        const roi = _floor(computeROI(receiveAmount, sendAmount, controlPrice), 2);
-        // const br = _floor(100 - roi, 2);
-
-        _set(state, `${formType}.price`, roi);
-
-        this.setState(state);
-    }
-
-    recalculateFormFields({ name, value }: { name: string; value: string | number }) {
-        const { orderUrgency } = this.state;
-        const [formType, formField] = name.split('.');
-        const computedFormPath = [
-            formType,
-            formField === RECEIVE_FIELD_NAME ? SEND_FIELD_NAME : RECEIVE_FIELD_NAME,
-        ].join('.');
-
-        if (orderUrgency === OrderUrgency.BY_REQUEST) {
-            return;
-        }
-
-        if (
-            formField === RECEIVE_FIELD_NAME &&
-            (formType === BUY_FORM_NAME || formType === LIQUIDATE_FORM_NAME)
-        ) {
-            this.recalculateSendAmount(computedFormPath, Number(value));
-        }
-
-        if (
-            formField === SEND_FIELD_NAME &&
-            (formType === BUY_FORM_NAME || formType === LIQUIDATE_FORM_NAME)
-        ) {
-            this.recalculateReceiveAmount(computedFormPath, Number(value));
-        }
-    }
-
-    recalculateReceiveAmount(path: string, wavesAmount: number) {
-        const { state } = this;
-        const { roi, controlPrice } = this.props;
-        const bondsAmount = computeBondsAmountFromROI(roi, wavesAmount, controlPrice / 100);
-
-        // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
-        _set(state, path, Math.round(bondsAmount));
-        this.setState(state);
-    }
-
-    recalculateSendAmount(path: string, bondsAmount: number) {
-        const { state } = this;
-        const { roi, controlPrice } = this.props;
-        const wavesAmount = computeWavesAmountFromROI(roi, bondsAmount, controlPrice / 100);
-
-        // console.log({ wavesAmount, roi, bondsAmount, controlPrice });
-        _set(state, path, Math.round(wavesAmount));
-        this.setState(state);
     }
 
     handleOnCondition() {
@@ -225,37 +219,9 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     onSelectOption(optionValue: Pick<MenuOption, 'value'>) {
-        const { currentDeficitPercent } = this.props;
         const { state } = this;
-        const { orderUrgency } = state;
-        switch (Number(optionValue)) {
-            case OrderUrgency.BY_REQUEST:
-                this.setState({ orderUrgency: OrderUrgency.BY_REQUEST });
-                break;
-            case OrderUrgency.INSTANT:
-                if (orderUrgency == OrderUrgency.INSTANT) {
-                    _set(
-                        state,
-                        `${BUY_FORM_NAME}.price`,
-                        Math.abs(_floor(currentDeficitPercent, 2))
-                    );
-                    _set(
-                        state,
-                        `${LIQUIDATE_FORM_NAME}.price`,
-                        Math.abs(_floor(currentDeficitPercent, 2))
-                    );
-                }
 
-                this.setState({ ...state, orderUrgency: OrderUrgency.INSTANT });
-
-                // const buyFormPath = `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`;
-                // const liquidateFormPath = `${LIQUIDATE_FORM_NAME}.${SEND_FIELD_NAME}`;
-
-                // this.recalculateReceiveAmount(buyFormPath, _get(state, buyFormPath));
-                // this.recalculateReceiveAmount(liquidateFormPath, _get(state, liquidateFormPath));
-
-                break;
-        }
+        this.buyFormSubject.next({ ...state, orderUrgency: Number(optionValue) })
     }
 
     mapBuyPercentage(num: number) {
@@ -284,10 +250,10 @@ class OrderProvider extends React.Component<Props, State> {
         _set(state, path, updatedValue);
         this.setState(state);
 
-        this.recalculateFormFields({
-            name: path,
-            value: updatedValue,
-        });
+        // this.recalculateFormFields({
+        //     name: path,
+        //     value: updatedValue,
+        // });
     }
 
     mapLiquidatePercentage(num: number) {

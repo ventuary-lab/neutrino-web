@@ -29,3 +29,5 @@ export const computeBR = (
 
     return reserveInNeutrino / supplyInNeutrino;
 };
+
+export const computeBRFromROI = roi => 100 - roi
