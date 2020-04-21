@@ -66,27 +66,33 @@ class OrderProvider extends React.Component<Props, State> {
             [BUY_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.WAVES_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
-                price: _floor(this.props.backingRatio, 2) || 0,
+                price: _floor(this.props.backingRatio) || 0,
+                br: 0,
             },
             [LIQUIDATE_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.USDN_AMOUNT,
-                price: _floor(this.props.backingRatio, 2) || 0,
+                br: _floor(this.props.backingRatio) || 0,
+                price: 0,
             },
         };
 
         // RX
-        this.buyFormSubject = new Rx.Subject()
-        this.liquidateFormSubject = new Rx.Subject()
+        this.buyFormSubject = new Rx.Subject();
+        this.liquidateFormSubject = new Rx.Subject();
 
-        this.subscriptions = []
+        this.subscriptions = [];
     }
 
     calculateDefaults() {
         const { controlPrice, backingRatio } = this.props;
 
         // "RECEIVE" get computed based "SEND" value
-        const bondsAmount = getComputedBondsFromROI(backingRatio, FormDefaults.WAVES_AMOUNT, controlPrice);
+        const bondsAmount = getComputedBondsFromROI(
+            backingRatio,
+            FormDefaults.WAVES_AMOUNT,
+            controlPrice
+        );
 
         const { buy, liquidate } = this.state;
 
@@ -101,13 +107,21 @@ class OrderProvider extends React.Component<Props, State> {
     componentDidMount() {
         this.calculateDefaults();
 
-        this.subscriptions.push(this.buyFormSubject.subscribe(next => this.onFormUpdate(next, BUY_FORM_NAME)))
-        this.subscriptions.push(this.liquidateFormSubject.subscribe(next => this.onFormUpdate(next, LIQUIDATE_FORM_NAME)))
+        this.subscriptions.push(
+            this.buyFormSubject.subscribe((next) => this.onFormUpdate(next, BUY_FORM_NAME))
+        );
+        this.subscriptions.push(
+            this.liquidateFormSubject.subscribe((next) =>
+                this.onFormUpdate(next, LIQUIDATE_FORM_NAME)
+            )
+        );
+        this.buyFormSubject.next(this.state);
+        this.liquidateFormSubject.next(this.state);
     }
 
     componentWillUnmount() {
-        this.subscriptions.forEach(element => {
-            element.unsubscribe()
+        this.subscriptions.forEach((element) => {
+            element.unsubscribe();
         });
     }
 
@@ -115,7 +129,7 @@ class OrderProvider extends React.Component<Props, State> {
         let { name, value } = event.target;
         const { state } = this;
 
-        if (isNaN(Number(value))) {
+        if (isNaN(Number(value)) || value == 0) {
             return;
         }
 
@@ -126,38 +140,52 @@ class OrderProvider extends React.Component<Props, State> {
         // this.recalculateFormFields({ name, value });
         // this.recalculateBR({ name, value });
 
-        this.buyFormSubject.next(state)
-        this.liquidateFormSubject.next(state)
+        this.buyFormSubject.next(state);
+        this.liquidateFormSubject.next(state);
     }
 
     onFormUpdate(next: State, formName: string) {
         const { controlPrice } = this.props;
 
-        let sendAmount, br, receiveAmount: number;
+        let sendAmount, br, price, receiveAmount: number;
 
-        switch(next.orderUrgency) {
+        switch (next.orderUrgency) {
             case OrderUrgency.INSTANT:
-                br = _round(computeBRFromROI(this.props.roi), 2)
-                _set(next, `${formName}.price`, br)
+                br = _floor(this.props.backingRatio);
+                _set(next, `${formName}.br`, br);
 
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
-                receiveAmount = computeBondsAmountFromROI(br, sendAmount, controlPrice / 100)
+                receiveAmount = computeBondsAmountFromROI(br, sendAmount, controlPrice / 100);
+                price = _round(receiveAmount / sendAmount, 2);
 
-                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount))
-                this.setState(next)
+                if (formName === LIQUIDATE_FORM_NAME) {
+                    sendAmount *= controlPrice / 100;
+                }
+
+                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
+                _set(next, `${formName}.price`, price);
+                console.log({ sendAmount, receiveAmount, br });
+                this.setState(next);
 
                 break;
             case OrderUrgency.BY_REQUEST:
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
                 receiveAmount = _get(next, `${formName}.${RECEIVE_FIELD_NAME}`);
+                price = _round(receiveAmount / sendAmount, 2);
 
-                console.log({ sendAmount, receiveAmount })
-                const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100)
-                br = Math.abs(computeBRFromROI(roi / 100))
-                console.log({ roi, br })
+                if (formName === LIQUIDATE_FORM_NAME) {
+                    sendAmount *= controlPrice / 100;
+                }
 
-                _set(next, `${formName}.price`, _round(br, 2))
-                this.setState(next)
+                console.log({ sendAmount, receiveAmount });
+                const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
+                br = Math.abs(computeBRFromROI(roi / 100));
+                console.log({ roi, br });
+
+                _set(next, `${formName}.br`, _round(br));
+                _set(next, `${formName}.price`, price);
+
+                this.setState(next);
                 break;
         }
     }
@@ -219,10 +247,10 @@ class OrderProvider extends React.Component<Props, State> {
 
     onSelectOption(optionValue: Pick<MenuOption, 'value'>) {
         const { state } = this;
-        const newState = { ...state, orderUrgency: Number(optionValue) }
+        const newState = { ...state, orderUrgency: Number(optionValue) };
 
-        this.buyFormSubject.next(newState)
-        this.liquidateFormSubject.next(newState)
+        this.buyFormSubject.next(newState);
+        this.liquidateFormSubject.next(newState);
     }
 
     mapBuyPercentage(num: number) {
@@ -251,8 +279,8 @@ class OrderProvider extends React.Component<Props, State> {
         _set(state, path, updatedValue);
         this.setState(state);
 
-        this.buyFormSubject.next(state)
-        this.liquidateFormSubject.next(state)
+        this.buyFormSubject.next(state);
+        this.liquidateFormSubject.next(state);
     }
 
     mapLiquidatePercentage(num: number) {
@@ -291,9 +319,16 @@ class OrderProvider extends React.Component<Props, State> {
         return { buyClassName: '', liquidateClassName: ' ' };
     }
 
-    getSmallWarning(price): string {
-        if (price >= 100) return 'Exp. BR cannot be equal to 100%'
-        if (!(price >= 5 && price <= 195)) return 'Exp. BR should be >= 5% and <= 195%'
+    getSmallWarning(br): string {
+        // system backing ratio
+        const { backingRatio } = this.props;
+        if (br >= 100 && backingRatio < 100) return 'Exp. BR cannot be larger than 100%';
+        if (br != 100) return 'Exp. BR cannot be equal to 100%';
+        if (!(br >= 5 && br <= 195)) return 'Exp. BR should be >= 5% and <= 195%';
+    }
+
+    getLiquidateWarning(price): string {
+        if (price <= 1) return 'Price should be higher than 1';
     }
 
     getForms() {
@@ -302,7 +337,7 @@ class OrderProvider extends React.Component<Props, State> {
         const { buyLabel, liquidateLabel } = this.getButtonLabels();
         const { buyClassName, liquidateClassName } = this.getButtonClassNames();
 
-        const isBrAbove = orderUrgency == OrderUrgency.INSTANT && backingRatio >= 100;
+        const isBrAbove = orderUrgency == OrderUrgency.INSTANT && !(backingRatio >= 100);
 
         const brWarning = (
             <div className="br-warning">
@@ -318,10 +353,11 @@ class OrderProvider extends React.Component<Props, State> {
                 <div className="price">
                     <BaseInput
                         fieldName="Price"
+                        value={buy.price}
                         disabled
-                        smallWarning={this.getSmallWarning(buy.price)}
+                        smallWarning={this.getSmallWarning(buy.br)}
                     />
-                    <ExpectedValueSpan label="Exp. BR" expected={`${buy.price}%`} />
+                    <ExpectedValueSpan label="Exp. BR" expected={`${buy.br}%`} />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
@@ -346,7 +382,12 @@ class OrderProvider extends React.Component<Props, State> {
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
-                <Button onClick={this.handleBuyOrder} label={buyLabel} className={buyClassName} disabled={this.getSmallWarning(buy.price)}/>
+                <Button
+                    onClick={this.handleBuyOrder}
+                    label={buyLabel}
+                    className={buyClassName}
+                    disabled={this.getSmallWarning(buy.br)}
+                />
             </div>
         );
         const sellForm = (
@@ -355,9 +396,10 @@ class OrderProvider extends React.Component<Props, State> {
                     <BaseInput
                         fieldName="Price"
                         disabled
-                        smallWarning={this.getSmallWarning(liquidate.price)}
+                        value={liquidate.price}
+                        smallWarning={this.getLiquidateWarning(liquidate.price)}
                     />
-                    <ExpectedValueSpan label="Exp. BR" expected={`${liquidate.price}%`} />
+                    <ExpectedValueSpan label="Exp. BR" expected={`${liquidate.br}%`} />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}
@@ -394,7 +436,7 @@ class OrderProvider extends React.Component<Props, State> {
                         onClick={this.handleLiquidateOrder}
                         label={liquidateLabel}
                         className={liquidateClassName}
-                        disabled={this.getSmallWarning(liquidate.price)}
+                        disabled={this.getLiquidateWarning(liquidate.price)}
                     />
                 )}
             </div>
