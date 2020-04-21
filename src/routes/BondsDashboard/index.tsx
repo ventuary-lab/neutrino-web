@@ -297,7 +297,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
     mapAuctionOrderRecord(order: IOrder): TableRecord {
         return {
-            br: order.debugRoi,
+            br: 100 - order.debugRoi,
             waves: order.restTotal,
             nsbt: Math.floor(order.restAmount),
         };
