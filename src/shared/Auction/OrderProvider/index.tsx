@@ -323,7 +323,7 @@ class OrderProvider extends React.Component<Props, State> {
         // system backing ratio
         const { backingRatio } = this.props;
         if (br >= 100 && backingRatio < 100) return 'Exp. BR cannot be larger than 100%';
-        if (br != 100) return 'Exp. BR cannot be equal to 100%';
+        if (br == 100) return 'Exp. BR cannot be equal to 100%';
         if (!(br >= 5 && br <= 195)) return 'Exp. BR should be >= 5% and <= 195%';
     }
 
