@@ -60,6 +60,7 @@ class OrderProvider extends React.Component<Props, State> {
         this.handleOnCondition = this.handleOnCondition.bind(this);
         this.getMenuOptions = this.getMenuOptions.bind(this);
         this.onFormUpdate = this.onFormUpdate.bind(this);
+        this.checkIsBrAbove = this.checkIsBrAbove.bind(this);
 
         this.auctionPercentage = [75, 95, 120, 200];
         this.liquidatePercentage = [100, 150, 200, 300];
@@ -153,16 +154,21 @@ class OrderProvider extends React.Component<Props, State> {
         switch (next.orderUrgency) {
             case OrderUrgency.INSTANT:
                 br = _round(this.props.backingRatio);
-                _set(next, `${formName}.br`, br);
 
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
                 receiveAmount = computeBondsAmountFromROI(br, sendAmount, controlPrice / 100);
                 price = _round(receiveAmount / sendAmount, 2);
 
-                if (formName === LIQUIDATE_FORM_NAME) {
-                    sendAmount *= controlPrice / 100;
+                if (formName === LIQUIDATE_FORM_NAME && this.checkIsBrAbove(100)) {
+                    const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
+                    br = _round((receiveAmount / sendAmount) * 100);
                 }
 
+                // if (formName === LIQUIDATE_FORM_NAME) {
+                //     sendAmount *= controlPrice / 100;
+                // }
+
+                _set(next, `${formName}.br`, br);
                 _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
                 _set(next, `${formName}.price`, price);
 
@@ -170,19 +176,18 @@ class OrderProvider extends React.Component<Props, State> {
 
                 break;
             case OrderUrgency.BY_REQUEST:
-                sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
+                const rawSendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
+                sendAmount = rawSendAmount
                 receiveAmount = _get(next, `${formName}.${RECEIVE_FIELD_NAME}`);
                 price = _round(receiveAmount / sendAmount, 2);
 
                 if (formName === LIQUIDATE_FORM_NAME) {
                     sendAmount *= controlPrice / 100;
-                }
 
-                const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
-                br = Math.abs(computeBRFromROI(roi / 100));
-
-                if (formName === LIQUIDATE_FORM_NAME) {
-                    br = _round((receiveAmount / _get(next, `${formName}.${SEND_FIELD_NAME}`)) * 100, 2);
+                    br = _round((receiveAmount / rawSendAmount) * 100, 2);
+                } else {
+                    const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
+                    br = Math.abs(computeBRFromROI(roi / 100));
                 }
 
                 _set(next, `${formName}.br`, _round(br));
@@ -347,13 +352,18 @@ class OrderProvider extends React.Component<Props, State> {
         if (!(br >= 100)) return 'BR should be higher or equal to 100%';
     }
 
+    checkIsBrAbove(limit: number = 100) {
+        const { backingRatio } = this.props;
+        return !(backingRatio >= limit);
+    }
+
     getForms() {
         const { backingRatio } = this.props;
         const { orderUrgency, buy, liquidate } = this.state;
         const { buyLabel, liquidateLabel } = this.getButtonLabels();
         const { buyClassName, liquidateClassName } = this.getButtonClassNames();
 
-        const isBrAbove = orderUrgency == OrderUrgency.INSTANT && !(backingRatio >= 100);
+        const isBrAbove = orderUrgency == OrderUrgency.INSTANT && this.checkIsBrAbove(100);
 
         const brWarning = (
             <div className="br-warning">
@@ -368,7 +378,7 @@ class OrderProvider extends React.Component<Props, State> {
             <div className="buy-form">
                 <div className="price">
                     <BaseInput
-                        fieldName="Price"
+                        // fieldName="Exp. BR"
                         // value={buy.price}
                         disabled
                         smallWarning={this.getSmallWarning(buy.br)}
@@ -410,7 +420,7 @@ class OrderProvider extends React.Component<Props, State> {
             <div className={`liquidate-form ${isBrAbove ? 'on-condition' : ''}`}>
                 <div className="price">
                     <BaseInput
-                        fieldName="Price"
+                        // fieldName="Exp. BR"
                         disabled
                         // value={liquidate.price}
                         smallWarning={this.getLiquidateWarning(liquidate.br)}

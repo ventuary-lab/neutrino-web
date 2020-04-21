@@ -57,7 +57,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     constructor(props) {
         super(props);
 
-        this.mapOrderbookRecord = this.mapOrderbookRecord.bind(this)
+        this.mapAuctionOrderRecord = this.mapAuctionOrderRecord.bind(this)
+        this.mapLiquidateOrderRecord = this.mapLiquidateOrderRecord.bind(this)
 
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 4000;
@@ -285,9 +286,17 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
-    mapOrderbookRecord (order: IOrder): TableRecord {
+    mapLiquidateOrderRecord (order: IOrder): TableRecord {
         return {
-            br: 10,
+            br: '-',
+            waves: order.price,
+            nsbt: order.restTotal
+        }
+    }
+
+    mapAuctionOrderRecord (order: IOrder): TableRecord {
+        return {
+            br: '-',
             waves: order.price,
             nsbt: order.restTotal
         }
@@ -323,8 +332,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return (
             <div className={bem.block()}>
                 <div>
-                    <OrderBook tableRecords={bondOrders.map(this.mapOrderbookRecord)} tableHeaders={orderbookHeading} title="Auction" />
-                    <OrderBook tableRecords={liquidateOrders.map(this.mapOrderbookRecord)} tableHeaders={orderbookHeading} title="Liquidate" />
+                    <OrderBook tableRecords={bondOrders.map(this.mapAuctionOrderRecord)} tableHeaders={orderbookHeading} title="Auction" />
+                    <OrderBook tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)} tableHeaders={orderbookHeading} title="Liquidate" />
                 </div>
                 <div>
                     <ReserveHeading values={this.getReserveHeadingValues()} />
