@@ -1,4 +1,5 @@
 import { floor as _floor } from 'lodash'
+import { IOrder } from 'routes/BondsDashboard/types';
 
 // roi = 100*(b - w*cp)/(w*cp)
 export const computeROI = (bondsAmount: number, wavesAmount: number, currentPrice: number) =>

@@ -13,6 +13,7 @@ export enum FormDefaults {
 export interface Props {
     user: IUser;
     bondOrders: Record<string, string>[] | IOrder[];
+    liquidateOrders: Record<string, string>[] | IOrder[];
     controlPrice: number;
     baseCurrency: string;
     quoteCurrency: string;

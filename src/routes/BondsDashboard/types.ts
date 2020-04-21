@@ -16,6 +16,10 @@ export interface IOrder {
     restAmount: number;
     pairName: string;
     status: string;
+    is_first?: boolean;
+    order_next?: string;
+    order_prev?: string;
+    debugRoi?: number;
 };
 
 export interface IUserOrders {

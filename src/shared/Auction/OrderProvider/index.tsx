@@ -30,6 +30,7 @@ import nsbtLogo from 'static/icons/n_icon/light-not-filled/Neutrino_N_ICON.svg';
 import wavesLogo from 'static/icons/wave.svg';
 
 import './style.scss';
+import { IOrder } from 'routes/BondsDashboard/types';
 
 // const DEFAULT_ROI = 10;
 
@@ -181,7 +182,7 @@ class OrderProvider extends React.Component<Props, State> {
                 br = Math.abs(computeBRFromROI(roi / 100));
 
                 if (formName === LIQUIDATE_FORM_NAME) {
-                    br = _round((receiveAmount / sendAmount) * 100, 2);
+                    br = _round((receiveAmount / _get(next, `${formName}.${SEND_FIELD_NAME}`)) * 100, 2);
                 }
 
                 _set(next, `${formName}.br`, _round(br));
@@ -198,12 +199,14 @@ class OrderProvider extends React.Component<Props, State> {
 
     async handleLiquidateOrder() {
         const { state } = this;
-        const { pairName, baseCurrency } = this.props;
+        const { pairName, baseCurrency, liquidateOrders } = this.props;
 
         const bondsAmount = _get(state, `${LIQUIDATE_FORM_NAME}.${SEND_FIELD_NAME}`);
+        const price = _get(state, `${LIQUIDATE_FORM_NAME}.price`)
+        const position = computeOrderPosition(liquidateOrders as IOrder[], price);
 
         try {
-            const response = await dal.setLiquidateOrder(pairName, baseCurrency, bondsAmount);
+            const response = await dal.setLiquidateOrder(pairName, baseCurrency, bondsAmount, price * 100, position);
             console.log({ response });
         } catch (err) {
             console.log('---liquidate error', err);
@@ -225,7 +228,7 @@ class OrderProvider extends React.Component<Props, State> {
         const roi = computeROI(wavesAmount, bondsAmount, controlPrice / 100);
 
         const contractPrice = Math.round(dependPrice * 100);
-        const position = computeOrderPosition(bondOrders, roi);
+        const position = computeOrderPosition(bondOrders as IOrder[], roi);
 
         try {
             const response = await dal.setBondOrder(
@@ -355,7 +358,7 @@ class OrderProvider extends React.Component<Props, State> {
             <div className="buy-form">
                 <div className="price">
                     <BaseInput
-                        fieldName=""
+                        fieldName="Price"
                         // value={buy.price}
                         disabled
                         smallWarning={this.getSmallWarning(buy.br)}
@@ -397,7 +400,7 @@ class OrderProvider extends React.Component<Props, State> {
             <div className={`liquidate-form ${isBrAbove ? 'on-condition' : ''}`}>
                 <div className="price">
                     <BaseInput
-                        fieldName=""
+                        fieldName="Price"
                         disabled
                         // value={liquidate.price}
                         smallWarning={this.getLiquidateWarning(liquidate.price)}

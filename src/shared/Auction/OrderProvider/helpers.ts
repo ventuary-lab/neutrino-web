@@ -1,6 +1,7 @@
+import { IOrder } from "routes/BondsDashboard/types";
 
-export const computeOrderPosition = (bondOrders, roi) => {
-    const sortedBondOrders = [bondOrders.find((order) => order.is_first)].filter(Boolean);
+export const computeOrderPosition = (orders: IOrder[], roi: number) => {
+    const sortedBondOrders = [orders.find(order => order.is_first)].filter(Boolean);
 
     while (true) {
         const lastSortedOrder = sortedBondOrders[sortedBondOrders.length - 1];
@@ -9,7 +10,7 @@ export const computeOrderPosition = (bondOrders, roi) => {
             break;
         }
 
-        const nextOrder = bondOrders.find((order) => order.id === lastSortedOrder.order_next);
+        const nextOrder = orders.find(order => order.id === lastSortedOrder.order_next);
         sortedBondOrders.push(nextOrder);
     }
 
@@ -18,11 +19,11 @@ export const computeOrderPosition = (bondOrders, roi) => {
         return position;
     }
 
-    sortedBondOrders.forEach((order) => {
+    sortedBondOrders.forEach(order => {
         if (roi >= Number(order.debugRoi)) {
             position = order.id;
         }
     });
 
     return position;
-};
+}
