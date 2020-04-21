@@ -293,7 +293,7 @@ class OrderProvider extends React.Component<Props, State> {
 
     getSmallWarning(price): string {
         if (price >= 100) return 'Exp. BR cannot be equal to 100%'
-        if (!(price >= 5 && price <= 195)) return 'Exp. BR should be larger than 5% and smaller than 195%'
+        if (!(price >= 5 && price <= 195)) return 'Exp. BR should be >= 5% and <= 195%'
     }
 
     getForms() {
@@ -346,7 +346,7 @@ class OrderProvider extends React.Component<Props, State> {
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
-                <Button onClick={this.handleBuyOrder} label={buyLabel} className={buyClassName} />
+                <Button onClick={this.handleBuyOrder} label={buyLabel} className={buyClassName} disabled={this.getSmallWarning(buy.price)}/>
             </div>
         );
         const sellForm = (
@@ -394,6 +394,7 @@ class OrderProvider extends React.Component<Props, State> {
                         onClick={this.handleLiquidateOrder}
                         label={liquidateLabel}
                         className={liquidateClassName}
+                        disabled={this.getSmallWarning(liquidate.price)}
                     />
                 )}
             </div>

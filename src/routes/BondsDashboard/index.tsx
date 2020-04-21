@@ -16,11 +16,19 @@ import LiquidateBondsForm from './views/LiquidateBondsForm';
 // import OrderBook from './OrderBook';
 import { getNeutrinoDappAddress } from 'components/selectors';
 import OrderBook from 'shared/Auction/Orderbook';
+import { TableRecord } from 'shared/Auction/Orderbook/types';
 import ReserveHeading from 'shared/Auction/ReserveHeading';
 import OrderProvider from 'shared/Auction/OrderProvider';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { prettyPrintNumber } from 'ui/global/helpers';
-import { computeBR } from 'reducers/contract/helpers';
+import {
+    computeBR,
+    computeBRFromROI,
+    computeROI,
+    // computeBondsAmountFromROI,
+    // computeWavesAmountFromROI,
+    // getComputedBondsFromROI,
+} from 'reducers/contract/helpers';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -48,6 +56,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
     constructor(props) {
         super(props);
+
+        this.mapOrderbookRecord = this.mapOrderbookRecord.bind(this)
 
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 4000;
@@ -275,6 +285,14 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
+    mapOrderbookRecord (order: IOrder): TableRecord {
+        return {
+            br: 10,
+            waves: order.price,
+            nsbt: order.restTotal
+        }
+    }
+
     render() {
         const { liquidateOrders, bondOrders, userOrders, currentRoi, backingRatio } = this.state;
 
@@ -286,11 +304,27 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const { formTab, currentDeficitPercent } = this.state;
 
         // bondOrders : liquidateOrders
+
+        const orderbookHeading = [
+            {
+                key: 'nsbt',
+                label: 'NSBT',
+            },
+            {
+                key: 'br',
+                label: 'BR',
+            },
+            {
+                key: 'waves',
+                label: 'WAVES',
+            },
+        ]
+
         return (
             <div className={bem.block()}>
                 <div>
-                    <OrderBook orders={bondOrders} title="Auction" />
-                    <OrderBook orders={liquidateOrders} title="Liquidate" />
+                    <OrderBook tableRecords={bondOrders.map(this.mapOrderbookRecord)} tableHeaders={orderbookHeading} title="Auction" />
+                    <OrderBook tableRecords={liquidateOrders.map(this.mapOrderbookRecord)} tableHeaders={orderbookHeading} title="Liquidate" />
                 </div>
                 <div>
                     <ReserveHeading values={this.getReserveHeadingValues()} />

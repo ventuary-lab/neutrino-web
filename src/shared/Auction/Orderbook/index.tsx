@@ -11,31 +11,18 @@ import { generateRandomRecords } from './helpers';
 
 const bem = html.bem('OrderbookReworked');
 
-const props: Props = {
-    title: '',
-    tableHeaders: [
-        {
-            key: 'nsbt',
-            label: 'NSBT',
-        },
-        {
-            key: 'br',
-            label: 'BR',
-        },
-        {
-            key: 'waves',
-            label: 'WAVES',
-        },
-    ],
-    tableRecords: generateRandomRecords(10),
-};
+// const props: Props = {
+//     title: '',
+//     tableHeaders: 
+//     tableRecords: generateRandomRecords(10),
+// };
 const greenHeaders = [
     { label: '1000', style: TableRecordStyle.green },
     { label: '-', style: TableRecordStyle.green },
     { label: '5433', style: TableRecordStyle.green },
 ] as TableHeader[];
 
-class Orderbook extends React.Component<any, State> {
+class Orderbook extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.mapTableHeaders = this.mapTableHeaders.bind(this);
@@ -62,7 +49,7 @@ class Orderbook extends React.Component<any, State> {
     }
 
     render() {
-        const { title } = this.props;
+        const { title, tableHeaders, tableRecords } = this.props;
 
         return (
             <div className={bem.block()}>
@@ -70,11 +57,11 @@ class Orderbook extends React.Component<any, State> {
                     <span>{title}</span>
                 </div>
                 <table className={bem.element('table', 'scrollable')}>
-                    <thead>{this.mapTableHeaders(props.tableHeaders)}</thead>
+                    <thead>{this.mapTableHeaders(tableHeaders)}</thead>
                     <thead>{this.mapTableHeaders(greenHeaders)}</thead>
 
                     <tbody>
-                        {this.mapTableBodyColumns(props.tableHeaders, props.tableRecords)}
+                        {this.mapTableBodyColumns(tableHeaders, tableRecords)}
                     </tbody>
                 </table>
             </div>
