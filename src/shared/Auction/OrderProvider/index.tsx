@@ -39,10 +39,11 @@ const SEND_FIELD_NAME = 'send';
 const RECEIVE_FIELD_NAME = 'receive';
 
 class OrderProvider extends React.Component<Props, State> {
-    percentage: number[];
     buyFormSubject;
     liquidateFormSubject;
     subscriptions;
+    auctionPercentage: number[];
+    liquidatePercentage: number[];
 
     constructor(props) {
         super(props);
@@ -59,7 +60,8 @@ class OrderProvider extends React.Component<Props, State> {
         this.getMenuOptions = this.getMenuOptions.bind(this);
         this.onFormUpdate = this.onFormUpdate.bind(this);
 
-        this.percentage = [25, 50, 75, 100];
+        this.auctionPercentage = [75, 95, 120, 200];
+        this.liquidatePercentage = [100, 150, 200, 300];
 
         this.state = {
             orderUrgency: OrderUrgency.INSTANT,
@@ -98,8 +100,6 @@ class OrderProvider extends React.Component<Props, State> {
 
         _set(buy, 'receive', bondsAmount);
         _set(liquidate, 'receive', bondsAmount);
-        // _set(buy, 'price', dependPrice);
-        // _set(liquidate, 'price', dependPrice);
 
         this.setState({ buy, liquidate });
     }
@@ -164,7 +164,7 @@ class OrderProvider extends React.Component<Props, State> {
 
                 _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
                 _set(next, `${formName}.price`, price);
-                console.log({ sendAmount, receiveAmount, br });
+
                 this.setState(next);
 
                 break;
@@ -177,10 +177,12 @@ class OrderProvider extends React.Component<Props, State> {
                     sendAmount *= controlPrice / 100;
                 }
 
-                console.log({ sendAmount, receiveAmount });
                 const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
                 br = Math.abs(computeBRFromROI(roi / 100));
-                console.log({ roi, br });
+
+                if (formName === LIQUIDATE_FORM_NAME) {
+                    br = _round((receiveAmount / sendAmount) * 100, 2);
+                }
 
                 _set(next, `${formName}.br`, _round(br));
                 _set(next, `${formName}.price`, price);
@@ -269,14 +271,15 @@ class OrderProvider extends React.Component<Props, State> {
         const { state } = this;
         const { user } = this.props;
 
-        const [formName] = path.split('.');
-        const currency = formName === BUY_FORM_NAME ? CurrencyEnum.WAVES : CurrencyEnum.USD_NB;
-        const currencyAmount = user.balances[currency];
+        let [formName, fieldName] = path.split('.');
+        const currencyAmount = _get(state, path)
+
+        fieldName = fieldName === SEND_FIELD_NAME ? RECEIVE_FIELD_NAME : SEND_FIELD_NAME;
 
         if (isNaN(+currencyAmount)) return;
 
         const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
-        _set(state, path, updatedValue);
+        _set(state, `${formName}.${fieldName}`, updatedValue);
         this.setState(state);
 
         this.buyFormSubject.next(state);
@@ -352,8 +355,8 @@ class OrderProvider extends React.Component<Props, State> {
             <div className="buy-form">
                 <div className="price">
                     <BaseInput
-                        fieldName="Price"
-                        value={buy.price}
+                        fieldName=""
+                        // value={buy.price}
                         disabled
                         smallWarning={this.getSmallWarning(buy.br)}
                     />
@@ -378,7 +381,7 @@ class OrderProvider extends React.Component<Props, State> {
                     fieldName="Send"
                     required={true}
                 />
-                <div className="percents">{this.percentage.map(this.mapBuyPercentage)}</div>
+                <div className="percents">{this.auctionPercentage.map(this.mapBuyPercentage)}</div>
                 <p>
                     You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches X%
                 </p>
@@ -394,9 +397,9 @@ class OrderProvider extends React.Component<Props, State> {
             <div className={`liquidate-form ${isBrAbove ? 'on-condition' : ''}`}>
                 <div className="price">
                     <BaseInput
-                        fieldName="Price"
+                        fieldName=""
                         disabled
-                        value={liquidate.price}
+                        // value={liquidate.price}
                         smallWarning={this.getLiquidateWarning(liquidate.price)}
                     />
                     <ExpectedValueSpan label="Exp. BR" expected={`${liquidate.br}%`} />
@@ -420,7 +423,7 @@ class OrderProvider extends React.Component<Props, State> {
                     fieldName="Send"
                     required={true}
                 />
-                <div className="percents">{this.percentage.map(this.mapLiquidatePercentage)}</div>
+                <div className="percents">{this.liquidatePercentage.map(this.mapLiquidatePercentage)}</div>
                 <p>
                     You will receive {liquidate.receive} USDN for {liquidate.send} NSBT when BR
                     reaches X%
