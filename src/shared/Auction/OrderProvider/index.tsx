@@ -69,13 +69,13 @@ class OrderProvider extends React.Component<Props, State> {
             [BUY_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.WAVES_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
-                price: _floor(this.props.backingRatio) || 0,
+                price: _round(this.props.backingRatio) || 0,
                 br: 0,
             },
             [LIQUIDATE_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.USDN_AMOUNT,
-                br: _floor(this.props.backingRatio) || 0,
+                br: _round(this.props.backingRatio) || 0,
                 price: 0,
             },
         };
@@ -152,7 +152,7 @@ class OrderProvider extends React.Component<Props, State> {
 
         switch (next.orderUrgency) {
             case OrderUrgency.INSTANT:
-                br = _floor(this.props.backingRatio);
+                br = _round(this.props.backingRatio);
                 _set(next, `${formName}.br`, br);
 
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
