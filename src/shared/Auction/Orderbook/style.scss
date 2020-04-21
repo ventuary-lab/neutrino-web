@@ -44,8 +44,11 @@
             & tbody {
                 display: block;
                 overflow-y: auto;
-                height: 369px;
+                min-height: 210px;
                 width: 300px;
+                padding-left: 4px;
+                max-height: 269px;
+                height: 169px;
 
                 @include scrollbar
             }

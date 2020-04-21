@@ -18,8 +18,8 @@
     
     & > :nth-child(1) {
       border-radius: 4px;
-      border-bottom-left-radius: none;
-      border-bottom-right-radius: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
   }
 
@@ -44,12 +44,20 @@
   }
 
   & .OrderbookReworked {
-    height: 50%;
+    $orderbook-height: 30vh;
+    $orderbook-table-height: calc(#{$orderbook-height} + 0px);
+
+    height: calc(#{$orderbook-height} + 135px);
+    // height: 50%;
 
     & tbody {
       // height: calc(25vh + 108px);
+      min-height: $orderbook-table-height;
+      height:  $orderbook-table-height;
+      max-height:  $orderbook-table-height;
     }
   }
+  
 
   @media screen and (max-width: 668px) {
     flex-direction: column;

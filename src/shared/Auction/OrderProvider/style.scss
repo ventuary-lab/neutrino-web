@@ -24,11 +24,11 @@
         }
     }
 
-    // & .buy {
-    //     & > :nth-child(1) {
-    //         margin-bottom: 15px;
-    //     }
-    // }
+    & .mode-instant {
+        & > .percents {
+            display: none;
+        }
+    }
 
     & .price {
         & > :nth-child(1) {

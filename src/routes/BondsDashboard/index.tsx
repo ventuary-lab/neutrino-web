@@ -16,7 +16,7 @@ import LiquidateBondsForm from './views/LiquidateBondsForm';
 // import OrderBook from './OrderBook';
 import { getNeutrinoDappAddress } from 'components/selectors';
 import OrderBook from 'shared/Auction/Orderbook';
-import { TableRecord } from 'shared/Auction/Orderbook/types';
+import { TableRecord, TableHeader } from 'shared/Auction/Orderbook/types';
 import ReserveHeading from 'shared/Auction/ReserveHeading';
 import OrderProvider from 'shared/Auction/OrderProvider';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -42,7 +42,7 @@ const DEFAULT_ROI_DISCOUNT = 10;
 
 const ROI_LS_KEY = 'roi_discount';
 const BR_LS_KEY = 'backing_ratio';
-const DEFICIT_LS_KEY = 'deficit_percent'
+const DEFICIT_LS_KEY = 'deficit_percent';
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -57,8 +57,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     constructor(props) {
         super(props);
 
-        this.mapAuctionOrderRecord = this.mapAuctionOrderRecord.bind(this)
-        this.mapLiquidateOrderRecord = this.mapLiquidateOrderRecord.bind(this)
+        this.mapAuctionOrderRecord = this.mapAuctionOrderRecord.bind(this);
+        this.mapLiquidateOrderRecord = this.mapLiquidateOrderRecord.bind(this);
 
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 4000;
@@ -101,12 +101,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
             const { value: balanceLockWaves } = balanceLockWavesResponse.data;
             const { balance } = response.data;
-            // const { value: balance } = response.data
-            // console.log({ balance, totalSupply, controlPrice });
 
             let reserveInWaves = balance - balanceLockWaves;
             reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES);
-            // const reserveInWaves = balance / CurrencyEnum.getContractPow(CurrencyEnum.WAVES)
 
             const neutrinoReserves = reserveInWaves * (controlPrice / 100);
 
@@ -158,14 +155,18 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                     userOrdersResponse,
                 ] = values;
 
+                const { data: bondOrders } = bondOrdersResponse;
+                const { data: liquidateOrders } = liquidateOrdersResponse;
+
                 this.updateROI(currentDeficitResponse.data);
                 this.updateBR(totalSupplyResponse.data);
-                this.setState({
+                this.setState((prevState) => ({
                     currentDeficitPercent: currentDeficitResponse.data,
-                    bondOrders: bondOrdersResponse.data,
-                    liquidateOrders: liquidateOrdersResponse.data,
+                    bondOrders: bondOrders.length > 0 ? bondOrders : prevState.bondOrders,
+                    liquidateOrders:
+                        liquidateOrders.length > 0 ? liquidateOrders : prevState.liquidateOrders,
                     userOrders: userOrdersResponse && userOrdersResponse.data,
-                });
+                }));
 
                 this._isUpdating = false;
             })
@@ -286,20 +287,53 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
-    mapLiquidateOrderRecord (order: IOrder): TableRecord {
+    mapLiquidateOrderRecord(order: IOrder): TableRecord {
         return {
-            br: '-',
-            waves: order.price,
-            nsbt: order.restTotal
-        }
+            br: order.price,
+            usdn: order.restTotal * (order.price / 100),
+            nsbt: order.restTotal,
+        };
     }
 
-    mapAuctionOrderRecord (order: IOrder): TableRecord {
+    mapAuctionOrderRecord(order: IOrder): TableRecord {
         return {
-            br: '-',
-            waves: order.price,
-            nsbt: order.restTotal
-        }
+            br: order.debugRoi,
+            waves: order.restTotal,
+            nsbt: Math.floor(order.restAmount),
+        };
+    }
+
+    getOrderbookHeadings(): { auction: TableHeader[]; liquidate: TableHeader[] } {
+        return {
+            auction: [
+                {
+                    key: 'nsbt',
+                    label: 'NSBT',
+                },
+                {
+                    key: 'br',
+                    label: 'BR',
+                },
+                {
+                    key: 'waves',
+                    label: 'WAVES',
+                },
+            ],
+            liquidate: [
+                {
+                    key: 'nsbt',
+                    label: 'NSBT',
+                },
+                {
+                    key: 'br',
+                    label: 'BR',
+                },
+                {
+                    key: 'usdn',
+                    label: 'USDN',
+                },
+            ],
+        };
     }
 
     render() {
@@ -312,28 +346,24 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
         const { formTab, currentDeficitPercent } = this.state;
 
-        // bondOrders : liquidateOrders
-
-        const orderbookHeading = [
-            {
-                key: 'nsbt',
-                label: 'NSBT',
-            },
-            {
-                key: 'br',
-                label: 'BR',
-            },
-            {
-                key: 'waves',
-                label: 'WAVES',
-            },
-        ]
+        const {
+            auction: auctionHeadings,
+            liquidate: liquidateHeadings,
+        } = this.getOrderbookHeadings();
 
         return (
             <div className={bem.block()}>
                 <div>
-                    <OrderBook tableRecords={bondOrders.map(this.mapAuctionOrderRecord)} tableHeaders={orderbookHeading} title="Auction" />
-                    <OrderBook tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)} tableHeaders={orderbookHeading} title="Liquidate" />
+                    <OrderBook
+                        tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
+                        tableHeaders={auctionHeadings}
+                        title="Auction"
+                    />
+                    <OrderBook
+                        tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
+                        tableHeaders={liquidateHeadings}
+                        title="Liquidate"
+                    />
                 </div>
                 <div>
                     <ReserveHeading values={this.getReserveHeadingValues()} />
@@ -342,11 +372,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         user={user}
                         currentDeficitPercent={currentDeficitPercent}
                         backingRatio={backingRatio}
-                        // backingRatio={110}
                         bondOrders={bondOrders}
                         liquidateOrders={liquidateOrders}
                         controlPrice={controlPrice}
-                        // controlPrice={100}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
                         roi={currentRoi}
