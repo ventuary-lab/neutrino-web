@@ -18,6 +18,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             `order_status_${id}`,
             `order_prev_${id}`,
             `order_next_${id}`,
+            `order_price_${id}`,
             'order_first',
             'order_last',
         ];
