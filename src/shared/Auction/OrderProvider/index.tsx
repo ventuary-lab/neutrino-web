@@ -151,8 +151,10 @@ class OrderProvider extends React.Component<Props, State> {
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
                 receiveAmount = _get(next, `${formName}.${RECEIVE_FIELD_NAME}`);
 
+                console.log({ sendAmount, receiveAmount })
                 const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100)
                 br = Math.abs(computeBRFromROI(roi / 100))
+                console.log({ roi, br })
 
                 _set(next, `${formName}.price`, _round(br, 2))
                 this.setState(next)
@@ -295,11 +297,12 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     getForms() {
+        const { backingRatio } = this.props;
         const { orderUrgency, buy, liquidate } = this.state;
         const { buyLabel, liquidateLabel } = this.getButtonLabels();
         const { buyClassName, liquidateClassName } = this.getButtonClassNames();
 
-        const isBrAbove = orderUrgency == OrderUrgency.INSTANT;
+        const isBrAbove = orderUrgency == OrderUrgency.INSTANT && backingRatio >= 100;
 
         const brWarning = (
             <div className="br-warning">
