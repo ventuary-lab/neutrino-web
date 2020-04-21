@@ -68,6 +68,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
     async _prepareItem(id, item) {
         const orderNext = item['order_next_' + id] || null;
         const orderPrev = item['order_prev_' + id] || null;
+        const price = Number(item['order_price_'+ id]) || 0;
 
         const height = item['order_height_' + id];
         const timestamp = Number((await this.heightListener.getTimestamps([height]))[height]);
@@ -82,6 +83,7 @@ module.exports = class NeutrinoOrders extends BaseCollection {
             height,
             currency: this.pairName.split('_')[0],
             timestamp: timestamp,
+            price,
             owner: item['order_owner_' + id],
             status: item['order_status_' + id],
             total: total,

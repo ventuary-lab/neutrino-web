@@ -1,6 +1,6 @@
 import { IOrder } from "routes/BondsDashboard/types";
 
-export const computeOrderPosition = (orders: IOrder[], roi: number) => {
+export const computeOrderPosition = (orders: IOrder[] | Record<string, any>[], roi: number) => {
     const sortedBondOrders = [orders.find(order => order.is_first)].filter(Boolean);
 
     while (true) {

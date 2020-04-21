@@ -203,7 +203,17 @@ class OrderProvider extends React.Component<Props, State> {
 
         const bondsAmount = _get(state, `${LIQUIDATE_FORM_NAME}.${SEND_FIELD_NAME}`);
         const price = _get(state, `${LIQUIDATE_FORM_NAME}.price`)
-        const position = computeOrderPosition(liquidateOrders as IOrder[], price);
+        const mappedOrders = (liquidateOrders as Record<string, any>[])
+            .map(order => ({
+                ...order, 
+                'order_next': order.orderNext, 
+                'order_prev': order.orderPrev, 
+                'is_first': order.isFirst,
+                'is_last': order.isLast,
+                'debugRoi': order.price
+            }))
+
+        const position = computeOrderPosition(mappedOrders, price);
 
         try {
             const response = await dal.setLiquidateOrder(pairName, baseCurrency, bondsAmount, price * 100, position);
@@ -333,8 +343,8 @@ class OrderProvider extends React.Component<Props, State> {
         if (!(br >= 5 && br <= 195)) return 'Exp. BR should be >= 5% and <= 195%';
     }
 
-    getLiquidateWarning(price): string {
-        if (price <= 1) return 'Price should be higher than 1';
+    getLiquidateWarning(br): string {
+        if (!(br >= 100)) return 'BR should be higher or equal to 100%';
     }
 
     getForms() {
@@ -403,7 +413,7 @@ class OrderProvider extends React.Component<Props, State> {
                         fieldName="Price"
                         disabled
                         // value={liquidate.price}
-                        smallWarning={this.getLiquidateWarning(liquidate.price)}
+                        smallWarning={this.getLiquidateWarning(liquidate.br)}
                     />
                     <ExpectedValueSpan label="Exp. BR" expected={`${liquidate.br}%`} />
                 </div>
@@ -442,7 +452,7 @@ class OrderProvider extends React.Component<Props, State> {
                         onClick={this.handleLiquidateOrder}
                         label={liquidateLabel}
                         className={liquidateClassName}
-                        disabled={this.getLiquidateWarning(liquidate.price)}
+                        disabled={this.getLiquidateWarning(liquidate.br)}
                     />
                 )}
             </div>
