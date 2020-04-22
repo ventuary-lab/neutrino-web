@@ -5,12 +5,17 @@
 
   $root: &;
 
-  height: 100%;
   overflow: auto;
   @include scrollbar;
+  
+  // height: 100%;
+  // max-height: calc(100vh - 200px);
+  // min-height: 400px;
 
-  max-height: calc(100vh - 200px);
-  min-height: 400px;
+  overflow: auto;
+  max-height: 800px;
+  min-height: 200px;
+  height: calc(100vh - 639px);
 
   table {
     width: 100%;

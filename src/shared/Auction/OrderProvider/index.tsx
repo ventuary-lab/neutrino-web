@@ -121,8 +121,11 @@ class OrderProvider extends React.Component<Props, State> {
                 this.onFormUpdate(next, LIQUIDATE_FORM_NAME)
             )
         );
-        this.buyFormSubject.next(this.state);
-        this.liquidateFormSubject.next(this.state);
+
+        const { state } = this;
+
+        this.buyFormSubject.next(state);
+        this.liquidateFormSubject.next(state);
     }
 
     componentWillUnmount() {
@@ -135,16 +138,9 @@ class OrderProvider extends React.Component<Props, State> {
         let { name, value } = event.target;
         const { state } = this;
 
-        // if (isNaN(Number(value)) || value == 0) {
-        //     return;
-        // }
-
         _set(state, name, value);
 
         this.setState(state);
-
-        // this.recalculateFormFields({ name, value });
-        // this.recalculateBR({ name, value });
 
         this.buyFormSubject.next(state);
         this.liquidateFormSubject.next(state);

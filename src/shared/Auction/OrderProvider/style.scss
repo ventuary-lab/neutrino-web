@@ -33,14 +33,12 @@
     & .price {
         & > :nth-child(1) {
             background: unset;
-            // & input {
-            //     // border: 1px solid #4A4A7F;
-            // }
-            
+
         }
     }
 
     & .buy-form, & .liquidate-form {
+        position: relative;
         width: 300px;
         padding-top: 4px;
 
@@ -53,9 +51,6 @@
             margin: 32px 0 16px 0;
         }
 
-        // & > .BaseInput__main:last-of-type {
-        //     margin-top: 32px;
-        // }
 
         & button {
             width: 100%;
