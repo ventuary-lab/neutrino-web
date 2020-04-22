@@ -160,13 +160,19 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
                 this.updateROI(currentDeficitResponse.data);
                 this.updateBR(totalSupplyResponse.data);
-                this.setState((prevState) => ({
+
+                const newState: Partial<State> = {
                     currentDeficitPercent: currentDeficitResponse.data,
-                    bondOrders: bondOrders.length > 0 ? bondOrders : prevState.bondOrders,
-                    liquidateOrders:
-                        liquidateOrders.length > 0 ? liquidateOrders : prevState.liquidateOrders,
                     userOrders: userOrdersResponse && userOrdersResponse.data,
-                }));
+                };
+                if (bondOrders.length > 0) {
+                    newState.bondOrders = bondOrders;
+                }
+                if (liquidateOrders.length > 0) {
+                    newState.liquidateOrders = liquidateOrders;
+                }
+
+                this.setState({ ...newState } as any);
 
                 this._isUpdating = false;
             })
@@ -395,7 +401,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             greenLiquidateHeaders,
             auction: auctionHeadings,
             liquidate: liquidateHeadings,
-        } = this.getOrderbookHeadings(liquidateOrders, bondOrders);
+        } = this.getOrderbookHeadings([...liquidateOrders], [...bondOrders]);
+
+        console.log({ liquidateOrders, bondOrders, auctionHeadings, liquidateHeadings });
 
         return (
             <div className={bem.block()}>
