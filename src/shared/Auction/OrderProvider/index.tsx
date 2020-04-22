@@ -255,12 +255,12 @@ class OrderProvider extends React.Component<Props, State> {
         const { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
         const { state } = this;
         const wavesAmount = _get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
-        const bondsAmount = _get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
-        const dependPrice = wavesAmount / bondsAmount;
-        const roi = computeROI(wavesAmount, bondsAmount, controlPrice / 100);
+        // const bondsAmount = _get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`);
+        // const roi = computeROI(wavesAmount, bondsAmount, controlPrice / 100);
+        const dependPrice = _get(state, `${BUY_FORM_NAME}.price`);
 
         const contractPrice = Math.round(dependPrice * 100);
-        const position = computeOrderPosition(bondOrders as IOrder[], roi);
+        const position = computeOrderPosition(bondOrders as IOrder[], dependPrice);
 
         try {
             const response = await dal.setBondOrder(
