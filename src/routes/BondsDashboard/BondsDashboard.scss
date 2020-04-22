@@ -58,6 +58,19 @@
     }
   }
   
+  & .heading-val {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: -5px;
+
+    & img {
+      width: 20px;
+      height: 20px;
+      padding-right: 3px;
+    }
+  }
 
   @media screen and (max-width: 668px) {
     flex-direction: column;

@@ -7,11 +7,12 @@
     &__flex {
         display: flex;
         flex-direction: row;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         background: #26274F;
         padding: 10px 51px;
         justify-content: space-between;
         border-radius: 4px;
+        justify-content: space-evenly;
 
         & > * {
             padding: 4px;

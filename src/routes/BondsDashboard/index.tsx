@@ -269,12 +269,22 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
         return [
             {
-                label: 'Reserves',
-                value: prettyPrintNumber(Math.round(neutrinoReserves)),
+                label: 'Reserves: ',
+                additional: (
+                    <div className="heading-val">
+                        <img src="/static/icons/usd-n.svg" />
+                        <span>{prettyPrintNumber(Math.round(neutrinoReserves))}</span>
+                    </div>
+                ),
             },
             {
-                label: 'Supply',
-                value: prettyPrintNumber(Math.round(neutrinoSupply)),
+                label: 'Supply: ',
+                additional: (
+                    <div className="heading-val">
+                        <img src="/static/icons/usd-n.svg" />
+                        <span>{prettyPrintNumber(Math.round(neutrinoSupply))}</span>
+                    </div>
+                ),
             },
             {
                 label: 'Backing ratio (BR)',
