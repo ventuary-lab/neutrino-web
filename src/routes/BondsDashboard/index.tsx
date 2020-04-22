@@ -303,8 +303,42 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         };
     }
 
-    getOrderbookHeadings(): { auction: TableHeader[]; liquidate: TableHeader[] } {
+    getOrderbookHeadings(
+        liquidateOrders: IOrder[],
+        bondOrders: IOrder[]
+    ): {
+        greenBuyHeaders: TableHeader[];
+        greenLiquidateHeaders: TableHeader[];
+        auction: TableHeader[];
+        liquidate: TableHeader[];
+    } {
         return {
+            greenBuyHeaders: [
+                {
+                    label: `${bondOrders
+                        .map(this.mapAuctionOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.nsbt)), 0)}`,
+                },
+                { label: '-' },
+                {
+                    label: `${bondOrders
+                        .map(this.mapAuctionOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.waves)), 0)}`,
+                },
+            ],
+            greenLiquidateHeaders: [
+                {
+                    label: `${liquidateOrders
+                        .map(this.mapLiquidateOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.nsbt)), 0)}`,
+                },
+                { label: '-' },
+                {
+                    label: `${liquidateOrders
+                        .map(this.mapLiquidateOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.usdn)), 0)}`,
+                },
+            ],
             auction: [
                 {
                     key: 'nsbt',
@@ -347,19 +381,23 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const { formTab, currentDeficitPercent } = this.state;
 
         const {
+            greenBuyHeaders,
+            greenLiquidateHeaders,
             auction: auctionHeadings,
             liquidate: liquidateHeadings,
-        } = this.getOrderbookHeadings();
+        } = this.getOrderbookHeadings(liquidateOrders, bondOrders);
 
         return (
             <div className={bem.block()}>
                 <div>
                     <OrderBook
+                        greenHeaders={greenBuyHeaders}
                         tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
                         tableHeaders={auctionHeadings}
                         title="Auction"
                     />
                     <OrderBook
+                        greenHeaders={greenLiquidateHeaders}
                         tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
                         tableHeaders={liquidateHeadings}
                         title="Liquidate"

@@ -5,7 +5,7 @@ export enum TableRecordStyle {
 }
 export type TableHeader = {
     label: string;
-    key: string;
+    key?: string;
     style?: TableRecordStyle;
 };
 export type TableRecord = Record<string, string | number | boolean | null> &
@@ -13,6 +13,7 @@ export type TableRecord = Record<string, string | number | boolean | null> &
 
 export interface Props {
     title: string;
+    greenHeaders: TableHeader[];
     tableHeaders: TableHeader[];
     tableRecords: TableRecord[];
 }

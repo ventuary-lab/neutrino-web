@@ -16,11 +16,11 @@ const bem = html.bem('OrderbookReworked');
 //     tableHeaders: 
 //     tableRecords: generateRandomRecords(10),
 // };
-const greenHeaders = [
-    { label: '1000', style: TableRecordStyle.green },
-    { label: '-', style: TableRecordStyle.green },
-    { label: '5433', style: TableRecordStyle.green },
-] as TableHeader[];
+// const greenHeaders = [
+//     { label: '1000', style: TableRecordStyle.green },
+//     { label: '-', style: TableRecordStyle.green },
+//     { label: '5433', style: TableRecordStyle.green },
+// ] as TableHeader[];
 
 class Orderbook extends React.Component<Props, State> {
     constructor(props) {
@@ -33,7 +33,7 @@ class Orderbook extends React.Component<Props, State> {
         return (
             <tr>
                 {headers.map(header => (
-                    <td className={bem.element(`styled-${header.style || 0}`)}>{header.label}</td>
+                    <td className={bem.element(`styled-${header.style || TableRecordStyle.green}`)}>{header.label}</td>
                 ))}
             </tr>
         );
@@ -49,7 +49,7 @@ class Orderbook extends React.Component<Props, State> {
     }
 
     render() {
-        const { title, tableHeaders, tableRecords } = this.props;
+        const { title, tableHeaders, tableRecords, greenHeaders } = this.props;
 
         return (
             <div className={bem.block()}>
