@@ -22,10 +22,15 @@
         }
     }
 
-    &__powered-by-waves {
-        width: 115px;
+    &__powered-by-wx {
         margin: auto;
         padding: 34px 0;
+        text-align: center;
+
+        & > img {
+            cursor: pointer;
+            width: 180px;
+        }
     }
 }
 
