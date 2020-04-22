@@ -28,7 +28,9 @@ class MenuSwitcher extends React.Component<Props, State> {
 
         this.mapOption = this.mapOption.bind(this);
         this.onOptionClick = this.onOptionClick.bind(this);
+        this.handleOpenMenu = this.handleOpenMenu.bind(this);
         this.handleCloseMenu = this.handleCloseMenu.bind(this);
+        this.handleTriggerMenu = this.handleTriggerMenu.bind(this);
 
         this.mainRef = React.createRef();
 
@@ -63,6 +65,14 @@ class MenuSwitcher extends React.Component<Props, State> {
         }
 
         onSelect(opt.value);
+    }
+
+    handleTriggerMenu() {
+        this.setState(prevState => ({ isOpened: !prevState.isOpened }));
+    }
+
+    handleOpenMenu() {
+        this.setState({ isOpened: false });
     }
 
     handleCloseMenu() {
@@ -104,7 +114,7 @@ class MenuSwitcher extends React.Component<Props, State> {
             >
                 <div className="main" ref={this.mainRef}>
                     {currentTab}
-                    <img className="icon" src={arrowUpIcon} />
+                    <img className="icon" src={arrowUpIcon} onClick={this.handleTriggerMenu}/>
                 </div>
                 <div className={`menu ${openedClassName}`}>{otherTabs}</div>
             </OutsideAlerter>

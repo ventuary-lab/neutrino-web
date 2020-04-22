@@ -309,7 +309,7 @@ class OrderProvider extends React.Component<Props, State> {
     // Percents
     setAmountPercentForField(path: string, num: number) {
         const { state } = this;
-        const { user } = this.props;
+        const { user, controlPrice } = this.props;
 
         let [formName, fieldName] = path.split('.');
         const currencyAmount = _get(state, path);
@@ -318,8 +318,12 @@ class OrderProvider extends React.Component<Props, State> {
 
         if (isNaN(+currencyAmount)) return;
 
-        const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
-        _set(state, `${formName}.${fieldName}`, updatedValue);
+        // const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
+
+        const desiredBR = num;
+        const receiveAmount = computeNSBTFromBR(desiredBR / 100, currencyAmount, controlPrice)
+        // _set(state, `${formName}.br`, desiredBR);
+        _set(state, `${formName}.${fieldName}`, receiveAmount);
         this.setState(state);
 
         this.buyFormSubject.next(state);
@@ -396,13 +400,16 @@ class OrderProvider extends React.Component<Props, State> {
             </div>
         );
 
+        const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br))
+        const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br))
+
         const buyForm = (
             <div
                 className={`buy-form ${orderUrgency == OrderUrgency.INSTANT ? 'mode-instant' : ''}`}
             >
                 <div className="price">
                     <BaseInput disabled smallWarning={this.getSmallWarning(buy.br)} />
-                    <ExpectedValueSpan label="Exp. BR" expected={`${buy.br}%`} />
+                    <ExpectedValueSpan label="Exp. BR" expected={isBuyFormInvalid ? 'Error' : `${buy.br}%`} />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
@@ -444,7 +451,7 @@ class OrderProvider extends React.Component<Props, State> {
             >
                 <div className="price">
                     <BaseInput disabled smallWarning={this.getLiquidateWarning(liquidate.br)} />
-                    <ExpectedValueSpan label="Exp. BR" expected={`${liquidate.br}%`} />
+                    <ExpectedValueSpan label="Exp. BR" expected={isLiquidateFormInvalid ? 'Error' : `${liquidate.br}%`} />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}
