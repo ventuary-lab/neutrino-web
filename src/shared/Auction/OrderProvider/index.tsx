@@ -156,11 +156,12 @@ class OrderProvider extends React.Component<Props, State> {
                 br = _round(this.props.backingRatio);
 
                 sendAmount = _get(next, `${formName}.${SEND_FIELD_NAME}`);
-                receiveAmount = computeBondsAmountFromROI(br, sendAmount, controlPrice / 100);
+                const roi = 100 - br;
+                receiveAmount = computeBondsAmountFromROI(roi, sendAmount, controlPrice / 100);
                 price = _round(receiveAmount / sendAmount, 2);
 
                 if (formName === LIQUIDATE_FORM_NAME && this.checkIsBrAbove(100)) {
-                    const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
+                    // const roi = computeROI(receiveAmount, sendAmount, controlPrice);
                     br = _round((receiveAmount / sendAmount) * 100);
                 }
 
@@ -182,8 +183,8 @@ class OrderProvider extends React.Component<Props, State> {
 
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else {
-                    const roi = computeROI(receiveAmount, sendAmount, controlPrice / 100);
-                    br = Math.abs(computeBRFromROI(roi / 100));
+                    const roi = computeROI(receiveAmount, sendAmount, controlPrice);
+                    br = Math.abs(computeBRFromROI(roi));
                 }
 
                 _set(next, `${formName}.br`, _round(br));
@@ -318,8 +319,8 @@ class OrderProvider extends React.Component<Props, State> {
 
         if (orderUrgency === OrderUrgency.BY_REQUEST) {
             return {
-                buyLabel: 'Place request',
-                liquidateLabel: 'Place request',
+                buyLabel: 'Place auction request',
+                liquidateLabel: 'Place liquidation request',
             };
         }
 
