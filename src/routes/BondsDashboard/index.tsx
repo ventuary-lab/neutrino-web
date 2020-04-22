@@ -109,8 +109,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
             const BR = computeBR({ reserveInWaves, supplyInNeutrino: totalSupply }, controlPrice);
 
-            console.log({ BR });
-
             this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: totalSupply });
             localStorage.setItem(BR_LS_KEY, String(BR));
         } catch (err) {
@@ -305,8 +303,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
     mapLiquidateOrderRecord(order: IOrder): TableRecord {
         return {
-            br: order.price,
-            usdn: order.restTotal * (order.price / 100),
+            br: order.price || 100,
+            usdn: order.restTotal * ((order.price || 100) / 100),
             nsbt: order.restTotal,
         };
     }
@@ -402,8 +400,6 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             auction: auctionHeadings,
             liquidate: liquidateHeadings,
         } = this.getOrderbookHeadings([...liquidateOrders], [...bondOrders]);
-
-        console.log({ liquidateOrders, bondOrders, auctionHeadings, liquidateHeadings });
 
         return (
             <div className={bem.block()}>
