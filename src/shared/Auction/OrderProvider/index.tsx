@@ -15,10 +15,11 @@ import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher';
 
 import TabSelector from 'ui/global/TabSelector';
 import {
-    computeBRFromNeutrino,
+    computeNSBTFromROI,
     computeNSBTFromBR,
     computeBRFromROI,
     computeROI,
+    computeBRFromNSBTandWaves,
     convertWavesToNeutrino,
     convertNeutrinoToWaves,
     computeBondsAmountFromROI,
@@ -161,12 +162,12 @@ class OrderProvider extends React.Component<Props, State> {
                     sendAmount = 0
                 } else if (formName === BUY_FORM_NAME) {
                     // Convert waves to neutrino (mult)
-                    sendAmount = convertWavesToNeutrino(sendAmount, controlPrice)
+                    // sendAmount = convertWavesToNeutrino(sendAmount, controlPrice)
                     // sendAmount *= controlPrice / 100;
                 }
 
                 const decimalBR = br / 100;
-                receiveAmount = computeNSBTFromBR(decimalBR, sendAmount);
+                receiveAmount = computeNSBTFromBR(decimalBR, sendAmount, controlPrice);
 
                 price = _round(receiveAmount / sendAmount, 2);
 
@@ -198,15 +199,17 @@ class OrderProvider extends React.Component<Props, State> {
                 if (formName === LIQUIDATE_FORM_NAME) {
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else if (formName === BUY_FORM_NAME) {
-                    br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
+                    br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100
+                    // br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
 
-                console.log('by request', { br, sendAmount, receiveAmount })
+                // console.log('by request', { br, sendAmount, receiveAmount })
 
                 _set(next, `${formName}.br`, _round(br));
                 _set(next, `${formName}.price`, price);
 
                 this.setState(next);
+                // debugger;
                 break;
         }
     }
@@ -262,7 +265,6 @@ class OrderProvider extends React.Component<Props, State> {
         const dependPrice = wavesAmount / bondsAmount;
         const contractPrice = Math.round(dependPrice * 100);
         const position = computeOrderPosition(bondOrders as IOrder[], _get(state, `${BUY_FORM_NAME}.br`));
-
 
         try {
             const response = await dal.setBondOrder(

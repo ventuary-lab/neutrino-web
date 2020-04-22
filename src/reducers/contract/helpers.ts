@@ -32,9 +32,15 @@ export const computeBR = (
 };
 
 export const computeBRFromROI = roi => 100 - roi
+// ROI param is decimal, currentPrice in both fns - not
+export const computeNSBTFromROI = (roi, wavesAmount, currentPrice) => (roi + 1) * (currentPrice / 100) * wavesAmount
+// BR param is decimal
+export const computeNSBTFromBR = (br, wavesAmount, currentPrice) => (2 - br) * (currentPrice / 100) * wavesAmount
+// Derived from upper formula, returns decimal BR
+export const computeBRFromNSBTandWaves = (nsbt, wavesAmount, currentPrice) => (-1 * (nsbt/(wavesAmount*(currentPrice / 100)))) + 2
 
-export const computeBRFromNeutrino = (nsbt, neutrino) => (nsbt - neutrino) / neutrino // DECIMAL BR VALUE
-export const computeNSBTFromBR = (br, neutrino) => neutrino * (1 + br) // DECIMAL BR VALUE
+// export const computeBRFromNeutrino = (nsbt, neutrino) => (nsbt - neutrino) / neutrino // DECIMAL BR VALUE
+// export const computeNSBTFromBR = (br, neutrino) => neutrino * (1 + br) // DECIMAL BR VALUE
 
 // NOT DECIMAL CONTROL PRICE
 export const convertWavesToNeutrino = (waves, controlPrice) => waves * (controlPrice / 100)
