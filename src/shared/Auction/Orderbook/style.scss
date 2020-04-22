@@ -1,0 +1,80 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.OrderbookReworked {
+    
+
+    $main-gradient: linear-gradient(245.38deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+    background: $main-gradient;
+
+    &__table {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        border-spacing: 0px;
+        table-layout: fixed;
+
+        & tr {
+            height: 42px;
+            // border: 1px solid #343869;
+        }
+
+
+        & thead tr td {
+            border: 1px solid #343869;
+            border-left: none;
+            border-right: none;
+        }
+        & > thead:not(:first-child) {
+            & tr td {
+                border-top: none;
+            }
+        }
+
+        & tbody tr td {
+            font-size: 0.95em
+        }
+
+        & tbody tr td:nth-child(odd) {
+            background: #26274F;
+        }
+
+        &_scrollable {
+            
+            & tbody {
+                display: block;
+                overflow-y: auto;
+                min-height: 210px;
+                width: 300px;
+                padding-left: 4px;
+                max-height: 269px;
+                height: 169px;
+
+                @include scrollbar
+            }
+
+            & tbody tr {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+            & tbody tr td {
+                display: block;
+                width: 100%;
+                padding: 11px;
+            }
+        }
+    }
+
+    &__heading {
+        padding: 14px 38px;
+        font-size: 16px;
+        line-height: 20px;
+        color: #fff;
+    }
+
+    &__styled-1 {
+        color: #00F59E;
+        font-weight: 600;
+    }
+}

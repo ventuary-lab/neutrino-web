@@ -6,7 +6,7 @@ import './style.scss';
 
 const bem = buildBem('LandingFooter');
 
-const poweredByWavesLogo = 'static/images/landing/powered_by_waves.svg';
+const poweredByWavesLogo = 'static/icons/wx-icon2.svg';
 
 interface Props {
     links: SocLink[]
@@ -21,8 +21,10 @@ const mapLink = (item: SocLink) => (
 const LandingFooter: React.FC<Props> = ({ links }) => (
     <>
         <div className={bem.element('soc-links')}>{links.map(mapLink)}</div>
-        <div className={bem.element('powered-by-waves')}>
-            <img src={poweredByWavesLogo} alt="powered by waves" />
+        <div className={bem.element('powered-by-wx')}>
+            <a href='https://waves.exchange' target='_blank'>
+            <img src={poweredByWavesLogo} alt="powered by wx" />
+            </a>
         </div>
     </>
 )

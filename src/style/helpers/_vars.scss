@@ -12,6 +12,9 @@ $color-brand-azure        : #00f5ff;
 $color-brand-red          : #ff5c5c;
 $color-brand-lt-green: #23FFA6;
 $color-dark-button: #35356F;
+$color-violet: #6121A1;
+$color-ocean: #00ADFF;
+$color-green: #008B61;
 
 // Color Scheme - Gray Gradation
 $color-gg-1 : #333;
@@ -70,4 +73,21 @@ $width-leasing: 260px;
 
 // background-image styles
 $main-gradient: linear-gradient(264.83deg, rgb(23, 24, 58) 16.12%, rgb(30, 30, 71) 38.25%, rgb(23, 24, 58) 66.27%);
-$green-button-gradient:  linear-gradient(4.75deg, #00F59E 18.12%, #008B61 101.23%);
+$green-button-gradient:  linear-gradient(4.75deg, #00F59E 18.12%, #{$color-green} 101.23%);
+
+// Button linear gradients
+$primary-gradient: linear-gradient(16.03deg, #{$color-violet} 18.12%, #00AEFF 101.23%);
+$secondary-gradient: linear-gradient(1.04deg, #{$color-ocean} -339.25%, #3E3E79 36.53%);
+$danger-gradient: linear-gradient(6.59deg, #{$color-violet} 18.12%, #{$color-brand-red} 101.23%);
+$success-gradient: linear-gradient(6.65deg, #{$color-brand-green} 18.12%, #{$color-green} 101.23%);
+
+// NEON
+
+$base-neon: 0 0 2px rgba(202,228,225,0.92), 0 0 2px rgba(0, 245, 255,0.34), 
+            0 0 4px rgba(0, 245, 255,0.52), inset 0 0 7px rgba(0, 245, 255,0.92), 
+            0 0 3px rgba(0, 245, 255,0.78), 0 0 11px rgba(0, 245, 255,0.92);
+
+// $primary-neon: constructNeon($primary-gradient);
+// $secondary-neon: constructNeon($secondary-gradient);
+// $danger-neon: constructNeon($danger-gradient);
+// $success-neon: constructNeon($success-gradient);

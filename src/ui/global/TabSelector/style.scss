@@ -1,0 +1,40 @@
+
+
+.TabSelector {
+
+
+    & > :nth-child(1) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        /* padding: 10px 46px; */
+        justify-content: space-between;
+
+        $border-style: 0.5px solid #4A4A7F;
+        & > * {
+            width: 100%;
+            padding: 10px 23px;
+            font-weight: bold;
+            text-align: center;
+            border-top: 3px solid transparent;
+
+            &:not(.selected) {
+                border-bottom: $border-style;
+            }
+        }
+        & > .selected {
+            border-top: 3px solid #00F5FF;
+            border-left: $border-style;
+            border-right: $border-style;
+        }
+        & > :nth-child(1) {
+            border-left: none;
+        }
+        & > :last-child {
+            border-right: none;
+        }
+    }
+    & > :nth-child(2) {
+        padding: 12px;
+    }
+}

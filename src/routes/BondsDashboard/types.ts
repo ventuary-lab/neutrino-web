@@ -16,6 +16,10 @@ export interface IOrder {
     restAmount: number;
     pairName: string;
     status: string;
+    is_first?: boolean;
+    order_next?: string;
+    order_prev?: string;
+    debugRoi?: number;
 };
 
 export interface IUserOrders {
@@ -36,5 +40,9 @@ export interface State {
     bondOrders?: IOrder[],
     liquidateOrders?: IOrder[],
     userOrders?: IUserOrders;
+    backingRatio: number;
     formTab: FormTabEnum;
+    currentDeficitPercent: number;
+    neutrinoSupply: number;
+    neutrinoReserves: number;
 }

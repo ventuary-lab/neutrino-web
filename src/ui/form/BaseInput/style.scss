@@ -52,46 +52,79 @@
     &__main {
         // $color-brand-purple-light
         background-color: transparent;
-        height: 37px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+
         width: 300px;
         position: relative;
         // margin-top: 14px;
 
-        & > :nth-child(1) {
-            background-color: transparent;
-            border: 1px solid #4A4A7F;
-            height: 37px;
-            border-radius: 100px;
-            width: 100%;
-            font-weight: 800;
-            font-size: 14px;
-            line-height: 17px;
-            color: #fff;
-            padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: unset;
+        
+        font-style: normal;
+        font-size: 14px;
+    }
+
+    $root-icon: &__icon;
+    &__input {
+        background-color: transparent;
+        border: 1px solid #4A4A7F;
+        height: 37px;
+        border-radius: 100px;
+        width: 100%;
+        font-weight: 800;
+        font-size: 14px;
+        line-height: 17px;
+        color: #fff;
+        padding: 0 20px;
+        height: 37px;
+
+        font-family: Montserrat;
+        font-weight: 800;
+
+        &[disabled] {
+            background: #2E2E5A;
+            border-color: transparent;
         }
+
+        &:focus, &:focus + * {
+            border: none;
+            outline: 0;
+            box-shadow: $base-neon;
+            transition: box-shadow .05s linear;
+        }
+    }
+
+    &__small-warning {
+        color: red;
+        position: absolute;
+        right: 1px;
+        top: -20px;
+        font-weight: bold;
+        font-size: 11px;
     }
 
     &__icon {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        width: 84px;
+        width: 85px;
         margin: auto;
         position: absolute;
-        right: 1px;
-        height: 35px;
-        top: 1px;
+        right: 0px;
         background: #35356F;
         border-bottom-right-radius: 17.5px;
         border-top-right-radius: 17.5px;
+        border-color: #35356F;
+        height: 37px;
 
         & > img {
             max-height: 20px;
             max-width: 20px;
             margin: auto;
+            margin-left: 10px;
+            margin-right: 10px;
         }
         & > span {
             font-weight: 800;
@@ -100,7 +133,31 @@
             text-align: center;
             display: block;
             margin: auto;
-            margin-left: 0;
+            // margin-left: 0;
+            padding-right: 12px;
+                
+            font-family: Montserrat;
+            font-weight: bold;
+        }
+    }
+
+    &__field-name {
+        font-weight: 300;
+        font-size: 13px;
+        line-height: 15px;
+        /* identical to box height */
+        color: #FFFFFF;
+
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: -18px;
+
+        & > :nth-child(2) {
+            margin-left: 2px;
+            color: red;
         }
     }
 }

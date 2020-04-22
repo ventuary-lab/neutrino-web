@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
+
 import { getUser } from 'yii-steroids/reducers/auth';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
 import { getControlPrice } from 'reducers/contract/selectors';
@@ -9,9 +10,25 @@ import { getControlPrice } from 'reducers/contract/selectors';
 import { html, dal } from 'components';
 import OrdersTable from './OrdersTable';
 import AuctionDiscount from './Auction';
+import QuestionMarkData from 'shared/Auction/QuestionMarkData';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
-import OrderBook from './OrderBook';
+// import OrderBook from './OrderBook';
+import { getNeutrinoDappAddress } from 'components/selectors';
+import OrderBook from 'shared/Auction/Orderbook';
+import { TableRecord, TableHeader } from 'shared/Auction/Orderbook/types';
+import ReserveHeading from 'shared/Auction/ReserveHeading';
+import OrderProvider from 'shared/Auction/OrderProvider';
+import CurrencyEnum from 'enums/CurrencyEnum';
+import { prettyPrintNumber } from 'ui/global/helpers';
+import {
+    computeBR,
+    computeBRFromROI,
+    computeROI,
+    // computeBondsAmountFromROI,
+    // computeWavesAmountFromROI,
+    // getComputedBondsFromROI,
+} from 'reducers/contract/helpers';
 
 import { ILongPullingComponent } from 'ui/global/types';
 import { FormTabEnum } from './enums';
@@ -22,7 +39,10 @@ import './BondsDashboard.scss';
 const bem = html.bem('BondsDashboard');
 
 const DEFAULT_ROI_DISCOUNT = 10;
+
 const ROI_LS_KEY = 'roi_discount';
+const BR_LS_KEY = 'backing_ratio';
+const DEFICIT_LS_KEY = 'deficit_percent';
 
 enum OrdersTableTabEnum {
     ACTIVE = 'active',
@@ -32,24 +52,31 @@ enum OrdersTableTabEnum {
 class BondsDashboard extends React.Component<Props, State> implements ILongPullingComponent {
     _updateInterval;
     _updateTimeout;
-    _idUpdating: boolean;
+    _isUpdating: boolean;
 
     constructor(props) {
         super(props);
 
+        this.mapAuctionOrderRecord = this.mapAuctionOrderRecord.bind(this);
+        this.mapLiquidateOrderRecord = this.mapLiquidateOrderRecord.bind(this);
+
         this._updateListener = this._updateListener.bind(this);
         this._updateTimeout = 4000;
-        this._idUpdating = false;
+        this._isUpdating = false;
 
         this.state = {
             currentRoi: Number(localStorage.getItem(ROI_LS_KEY)) || DEFAULT_ROI_DISCOUNT,
             formTab: FormTabEnum.AUCTION,
+            backingRatio: Number(localStorage.getItem(BR_LS_KEY)) || 0,
+            neutrinoSupply: 0,
+            currentDeficitPercent: Number(localStorage.getItem(DEFICIT_LS_KEY)) || 0,
+            neutrinoReserves: 0,
         };
     }
 
     async componentDidMount() {
         await this._updateListener();
-        await this.getAndUpdateROI();
+        // await this.getAndUpdateROI();
         this.startListening();
     }
 
@@ -57,61 +84,96 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         this.stopListening();
     }
 
-    async getAndUpdateROI() {
-        const deficitPercentResponse = await axios.get<number>(
-            '/api/explorer/get_deficit_per_cent'
-        );
+    async updateBR(totalSupply: number) {
+        const { controlPrice } = this.props;
+        const neutrinoAddress = getNeutrinoDappAddress(dal);
 
-        if (deficitPercentResponse.statusText !== 'OK') {
-            return;
+        try {
+            const response = await axios.get(`/addresses/balance/${neutrinoAddress}`, {
+                baseURL: dal.nodeUrl,
+            });
+            const balanceLockWavesResponse = await axios.get(
+                `/addresses/data/${neutrinoAddress}/balance_lock_waves`,
+                {
+                    baseURL: dal.nodeUrl,
+                }
+            );
+
+            const { value: balanceLockWaves } = balanceLockWavesResponse.data;
+            const { balance } = response.data;
+
+            let reserveInWaves = balance - balanceLockWaves;
+            reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES);
+
+            const neutrinoReserves = reserveInWaves * (controlPrice / 100);
+
+            const BR = computeBR({ reserveInWaves, supplyInNeutrino: totalSupply }, controlPrice);
+
+            console.log({ BR });
+
+            this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: totalSupply });
+            localStorage.setItem(BR_LS_KEY, String(BR));
+        } catch (err) {
+            console.log({ err });
         }
+    }
 
-        const currentDeficit = Number(deficitPercentResponse.data);
-        const validRoi = Math.round(Math.abs(currentDeficit) - 1)
+    updateROI(currentDeficit: number) {
+        const validRoi = Math.round(Math.abs(currentDeficit) - 1);
 
         this.setState({
             currentRoi: currentDeficit < 0 ? validRoi : DEFAULT_ROI_DISCOUNT,
         });
 
-        localStorage.setItem(ROI_LS_KEY, String(validRoi))
+        localStorage.setItem(ROI_LS_KEY, String(validRoi));
     }
 
     async _updateListener() {
         const { user, pairName } = this.props;
 
-        if (!pairName || this._idUpdating) {
+        if (!pairName || this._isUpdating) {
             return;
         }
 
-        this._idUpdating = true;
+        this._isUpdating = true;
 
-        try {
-            const bondOrdersResponse = await axios.get<IOrder[]>(
-                `/api/v1/bonds/${pairName}/orders`
-            );
-            const liquidateOrdersResponse = await axios.get<IOrder[]>(
-                `/api/v1/liquidate/${pairName}/orders`
-            );
-            let userOrdersResponse;
+        const promiseList = [
+            axios.get<IOrder[]>(`/api/v1/bonds/${pairName}/orders`),
+            axios.get<IOrder[]>(`/api/v1/liquidate/${pairName}/orders`),
+            axios.get<number>('/api/explorer/get_deficit_per_cent'),
+            axios.get<number>('/api/explorer/get_total_issued'),
+            user ? axios.get<IUserOrders>(`/api/v1/bonds/user/${user.address}`) : undefined,
+        ].filter(Boolean) as [Promise<AxiosResponse<any>>];
 
-            if (user) {
-                userOrdersResponse = await axios.get<IUserOrders>(
-                    `/api/v1/bonds/user/${user.address}`
-                );
-            }
+        Promise.all(promiseList)
+            .then((values) => {
+                const [
+                    bondOrdersResponse,
+                    liquidateOrdersResponse,
+                    currentDeficitResponse,
+                    totalSupplyResponse,
+                    userOrdersResponse,
+                ] = values;
 
-            await this.getAndUpdateROI();
+                const { data: bondOrders } = bondOrdersResponse;
+                const { data: liquidateOrders } = liquidateOrdersResponse;
 
-            this.setState({
-                bondOrders: bondOrdersResponse.data,
-                liquidateOrders: liquidateOrdersResponse.data,
-                userOrders: userOrdersResponse && userOrdersResponse.data,
+                this.updateROI(currentDeficitResponse.data);
+                this.updateBR(totalSupplyResponse.data);
+                this.setState((prevState) => ({
+                    currentDeficitPercent: currentDeficitResponse.data,
+                    bondOrders: bondOrders.length > 0 ? bondOrders : prevState.bondOrders,
+                    liquidateOrders:
+                        liquidateOrders.length > 0 ? liquidateOrders : prevState.liquidateOrders,
+                    userOrders: userOrdersResponse && userOrdersResponse.data,
+                }));
+
+                this._isUpdating = false;
+            })
+            .catch((err) => {
+                console.warn('Error on updating orders...', err);
+                this._isUpdating = false;
             });
-        } catch (err) {
-            console.warn('Error on updating orders...', err);
-        } finally {
-            this._idUpdating = false;
-        }
     }
 
     startListening() {
@@ -187,56 +249,193 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
+    getReserveHeadingValues() {
+        const { backingRatio, neutrinoSupply, neutrinoReserves } = this.state;
+
+        const link =
+            'https://medium.com/@neutrinoteam/neutrino-system-base-token-nsbt-new-auction-utility-liquidation-mechanics-d1589a2d5e25';
+        const brText = (
+            <div>
+                <span>
+                    Backing Ratio (BR) is the share of WAVES reserves in relation to the Neutrino
+                    supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.
+                </span>
+                <br />
+                <a href={link} target="_blank">
+                    <b>Read more</b>
+                </a>
+            </div>
+        );
+
+        return [
+            {
+                label: 'Reserves: ',
+                additional: (
+                    <div className="heading-val">
+                        <img src="/static/icons/usd-n.svg" />
+                        <span>{prettyPrintNumber(Math.round(neutrinoReserves))}</span>
+                    </div>
+                ),
+            },
+            {
+                label: 'Supply: ',
+                additional: (
+                    <div className="heading-val">
+                        <img src="/static/icons/usd-n.svg" />
+                        <span>{prettyPrintNumber(Math.round(neutrinoSupply))}</span>
+                    </div>
+                ),
+            },
+            {
+                label: 'Backing ratio (BR)',
+                value: `${Math.round(backingRatio)}%`,
+            },
+            {
+                label: 'What does it mean',
+                additional: <QuestionMarkData text={brText} />,
+            },
+        ];
+    }
+
+    mapLiquidateOrderRecord(order: IOrder): TableRecord {
+        return {
+            br: order.price,
+            usdn: order.restTotal * (order.price / 100),
+            nsbt: order.restTotal,
+        };
+    }
+
+    mapAuctionOrderRecord(order: IOrder): TableRecord {
+        return {
+            br: 100 - order.debugRoi,
+            waves: order.restTotal,
+            nsbt: Math.floor(order.restAmount),
+        };
+    }
+
+    getOrderbookHeadings(
+        liquidateOrders: IOrder[],
+        bondOrders: IOrder[]
+    ): {
+        greenBuyHeaders: TableHeader[];
+        greenLiquidateHeaders: TableHeader[];
+        auction: TableHeader[];
+        liquidate: TableHeader[];
+    } {
+        return {
+            greenBuyHeaders: [
+                {
+                    label: `${bondOrders
+                        .map(this.mapAuctionOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.nsbt)), 0)}`,
+                },
+                { label: '-' },
+                {
+                    label: `${bondOrders
+                        .map(this.mapAuctionOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.waves)), 0)}`,
+                },
+            ],
+            greenLiquidateHeaders: [
+                {
+                    label: `${liquidateOrders
+                        .map(this.mapLiquidateOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.nsbt)), 0)}`,
+                },
+                { label: '-' },
+                {
+                    label: `${liquidateOrders
+                        .map(this.mapLiquidateOrderRecord)
+                        .reduce((acc, iter) => acc + Math.round(Number(iter.usdn)), 0)}`,
+                },
+            ],
+            auction: [
+                {
+                    key: 'nsbt',
+                    label: 'NSBT',
+                },
+                {
+                    key: 'br',
+                    label: 'BR',
+                },
+                {
+                    key: 'waves',
+                    label: 'WAVES',
+                },
+            ],
+            liquidate: [
+                {
+                    key: 'nsbt',
+                    label: 'NSBT',
+                },
+                {
+                    key: 'br',
+                    label: 'BR',
+                },
+                {
+                    key: 'usdn',
+                    label: 'USDN',
+                },
+            ],
+        };
+    }
+
     render() {
-        const { liquidateOrders, bondOrders, userOrders, currentRoi } = this.state;
+        const { liquidateOrders, bondOrders, userOrders, currentRoi, backingRatio } = this.state;
 
         if (!bondOrders || !liquidateOrders) {
             return null;
         }
 
-        const { controlPrice, baseCurrency, quoteCurrency, user } = this.props;
-        const { formTab } = this.state;
+        const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
+        const { formTab, currentDeficitPercent } = this.state;
+
+        const {
+            greenBuyHeaders,
+            greenLiquidateHeaders,
+            auction: auctionHeadings,
+            liquidate: liquidateHeadings,
+        } = this.getOrderbookHeadings(liquidateOrders, bondOrders);
 
         return (
             <div className={bem.block()}>
-                <div className={bem.element('column', 'left')}>
-                    {formTab === FormTabEnum.AUCTION ? (
-                        <>
-                            <AuctionDiscount roi={currentRoi} />
-                        </>
-                    ) : (
-                        <OrderBook
-                            controlPrice={controlPrice}
-                            orders={
-                                formTab === FormTabEnum.CONFIGURE ? bondOrders : liquidateOrders
-                            }
-                            user={user}
-                            baseCurrency={baseCurrency}
-                            quoteCurrency={quoteCurrency}
-                            formTab={
-                                formTab === FormTabEnum.CONFIGURE
-                                    ? FormTabEnum.AUCTION
-                                    : FormTabEnum.LIQUIDATE
-                            }
-                        />
-                    )}
-                    <div className={bem.element('forms')}>
-                        <Nav
-                            isFullWidthTabs
-                            layout={'tabs'}
-                            onChange={formTab => this.setState({ formTab })}
-                            items={this.getTopNavigationTabItems()}
-                        />
-                    </div>
+                <div>
+                    <OrderBook
+                        greenHeaders={greenBuyHeaders}
+                        tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
+                        tableHeaders={auctionHeadings}
+                        title="Auction"
+                    />
+                    <OrderBook
+                        greenHeaders={greenLiquidateHeaders}
+                        tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
+                        tableHeaders={liquidateHeadings}
+                        title="Liquidate"
+                    />
                 </div>
-                <div className={bem.element('column', 'right')}>
-                    <div className={bem.element('orders', userOrders ? undefined : 'hidden')}>
-                        <Nav
-                            className={bem.element('orders-nav')}
-                            layout={'tabs'}
-                            activeTab={OrdersTableTabEnum.ACTIVE}
-                            items={this.getBottomNavigationTabItems()}
-                        />
+                <div>
+                    <ReserveHeading values={this.getReserveHeadingValues()} />
+                    <OrderProvider
+                        pairName={pairName}
+                        user={user}
+                        currentDeficitPercent={currentDeficitPercent}
+                        backingRatio={backingRatio}
+                        bondOrders={bondOrders}
+                        liquidateOrders={liquidateOrders}
+                        controlPrice={controlPrice}
+                        baseCurrency={baseCurrency}
+                        quoteCurrency={quoteCurrency}
+                        roi={currentRoi}
+                    />
+                    <div className={bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`}>
+                        <div className={bem.element('orders')}>
+                            <Nav
+                                className={bem.element('orders-nav')}
+                                layout={'tabs'}
+                                activeTab={OrdersTableTabEnum.ACTIVE}
+                                items={this.getBottomNavigationTabItems()}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -244,7 +443,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
     pairName: getPairName(state),
     baseCurrency: getBaseCurrency(state),
     quoteCurrency: getQuoteCurrency(state),

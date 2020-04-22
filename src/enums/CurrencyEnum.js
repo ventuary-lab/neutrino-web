@@ -63,11 +63,11 @@ export default class CurrencyEnum extends Enum {
 
     static getLabels() {
         return {
-            [this.WAVES]: __('WAVES'),
-            [this.USD_N]: __('USDN'),
-            [this.USD_NB]: __('NSBT'),
-            [this.EUR_N]: __('EURN'),
-            [this.EUR_NB]: __('EURNB'),
+            [this.WAVES]: 'WAVES',
+            [this.USD_N]: 'USDN',
+            [this.USD_NB]: 'NSBT',
+            [this.EUR_N]: 'EURN',
+            [this.EUR_NB]: 'EURNB',
             //[this.BTC_N]: __('BTC-N'),
             //[this.BTC_NB]: __('BTC-NB'),
         };

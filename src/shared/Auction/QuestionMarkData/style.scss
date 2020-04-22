@@ -1,0 +1,42 @@
+
+
+
+.QuestionMarkData {
+    position: relative;
+    
+    & > .text {
+        position: absolute;   
+        width: 300px;
+        right: -137px;
+        top: 34px;
+        padding: 12px;
+        z-index: 2;
+        border-radius: 5px;
+        background-color: #494991;
+        opacity: 1;
+        transition: opacity .5s linear;
+        visibility: visible;
+    }
+
+    & > .hint {
+        cursor: pointer;
+    }
+
+    $root: &;
+
+    & .text.not-hovered {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    & .cap {
+        display: block;
+        background: #494991;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: -10px;
+        left: calc(50% - 10px);
+        transform: rotate(45deg);
+    }
+}

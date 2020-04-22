@@ -1,0 +1,21 @@
+
+
+.ExpectedValueSpan {
+    position: absolute;
+    top: 35px;
+    right: 15px;
+    color: #00F59E;
+    display: block;
+    width: 260px;
+    text-align: right;
+
+    & > :nth-child(1) {
+      padding-right: 8px;
+      color: #fff;
+    }
+
+    & > :nth-child(2) {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+}

@@ -227,12 +227,20 @@ export default class DalComponent implements IDalComponent {
             );
         }
     }
-    async setLiquidateOrder(pairName, paymentCurrency, total) {
+    async setLiquidateOrder(pairName, paymentCurrency, total, price, position) {
+        // await this.keeper.sendTransaction(
+        //     pairName,
+        //     ContractEnum.LIQUIDATION,
+        //     'addLiquidationOrder',
+        //     [],
+        //     this.assets[paymentCurrency],
+        //     total
+        // );
         await this.keeper.sendTransaction(
             pairName,
             ContractEnum.LIQUIDATION,
-            'addLiquidationOrder',
-            [],
+            'addLiquidationOrderWithPrice',
+            [price, position],
             this.assets[paymentCurrency],
             total
         );

@@ -6,93 +6,112 @@
   $root: &;
 
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   height: 100%;
 
-  &__column {
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
+  $orderbook-width: 300px;
+  & > :nth-child(1) {
+    width: $orderbook-width;
+    // height: 1006px;
 
-    &_left {
-      @include gradient-bg(242.47deg);
-      margin-right: 8px;
-      min-width: 337px;
-      width: 100%;
+    & > :nth-child(1) {
+      border-radius: 4px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
 
-      display: flex;
-      flex-direction: column;
+  & > * {
+    height: 50%;
+  }
 
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
+  & > :nth-child(2) {
+    width: calc(100% - #{$orderbook-width});
+    padding-left: 8px;
+  }
 
-      & > .OrderBook:nth-child(1) {
-        flex-basis: calc(100vh - 447px);
-        overflow: auto;
-        min-height: 290px;
+  padding-bottom: 8px;
+
+  &__orders {
+    padding: 27px;
+  }
+  
+  &__user-orders {
+    margin: 8px 0;
+    background: linear-gradient(197.87deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+  }
+
+  & .OrderbookReworked {
+    $orderbook-height: 50vh;
+    $orderbook-table-height: calc(#{$orderbook-height} - 176px);
+
+    height: calc(#{$orderbook-table-height} + 135px);
+    // height: 50%;
+
+    & tbody {
+      // height: calc(25vh + 108px);
+      min-height: $orderbook-table-height;
+      height:  $orderbook-table-height;
+      max-height:  $orderbook-table-height;
+    }
+  }
+  
+  & .heading-val {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: -5px;
+
+    & img {
+      width: 20px;
+      height: 20px;
+      padding-right: 3px;
+    }
+  }
+
+  @media screen and (max-width: 668px) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    & > :nth-child(1) {
+      height: auto;
+    }
+
+    & .OrderbookReworked {
+      $row-height: 42px;
+      $orderbook-height: #{$row-height * 5};
+      $orderbook-table-height: calc(#{$orderbook-height} + 0px);
+
+      height: calc(#{$orderbook-height} + 135px);
+      // height: 50%;
+      & tbody {
+        // height: calc(25vh + 108px);
+        min-height: $orderbook-table-height;
+        height:  $orderbook-table-height;
+        max-height:  $orderbook-table-height;
       }
     }
 
-    &_right {
-      display: flex;
-      flex-direction: column;
-      @include gradient-bg(222.77deg);
+    & tbody {
+      width: 100vw;
+    }
 
-      min-width: calc(100vw - 741px);
+    & > :nth-child(1) {
+      width: 100vw;
+    };
+    & > :nth-child(2) {
       width: 100%;
+      padding: 8px;
     }
-  }
 
-  &__forms {
-    // height: 360px;
-    background: linear-gradient(201.02deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
-  }
+    & .ReserveHeading__flex {
+      padding: 12px;
 
-  &__orders {
-    padding-bottom: 18px;
-
-    &_hidden {
-      display: none;
+      & > :nth-child(4) {
+        display: none;
+      }
     }
-  }
-
-  &__orders-nav {
-    height: 100%;
-
-    & > :first-child {
-      overflow-x: auto;
-    }
-  }
-
-  &__graph {
-    flex-grow: 1;
-    height: calc(100% - 360px);
-    min-height: 380px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  &__graph-title {
-    font-size: 14px;
-    line-height: 17px;
-    padding: 24px 40px 20px;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  &__danger-tab {
-    color: $color-brand-red;
-  }
-
-
-  @media screen and (max-width: 1024px) {
-    flex-direction: column;
-    flex-grow: unset;
-  }
-
-  .NavTabsView__list > * {
-    min-width: unset;
   }
 }

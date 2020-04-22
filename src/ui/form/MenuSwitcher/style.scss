@@ -1,0 +1,60 @@
+
+
+.MenuSwitcher {
+    position: relative;
+
+
+    & .icon {
+        transform: rotate(180deg);
+        transition: transform .2s linear;
+        margin-left: 4px;
+    }
+
+    &.opened {
+        
+        & .icon {
+            transform: rotate(360deg);
+        }
+    }
+
+    &:not(.opened) {
+        & > .current {
+            display: block;
+        }
+        & > :not(.current) {
+            display: none;
+        }
+    }
+
+    .menu { 
+        position: absolute;
+        background: #17183A;
+        border: 1px solid #494991;
+        box-sizing: border-box;
+        border-radius: 11px;
+        padding: 17px 24px;
+        z-index: 2;
+        min-width: 200px;
+        margin-top: 9px;
+        line-height: 17px;
+
+        & > :not(:first-child) {
+            margin-top: 12px;
+        }
+    }
+
+    .option {
+        cursor: pointer;
+    
+        &:hover {
+            color: #00f5ff;
+        }
+    }
+
+    & .main {
+        display: flex !important;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+}

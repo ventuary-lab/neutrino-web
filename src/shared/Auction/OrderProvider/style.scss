@@ -1,0 +1,127 @@
+@import 'style/helpers/vars';
+@import 'style/helpers/mixins';
+
+.OrderProvider {
+    background: linear-gradient(205.7deg, #17183A 16.12%, #1E1E47 38.25%, #17183A 66.27%);
+    border-radius: 4px;
+    // padding: 15px 32px 34px;
+    padding: 0 32px 34px;
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-around;
+
+
+    & .buy, & .liquidate {
+        margin: 0 8px;
+        margin-top: 15px;
+    
+        & > :nth-child(1) {
+            position: relative;
+        }
+    }
+
+    & .mode-instant {
+        & > .percents {
+            display: none;
+        }
+    }
+
+    & .price {
+        & > :nth-child(1) {
+            background: unset;
+
+        }
+    }
+
+    & .buy-form, & .liquidate-form {
+        position: relative;
+        width: 300px;
+        padding-top: 4px;
+
+        & > :nth-child(1) {
+            padding-top: 18px;
+            position: relative;
+        }
+
+        & > .BaseInput__main {
+            margin: 32px 0 16px 0;
+        }
+
+
+        & button {
+            width: 100%;
+        }
+    }
+
+    & .on-condition {
+        & > :not(:last-child) {
+            opacity: .35;
+        }
+        & > :last-child {
+            background: transparent;
+            border: 1px solid #00F5FF;
+        }
+        & :not(.br-warning) {
+            @include prevent-text-select
+        }
+
+        & > .br-warning {
+            position: absolute;
+            opacity: 1;
+            display: block;
+            top: calc(50% - 49px);
+            width: 80%;
+            left: 10%;
+            padding: 20px;
+            background: #494991;
+            border-radius: 6px;
+        }
+    }
+
+    & .percents {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: 4px 0;
+        justify-content: space-between;
+
+        & > * {
+            width: 46px;
+            text-align: center;
+            padding: 4px 11px;
+        }
+    }
+
+
+    & .ExpectedValueSpan {
+        top: 26px;
+        right: 26px;
+    }
+
+
+    &-mobile {
+        display: none;
+    }
+
+    @media screen and (max-width: 668px) {
+        padding: 32px;
+        display: none;
+        
+        &-mobile {
+            display: flex;
+
+        }
+    }
+}
+
+.OrderProviderTab {
+    
+    & > :nth-child(1) {
+        display: block;
+        margin: 12px auto;
+    }
+}
