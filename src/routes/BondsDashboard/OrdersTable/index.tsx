@@ -47,13 +47,13 @@ export default class OrdersTable extends React.Component<Props, State> implement
                 get: item => (OrderTypeEnum.LIQUIDATE === item.type ? item.total : item.amount),
             },
             price: {
-                label: 'Price',
-                get: item => _round(item.price / 100, 2) || '--',
+                label: 'BR',
+                get: item => (OrderTypeEnum.LIQUIDATE === item.type ? item.price : (100 - item.debugRoi)) || '--',
             },
-            roi: {
-                label: 'ROI',
-                get: (order, controlPrice) => (order.debugRoi ? `${order.debugRoi}%` : '--'),
-            },
+            // roi: {
+            //     label: 'ROI',
+            //     get: (order, controlPrice) => (order.debugRoi ? `${order.debugRoi}%` : '--'),
+            // },
             waves: {
                 label: 'WAVES',
                 get: (item, controlPrice) =>
@@ -105,7 +105,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                     <th>{fieldTable.usdnb.label}</th>
                     <th>{fieldTable.price.label}</th>
                     <th>{fieldTable.status.label}</th>
-                    <th>{fieldTable.roi.label}</th>
+                    {/* <th>{fieldTable.roi.label}</th> */}
                     <th>{fieldTable.waves.label}</th>
                     {!isHistory && (
                         <th className={bem.element('cancel-column')}>
@@ -152,7 +152,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
                                 <td>{fieldTable.usdnb.get(item)}</td>
                                 <td>{fieldTable.price.get(item)}</td>
                                 <td>{fieldTable.status.get(item)}</td>
-                                <td>{fieldTable.roi.get(item, controlPrice)}</td>
+                                {/* <td>{fieldTable.roi.get(item, controlPrice)}</td> */}
                                 <td>{fieldTable.waves.get(item, controlPrice)}</td>
                                 {!this.props.isHistory && (
                                     <td className={bem.element('cancel-column')}>
