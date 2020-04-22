@@ -254,14 +254,14 @@ class OrderProvider extends React.Component<Props, State> {
 
     async handleBuyOrder() {
         const { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
-        const { roi } = this.props;
+        // const { roi } = this.props;
         const { state } = this;
         const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
         const bondsAmount = Number(_get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`));
 
         const dependPrice = wavesAmount / bondsAmount;
         const contractPrice = Math.round(dependPrice * 100);
-        const position = computeOrderPosition(bondOrders as IOrder[], roi);
+        const position = computeOrderPosition(bondOrders as IOrder[], _get(state, `${BUY_FORM_NAME}.br`));
 
 
         try {
