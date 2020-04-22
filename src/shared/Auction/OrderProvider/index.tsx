@@ -321,7 +321,17 @@ class OrderProvider extends React.Component<Props, State> {
         // const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
 
         const desiredBR = num;
-        const receiveAmount = computeNSBTFromBR(desiredBR / 100, currencyAmount, controlPrice)
+        const sendAmount = _get(state, path)
+        let receiveAmount = computeNSBTFromBR(desiredBR / 100, currencyAmount, controlPrice)
+
+        if (formName === LIQUIDATE_FORM_NAME) {
+            // br = (receiveAmount / rawSendAmount) * 100
+            // br = receiveAmount * 100 / rawSendAmount
+            // receiveAmount * 100 = br * rawSendAmount
+            // receiveAmount = br * rawSendAmount / 100
+            receiveAmount = (desiredBR * sendAmount) / 100
+        }
+
         // _set(state, `${formName}.br`, desiredBR);
         _set(state, `${formName}.${fieldName}`, receiveAmount);
         this.setState(state);
