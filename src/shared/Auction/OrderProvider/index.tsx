@@ -15,8 +15,12 @@ import MenuSwitcher, { MenuOption } from 'ui/form/MenuSwitcher';
 
 import TabSelector from 'ui/global/TabSelector';
 import {
+    computeBRFromNeutrino,
+    computeNSBTFromBR,
     computeBRFromROI,
     computeROI,
+    convertWavesToNeutrino,
+    convertNeutrinoToWaves,
     computeBondsAmountFromROI,
     computeWavesAmountFromROI,
     getComputedBondsFromROI,
@@ -156,21 +160,26 @@ class OrderProvider extends React.Component<Props, State> {
                 br = _round(this.props.backingRatio);
 
                 sendAmount = Number(_get(next, `${formName}.${SEND_FIELD_NAME}`));
+
                 if (isNaN(sendAmount)) {
                     sendAmount = 0
+                } else if (formName === BUY_FORM_NAME) {
+                    // Convert waves to neutrino (mult)
+                    sendAmount = convertWavesToNeutrino(sendAmount, controlPrice)
+                    // sendAmount *= controlPrice / 100;
                 }
 
-                const roi = 100 - br;
-                receiveAmount = computeBondsAmountFromROI(roi, sendAmount, controlPrice / 100);
+                const decimalBR = br / 100;
+                receiveAmount = computeNSBTFromBR(decimalBR, sendAmount);
+
                 price = _round(receiveAmount / sendAmount, 2);
 
                 if (formName === LIQUIDATE_FORM_NAME && this.checkIsBrAbove(100)) {
-                    // const roi = computeROI(receiveAmount, sendAmount, controlPrice);
                     br = _round((receiveAmount / sendAmount) * 100);
                 }
 
                 _set(next, `${formName}.br`, br);
-                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
+                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(convertNeutrinoToWaves(receiveAmount, controlPrice)));
                 _set(next, `${formName}.price`, price);
 
                 this.setState(next);
@@ -191,13 +200,11 @@ class OrderProvider extends React.Component<Props, State> {
                 price = _round(receiveAmount / sendAmount, 2);
 
                 if (formName === LIQUIDATE_FORM_NAME) {
-                    sendAmount *= controlPrice / 100;
-
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
-                } else {
-                    const roi = computeROI(receiveAmount, sendAmount, controlPrice);
-                    br = Math.abs(computeBRFromROI(roi));
+                } else if (formName === BUY_FORM_NAME) {
+                    br = computeBRFromNeutrino(receiveAmount, sendAmount) * 100
                 }
+                console.log('by request', { br, sendAmount, receiveAmount })
 
                 _set(next, `${formName}.br`, _round(br));
                 _set(next, `${formName}.price`, price);

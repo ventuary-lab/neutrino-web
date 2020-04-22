@@ -32,3 +32,10 @@ export const computeBR = (
 };
 
 export const computeBRFromROI = roi => 100 - roi
+
+export const computeBRFromNeutrino = (nsbt, neutrino) => (nsbt - neutrino) / neutrino // DECIMAL BR VALUE
+export const computeNSBTFromBR = (br, neutrino) => neutrino * (1 + br) // DECIMAL BR VALUE
+
+// NOT DECIMAL CONTROL PRICE
+export const convertWavesToNeutrino = (waves, controlPrice) => waves * (controlPrice / 100)
+export const convertNeutrinoToWaves = (neutrino, controlPrice) => neutrino / (controlPrice / 100)
