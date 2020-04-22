@@ -179,7 +179,7 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 _set(next, `${formName}.br`, br);
-                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(convertNeutrinoToWaves(receiveAmount, controlPrice)));
+                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
                 _set(next, `${formName}.price`, price);
 
                 this.setState(next);
@@ -202,7 +202,7 @@ class OrderProvider extends React.Component<Props, State> {
                 if (formName === LIQUIDATE_FORM_NAME) {
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else if (formName === BUY_FORM_NAME) {
-                    br = computeBRFromNeutrino(receiveAmount, sendAmount) * 100
+                    br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
                 console.log('by request', { br, sendAmount, receiveAmount })
 
