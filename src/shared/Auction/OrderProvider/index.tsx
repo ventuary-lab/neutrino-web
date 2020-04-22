@@ -200,6 +200,7 @@ class OrderProvider extends React.Component<Props, State> {
                 } else if (formName === BUY_FORM_NAME) {
                     br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
+
                 console.log('by request', { br, sendAmount, receiveAmount })
 
                 _set(next, `${formName}.br`, _round(br));
