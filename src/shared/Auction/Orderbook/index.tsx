@@ -11,17 +11,6 @@ import { generateRandomRecords } from './helpers';
 
 const bem = html.bem('OrderbookReworked');
 
-// const props: Props = {
-//     title: '',
-//     tableHeaders: 
-//     tableRecords: generateRandomRecords(10),
-// };
-// const greenHeaders = [
-//     { label: '1000', style: TableRecordStyle.green },
-//     { label: '-', style: TableRecordStyle.green },
-//     { label: '5433', style: TableRecordStyle.green },
-// ] as TableHeader[];
-
 class Orderbook extends React.Component<Props, State> {
     constructor(props) {
         super(props);
