@@ -67,7 +67,7 @@ class OrderProvider extends React.Component<Props, State> {
         this.onFormUpdate = this.onFormUpdate.bind(this);
         this.checkIsBrAbove = this.checkIsBrAbove.bind(this);
 
-        this.auctionPercentage = [75, 95, 120, 200];
+        this.auctionPercentage = [75, 95, 120, 195];
         this.liquidatePercentage = [100, 150, 200, 300];
 
         this.state = {
