@@ -304,15 +304,15 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     mapLiquidateOrderRecord(order: IOrder): TableRecord {
         return {
             br: order.price || 100,
-            usdn: order.restTotal * ((order.price || 100) / 100),
-            nsbt: order.restTotal,
+            usdn: Math.floor(order.restTotal * ((order.price || 100) / 100)),
+            nsbt: Math.floor(order.restTotal),
         };
     }
 
     mapAuctionOrderRecord(order: IOrder): TableRecord {
         return {
             br: 100 - order.debugRoi,
-            waves: order.restTotal,
+            waves: Math.floor(order.restTotal),
             nsbt: Math.floor(order.restAmount),
         };
     }
