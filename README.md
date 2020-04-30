@@ -62,3 +62,18 @@ So we run it manually, let's say, on port 5002.
 
 > `pairName` param that is always used is 'usd-nb_usd-n'. 
 
+
+
+### Environment file reference
+
+| Param | Desired Value | Desc 
+|-------|-------|-----|
+| `APP_ADDRESS_USDNB_USDN` | `dApp address` | `Main neutrino contract` |`APP_DAPP_NETWORK` | `mainnet, testnet, stagenet, etc.` | `Network name`
+|`APP_ENV` | `string` | `App environment name`
+|`IS_CLEANING_REDIS` | `boolean` | `Checks, whether to flush redis storage on app start`
+|`NODE_ENV` | `string` | `Node.js environment name`
+|`PAPERTRAIL_API_TOKEN` | `string` | `Papetrail is log saver, not used currently`
+|`REDIS_NAMESPACE` | `string` | `Redis records prefix`
+|`MASS_PAYMENT_SENDER` | `waves address` | `Staking payments sender address`
+|`POSTGRES_CONNECTION_URL` | `URL` | `Connection URL to PosgreSQL database`
+|`EXPLORER_ENDPOINT` | `URL` | `URL where Neutrino Explorer is accessible`
