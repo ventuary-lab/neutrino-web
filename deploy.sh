@@ -28,6 +28,12 @@ simple_deploy () {
     docker run -itd --name "$container_name" -p 5001:5001 -p 5000:5000 --env-file .env "$image_name"
 }
 
+simple_build () {
+    docker build -t "$image_name" .
+    docker stop "$image_name"
+    docker rm "$image_name"
+}
+
 main () {
     while [ -n "$1" ]
     do
@@ -35,6 +41,7 @@ main () {
             --in) image_name=$2 ;;
             --cn) container_name=$2 ;;
             # --stop-and-run) stop_and_run ;;
+            --simple-build) simple_build ;;
             --simple) simple_deploy ;;
         esac
         shift
