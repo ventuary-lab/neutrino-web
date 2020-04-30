@@ -77,3 +77,10 @@ So we run it manually, let's say, on port 5002.
 |`MASS_PAYMENT_SENDER` | `waves address` | `Staking payments sender address`
 |`POSTGRES_CONNECTION_URL` | `URL` | `Connection URL to PosgreSQL database`
 |`EXPLORER_ENDPOINT` | `URL` | `URL where Neutrino Explorer is accessible`
+
+
+### NGINX config examples
+
+#### Mainnet
+
+[Beta Neutrino Example](nginx/example.conf)
