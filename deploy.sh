@@ -41,7 +41,7 @@ main () {
             --in) image_name=$2 ;;
             --cn) container_name=$2 ;;
             # --stop-and-run) stop_and_run ;;
-            --simple-build) simple_build ;
+            --simple-build) simple_build ;;
             --simple) simple_deploy ;;
         esac
         shift
