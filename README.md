@@ -43,3 +43,22 @@ So we run it manually, let's say, on port 5002.
     > bash deploy.sh --in cn-neutrino --simple-build
     > docker run -itd --name cn-neutrino -p 5002:5000 --env-file .env cn-neutrino
 ```
+
+
+###  Endpoints reference
+  
+| Route | Description | Param 
+|----------------|-------------------------------|-----------------------------|
+| `/api/v1/init` | `Return config variables` | `-` |
+|`/api/v1/staking/mass-payment/:address/:assetId`| `Returns Mass Payment transactions of configured sender` |`account address and assetID`
+|`/api/v1/neutrino-config/:pairName`| `Checks dApp config state, i.g. is the dApp blocked or not.` | `pairName, example: 'usd-nb_usd-n'`
+|`/api/v1/bonds/:pairName/orders`|`Returns buy/auction orders of all users (IOrder[])`|`pairName`
+|`/api/v1/liquidate/:pairName/orders`|`Returns liquidate orders of all users (IOrder[])`|`pairName`
+|`/api/v1/bonds/user/:address`|`Returns liquidate & auction orders of specific address ({ opened: IOrder[], history: IOrder[] })`| `address`
+|`/api/explorer/`| `Wildcard reference to Neutrino Explorer` |`-`
+|`/api/*` | `Return all available methods` | `-`
+|`/static/*` | `Return static files in relative project directory src/*`
+|`/whitepaper` | `Redirects to wp.neutrino.at` | `-`
+
+> `pairName` param that is always used is 'usd-nb_usd-n'. 
+
