@@ -57,20 +57,19 @@ module.exports = class App implements ApplicationParams {
     _collectionUpdateTimeout: number;
 
     constructor(params: ApplicationParams) {
-        this.network = process.env.APP_DAPP_NETWORK || 'testnet';
+        if (!process.env.NODE_URL) {
+            throw new Error('Missing NODE_URL env');
+        }
+
+        if (!process.env.APP_DAPP_NETWORK) {
+            throw new Error('Missing APP_DAPP_NETWORK env');
+        }
+
+        this.network = process.env.APP_DAPP_NETWORK;
         this.isCleaningRedis = process.env.IS_CLEANING_REDIS === 'true';
 
-        switch (this.network) {
-            case 'mainnet':
-                this.nodeUrl = 'https://nodes.wavesplatform.com';
-                break;
-            case 'testnet':
-                this.nodeUrl = 'https://testnode1.wavesnodes.com';
-                break;
-            case 'custom':
-                this.nodeUrl = process.env.NODE_URL;
-                break;
-        }
+        this.nodeUrl = process.env.NODE_URL;
+
         this.redisNamespace = process.env.REDIS_NAMESPACE || 'nt';
         this.dApps = {
             [PairsEnum.USDNB_USDN]:
