@@ -1,7 +1,7 @@
 import redis from 'redis';
 import winston, { Logger } from 'winston';
 import { Express } from 'express';
-import * as http from "http";
+import * as http from 'http';
 import WavesContractCache from './cache/WavesContractCache';
 import RedisStorage from './cache/storage/RedisStorage';
 import WebSocketServer from './components/WebSocketServer';
@@ -83,12 +83,11 @@ module.exports = class App implements ApplicationParams {
         this.massPaymentService = new MassPaymentService({ nodeUrl: this.nodeUrl });
 
         // Create main redis client & storage
-        this._redisClient = redis.createClient(
-            process.env.REDIS_URL || {
-                host: process.env.REDIS_HOST || '127.0.0.1',
-                port: process.env.REDIS_PORT || 6379,
-            }
-        );
+        this._redisClient = redis.createClient({
+            host: process.env.REDIS_HOST || '127.0.0.1',
+            port: process.env.REDIS_PORT || 6379,
+            password: process.env.REDIS_PASSWORD,
+        });
         this.storage = new RedisStorage({
             namespace: this.redisNamespace + '_' + this.network,
             redisClient: this._redisClient,
@@ -101,7 +100,7 @@ module.exports = class App implements ApplicationParams {
             format: winston.format.combine(
                 winston.format.timestamp(),
                 winston.format.colorize(),
-                winston.format.printf(info => `${info.timestamp} ${info.level} ${info.message}`)
+                winston.format.printf((info) => `${info.timestamp} ${info.level} ${info.message}`)
             ),
             transports: [new winston.transports.Console()],
             level: 'info',
@@ -146,7 +145,7 @@ module.exports = class App implements ApplicationParams {
         this._router.start();
         this._websocket.start();
 
-        await this.postgresService.start()
+        await this.postgresService.start();
         await this.heightListener.start();
 
         // Try get timestamp
@@ -212,7 +211,7 @@ module.exports = class App implements ApplicationParams {
         const contract: ContractCache = new WavesContractCache({
             dApp,
             nodeUrl: this.nodeUrl,
-            updateHandler: keys => this._onContractUpdate(pairName, contractName, keys),
+            updateHandler: (keys) => this._onContractUpdate(pairName, contractName, keys),
             storage: {
                 namespace: this.redisNamespace + '_' + this.network + ':' + pairName,
                 redisClient: this._redisClient,
@@ -281,7 +280,7 @@ module.exports = class App implements ApplicationParams {
 
         return {
             ...assets,
-            [CurrencyEnum.USD_NB]: "6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g"
+            [CurrencyEnum.USD_NB]: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
         };
     }
 
@@ -296,9 +295,9 @@ module.exports = class App implements ApplicationParams {
         try {
             for (const pairName of PairsEnum.getKeys()) {
                 const data: ContractDictionary<ContractDictionary<ContractNodeData>> = {};
-                const collectionNames = CollectionEnum
-                    .getKeys()
-                    .filter(colName => ![CollectionEnum.BONDS_ORDERS].includes(colName));
+                const collectionNames = CollectionEnum.getKeys().filter(
+                    (colName) => ![CollectionEnum.BONDS_ORDERS].includes(colName)
+                );
 
                 for (const collectionName of collectionNames) {
                     const collection = this.getCollection(pairName, collectionName);
@@ -308,7 +307,9 @@ module.exports = class App implements ApplicationParams {
                         data[contractName] = await collection.transport.fetchAll();
                     }
 
-                    this.logger.info(`Thread ${threadName}. Update all data in collection... ${collectionName}`);
+                    this.logger.info(
+                        `Thread ${threadName}. Update all data in collection... ${collectionName}`
+                    );
 
                     if (shouldFlush) {
                         await collection.removeAll();
@@ -338,7 +339,7 @@ module.exports = class App implements ApplicationParams {
     _onContractUpdate(pairName, contractName, keys) {
         try {
             if (!this._isSkipUpdates) {
-                Object.keys(this._collections[pairName]).forEach(collectionName => {
+                Object.keys(this._collections[pairName]).forEach((collectionName) => {
                     if (CollectionEnum.getContractName(collectionName) === contractName) {
                         this.getCollection(pairName, collectionName).updateByKeys(keys);
                     }
