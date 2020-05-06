@@ -87,8 +87,7 @@ class TransactionListener implements TransactionListenerParams {
         try {
             response = await axios.get(`${this.app.nodeUrl}/transactions/address/${this.app.dApp}/limit/${pageSize}${query}`);
         } catch (e) {
-            console.error(`TransactionListener Error on fetch transactions: ${String(e)}, ${JSON.stringify(e.response.data)}`);
-            // throw e;
+            console.error(`TransactionListener Error on fetch transactions: ${e}`);
         }
 
         // Get only new transactions
@@ -122,8 +121,7 @@ class TransactionListener implements TransactionListenerParams {
                             data: [],
                         };
                     } else {
-                        console.error(`TransactionListener Error on fetch transaction info: ${String(e)}, ${JSON.stringify(e.response.data)}`);
-                        // throw e;
+                        console.error(`TransactionListener Error on fetch transaction info: ${e}`);
                     }
                 }
 
