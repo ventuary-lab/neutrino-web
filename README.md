@@ -44,6 +44,24 @@ So we run it manually, let's say, on port 5002.
     > docker run -itd --name cn-neutrino -p 5002:5000 --env-file .env cn-neutrino
 ```
 
+### Running outside the Docker (local dev)
+
+In order to run backend services we need to run 2 isolated processes.
+The first one that updates redis (5001 port by default) and another one
+that serves client API calls (5000 port by default). 
+
+```
+    > npm run serve-and-update
+    > # In another window
+    > npm run serve
+```
+
+After that, local webpack server can be started.
+
+```
+    > npm run dev
+```
+
 
 ###  Endpoints reference
   
