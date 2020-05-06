@@ -279,7 +279,7 @@ module.exports = class App implements ApplicationParams {
 
         return {
             ...assets,
-            [CurrencyEnum.USD_NB]: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
+            [CurrencyEnum.USD_NB]: process.env.NSBT_ASSET_ID,
         };
     }
 
