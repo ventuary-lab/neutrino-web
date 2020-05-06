@@ -4,7 +4,7 @@ import { TableNames } from './types';
 
 class BondsOrderEntity {
     static onError (err) {
-        console.error(err.stack)
+        console.error(err)
     }
     static mapEntity (rawItem) {
         return mapBondOrderForRest(rawItem)
