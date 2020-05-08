@@ -159,7 +159,7 @@ class OrderProvider extends React.Component<Props, State> {
                 sendAmount = Number(_get(next, `${formName}.${SEND_FIELD_NAME}`));
 
                 if (isNaN(sendAmount)) {
-                    sendAmount = 0
+                    sendAmount = 0;
                 } else if (formName === BUY_FORM_NAME) {
                     // Convert waves to neutrino (mult)
                     // sendAmount = convertWavesToNeutrino(sendAmount, controlPrice)
@@ -185,13 +185,13 @@ class OrderProvider extends React.Component<Props, State> {
             case OrderUrgency.BY_REQUEST:
                 let rawSendAmount = Number(_get(next, `${formName}.${SEND_FIELD_NAME}`));
                 if (isNaN(rawSendAmount)) {
-                    rawSendAmount = 0
+                    rawSendAmount = 0;
                 }
 
                 sendAmount = rawSendAmount;
                 receiveAmount = Number(_get(next, `${formName}.${RECEIVE_FIELD_NAME}`));
                 if (isNaN(receiveAmount)) {
-                    receiveAmount = 0
+                    receiveAmount = 0;
                 }
 
                 price = _round(receiveAmount / sendAmount, 2);
@@ -199,7 +199,7 @@ class OrderProvider extends React.Component<Props, State> {
                 if (formName === LIQUIDATE_FORM_NAME) {
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else if (formName === BUY_FORM_NAME) {
-                    br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100
+                    br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100;
                     // br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
 
@@ -262,9 +262,9 @@ class OrderProvider extends React.Component<Props, State> {
         const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
         const bondsAmount = Number(_get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`));
 
-        const roi = computeROI(bondsAmount, wavesAmount, controlPrice)
+        const roi = computeROI(bondsAmount, wavesAmount, controlPrice);
         const dependPrice = wavesAmount / bondsAmount;
-        const position = computeOrderPosition(bondOrders as IOrder[], roi)
+        const position = computeOrderPosition(bondOrders as IOrder[], roi);
         const contractPrice = Math.round(dependPrice * 100);
 
         try {
@@ -321,15 +321,15 @@ class OrderProvider extends React.Component<Props, State> {
         // const updatedValue = _round((num / 100) * Number(currencyAmount), 2);
 
         const desiredBR = num;
-        const sendAmount = _get(state, path)
-        let receiveAmount = computeNSBTFromBR(desiredBR / 100, currencyAmount, controlPrice)
+        const sendAmount = _get(state, path);
+        let receiveAmount = computeNSBTFromBR(desiredBR / 100, currencyAmount, controlPrice);
 
         if (formName === LIQUIDATE_FORM_NAME) {
             // br = (receiveAmount / rawSendAmount) * 100
             // br = receiveAmount * 100 / rawSendAmount
             // receiveAmount * 100 = br * rawSendAmount
             // receiveAmount = br * rawSendAmount / 100
-            receiveAmount = (desiredBR * sendAmount) / 100
+            receiveAmount = (desiredBR * sendAmount) / 100;
         }
 
         // _set(state, `${formName}.br`, desiredBR);
@@ -379,9 +379,15 @@ class OrderProvider extends React.Component<Props, State> {
     getSmallWarning(br): string {
         // system backing ratio
         const { backingRatio } = this.props;
-        if (br >= 100 && backingRatio < 100) return 'In deficit, Exp. BR cannot be larger than 100%';
+        if (br >= 100 && backingRatio < 100)
+            return 'In deficit, Exp. BR cannot be larger than 100%';
         if (br == 100) return 'Exp. BR cannot be equal to 100%';
         if (!(br >= 5 && br <= 195)) return 'Exp. BR should be >= 5% and <= 195%';
+
+        const { state } = this;
+        const buyAmount = _get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
+
+        if (Number(buyAmount) < 10) return '10 WAVES is the min. amount';
     }
 
     getLiquidateWarning(br): string {
@@ -410,8 +416,8 @@ class OrderProvider extends React.Component<Props, State> {
             </div>
         );
 
-        const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br))
-        const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br))
+        const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br));
+        const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br));
 
         const buyForm = (
             <div
@@ -419,7 +425,10 @@ class OrderProvider extends React.Component<Props, State> {
             >
                 <div className="price">
                     <BaseInput disabled smallWarning={this.getSmallWarning(buy.br)} />
-                    <ExpectedValueSpan label="Exp. BR" expected={isBuyFormInvalid ? 'Error' : `${buy.br}%`} />
+                    <ExpectedValueSpan
+                        label="Exp. BR"
+                        expected={isBuyFormInvalid ? 'Error' : `${buy.br}%`}
+                    />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
@@ -461,7 +470,10 @@ class OrderProvider extends React.Component<Props, State> {
             >
                 <div className="price">
                     <BaseInput disabled smallWarning={this.getLiquidateWarning(liquidate.br)} />
-                    <ExpectedValueSpan label="Exp. BR" expected={isLiquidateFormInvalid ? 'Error' : `${liquidate.br}%`} />
+                    <ExpectedValueSpan
+                        label="Exp. BR"
+                        expected={isLiquidateFormInvalid ? 'Error' : `${liquidate.br}%`}
+                    />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}

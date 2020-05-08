@@ -63,11 +63,11 @@ const SwapWarningMessage = () => (
         key: 'neutrinoBalances',
         collection: CollectionEnum.NEUTRINO_BALANCES,
     },
-    {
-        url: `/api/v1/neutrino-config/${props.pairName}`,
-        key: 'neutrinoConfig',
-        collection: CollectionEnum.CONTROL_CONFIG,
-    },
+    // {
+    //     url: `/api/v1/neutrino-config/${props.pairName}`,
+    //     key: 'neutrinoConfig',
+    //     collection: CollectionEnum.CONTROL_CONFIG,
+    // },
     {
         url: `/api/v1/price-feed/${props.sourceCurrency}/${PRICE_FEED_PERIOD}`,
         key: 'priceFeed',
@@ -604,7 +604,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
         }
         this._isProgramChange = true;
 
-        const rate = _get(props, 'neutrinoConfig.price');
+        const rate = this.getControlPrice();
 
         let amount = this._parseAmount(
             isRefreshToAmount
