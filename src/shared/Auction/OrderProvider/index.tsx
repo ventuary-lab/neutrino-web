@@ -240,7 +240,7 @@ class OrderProvider extends React.Component<Props, State> {
                 pairName,
                 baseCurrency,
                 bondsAmount,
-                Math.ceil(price * 100),
+                Math.round(price * 100),
                 position
             );
             console.log({ response });
