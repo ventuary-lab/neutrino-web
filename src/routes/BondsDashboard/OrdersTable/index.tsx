@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { dal, html } from 'components';
-import { orderBy as _orderBy, round as _round } from 'lodash';
+import { orderBy as _orderBy, round as _round, orderBy } from 'lodash';
 
 import './OrdersTable.scss';
 import PairsEnum from 'enums/PairsEnum';
@@ -69,7 +69,7 @@ export default class OrdersTable extends React.Component<Props, State> implement
         };
 
         this.state = {
-            sort: ['time', SortTableEnum.DESC],
+            sort: ['timestamp', SortTableEnum.DESC],
             search: '',
         };
     }
@@ -96,10 +96,10 @@ export default class OrdersTable extends React.Component<Props, State> implement
                     <th>
                         <div
                             className={bem.element('header')}
-                            onClick={() => this.toggleSort('time')}
+                            onClick={() => this.toggleSort('timestamp')}
                         >
                             {fieldTable.time.label}
-                            {this.renderSortButtons('time')}
+                            {this.renderSortButtons('timestamp')}
                         </div>
                     </th>
                     <th>{fieldTable.usdnb.label}</th>
@@ -131,8 +131,10 @@ export default class OrdersTable extends React.Component<Props, State> implement
 
     getTableBody(rawItems) {
         const { controlPrice } = this.props;
+        const { sort } = this.state;
         const { fieldTable } = this;
-        const items = rawItems.filter(item =>
+
+        let items = rawItems.filter(item =>
             item.type !== 'liquidate'
                 ? moment(new Date(item.timestamp)).isAfter(moment('01/12/2020'))
                 : true
@@ -235,13 +237,16 @@ export default class OrdersTable extends React.Component<Props, State> implement
     }
 
     render() {
-        if (!this.props.items) {
+        let { items } = this.props;
+        const { sort } = this.state;
+        const [sortColumn, sortOrder] = sort;
+
+        if (!items) {
             return null;
         }
 
-        const { sort: sortOrder } = this.state;
-
-        const items = _orderBy(this.props.items, [sortOrder[0]], [sortOrder[1]]);
+        items = items.map(item => ({ ...item, timestamp: moment(new Date(item.timestamp)).valueOf() }))
+        items = _orderBy(items, sortColumn, sortOrder)
 
         return (
             <div className={bem.block()}>
