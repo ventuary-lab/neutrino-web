@@ -1,5 +1,7 @@
 import React from 'react';
 // import { html, dal } from 'components';
+import { Translation } from 'react-i18next';
+
 import { buildBem } from './helpers';
 import LandingHeader from './LandingHeader';
 import LandingFooter from './LandingFooter';
@@ -64,7 +66,10 @@ class LandingPage extends React.Component<Props> {
                 >
                     <LandingHeader />
                     <div className={bem.element('txt-body')}>
-                        <span>Decentralized price stable currency</span>
+                        {/* <span>Decentralized price stable currency</span> */}
+                        <Translation>
+                            {t => <span>{t('landing.neutrino_main_title.label')}</span>}
+                        </Translation>
                         {paragraph}
                     </div>
                 </div>

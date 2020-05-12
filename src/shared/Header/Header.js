@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, change } from 'redux-form';
 import Link from 'yii-steroids/ui/nav/Link';
+import { Translation } from 'react-i18next';
+import LanguageSwitcher from 'shared/LanguageSwitcher';
 import DropDownField from 'yii-steroids/ui/form/DropDownField';
 import Form from 'yii-steroids/ui/form/Form';
 import { getCurrentItem, getNavItems } from 'yii-steroids/reducers/navigation';
 import { goToPage } from 'yii-steroids/actions/navigation';
 import Button from 'yii-steroids/ui/form/Button';
 import { getUserRole } from 'yii-steroids/reducers/auth';
+import { getLanguageDropdownProps } from 'locales/config';
 import {
     // InstallKeeperModalContext,
     GlobalLinksContext,
@@ -157,6 +160,7 @@ export default class Header extends React.PureComponent {
                                 label={__('Learn')}
                                 items={links.links.map(link => ({ ...link, linkUrl: link.url }))}
                             />
+                            <LanguageSwitcher {...getLanguageDropdownProps()} />
                         </div>
                     </header>
                 )}

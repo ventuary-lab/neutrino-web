@@ -1,4 +1,5 @@
 import React from 'react';
+import { Translation } from 'react-i18next';
 import _ from 'lodash';
 import { html } from 'components';
 import axios, { AxiosResponse } from 'axios';
@@ -43,20 +44,25 @@ class AnnualYieldInfo extends React.Component<Props, State> {
         const { yieldPercent } = this.state;
 
         return (
-            <div className={bem.block()}>
-                <span>Info</span>
-                <div className={bem.element('main')}>
-                    <div className={bem.element('yield-percent')}>
-                        <span>{yieldPercent}</span>
-                        <span>%</span>
+            <Translation>
+                {(t) => (
+                    <div className={bem.block()}>
+                        <span>Info</span>
+                        <div className={bem.element('main')}>
+                            <div className={bem.element('yield-percent')}>
+                                <span>{yieldPercent}</span>
+                                <span>%</span>
+                            </div>
+                            <span className={bem.element('title')}>
+                                {t('staking_dashboard.aeay.label')}
+                            </span>
+                            <span className={bem.element('body')}>
+                                {t('staking_dashboard.annual_yield_info.label')}
+                            </span>
+                        </div>
                     </div>
-                    <span className={bem.element('title')}>Average Estimated Annual Yield</span>
-                    <span className={bem.element('body')}>
-                        Estimated Annual Yield is depending on waves token price, can be 1%-100%
-                        based on market situation
-                    </span>
-                </div>
-            </div>
+                )}
+            </Translation>
         );
     }
 }

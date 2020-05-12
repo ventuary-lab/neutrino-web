@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios, { AxiosResponse } from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
+import { Translation } from 'react-i18next';
 
 import { getUser } from 'yii-steroids/reducers/auth';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
@@ -402,47 +403,55 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         } = this.getOrderbookHeadings([...liquidateOrders], [...bondOrders]);
 
         return (
-            <div className={bem.block()}>
-                <div>
-                    <OrderBook
-                        greenHeaders={greenBuyHeaders}
-                        tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
-                        tableHeaders={auctionHeadings}
-                        title="Auction"
-                    />
-                    <OrderBook
-                        greenHeaders={greenLiquidateHeaders}
-                        tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
-                        tableHeaders={liquidateHeadings}
-                        title="Liquidate"
-                    />
-                </div>
-                <div>
-                    <ReserveHeading values={this.getReserveHeadingValues()} />
-                    <OrderProvider
-                        pairName={pairName}
-                        user={user}
-                        currentDeficitPercent={currentDeficitPercent}
-                        backingRatio={backingRatio}
-                        bondOrders={bondOrders}
-                        liquidateOrders={liquidateOrders}
-                        controlPrice={controlPrice}
-                        baseCurrency={baseCurrency}
-                        quoteCurrency={quoteCurrency}
-                        roi={currentRoi}
-                    />
-                    <div className={bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`}>
-                        <div className={bem.element('orders')}>
-                            <Nav
-                                className={bem.element('orders-nav')}
-                                layout={'tabs'}
-                                activeTab={OrdersTableTabEnum.ACTIVE}
-                                items={this.getBottomNavigationTabItems()}
+            <Translation>
+                {(t) => (
+                    <div className={bem.block()}>
+                        <div>
+                            <OrderBook
+                                greenHeaders={greenBuyHeaders}
+                                tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
+                                tableHeaders={auctionHeadings}
+                                title="Auction"
+                            />
+                            <OrderBook
+                                greenHeaders={greenLiquidateHeaders}
+                                tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
+                                tableHeaders={liquidateHeadings}
+                                title={t('')}
                             />
                         </div>
+                        <div>
+                            <ReserveHeading values={this.getReserveHeadingValues()} />
+                            <OrderProvider
+                                pairName={pairName}
+                                user={user}
+                                currentDeficitPercent={currentDeficitPercent}
+                                backingRatio={backingRatio}
+                                bondOrders={bondOrders}
+                                liquidateOrders={liquidateOrders}
+                                controlPrice={controlPrice}
+                                baseCurrency={baseCurrency}
+                                quoteCurrency={quoteCurrency}
+                                roi={currentRoi}
+                            />
+                            <div
+                                className={
+                                    bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`
+                                }
+                            >
+                                <div className={bem.element('orders')}>
+                                    <Nav
+                                        className={bem.element('orders-nav')}
+                                        layout={'tabs'}
+                                        activeTab={OrdersTableTabEnum.ACTIVE}
+                                        items={this.getBottomNavigationTabItems()}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )}
+            </Translation>
         );
     }
 }
