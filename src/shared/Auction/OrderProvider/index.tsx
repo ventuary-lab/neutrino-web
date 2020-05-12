@@ -233,14 +233,15 @@ class OrderProvider extends React.Component<Props, State> {
             debugRoi: order.price,
         }));
 
-        const position = computeOrderPosition(mappedOrders, price * 100);
+        const roundedPrice = Math.round(price * 100)
+        const position = computeOrderPosition(mappedOrders, roundedPrice);
 
         try {
             const response = await dal.setLiquidateOrder(
                 pairName,
                 baseCurrency,
                 bondsAmount,
-                price * 100,
+                roundedPrice,
                 position
             );
             console.log({ response });
