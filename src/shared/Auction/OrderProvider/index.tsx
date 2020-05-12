@@ -1,5 +1,6 @@
 import React from 'react';
 import { dal, store } from 'components';
+import { Translation } from 'react-i18next';
 import { set as _set, get as _get, round as _round, floor as _floor } from 'lodash';
 import * as Rx from 'rxjs';
 import BaseInput from 'ui/form/BaseInput';
@@ -233,7 +234,7 @@ class OrderProvider extends React.Component<Props, State> {
             debugRoi: order.price,
         }));
 
-        const roundedPrice = Math.round(price * 100)
+        const roundedPrice = Math.round(price * 100);
         const position = computeOrderPosition(mappedOrders, roundedPrice);
 
         try {
@@ -352,15 +353,17 @@ class OrderProvider extends React.Component<Props, State> {
         );
     }
 
-    getButtonLabels(): { buyLabel: string; liquidateLabel: string } {
+    getButtonLabels(t): { buyLabel: string; liquidateLabel: string } {
         const { orderUrgency } = this.state;
-        let buyLabel = `Buy ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`;
-        let liquidateLabel = `Liquidate ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`;
+        let buyLabel = `${t('enums.buy.label')} ${CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}`;
+        let liquidateLabel = `${t('enums.liquidate.label')} ${
+            CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]
+        }`;
 
         if (orderUrgency === OrderUrgency.BY_REQUEST) {
             return {
-                buyLabel: 'Place auction request',
-                liquidateLabel: 'Place liquidation request',
+                buyLabel: t('common.place_auction_req.label'),
+                liquidateLabel: t('common.place_liquidation_req.label'),
             };
         }
 
@@ -377,22 +380,21 @@ class OrderProvider extends React.Component<Props, State> {
         return { buyClassName: '', liquidateClassName: ' ' };
     }
 
-    getSmallWarning(br): string {
+    getSmallWarning(br, t): string {
         // system backing ratio
         const { backingRatio } = this.props;
-        if (br >= 100 && backingRatio < 100)
-            return 'In deficit, Exp. BR cannot be larger than 100%';
-        if (br == 100) return 'Exp. BR cannot be equal to 100%';
-        if (!(br >= 5 && br <= 195)) return 'Exp. BR should be >= 5% and <= 195%';
+        if (br >= 100 && backingRatio < 100) return t('common.auction_small_warning.a');
+        if (br == 100) return t('common.auction_small_warning.b');
+        if (!(br >= 5 && br <= 195)) return t('common.auction_small_warning.c');
 
         const { state } = this;
         const buyAmount = _get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`);
 
-        if (Number(buyAmount) < 10) return '10 WAVES is the min. amount';
+        if (Number(buyAmount) < 10) return t('common.auction_small_warning.d');
     }
 
-    getLiquidateWarning(br): string {
-        if (!(br >= 100)) return 'BR should be higher or equal to 100%';
+    getLiquidateWarning(br, t): string {
+        if (!(br >= 100)) t('common.liquidate_small_warning.a');
     }
 
     checkIsBrAbove(limit: number = 100) {
@@ -400,10 +402,10 @@ class OrderProvider extends React.Component<Props, State> {
         return !(backingRatio >= limit);
     }
 
-    getForms() {
+    getForms(t) {
         // const { backingRatio } = this.props;
         const { orderUrgency, buy, liquidate } = this.state;
-        const { buyLabel, liquidateLabel } = this.getButtonLabels();
+        const { buyLabel, liquidateLabel } = this.getButtonLabels(t);
         const { buyClassName, liquidateClassName } = this.getButtonClassNames();
 
         const isBrAbove = orderUrgency == OrderUrgency.INSTANT && this.checkIsBrAbove(100);
@@ -411,31 +413,31 @@ class OrderProvider extends React.Component<Props, State> {
         const brWarning = (
             <div className="br-warning">
                 <span>
-                    <b>Instant liquidation is possible only when BR &gt;= 100%.</b> Please use an
-                    "on condition" request instead.
+                    <b>{t('common.instant_possible_cond.label')} BR &gt;= 100%.</b>{' '}
+                    {t('common.on_condition_warning.label')}
                 </span>
             </div>
         );
 
-        const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br));
-        const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br));
+        const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br, t));
+        const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br, t));
 
         const buyForm = (
             <div
                 className={`buy-form ${orderUrgency == OrderUrgency.INSTANT ? 'mode-instant' : ''}`}
             >
                 <div className="price">
-                    <BaseInput disabled smallWarning={this.getSmallWarning(buy.br)} />
+                    <BaseInput disabled smallWarning={this.getSmallWarning(buy.br, t)} />
                     <ExpectedValueSpan
-                        label="Exp. BR"
-                        expected={isBuyFormInvalid ? 'Error' : `${buy.br}%`}
+                        label={t('common.exp_br.label')}
+                        expected={isBuyFormInvalid ? t('common.error.label') : `${buy.br}%`}
                     />
                 </div>
                 <BaseInput
                     iconLabel={CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
                     icon={nsbtLogo}
                     value={buy.receive}
-                    fieldName="Receive"
+                    label={t('common.receive.label')}
                     name="buy.receive"
                     onChange={this.onInputChange}
                     required={true}
@@ -459,7 +461,7 @@ class OrderProvider extends React.Component<Props, State> {
                     onClick={this.handleBuyOrder}
                     label={buyLabel}
                     className={buyClassName}
-                    disabled={this.getSmallWarning(buy.br)}
+                    disabled={this.getSmallWarning(buy.br, t)}
                 />
             </div>
         );
@@ -470,10 +472,10 @@ class OrderProvider extends React.Component<Props, State> {
                 }`}
             >
                 <div className="price">
-                    <BaseInput disabled smallWarning={this.getLiquidateWarning(liquidate.br)} />
+                    <BaseInput disabled smallWarning={this.getLiquidateWarning(liquidate.br, t)} />
                     <ExpectedValueSpan
-                        label="Exp. BR"
-                        expected={isLiquidateFormInvalid ? 'Error' : `${liquidate.br}%`}
+                        label={t('common.exp_br.label')}
+                        expected={isLiquidateFormInvalid ?  t('common.error.label') : `${liquidate.br}%`}
                     />
                 </div>
                 <BaseInput
@@ -481,7 +483,7 @@ class OrderProvider extends React.Component<Props, State> {
                     icon={usdnLogo}
                     value={liquidate.receive}
                     onChange={this.onInputChange}
-                    fieldName="Receive"
+                    label={t('common.receive.label')}
                     name="liquidate.receive"
                     required={true}
                     disabled={orderUrgency == OrderUrgency.INSTANT}
@@ -492,7 +494,7 @@ class OrderProvider extends React.Component<Props, State> {
                     onChange={this.onInputChange}
                     value={liquidate.send}
                     name="liquidate.send"
-                    fieldName="Send"
+                    label={t('common.send.label')}
                     required={true}
                 />
                 <div className="percents">
@@ -513,7 +515,7 @@ class OrderProvider extends React.Component<Props, State> {
                         onClick={this.handleLiquidateOrder}
                         label={liquidateLabel}
                         className={liquidateClassName}
-                        disabled={this.getLiquidateWarning(liquidate.br)}
+                        disabled={this.getLiquidateWarning(liquidate.br, t)}
                     />
                 )}
             </div>
@@ -521,11 +523,11 @@ class OrderProvider extends React.Component<Props, State> {
         return { buyForm, sellForm };
     }
 
-    getMenuOptions() {
+    getMenuOptions(t) {
         const { orderUrgency } = this.state;
         return [
-            { label: 'Instant', value: OrderUrgency.INSTANT, isSelected: true },
-            { label: 'On condition', value: OrderUrgency.BY_REQUEST },
+            { label: t('common.instant.label'), value: OrderUrgency.INSTANT, isSelected: true },
+            { label: t('common.on_condition.label'), value: OrderUrgency.BY_REQUEST },
         ].map((option) => ({
             ...option,
             isSelected: orderUrgency === option.value,
@@ -533,46 +535,59 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     render() {
-        const { buyForm, sellForm } = this.getForms();
-
-        const selectInput = (
-            <MenuSwitcher onSelect={this.onSelectOption} options={this.getMenuOptions()} />
-        );
-
         return (
-            <>
-                <div className="OrderProvider">
-                    <div className="buy">
-                        {selectInput}
-                        {buyForm}
-                    </div>
-                    <div className="liquidate">{sellForm}</div>
-                </div>
-                <div className="OrderProvider OrderProvider-mobile">
-                    <TabSelector
-                        tabs={[
-                            {
-                                label: 'Buy NSBT',
-                                node: (
-                                    <div className="OrderProviderTab">
-                                        {selectInput}
-                                        {buyForm}
-                                    </div>
-                                ),
-                            },
-                            {
-                                label: 'Sell NSBT',
-                                node: (
-                                    <div className="OrderProviderTab">
-                                        {selectInput}
-                                        {sellForm}
-                                    </div>
-                                ),
-                            },
-                        ]}
-                    />
-                </div>
-            </>
+            <Translation>
+                {(t) => {
+                    const { buyForm, sellForm } = this.getForms(t);
+
+                    const selectInput = (
+                        <MenuSwitcher
+                            onSelect={this.onSelectOption}
+                            options={this.getMenuOptions(t)}
+                        />
+                    );
+
+                    return (
+                        <>
+                            <div className="OrderProvider">
+                                <div className="buy">
+                                    {selectInput}
+                                    {buyForm}
+                                </div>
+                                <div className="liquidate">{sellForm}</div>
+                            </div>
+                            <div className="OrderProvider OrderProvider-mobile">
+                                <TabSelector
+                                    tabs={[
+                                        {
+                                            label: `${t('enums.buy.label')} ${t(
+                                                'enums.currency.nsbt.label'
+                                            )}`,
+                                            node: (
+                                                <div className="OrderProviderTab">
+                                                    {selectInput}
+                                                    {buyForm}
+                                                </div>
+                                            ),
+                                        },
+                                        {
+                                            label: `${t('enums.sell.label')} ${t(
+                                                'enums.currency.nsbt.label'
+                                            )}`,
+                                            node: (
+                                                <div className="OrderProviderTab">
+                                                    {selectInput}
+                                                    {sellForm}
+                                                </div>
+                                            ),
+                                        },
+                                    ]}
+                                />
+                            </div>
+                        </>
+                    );
+                }}
+            </Translation>
         );
     }
 }

@@ -4,6 +4,9 @@ export default {
             buy: {
                 label: 'Buy',
             },
+            sell: {
+                label: 'Sell'
+            },
             liquidate: {
                 label: 'Liquidate',
             },
@@ -38,6 +41,7 @@ export default {
             },
         },
         common: {
+            error: { label: 'error'},
             now: { label: 'NOW' },
             security_audit: { label: 'Security audit' },
             with: { label: 'with' },
@@ -188,13 +192,51 @@ export default {
                 label: 'Opened',
             },
             holder_announce: {
-                label: 'You are holder of USD-Neutrino (USDN) - crypto-backed stablecoin.'
+                label: 'You are holder of USD-Neutrino (USDN) - crypto-backed stablecoin.',
             },
             collect_staking_rewards: {
-                label: 'Collect staking rewards'
+                label: 'Collect staking rewards',
             },
             trade_on_ex: {
-                label: 'Trade on exchanges'
+                label: 'Trade on exchanges',
+            },
+            br: { label: 'BR' },
+            br_full: { label: 'Backing ratio (BR)' },
+            reserves: { label: 'Reserves' },
+            supply: { label: 'Supply'},
+            what_does_it_mean: { label: 'What does it mean'},
+            br_info: {
+                label: `Backing Ratio (BR) is the share of WAVES reserves in relation to the Neutrino
+                supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.`
+            },
+            read_more: {
+                label: 'Read more'
+            },
+            instant: {
+                label: 'Instant'
+            },
+            on_condition: {
+                label: 'On condition'
+            },
+            instant_possible_cond: {
+                label: 'Instant liquidation is possible only when'
+            },
+            on_condition_warning: {
+                label: 'Please use an "on condition" request instead.'
+            },
+            exp_br: {
+                label: 'Exp. BR'
+            },
+            place_auction_req: { label: 'Place auction request' },
+            place_liquidation_req: { label: 'Place liquidation request' },
+            auction_small_warning: {
+                a: 'In deficit, Exp. BR cannot be larger than 100%',
+                b: 'Exp. BR cannot be equal to 100%',
+                c: 'Exp. BR should be >= 5% and <= 195%',
+                d: '10 WAVES is the min. amount'
+            },
+            liquidate_small_warning: {
+                a: 'BR should be higher or equal to 100%'
             }
         },
         modals: {
