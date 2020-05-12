@@ -187,6 +187,15 @@ export default {
             order_new: {
                 label: 'Opened',
             },
+            holder_announce: {
+                label: 'You are holder of USD-Neutrino (USDN) - crypto-backed stablecoin.'
+            },
+            collect_staking_rewards: {
+                label: 'Collect staking rewards'
+            },
+            trade_on_ex: {
+                label: 'Trade on exchanges'
+            }
         },
         modals: {
             create_invoice: {
