@@ -80,9 +80,6 @@ class StakingRightPanel extends React.Component<Props, State> {
             `/api/v1/staking/mass-payment/${address}/${assetId}`
         );
 
-        if (response.statusText !== 'OK') {
-            return [];
-        }
         const mappedTransactions: MappedWavesTransactionInfo[] = response.data
             .filter((tx: WavesTransactionInfo) => tx.transfers)
             .map(

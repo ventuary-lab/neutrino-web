@@ -27,12 +27,11 @@ class AnnualYieldInfo extends React.Component<Props, State> {
     async updateYieldPercent() {
         const res = (await axios.get('/api/explorer/get_annual_yield')) as AxiosResponse<number>;
 
-        if (res.statusText === 'OK') {
-            const yieldPercent = _.round(res.data, 2);
-            localStorage.setItem(ANNUAL_YIELD_LS_KEY, String(yieldPercent));
+        
+        const yieldPercent = _.round(res.data, 2);
+        localStorage.setItem(ANNUAL_YIELD_LS_KEY, String(yieldPercent));
 
-            this.setState({ yieldPercent });
-        }
+        this.setState({ yieldPercent });
     }
 
     async componentDidMount() {
