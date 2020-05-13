@@ -59,6 +59,11 @@ export const computeNSBTFromBR = (br, wavesAmount, currentPrice) =>
 export const computeBRFromNSBTandWaves = (nsbt, wavesAmount, currentPrice) =>
     -1 * (nsbt / (wavesAmount * (currentPrice / 100))) + 2;
 
+// remainedTotal is waves amount
+export const computeNSBTContractApproach = (remainedTotal, priceWavesByBondCents, pauli = 1e6, wavelet = 1e8) => {
+    return _floor(_floor(wavelet * remainedTotal*priceWavesByBondCents/100)*(pauli/wavelet) / pauli)
+}
+
 // export const computeBRFromNeutrino = (nsbt, neutrino) => (nsbt - neutrino) / neutrino // DECIMAL BR VALUE
 // export const computeNSBTFromBR = (br, neutrino) => neutrino * (1 + br) // DECIMAL BR VALUE
 

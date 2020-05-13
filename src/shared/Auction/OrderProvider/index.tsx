@@ -17,6 +17,7 @@ import TabSelector from 'ui/global/TabSelector';
 import {
     computeNSBTFromROI,
     computeNSBTFromBR,
+    computeNSBTContractApproach,
     computeBRFromROI,
     computeROI,
     computePriceWavesByBondCentsFromOrderPrice,
@@ -174,7 +175,7 @@ class OrderProvider extends React.Component<Props, State> {
     onFormUpdate(next: State, formName: string) {
         const { controlPrice } = this.props;
 
-        let sendAmount, br, price, receiveAmount: number;
+        let sendAmount, br, price, priceWavesByBondCents, receiveAmount: number;
 
         switch (next.orderUrgency) {
             case OrderUrgency.INSTANT:
@@ -191,7 +192,9 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 const decimalBR = br / 100;
-                receiveAmount = computeNSBTFromBR(decimalBR, sendAmount, controlPrice);
+                // receiveAmount = computeNSBTFromBR(decimalBR, sendAmount, controlPrice);
+                priceWavesByBondCents = _floor(computePriceWavesByBondCents(100 - br, controlPrice))
+                receiveAmount = computeNSBTContractApproach(sendAmount, priceWavesByBondCents)
 
                 price = _round(receiveAmount / sendAmount, 2);
 
@@ -231,7 +234,8 @@ class OrderProvider extends React.Component<Props, State> {
                     br = 100 - roi;
                 }
 
-                const exactNSBT = computeBondsAmountFromROI(roi, sendAmount, controlPrice / 100)
+                priceWavesByBondCents = _floor(computePriceWavesByBondCents(roi, controlPrice))
+                const exactNSBT = computeNSBTContractApproach(sendAmount, priceWavesByBondCents)
 
                 _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(exactNSBT));
                 _set(next, `${formName}.br`, _round(br));
