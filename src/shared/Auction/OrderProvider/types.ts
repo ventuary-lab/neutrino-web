@@ -22,7 +22,7 @@ export interface Props {
     currentDeficitPercent: number;
     roi: number; // like wavelets
 }
-export type InputForm = { send: number; receive: number; price: number; br: number; };
+export type InputForm = { send: number; receive: number; price: number; br: number; } & Record<string, number>;
 export type State = {
     // backingRatio: number;
     orderUrgency: OrderUrgency;

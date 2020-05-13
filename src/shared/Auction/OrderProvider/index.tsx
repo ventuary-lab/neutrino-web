@@ -44,9 +44,12 @@ import { IOrder } from 'routes/BondsDashboard/types';
 // const DEFAULT_ROI = 10;
 
 const BUY_FORM_NAME = 'buy';
+const APPROX_RECEIVE = 'approx_receive'
 const LIQUIDATE_FORM_NAME = 'liquidate';
 const SEND_FIELD_NAME = 'send';
 const RECEIVE_FIELD_NAME = 'receive';
+
+const APPROX_SYMBOL = '~'
 
 class OrderProvider extends React.Component<Props, State> {
     buyFormSubject;
@@ -79,12 +82,14 @@ class OrderProvider extends React.Component<Props, State> {
             [BUY_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.WAVES_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
+                [APPROX_RECEIVE]: 0,
                 price: _round(this.props.backingRatio) || 0,
                 br: 0,
             },
             [LIQUIDATE_FORM_NAME]: {
                 [SEND_FIELD_NAME]: FormDefaults.NSBT_AMOUNT,
                 [RECEIVE_FIELD_NAME]: FormDefaults.USDN_AMOUNT,
+                [APPROX_RECEIVE]: 0,
                 br: _round(this.props.backingRatio) || 0,
                 price: 0,
             },
@@ -143,12 +148,27 @@ class OrderProvider extends React.Component<Props, State> {
         let { name, value } = event.target;
         const { state } = this;
 
+        if (state.orderUrgency == OrderUrgency.BY_REQUEST) {
+            if (name === `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}` && value[0] !== APPROX_SYMBOL) {
+                value = `${APPROX_SYMBOL}${value}`
+            }
+        }
+
         _set(state, name, value);
 
         this.setState(state);
 
         this.buyFormSubject.next(state);
         this.liquidateFormSubject.next(state);
+    }
+
+    getFormReceiveAmount(state: State, formName: string): number {
+        const raw = _get(state, `${formName}.${RECEIVE_FIELD_NAME}`)
+
+        if (raw[0] == APPROX_SYMBOL) {
+            return Number(raw.slice(1))
+        }
+        return Number(raw)
     }
 
     onFormUpdate(next: State, formName: string) {
@@ -179,12 +199,12 @@ class OrderProvider extends React.Component<Props, State> {
                     br = _round((receiveAmount / sendAmount) * 100);
                 }
 
+                _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(receiveAmount));
                 _set(next, `${formName}.br`, br);
-                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _round(receiveAmount));
+                _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _floor(receiveAmount));
                 _set(next, `${formName}.price`, price);
 
                 this.setState(next);
-
                 break;
             case OrderUrgency.BY_REQUEST:
                 let rawSendAmount = Number(_get(next, `${formName}.${SEND_FIELD_NAME}`));
@@ -193,29 +213,30 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 sendAmount = rawSendAmount;
-                receiveAmount = Number(_get(next, `${formName}.${RECEIVE_FIELD_NAME}`));
+                // receiveAmount = Number(_get(next, `${formName}.${RECEIVE_FIELD_NAME}`));
+                receiveAmount = this.getFormReceiveAmount(next, formName)
                 if (isNaN(receiveAmount)) {
                     receiveAmount = 0;
                 }
 
                 price = _round(receiveAmount / sendAmount, 2);
 
+                let computeRoiResult = this.computeROIWithContractApproach(sendAmount, receiveAmount, controlPrice)
+                let { roi } = computeRoiResult
+                roi = _floor(roi)
+
                 if (formName === LIQUIDATE_FORM_NAME) {
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else if (formName === BUY_FORM_NAME) {
-                    const { roi } = this.computeROIWithContractApproach(controlPrice)
                     br = 100 - roi;
-                    // br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100;
-                    // br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
 
-                // console.log('by request', { br, sendAmount, receiveAmount })
+                const exactNSBT = computeBondsAmountFromROI(roi, sendAmount, controlPrice / 100)
 
+                _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(exactNSBT));
                 _set(next, `${formName}.br`, _round(br));
                 _set(next, `${formName}.price`, price);
-
                 this.setState(next);
-                // debugger;
                 break;
         }
     }
@@ -263,16 +284,11 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     // control price is considered as int
-    computeROIWithContractApproach(controlPrice: number): { roi: number; orderPrice: number } {
-        const { state } = this;
-        const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
-        const bondsAmount = Number(_get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`));
-
+    computeROIWithContractApproach(wavesAmount: number, bondsAmount: number, controlPrice: number): { roi: number; orderPrice: number } {
         const dependPrice = wavesAmount / bondsAmount;
         const flooredDependPrice = _floor(dependPrice * 100)
         const priceWavesByBondCents = computeOrderPriceFromPriceWavesByBondCents(flooredDependPrice)
         const roi = computeROIFromPriceWavesByBondCents(priceWavesByBondCents, controlPrice)
-        
 
         return { roi, orderPrice: flooredDependPrice }
     }
@@ -282,8 +298,9 @@ class OrderProvider extends React.Component<Props, State> {
 
         const { state } = this;
         const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
+        const bondsAmount = this.getFormReceiveAmount(state, BUY_FORM_NAME)
 
-        const { orderPrice, roi } = this.computeROIWithContractApproach(controlPrice)
+        const { orderPrice, roi } = this.computeROIWithContractApproach(wavesAmount, bondsAmount, controlPrice)
         const contractPrice = orderPrice
         const position = computeOrderPosition(bondOrders as IOrder[], roi);
 
@@ -439,6 +456,8 @@ class OrderProvider extends React.Component<Props, State> {
         const isBuyFormInvalid = Boolean(this.getSmallWarning(buy.br));
         const isLiquidateFormInvalid = Boolean(this.getLiquidateWarning(liquidate.br));
 
+        const approxReceiveNSBT = _floor(_get(this.state, `${BUY_FORM_NAME}.${APPROX_RECEIVE}`))
+
         const buyForm = (
             <div
                 className={`buy-form ${orderUrgency == OrderUrgency.INSTANT ? 'mode-instant' : ''}`}
@@ -471,7 +490,7 @@ class OrderProvider extends React.Component<Props, State> {
                 />
                 <div className="percents">{this.auctionPercentage.map(this.mapBuyPercentage)}</div>
                 <p>
-                    You will receive {buy.receive} NSBT for {buy.send} WAVES when BR reaches{' '}
+                    You will receive {approxReceiveNSBT} NSBT for {buy.send} WAVES when BR reaches{' '}
                     {buy.br}%
                 </p>
                 <Button
