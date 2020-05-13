@@ -426,7 +426,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                         backingRatio={backingRatio}
                         bondOrders={bondOrders}
                         liquidateOrders={liquidateOrders}
-                        controlPrice={94}
+                        controlPrice={controlPrice}
                         baseCurrency={baseCurrency}
                         quoteCurrency={quoteCurrency}
                         roi={currentRoi}
