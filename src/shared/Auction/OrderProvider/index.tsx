@@ -19,12 +19,16 @@ import {
     computeNSBTFromBR,
     computeBRFromROI,
     computeROI,
+    computePriceWavesByBondCentsFromOrderPrice,
+    computePriceWavesByBondCents,
+    computeOrderPriceFromPriceWavesByBondCents,
     computeBRFromNSBTandWaves,
     convertWavesToNeutrino,
     convertNeutrinoToWaves,
     computeBondsAmountFromROI,
     computeWavesAmountFromROI,
     getComputedBondsFromROI,
+    computeROIFromPriceWavesByBondCents,
 } from 'reducers/contract/helpers';
 
 import { computeOrderPosition } from './helpers';
@@ -199,7 +203,9 @@ class OrderProvider extends React.Component<Props, State> {
                 if (formName === LIQUIDATE_FORM_NAME) {
                     br = _round((receiveAmount / rawSendAmount) * 100, 2);
                 } else if (formName === BUY_FORM_NAME) {
-                    br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100;
+                    const { roi } = this.computeROIWithContractApproach(controlPrice)
+                    br = 100 - roi;
+                    // br = computeBRFromNSBTandWaves(receiveAmount, sendAmount, controlPrice) * 100;
                     // br = computeBRFromNeutrino(receiveAmount, convertWavesToNeutrino(sendAmount, controlPrice)) * 100
                 }
 
@@ -256,17 +262,30 @@ class OrderProvider extends React.Component<Props, State> {
         }
     }
 
+    // control price is considered as int
+    computeROIWithContractApproach(controlPrice: number): { roi: number; orderPrice: number } {
+        const { state } = this;
+        const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
+        const bondsAmount = Number(_get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`));
+
+        const dependPrice = wavesAmount / bondsAmount;
+        const flooredDependPrice = _floor(dependPrice * 100)
+        const priceWavesByBondCents = computeOrderPriceFromPriceWavesByBondCents(flooredDependPrice)
+        const roi = computeROIFromPriceWavesByBondCents(priceWavesByBondCents, controlPrice)
+        
+
+        return { roi, orderPrice: flooredDependPrice }
+    }
+
     async handleBuyOrder() {
         const { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
 
         const { state } = this;
         const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
-        const bondsAmount = Number(_get(state, `${BUY_FORM_NAME}.${RECEIVE_FIELD_NAME}`));
 
-        const roi = computeROI(bondsAmount, wavesAmount, controlPrice);
-        const dependPrice = wavesAmount / bondsAmount;
+        const { orderPrice, roi } = this.computeROIWithContractApproach(controlPrice)
+        const contractPrice = orderPrice
         const position = computeOrderPosition(bondOrders as IOrder[], roi);
-        const contractPrice = Math.round(dependPrice * 100);
 
         try {
             const response = await dal.setBondOrder(
