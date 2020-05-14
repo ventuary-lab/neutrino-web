@@ -279,6 +279,14 @@ export default {
             please_wait_till: {
                 label: 'Please wait for it to finish in',
             },
+            asset: {
+                uppercased: 'ASSET',
+                label: 'Asset'
+            },
+            balance: {
+                uppercased: 'BALANCE',
+                label: 'Balance'
+            },
         },
         modals: {
             create_invoice: {

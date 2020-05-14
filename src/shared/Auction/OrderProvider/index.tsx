@@ -516,8 +516,11 @@ class OrderProvider extends React.Component<Props, State> {
                     {t('common.for.label')}
                     {' '}
                     {buy.send}
+                    {' '}
                     {CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
-                    {t('common.when_br_reaches.label')} {' '}
+                    {' '}
+                    {t('common.when_br_reaches.label')}
+                    {' '}
                     {buy.br}%
                 </p>
                 <Button
@@ -578,7 +581,7 @@ class OrderProvider extends React.Component<Props, State> {
                 {isBrAbove ? (
                     <>
                         {brWarning}
-                        <Button onClick={this.handleOnCondition} label={`On condition ⟶`} />
+                        <Button onClick={this.handleOnCondition} label={`${t('common.on_condition.label')} ⟶`} />
                     </>
                 ) : (
                     <Button

@@ -30,7 +30,7 @@ class AccountBalance extends React.Component<Props> {
                     <div className={bem.block()}>
                         <AccountBalanceTitle title={t('staking_dashboard.account_balance.label')} amount={accountBalance} />
                         <div className={bem.element('buy-btn')}>
-                            <Button type={'submit'} block label={t('common.buy.label')} onClick={onClick} />
+                            <Button type={'submit'} block label={t('enums.buy.label')} onClick={onClick} />
                         </div>
                     </div>
                 )}
