@@ -5,7 +5,7 @@ export default {
                 label: 'Buy',
             },
             sell: {
-                label: 'Sell'
+                label: 'Sell',
             },
             liquidate: {
                 label: 'Liquidate',
@@ -41,7 +41,14 @@ export default {
             },
         },
         common: {
-            error: { label: 'error'},
+            blocks: { label: 'blocks' },
+            // blocks: { label: 'blocks'},
+            transfer_amount: { label: 'Transfer amount'},
+            in_progress: { label: 'In progress', withDots: 'In progress...' },
+            completed: { label: 'Completed' },
+            to: { label: 'to' },
+            error: { label: 'error' },
+            cancel: { label: 'Cancel' },
             now: { label: 'NOW' },
             security_audit: { label: 'Security audit' },
             with: { label: 'with' },
@@ -55,6 +62,7 @@ export default {
             status: { label: 'Status' },
             issued: { label: 'Issued' },
             discounts: { label: 'Discounts' },
+            transfer_recipient: { label: 'Transfer recipient'},
             have_read_terms_of_use: { label: 'I have read and accept the' },
             login: {
                 label: 'Login',
@@ -183,7 +191,7 @@ export default {
                     'For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required',
             },
             copied_msg: {
-                label: 'Copied'
+                label: 'Copied',
             },
             order_filled: {
                 label: 'Filled',
@@ -206,29 +214,29 @@ export default {
             br: { label: 'BR' },
             br_full: { label: 'Backing ratio (BR)' },
             reserves: { label: 'Reserves' },
-            supply: { label: 'Supply'},
-            what_does_it_mean: { label: 'What does it mean'},
+            supply: { label: 'Supply' },
+            what_does_it_mean: { label: 'What does it mean' },
             br_info: {
                 label: `Backing Ratio (BR) is the share of WAVES reserves in relation to the Neutrino
-                supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.`
+                supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.`,
             },
             read_more: {
-                label: 'Read more'
+                label: 'Read more',
             },
             instant: {
-                label: 'Instant'
+                label: 'Instant',
             },
             on_condition: {
-                label: 'On condition'
+                label: 'On condition',
             },
             instant_possible_cond: {
-                label: 'Instant liquidation is possible only when'
+                label: 'Instant liquidation is possible only when',
             },
             on_condition_warning: {
-                label: 'Please use an "on condition" request instead.'
+                label: 'Please use an "on condition" request instead.',
             },
             exp_br: {
-                label: 'Exp. BR'
+                label: 'Exp. BR',
             },
             place_auction_req: { label: 'Place auction request' },
             place_liquidation_req: { label: 'Place liquidation request' },
@@ -236,35 +244,41 @@ export default {
                 a: 'In deficit, Exp. BR cannot be larger than 100%',
                 b: 'Exp. BR cannot be equal to 100%',
                 c: 'Exp. BR should be >= 5% and <= 195%',
-                d: '10 WAVES is the min. amount'
+                d: '10 WAVES is the min. amount',
             },
             liquidate_small_warning: {
-                a: 'BR should be higher or equal to 100%'
+                a: 'BR should be higher or equal to 100%',
             },
             you_will_receive: {
-                label: 'You will receive'
+                label: 'You will receive',
             },
             for: {
-                label: 'for'
+                label: 'for',
             },
             when_br_reaches: {
-                label: 'when BR reaches'
+                label: 'when BR reaches',
             },
             switch_network_to: {
-                label: 'Switch your Waves Keeper network to'
+                label: 'Switch your Waves Keeper network to',
             },
             switch_network: {
-                label: 'Switch Waves Keeper network'
+                label: 'Switch Waves Keeper network',
             },
             get_started_keeper: {
-                label: 'Get started by connecting'
+                label: 'Get started by connecting',
             },
             waves_account: {
-                label: 'Waves account'
+                label: 'Waves account',
             },
             privacy_policy: {
-                label: 'Privacy Policy'
-            }
+                label: 'Privacy Policy',
+            },
+            swap_procedure_start: {
+                label: 'The swap procedure has been started',
+            },
+            please_wait_till: {
+                label: 'Please wait for it to finish in',
+            },
         },
         modals: {
             create_invoice: {

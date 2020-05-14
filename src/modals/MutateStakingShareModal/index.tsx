@@ -189,7 +189,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                                         )}
                                     >
                                         <BaseInput
-                                            iconLabel={t('enums.currency.usdn')}
+                                            iconLabel={t('enums.currency.usdn.label')}
                                             icon={usdnLogo}
                                             value={usdnValue}
                                             onChange={this.onChangeUsdn}

@@ -7,6 +7,7 @@ import PayoutCheck from '../PayoutCheck';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { WavesTransactionInfo, WavesTransfer, IUser } from 'contractControllers/types';
 import { getMassPaymentSender } from 'reducers/auth/selectors';
+import { Translation } from 'react-i18next';
 
 import './style.scss';
 
@@ -44,12 +45,12 @@ class StakingRightPanel extends React.Component<Props, State> {
     componentDidUpdate(prevProps: Props) {
         const { user } = this.props;
 
-        if (!prevProps.user && user || user && prevProps.user.address !== user.address) {
+        if ((!prevProps.user && user) || (user && prevProps.user.address !== user.address)) {
             this.updateMassPaymentsList(user);
-        };
+        }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { user } = this.props;
 
         if (user && user.address) {
@@ -57,7 +58,7 @@ class StakingRightPanel extends React.Component<Props, State> {
         }
     }
 
-    async updateMassPaymentsList (user: IUser) {
+    async updateMassPaymentsList(user: IUser) {
         let massPaymentTxs = await this.getMassTransactionsList(
             user.address,
             dal.assets[CurrencyEnum.USD_N]
@@ -67,7 +68,9 @@ class StakingRightPanel extends React.Component<Props, State> {
             const massPaymentSender = getMassPaymentSender(store.getState());
             if (!massPaymentSender) throw new Error();
 
-            massPaymentTxs = massPaymentTxs.filter((tx: MappedWavesTransactionInfo) => tx.sender === massPaymentSender);
+            massPaymentTxs = massPaymentTxs.filter(
+                (tx: MappedWavesTransactionInfo) => tx.sender === massPaymentSender
+            );
         } catch (err) {
             console.log('Incorrect mass payment address provided');
         }
@@ -80,20 +83,18 @@ class StakingRightPanel extends React.Component<Props, State> {
             const response = await axios.get<WavesTransactionInfo[]>(
                 `/api/v1/staking/mass-payment/${address}/${assetId}`
             );
-            
+
             const mappedTransactions: MappedWavesTransactionInfo[] = response.data
                 .filter((tx: WavesTransactionInfo) => tx.transfers)
-                .map(
-                (tx: WavesTransactionInfo) => ({
+                .map((tx: WavesTransactionInfo) => ({
                     ...tx,
                     transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
-                })
-            );
-    
+                }));
+
             return mappedTransactions;
         } catch (err) {
-            console.log(err)
-            return []
+            console.log(err);
+            return [];
         }
     }
 
@@ -118,15 +119,19 @@ class StakingRightPanel extends React.Component<Props, State> {
         const payoutChecks = mappedTransactions.map(this.mapPayoutCheck);
 
         return (
-            <div className={bem.block()}>
-                <div className={bem.element('list')}>
-                    {payoutChecks.length > 0 ? payoutChecks : 'No Payout checks'}
-                </div>
-            </div>
+            <Translation>
+                {(t) => (
+                    <div className={bem.block()}>
+                        <div className={bem.element('list')}>
+                            {payoutChecks.length > 0 ? payoutChecks : t('staking_dashboard.no_payout_checks.label')}
+                        </div>
+                    </div>
+                )}
+            </Translation>
         );
     }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
     user: state.auth.user,
 }))(StakingRightPanel);

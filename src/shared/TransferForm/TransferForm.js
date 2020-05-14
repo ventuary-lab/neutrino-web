@@ -8,6 +8,7 @@ import InputField from 'yii-steroids/ui/form/InputField';
 import NumberField from 'yii-steroids/ui/form/NumberField';
 import Button from 'yii-steroids/ui/form/Button';
 import CurrencyEnum from 'enums/CurrencyEnum';
+import { Translation } from 'react-i18next';
 
 import { html, store, dal } from 'components';
 import './TransferForm.scss';
@@ -15,13 +16,13 @@ import './TransferForm.scss';
 const bem = html.bem('TransferForm');
 
 @connect((state, props) => ({
-    formValues: getFormValues(props.formId)(state)
+    formValues: getFormValues(props.formId)(state),
 }))
 export default class TransferForm extends React.PureComponent {
     static propTypes = {
         formId: PropTypes.string,
         onSubmit: PropTypes.func,
-        buttonLabel: PropTypes.string
+        buttonLabel: PropTypes.string,
     };
 
     constructor(props) {
@@ -30,11 +31,11 @@ export default class TransferForm extends React.PureComponent {
         this._setInitialAddress = this._setInitialAddress.bind(this);
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this._setInitialAddress();
     }
 
-    _setInitialAddress () {
+    _setInitialAddress() {
         const { formId } = this.props;
 
         if (formId !== 'CreateInvoiceModalForm') {
@@ -49,39 +50,48 @@ export default class TransferForm extends React.PureComponent {
         const address = _get(this.props, 'formValues.address');
         const amount = _get(this.props, 'formValues.amount');
         const { currency } = this.props;
-        const transeftAmountLabel = `Transfer amount (${CurrencyEnum.getLabels()[currency]})`;
 
         return (
-            <Form
-                className={bem.block()} 
-                formId={this.props.formId}
-                onSubmit={() => this.props.onSubmit(address, amount)}
-            >
-                <InputField
-                    layoutClassName={bem.element('input')}
-                    attribute={'address'}
-                    label={__('Transfer recipient')}
-                    inputProps={{
-                        autoComplete: 'off'
-                    }}
-                />
-                <NumberField
-                    step="any"
-                    inputProps={{
-                        autoComplete: 'off'
-                    }}
-                    label={__(transeftAmountLabel)}
-                    layoutClassName={bem.element('input')}
-                    attribute={'amount'}
-                />
-                <Button
-                    label={this.props.buttonLabel || __('Transfer')}
-                    color={'success'}
-                    type={'submit'}
-                    disabled={!amount || !address}
-                    className={bem.element('submit-button')}
-                />
-            </Form>
+            <Translation>
+                {(t) => {
+                    const transeftAmountLabel = `${t('common.transfer_amount.label')} (${
+                        CurrencyEnum.getLabels()[currency]
+                    })`;
+
+                    return (
+                        <Form
+                            className={bem.block()}
+                            formId={this.props.formId}
+                            onSubmit={() => this.props.onSubmit(address, amount)}
+                        >
+                            <InputField
+                                layoutClassName={bem.element('input')}
+                                attribute={'address'}
+                                label={t('common.transfer_recipient.label')}
+                                inputProps={{
+                                    autoComplete: 'off',
+                                }}
+                            />
+                            <NumberField
+                                step="any"
+                                inputProps={{
+                                    autoComplete: 'off',
+                                }}
+                                label={__(transeftAmountLabel)}
+                                layoutClassName={bem.element('input')}
+                                attribute={'amount'}
+                            />
+                            <Button
+                                label={this.props.buttonLabel || t('common.transfer.label')}
+                                color={'success'}
+                                type={'submit'}
+                                disabled={!amount || !address}
+                                className={bem.element('submit-button')}
+                            />
+                        </Form>
+                    );
+                }}
+            </Translation>
         );
     }
 }
