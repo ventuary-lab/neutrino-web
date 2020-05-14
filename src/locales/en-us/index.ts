@@ -106,6 +106,20 @@ export default {
             discount_with_percent: {
                 label: 'Discount (%)',
             },
+            staking: {
+                label: 'Staking'
+            },
+            transfers: {  label: 'Transfers' },
+            exchange: {  label: 'Exchange' },
+            invoices: {  label: 'Invoices' },
+            auction: {  label: 'Auction' },
+            article: {  label: 'USDNB -> NSBT' },
+            docs: {  label: 'Docs' },
+            whitepaper: {  label: 'White paper' },
+            faq: {  label: 'FAQ' },
+            blog: {  label: 'Blog' },
+            discussions: {  label: 'Discussions' },
+            github: {  label: 'GitHub' },
             send: {
                 label: 'Send',
             },
@@ -118,23 +132,8 @@ export default {
             total: {
                 label: 'Total',
             },
-            exchange: {
-                label: 'Exchange',
-            },
             white_paper: {
                 label: 'White paper',
-            },
-            faq: {
-                label: 'FAQ',
-            },
-            blog: {
-                label: 'Blog',
-            },
-            discussions: {
-                label: 'Discussions',
-            },
-            github: {
-                label: 'GitHub',
             },
             smart_contract: {
                 label: 'Smart Contract',
@@ -153,6 +152,9 @@ export default {
             },
             go_back: {
                 label: 'Go back',
+            },
+            swap: {
+                label: 'Swap'
             },
             tokens_swap: {
                 label: 'Tokens swap',
