@@ -192,7 +192,7 @@ class OrderProvider extends React.Component<Props, State> {
                 //     computePriceWavesByBondCents(computedRoi, controlPrice)
                 // );
                 priceWavesByBondCents = computePriceWavesByBondCents(computedRoi, controlPrice);
-                receiveAmount = computeNSBTContractApproach(sendAmount, priceWavesByBondCents);
+                receiveAmount = computeNSBTContractApproach(sendAmount, _floor(priceWavesByBondCents));
 
                 price = _floor(receiveAmount / sendAmount, 2);
 
