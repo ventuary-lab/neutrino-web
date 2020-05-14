@@ -39,6 +39,12 @@ export const getLabelTranslationMap = t => {
         [SECURITY_AUDIT_LABEL]: t('common.security_audit.label'),
     }
 }
+export const mapNavLabelItem = <T extends  Record<string, string>>(item: T, translationMap: T) => {
+    return {
+        ...item,
+        label: translationMap[item.label] || item.label
+    }
+}
 
 export enum LayoutUrlParams {
     LOGIN_WARNING_PARAM = 'loginWarning',
