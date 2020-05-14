@@ -446,7 +446,7 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     getLiquidateWarning(br, t): string {
-        if (!(br >= 100)) t('common.liquidate_small_warning.a');
+        if (!(br >= 100)) return t('common.liquidate_small_warning.a');
     }
 
     checkIsBrAbove(limit: number = 100) {
@@ -503,12 +503,21 @@ class OrderProvider extends React.Component<Props, State> {
                     value={buy.send}
                     name="buy.send"
                     onChange={this.onInputChange}
-                    fieldName="Send"
                     required={true}
                 />
                 <div className="percents">{this.auctionPercentage.map(this.mapBuyPercentage)}</div>
                 <p>
-                    You will receive {approxReceiveNSBT} NSBT for {buy.send} WAVES when BR reaches{' '}
+                    {t('common.you_will_receive.label')}
+                    {' '}
+                    {approxReceiveNSBT}
+                    {' '}
+                    {CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
+                    {' '}
+                    {t('common.for.label')}
+                    {' '}
+                    {buy.send}
+                    {CurrencyEnum.getLabels()[CurrencyEnum.WAVES]}
+                    {t('common.when_br_reaches.label')} {' '}
                     {buy.br}%
                 </p>
                 <Button
@@ -555,8 +564,16 @@ class OrderProvider extends React.Component<Props, State> {
                     {this.liquidatePercentage.map(this.mapLiquidatePercentage)}
                 </div>
                 <p>
-                    You will receive {liquidate.receive} USDN for {liquidate.send} NSBT when BR
-                    reaches {liquidate.br}%
+                    {t('common.you_will_receive.label')}
+                    {' '}
+                    {liquidate.receive}
+                    {' '}
+                    {CurrencyEnum.getLabels()[CurrencyEnum.USD_N]}
+                    {' '}
+                    {t('common.for.label')}
+                    {' '}
+                    {liquidate.send} {CurrencyEnum.getLabels()[CurrencyEnum.USD_NB]}
+                    {t('common.when_br_reaches.label')} {liquidate.br}%
                 </p>
                 {isBrAbove ? (
                     <>

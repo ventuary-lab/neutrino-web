@@ -8,6 +8,7 @@ import './style.scss';
 
 interface LanguageItem {
     label: string;
+    lng: string;
     onClick?: (...args: any[]) => void;
 }
 interface Props {
@@ -36,6 +37,7 @@ class LanguageSwitcher extends React.Component<Props, State> {
         this.handleItem = this.handleItem.bind(this);
 
         const { langs, default: currentLang } = getLanguageDropdownProps();
+
         this.state = { langs, currentLang, isOpened: false };
     }
 
@@ -49,6 +51,16 @@ class LanguageSwitcher extends React.Component<Props, State> {
         });
     }
 
+    popLangToTop() {
+        const { currentLang, langs } = this.state;
+        if (langs[0].lng === currentLang.lng) {
+            return
+        }
+        this.setState({
+            langs: [currentLang, ...langs.filter((lang) => lang.label !== currentLang.label)]
+        })
+    }
+
     mapLang(item: LanguageItem, index: number) {
         const { isOpened } = this.state;
         return (
@@ -58,7 +70,6 @@ class LanguageSwitcher extends React.Component<Props, State> {
             >
                 <Translation>
                     {(t, obj) => {
-                        console.log({ obj })
                         return  (
                             <>
                                 <div onClick={() => isOpened && item.onClick(obj.i18n)}>{item.label}</div>
@@ -77,13 +88,8 @@ class LanguageSwitcher extends React.Component<Props, State> {
     }
 
     render() {
-        // const { langs = defaultLangs } = this.props;
         const { langs } = this.state;
-        // const dropdownItems = getLangDropdownItems(this.props.t)
-
-        // if (!this.state.currentLang) {
-        //     this.setState({ currentLang: dropdownItems.default, langs: dropdownItems.langs, })
-        // }
+        this.popLangToTop()
 
         return <div className="LanguageSwitcher">{langs.map(this.mapLang)}</div>;
     }

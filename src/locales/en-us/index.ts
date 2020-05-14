@@ -182,6 +182,9 @@ export default {
                 label:
                     'For security and fraud prevention reasons, confirmation by 2/3 of oracles and admins is required',
             },
+            copied_msg: {
+                label: 'Copied'
+            },
             order_filled: {
                 label: 'Filled',
             },
@@ -237,6 +240,30 @@ export default {
             },
             liquidate_small_warning: {
                 a: 'BR should be higher or equal to 100%'
+            },
+            you_will_receive: {
+                label: 'You will receive'
+            },
+            for: {
+                label: 'for'
+            },
+            when_br_reaches: {
+                label: 'when BR reaches'
+            },
+            switch_network_to: {
+                label: 'Switch your Waves Keeper network to'
+            },
+            switch_network: {
+                label: 'Switch Waves Keeper network'
+            },
+            get_started_keeper: {
+                label: 'Get started by connecting'
+            },
+            waves_account: {
+                label: 'Waves account'
+            },
+            privacy_policy: {
+                label: 'Privacy Policy'
             }
         },
         modals: {
