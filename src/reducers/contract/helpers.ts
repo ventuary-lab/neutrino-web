@@ -26,10 +26,10 @@ export const computePriceWavesByBondCents = (roi, currentPrice) => {
 };
 // orderPrice is int
 export const computePriceWavesByBondCentsFromOrderPrice = (orderPrice) => {
-    return _floor((100 * 100) / orderPrice);
+    return (100 * 100) / orderPrice
 };
 export const computeROIFromPriceWavesByBondCents = (priceWavesByBondCents, currentPrice) => {
-    return _floor((priceWavesByBondCents - currentPrice) * (100 / currentPrice));
+    return (priceWavesByBondCents - currentPrice) * (100 / currentPrice);
 };
 export const computeOrderPriceFromPriceWavesByBondCents = (priceWavesByBondCents) => {
     return _floor((100 * 100) / priceWavesByBondCents)

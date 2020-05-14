@@ -25,6 +25,7 @@ class ExplorerApiService {
 
     async handleRequest(req: Request, res: Response) {
         const route = String(req.originalUrl).replace('/api/explorer', '/api');
+        // const route = req.originalUrl
 
         try {
             const response = await axios.get<string>(route, {
