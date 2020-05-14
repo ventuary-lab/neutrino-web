@@ -76,23 +76,25 @@ class StakingRightPanel extends React.Component<Props, State> {
     }
 
     async getMassTransactionsList(address: string, assetId: string) {
-        const response = await axios.get<WavesTransactionInfo[]>(
-            `/api/v1/staking/mass-payment/${address}/${assetId}`
-        );
-
-        if (response.statusText !== 'OK') {
-            return [];
+        try {
+            const response = await axios.get<WavesTransactionInfo[]>(
+                `/api/v1/staking/mass-payment/${address}/${assetId}`
+            );
+            
+            const mappedTransactions: MappedWavesTransactionInfo[] = response.data
+                .filter((tx: WavesTransactionInfo) => tx.transfers)
+                .map(
+                (tx: WavesTransactionInfo) => ({
+                    ...tx,
+                    transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
+                })
+            );
+    
+            return mappedTransactions;
+        } catch (err) {
+            console.log(err)
+            return []
         }
-        const mappedTransactions: MappedWavesTransactionInfo[] = response.data
-            .filter((tx: WavesTransactionInfo) => tx.transfers)
-            .map(
-            (tx: WavesTransactionInfo) => ({
-                ...tx,
-                transferAmount: grabTransactionTransferByRecipient(tx, address).amount,
-            })
-        );
-
-        return mappedTransactions;
     }
 
     mapPayoutCheck(

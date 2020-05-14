@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios, { AxiosResponse } from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
+import { floor as _floor } from 'lodash';
 
 import { getUser } from 'yii-steroids/reducers/auth';
 import { getBaseCurrency, getPairName, getQuoteCurrency } from 'reducers/currency';
@@ -277,7 +278,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 additional: (
                     <div className="heading-val">
                         <img src="/static/icons/usd-n.svg" />
-                        <span>{prettyPrintNumber(Math.round(neutrinoReserves))}</span>
+                        <span>{prettyPrintNumber(_floor(neutrinoReserves))}</span>
                     </div>
                 ),
             },
@@ -286,13 +287,13 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 additional: (
                     <div className="heading-val">
                         <img src="/static/icons/usd-n.svg" />
-                        <span>{prettyPrintNumber(Math.round(neutrinoSupply))}</span>
+                        <span>{prettyPrintNumber(_floor(neutrinoSupply))}</span>
                     </div>
                 ),
             },
             {
                 label: 'Backing ratio (BR)',
-                value: `${Math.round(backingRatio)}%`,
+                value: `${_floor(backingRatio)}%`,
             },
             {
                 label: 'What does it mean',
