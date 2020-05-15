@@ -188,11 +188,11 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 let computedRoi = 100 - br;
-                // priceWavesByBondCents = _floor(
-                //     computePriceWavesByBondCents(computedRoi, controlPrice)
-                // );
                 priceWavesByBondCents = computePriceWavesByBondCents(computedRoi, controlPrice);
-                receiveAmount = computeNSBTContractApproach(sendAmount, priceWavesByBondCents);
+                receiveAmount = computeNSBTContractApproach(
+                    sendAmount,
+                    _floor(priceWavesByBondCents)
+                );
 
                 price = _floor(receiveAmount / sendAmount, 2);
 
@@ -200,13 +200,28 @@ class OrderProvider extends React.Component<Props, State> {
                     br = _floor((receiveAmount / sendAmount) * 100);
                 }
 
-                _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(receiveAmount));
+                let approxValue: number;
+                // Closure is needed for distracting from upper priceWavesByBondCents variable
+                (() => {
+                    let computeRoiResult = this.computeROIWithContractApproach(
+                        sendAmount,
+                        receiveAmount,
+                        controlPrice
+                    );
+
+                    const priceWavesByBondCents = computeRoiResult.priceWavesByBondCents;
+                    approxValue = computeNSBTContractApproach(
+                        sendAmount,
+                        _floor(priceWavesByBondCents)
+                    );
+                })();
+
+                _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(approxValue));
                 _set(next, `${formName}.br`, br);
                 _set(next, `${formName}.${RECEIVE_FIELD_NAME}`, _floor(receiveAmount));
                 _set(next, `${formName}.price`, price);
 
                 this.setState(next);
-                // debugger;
                 break;
             case OrderUrgency.BY_REQUEST:
                 let rawSendAmount = Number(_get(next, `${formName}.${SEND_FIELD_NAME}`));
@@ -238,7 +253,10 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 priceWavesByBondCents = computeRoiResult.priceWavesByBondCents;
-                const exactNSBT = computeNSBTContractApproach(sendAmount, _floor(priceWavesByBondCents));
+                const exactNSBT = computeNSBTContractApproach(
+                    sendAmount,
+                    _floor(priceWavesByBondCents)
+                );
 
                 _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(exactNSBT));
                 _set(next, `${formName}.br`, _floor(br));
@@ -246,8 +264,6 @@ class OrderProvider extends React.Component<Props, State> {
                 this.setState(next);
                 break;
         }
-
-        // debugger;
     }
 
     handleOnCondition() {
