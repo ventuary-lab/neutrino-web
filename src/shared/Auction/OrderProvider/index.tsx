@@ -238,7 +238,7 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 priceWavesByBondCents = computeRoiResult.priceWavesByBondCents;
-                const exactNSBT = computeNSBTContractApproach(sendAmount, priceWavesByBondCents);
+                const exactNSBT = computeNSBTContractApproach(sendAmount, _floor(priceWavesByBondCents));
 
                 _set(next, `${formName}.${APPROX_RECEIVE}`, _floor(exactNSBT));
                 _set(next, `${formName}.br`, _floor(br));
