@@ -64,7 +64,7 @@ export default class TransferModal extends React.PureComponent {
                             >
                                 <TransferForm
                                     formId={FORM_ID}
-                                    onSubmit={this._onSubmit}
+                                    onSubmit={(address, amount) => this._onSubmit(address, amount, t)}
                                     currency={this.props.currency}
                                 />
                             </div>
@@ -93,7 +93,7 @@ export default class TransferModal extends React.PureComponent {
         );
     }
 
-    async _onSubmit(address, amount) {
+    async _onSubmit(address, amount, t) {
         // validate(address, [
         //     [
         //         'address',
@@ -118,7 +118,7 @@ export default class TransferModal extends React.PureComponent {
         } catch (err) {
             store.dispatch(
                 openModal(MessageModal, {
-                    text: `Error on Swap occured. ${err.message}`,
+                    text: `${t('common.error_occured_on_swap.label')} ${err.message}`,
                 })
             );
         }

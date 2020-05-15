@@ -67,10 +67,10 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         });
     }
 
-    onErrorOccur(err: Error) {
+    onErrorOccur(err: Error, t) {
         store.dispatch(
             openModal(MessageModal, {
-                text: `Error occured. ${err.message}`,
+                text: `${t('common.error_occured.label')}. ${err.message}`,
             })
         );
     }
@@ -79,11 +79,11 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         return document.body;
     }
 
-    onMutateStaking() {
+    onMutateStaking(t) {
         if (this.props.isDecrease) {
-            this.decreaseStaking();
+            this.decreaseStaking(t);
         } else {
-            this.increaseStaking();
+            this.increaseStaking(t);
         }
     }
 
@@ -93,20 +93,20 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         }
     }
 
-    async increaseStaking() {
+    async increaseStaking(t) {
         const { pairName } = this.props;
         const { usdnValue } = this.state;
 
         try {
             await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
         } catch (err) {
-            this.onErrorOccur(err);
+            this.onErrorOccur(err, t);
         }
 
         this.props.onClose();
     }
 
-    async decreaseStaking() {
+    async decreaseStaking(t) {
         const { usdnValue } = this.state;
 
         try {
@@ -116,7 +116,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                 Math.ceil(Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N))
             );
         } catch (err) {
-            this.onErrorOccur(err);
+            this.onErrorOccur(err, t);
         }
 
         this.props.onClose();
@@ -196,7 +196,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                                         />
                                         <Button
                                             label={buttonLabel}
-                                            onClick={this.onMutateStaking}
+                                            onClick={() => this.onMutateStaking(t)}
                                         />
                                     </div>
                                 </div>

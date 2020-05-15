@@ -43,7 +43,7 @@ export default {
         common: {
             blocks: { label: 'blocks' },
             // blocks: { label: 'blocks'},
-            transfer_amount: { label: 'Transfer amount'},
+            transfer_amount: { label: 'Transfer amount' },
             in_progress: { label: 'In progress', withDots: 'In progress...' },
             completed: { label: 'Completed' },
             to: { label: 'to' },
@@ -62,8 +62,14 @@ export default {
             status: { label: 'Status' },
             issued: { label: 'Issued' },
             discounts: { label: 'Discounts' },
-            transfer_recipient: { label: 'Transfer recipient'},
+            transfer_recipient: { label: 'Transfer recipient' },
             have_read_terms_of_use: { label: 'I have read and accept the' },
+            error_occured_on_swap: {
+                label: 'Error on Swap occured',
+            },
+            error_occured: {
+                label: 'Error occured'
+            },
             login: {
                 label: 'Login',
             },
@@ -107,19 +113,19 @@ export default {
                 label: 'Discount (%)',
             },
             staking: {
-                label: 'Staking'
+                label: 'Staking',
             },
-            transfers: {  label: 'Transfers' },
-            exchange: {  label: 'Exchange' },
-            invoices: {  label: 'Invoices' },
-            auction: {  label: 'Auction' },
-            article: {  label: 'USDNB -> NSBT' },
-            docs: {  label: 'Docs' },
-            whitepaper: {  label: 'White paper' },
-            faq: {  label: 'FAQ' },
-            blog: {  label: 'Blog' },
-            discussions: {  label: 'Discussions' },
-            github: {  label: 'GitHub' },
+            transfers: { label: 'Transfers' },
+            exchange: { label: 'Exchange' },
+            invoices: { label: 'Invoices' },
+            auction: { label: 'Auction' },
+            article: { label: 'USDNB -> NSBT' },
+            docs: { label: 'Docs' },
+            whitepaper: { label: 'White paper' },
+            faq: { label: 'FAQ' },
+            blog: { label: 'Blog' },
+            discussions: { label: 'Discussions' },
+            github: { label: 'GitHub' },
             send: {
                 label: 'Send',
             },
@@ -154,7 +160,7 @@ export default {
                 label: 'Go back',
             },
             swap: {
-                label: 'Swap'
+                label: 'Swap',
             },
             tokens_swap: {
                 label: 'Tokens swap',
@@ -283,11 +289,11 @@ export default {
             },
             asset: {
                 uppercased: 'ASSET',
-                label: 'Asset'
+                label: 'Asset',
             },
             balance: {
                 uppercased: 'BALANCE',
-                label: 'Balance'
+                label: 'Balance',
             },
         },
         modals: {
