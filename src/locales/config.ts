@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { mergeDeepRight } from 'ramda';
+import { mergeWith, isObject } from 'lodash';
 
 import englishTranslation from './en-us';
 // import russianTranslation from './ru-ru';
@@ -24,10 +24,27 @@ const onChangeLanguage = (i18n, language) => {
     if (typeof window !== undefined) {
         window.localStorage.setItem(localStorageKey, language);
     }
-    console.log({ i18n })
+    console.log({ i18n });
     i18n.changeLanguage(language);
 };
 
+const notStatedPrefix = '[N/A]';
+const warningMessageMergeCallback = (objValue, srcValue) => {
+    if (isObject(objValue) && isObject(srcValue)) {
+        return mergeWith(objValue, srcValue, warningMessageMergeCallback);
+    } else if (!isObject(objValue) && !isObject(srcValue)) {
+        return objValue || `${notStatedPrefix}${srcValue}`;
+    }
+    return objValue;
+};
+
+const chineseTranslationWithWarning = mergeWith(
+    chineseTranslation,
+    englishTranslation,
+    warningMessageMergeCallback
+);
+
+console.log({ chineseTranslationWithWarning });
 export const i18nConfig = {
     interpolation: {
         // React already does escaping
@@ -36,9 +53,9 @@ export const i18nConfig = {
     lng: getDefaultLanguage(),
     resources: {
         [LanguageEnum.EN]: englishTranslation,
-        [LanguageEnum.CH]: mergeDeepRight(englishTranslation, chineseTranslation),
+        [LanguageEnum.CH]: chineseTranslationWithWarning,
     },
-}
+};
 
 export const getLangDropdownItems = () => [
     {
