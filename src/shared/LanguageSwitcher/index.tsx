@@ -1,9 +1,14 @@
 import React from 'react';
 
+import { Translation } from 'react-i18next';
+
+import { getLanguageDropdownProps } from 'locales/config';
+
 import './style.scss';
 
 interface LanguageItem {
     label: string;
+    lng: string;
     onClick?: (...args: any[]) => void;
 }
 interface Props {
@@ -15,24 +20,14 @@ interface State {
     isOpened: boolean;
 }
 
-const chineseDomain = 'https://cn.neutrino.at';
-const handleRedirect = (locale) => {
-    if (locale === 'en') {
-        window.location.href = 'https://neutrino.at';
-    } else if (locale === 'ch' && !window.location.origin.includes(chineseDomain)) {
-        window.location.href = chineseDomain;
-    }
-};
-const defaultLangs: LanguageItem[] = [
-    {
-        label: '🇨🇳',
-        onClick: () => handleRedirect('ch'),
-    },
-    {
-        label: '🇬🇧',
-        onClick: () => handleRedirect('en'),
-    },
-].reverse();
+// const chineseDomain = 'https://cn.neutrino.at';
+// const handleRedirect = (locale) => {
+//     if (locale === 'en') {
+//         window.location.href = 'https://neutrino.at';
+//     } else if (locale === 'ch' && !window.location.origin.includes(chineseDomain)) {
+//         window.location.href = chineseDomain;
+//     }
+// };
 
 class LanguageSwitcher extends React.Component<Props, State> {
     constructor(props) {
@@ -41,7 +36,9 @@ class LanguageSwitcher extends React.Component<Props, State> {
         this.mapLang = this.mapLang.bind(this);
         this.handleItem = this.handleItem.bind(this);
 
-        this.state = { currentLang: defaultLangs[0], langs: defaultLangs, isOpened: false };
+        const { langs, default: currentLang } = getLanguageDropdownProps();
+
+        this.state = { langs, currentLang, isOpened: false };
     }
 
     handleItem(item: LanguageItem, index: number) {
@@ -54,6 +51,16 @@ class LanguageSwitcher extends React.Component<Props, State> {
         });
     }
 
+    popLangToTop() {
+        const { currentLang, langs } = this.state;
+        if (langs[0].lng === currentLang.lng) {
+            return
+        }
+        this.setState({
+            langs: [currentLang, ...langs.filter((lang) => lang.label !== currentLang.label)]
+        })
+    }
+
     mapLang(item: LanguageItem, index: number) {
         const { isOpened } = this.state;
         return (
@@ -61,15 +68,28 @@ class LanguageSwitcher extends React.Component<Props, State> {
                 onClick={() => this.handleItem(item, index)}
                 className={`${index === 0 ? 'first' : !isOpened ? 'hidden' : ''} lang-item`}
             >
-                <div onClick={() => isOpened && item.onClick() }>{item.label}</div>
-                {index === 0 && <img className={isOpened ? 'opened' : ''} src={'/static/icons/arrow-up.svg'} />}
+                <Translation>
+                    {(t, obj) => {
+                        return  (
+                            <>
+                                <div onClick={() => isOpened && item.onClick(obj.i18n)}>{item.label}</div>
+                                {index === 0 && (
+                                    <img
+                                        className={isOpened ? 'opened' : ''}
+                                        src={'/static/icons/arrow-up.svg'}
+                                    />
+                                )}
+                            </>
+                        )
+                    }}
+                </Translation>
             </div>
         );
     }
 
     render() {
-        // const { langs = defaultLangs } = this.props;
         const { langs } = this.state;
+        this.popLangToTop()
 
         return <div className="LanguageSwitcher">{langs.map(this.mapLang)}</div>;
     }

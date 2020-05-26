@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
+import { Translation } from 'react-i18next';
 import Button from 'yii-steroids/ui/form/Button';
 import { html, store } from 'components';
 import { openModal } from 'yii-steroids/actions/modal';
@@ -186,8 +187,7 @@ class InstallKeeperModal extends React.Component<Props, State> {
 
     getSecondView() {
         return (
-            <>
-                <div className={bem.element('second-view')}>
+            <div className={bem.element('second-view')}>
                     <h3>Create a Waves wallet</h3>
                     <div>
                         <div>
@@ -202,15 +202,16 @@ class InstallKeeperModal extends React.Component<Props, State> {
                     </div>
                     <HelpLink />
                 </div>
-            </>
         );
     }
 
-    getCompaniesView() {
+    getCompaniesView() { 
         const mapIcon = (item: ImageLink) => (
             <a href={item.link} target="_blank">
                 <img src={item.img} />
-                <span>Buy WAVES on {item.title}</span>
+                <Translation>
+                    {t => <span>{t('enums.buy.label')} WAVES on {item.title}</span>}
+                </Translation>
             </a>
         );
 
