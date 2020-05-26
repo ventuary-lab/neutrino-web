@@ -24,7 +24,6 @@ const onChangeLanguage = (i18n, language) => {
     if (typeof window !== undefined) {
         window.localStorage.setItem(localStorageKey, language);
     }
-    console.log({ i18n });
     i18n.changeLanguage(language);
 };
 
@@ -44,7 +43,6 @@ const chineseTranslationWithWarning = mergeWith(
     warningMessageMergeCallback
 );
 
-console.log({ chineseTranslationWithWarning });
 export const i18nConfig = {
     interpolation: {
         // React already does escaping
