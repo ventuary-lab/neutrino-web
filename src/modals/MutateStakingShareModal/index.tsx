@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { html, dal, store } from 'components';
 import Button from 'yii-steroids/ui/form/Button';
+import { Translation } from 'react-i18next';
 import BaseInput from 'ui/form/BaseInput';
 import AccountBalanceTitle, { AccountBalanceTitleOption } from 'shared/Staking/AccountBalanceTitle';
 import PercentButton from 'ui/form/PercentButton';
@@ -66,10 +67,10 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         });
     }
 
-    onErrorOccur(err: Error) {
+    onErrorOccur(err: Error, t) {
         store.dispatch(
             openModal(MessageModal, {
-                text: `Error occured. ${err.message}`
+                text: `${t('common.error_occured.label')}. ${err.message}`,
             })
         );
     }
@@ -78,11 +79,11 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         return document.body;
     }
 
-    onMutateStaking() {
+    onMutateStaking(t) {
         if (this.props.isDecrease) {
-            this.decreaseStaking();
+            this.decreaseStaking(t);
         } else {
-            this.increaseStaking();
+            this.increaseStaking(t);
         }
     }
 
@@ -92,20 +93,20 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         }
     }
 
-    async increaseStaking() {
+    async increaseStaking(t) {
         const { pairName } = this.props;
         const { usdnValue } = this.state;
 
         try {
             await dal.lockNeutrino(pairName, CurrencyEnum.USD_N, usdnValue);
         } catch (err) {
-            this.onErrorOccur(err);
+            this.onErrorOccur(err, t);
         }
 
         this.props.onClose();
     }
 
-    async decreaseStaking() {
+    async decreaseStaking(t) {
         const { usdnValue } = this.state;
 
         try {
@@ -115,7 +116,7 @@ class MutateStakingShareModal extends React.Component<Props, State> {
                 Math.ceil(Number(usdnValue) * CurrencyEnum.getContractPow(CurrencyEnum.USD_N))
             );
         } catch (err) {
-            this.onErrorOccur(err);
+            this.onErrorOccur(err, t);
         }
 
         this.props.onClose();
@@ -154,49 +155,56 @@ class MutateStakingShareModal extends React.Component<Props, State> {
         const { usdnValue } = this.state;
 
         return (
-            <Modal
-                className={bem.block()}
-                isOpen={this.props.isOpened}
-                onRequestClose={this.props.onClose}
-                parentSelector={this.getParentSelector}
-            >
-                <div>
-                    <div className={bem.element('body')}>
-                        <span className={bem.element('title')}>{title}</span>
-                        <div className={bem.element('balances')}>
-                            <AccountBalanceTitle
-                                title="Account balance:"
-                                amount={accountBalance}
-                                type={AccountBalanceTitleOption.VERTICAL}
-                            />
-                            <AccountBalanceTitle
-                                title="Staking balance:"
-                                amount={stakingBalance}
-                                type={AccountBalanceTitleOption.VERTICAL}
-                            />
-                        </div>
-                        <div className={bem.element('actions')}>
-                            <div className={bem.element('percents')}>
-                                {this.getPercentButtons()}
+            <Translation>
+                {(t) => (
+                    <Modal
+                        className={bem.block()}
+                        isOpen={this.props.isOpened}
+                        onRequestClose={this.props.onClose}
+                        parentSelector={this.getParentSelector}
+                    >
+                        <div>
+                            <div className={bem.element('body')}>
+                                <span className={bem.element('title')}>{title}</span>
+                                <div className={bem.element('balances')}>
+                                    <AccountBalanceTitle
+                                        title={`${t('staking_dashboard.account_balance.label')}:`}
+                                        amount={accountBalance}
+                                        type={AccountBalanceTitleOption.VERTICAL}
+                                    />
+                                    <AccountBalanceTitle
+                                        title={`${t('staking_dashboard.staking_balance.label')}:`}
+                                        amount={stakingBalance}
+                                        type={AccountBalanceTitleOption.VERTICAL}
+                                    />
+                                </div>
+                                <div className={bem.element('actions')}>
+                                    <div className={bem.element('percents')}>
+                                        {this.getPercentButtons()}
+                                    </div>
+                                    <div
+                                        className={bem.element(
+                                            'buttons',
+                                            this.props.isDecrease && 'decrease'
+                                        )}
+                                    >
+                                        <BaseInput
+                                            iconLabel={t('enums.currency.usdn.label')}
+                                            icon={usdnLogo}
+                                            value={usdnValue}
+                                            onChange={this.onChangeUsdn}
+                                        />
+                                        <Button
+                                            label={buttonLabel}
+                                            onClick={() => this.onMutateStaking(t)}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div
-                                className={bem.element(
-                                    'buttons',
-                                    this.props.isDecrease && 'decrease'
-                                )}
-                            >
-                                <BaseInput
-                                    iconLabel="USDN"
-                                    icon={usdnLogo}
-                                    value={usdnValue}
-                                    onChange={this.onChangeUsdn}
-                                />
-                                <Button label={buttonLabel} onClick={this.onMutateStaking} />
-                            </div>
                         </div>
-                    </div>
-                </div>
-            </Modal>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 }

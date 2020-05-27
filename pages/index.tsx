@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import { i18nConfig } from 'locales/config';
 
 import 'style/index.scss';
 import 'shared/Layout/Layout.scss';
@@ -25,6 +28,8 @@ class LandingPage extends React.Component<{}, State> {
     }
 
     async componentDidMount() {
+        i18next.use(initReactI18next).init({ ...i18nConfig });
+
         try {
             const res = await axios.get('/api/v1/init');
 
