@@ -14,16 +14,11 @@ const localStorageKey = 'default-locale';
 const getDefaultLanguage = () => {
     return (
         // @ts-ignore
-        (typeof window !== undefined && window.localStorage.getItem(localStorageKey)) ||
         LanguageEnum.EN
-        // (window?.localStorage?.getItem(localStorageKey)) || LanguageEnum.EN
     );
 };
 const onChangeLanguage = (i18n, language) => {
     // @ts-ignore
-    if (typeof window !== undefined) {
-        window.localStorage.setItem(localStorageKey, language);
-    }
     i18n.changeLanguage(language);
 };
 
