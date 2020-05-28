@@ -1,5 +1,8 @@
 import React from 'react';
 import Router from 'yii-steroids/ui/nav/Router';
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import { i18nConfig } from 'locales/config';
 
 import {ui} from 'components';
 import Layout from 'shared/Layout';
@@ -16,13 +19,10 @@ ui.addViews({
 ui.addViews(require.context('./ui', true, /View.js$/));
 
 export default class Application extends React.PureComponent {
+    componentDidMount() {
+        i18next.use(initReactI18next).init({ ...i18nConfig });
+    }
     render() {
-
-        return (
-            <Router
-                wrapperView={Layout}
-                routes={routes}
-            />
-        );
+        return <Router wrapperView={Layout} routes={routes} />;
     }
 }

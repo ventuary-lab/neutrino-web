@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {CopyToClipboard as CopyToBuffer} from 'react-copy-to-clipboard';
+import { Translation } from 'react-i18next';
 
 import {html} from 'components';
 
@@ -24,7 +25,7 @@ export default class CopyToClipboard extends React.PureComponent {
     }
 
     render() {
-        const { message = __('Copied!') } = this.props;
+        const { message } = this.props;
 
         return (
             <div className={bem.block()}>
@@ -42,9 +43,13 @@ export default class CopyToClipboard extends React.PureComponent {
                     {this.props.children || <span className={'Icon Icon__copy'}/>}
                 </CopyToBuffer>
                 {this.state.isCopied && (
-                    <div className={bem.element('message')}>
-                        {__(message)}
-                    </div>
+                    <Translation>
+                        {t => (
+                            <div className={bem.element('message')}>
+                                {message || t('common.copied_msg.label')}
+                            </div>
+                        )}
+                    </Translation>
                 )}
             </div>
         );

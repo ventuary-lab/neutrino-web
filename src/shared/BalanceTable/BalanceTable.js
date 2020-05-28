@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getUser } from 'yii-steroids/reducers/auth';
 import _round from 'lodash/round';
 import { openModal } from 'yii-steroids/actions/modal';
+import { Translation } from 'react-i18next';
 
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
@@ -23,13 +24,13 @@ import './BalanceTable.scss';
 
 const bem = html.bem('BalanceTable');
 
-@connect(state => ({
+@connect((state) => ({
     user: getUser(state),
     pairName: getPairName(state),
     quoteCurrency: getQuoteCurrency(state),
     baseCurrency: getBaseCurrency(state),
     sourceCurrency: getSourceCurrency(state),
-    controlPrice: getControlPrice(state)
+    controlPrice: getControlPrice(state),
 }))
 // @dal.hoc(props => [
 //     {
@@ -100,12 +101,12 @@ export default class BalanceTable extends React.PureComponent {
         const neutrinoPrice = _.round(controlPrice / 100, 2);
 
         const balanceSign = CurrencyEnum.getSign(this.props.sourceCurrency);
-        const getBottomBalance = currency =>
+        const getBottomBalance = (currency) =>
             currency === CurrencyEnum.WAVES
                 ? _round(this.props.user.balances[currency] * neutrinoPrice, 2)
                 : this.props.user.balances[currency];
 
-        return rows.map(currency => this.mapCurrency(currency, balanceSign, getBottomBalance));
+        return rows.map((currency) => this.mapCurrency(currency, balanceSign, getBottomBalance));
     }
 
     render() {
@@ -116,16 +117,20 @@ export default class BalanceTable extends React.PureComponent {
         }
 
         return (
-            <table className={bem.block()}>
-                <thead>
-                    <tr>
-                        <th>{__('ASSET')}</th>
-                        <th>{__('BALANCE')}</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>{this.getTableBody()}</tbody>
-            </table>
+            <Translation>
+                {(t) => (
+                    <table className={bem.block()}>
+                        <thead>
+                            <tr>
+                                <th>{t('common.asset.uppercased')}</th>
+                                <th>{t('common.balance.uppercased')}</th>
+                                <th />
+                            </tr>
+                        </thead>
+                        <tbody>{this.getTableBody()}</tbody>
+                    </table>
+                )}
+            </Translation>
         );
     }
 
@@ -144,7 +149,7 @@ export default class BalanceTable extends React.PureComponent {
                     { id: 'send', icon: 'Icon__double-arrow-up' },
                     { id: 'receive', icon: 'Icon__double-arrow-down' },
                     { id: 'trade', icon: 'Icon__trade' },
-                ].map(item => (
+                ].map((item) => (
                     <>
                         {(item.id !== 'trade' && (
                             <button
@@ -155,7 +160,7 @@ export default class BalanceTable extends React.PureComponent {
                                         openModal(
                                             item.id === 'send' ? TransferModal : CreateInvoiceModal,
                                             {
-                                                currency: currency
+                                                currency: currency,
                                             }
                                         )
                                     )

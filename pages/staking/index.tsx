@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+// import { I18nextProvider } from 'react-i18next';
+
 import Head from 'next/head';
 
 import 'style/index.scss';
