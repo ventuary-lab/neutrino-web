@@ -1653,10 +1653,10 @@
   dependencies:
     csstype "^2.6.4"
 
-"@waves.exchange/provider-web@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/provider-web/-/provider-web-0.2.1.tgz#20a310d1454e1fecf53dcde76650e304f3b8db01"
-  integrity sha512-mbzDStq7jjZMnrdPSXinkNJs/dup1O4Iuj82bZnkqYScQP0vopeyhpeNptb8dkT01WSjWUNyA+KjQMvYtjJF3Q==
+"@waves.exchange/provider-web@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/provider-web/-/provider-web-0.2.2.tgz#88eb5f78aca142a62148a82204ea0098213def13"
+  integrity sha512-l5wUCg6/9ZX6MHT+E7+GOQVUJhQIgzIrXvkPvtvs6WCy5Tz4curGhmKud9w7INr8z+6I0I1wW0OI2Atss6bOTw==
   dependencies:
     "@emotion/core" "^10.0.22"
     "@emotion/styled" "^10.0.23"
@@ -1667,7 +1667,7 @@
     "@types/react" "^16.9.15"
     "@types/react-dom" "^16.9.4"
     "@types/styled-system" "^5.1.4"
-    "@waves.exchange/react-uikit" "^0.4.1"
+    "@waves.exchange/react-uikit" "^0.5.11"
     "@waves/bignumber" "0.0.1"
     "@waves/node-api-js" "^0.1.0"
     "@waves/signer" "^0.1.0"
@@ -1695,10 +1695,10 @@
     identity-img "^2.0.0"
     ramda "^0.26.1"
 
-"@waves.exchange/react-uikit@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.4.1.tgz#0cd2208e05206c444ab963159d52bb78a31ed79b"
-  integrity sha512-TCqpV1E+dI9g3KjJVZTHXRSh+Q2ujNK+HSEEjoj+GkPuv4iLiygPORQS969EeVADRNwHHF2W4NyzPluhkmt/ag==
+"@waves.exchange/react-uikit@^0.5.11":
+  version "0.5.13"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/react-uikit/-/react-uikit-0.5.13.tgz#7e48a5b5db5cd1259c055caee80a60c8f371bc30"
+  integrity sha512-SQBrDNvz8p87ojCe/uBUBe+qJcUOamJUAFd5Rla8aGYL6GHn6jyS8kbVFHDijt6Yn32ipCZ08J2CnSjjI6zIKA==
   dependencies:
     "@popperjs/core" "^2.0.0-rc.1"
     "@styled-system/css" "^5.1.4"

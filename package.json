@@ -23,7 +23,7 @@
     "@types/lodash": "^4.14.147",
     "@types/pg": "^7.14.1",
     "@types/react-modal": "^3.10.0",
-    "@waves.exchange/provider-web": "^0.2.1",
+    "@waves.exchange/provider-web": "0.2.2",
     "@waves.exchange/storage-provider": "^0.0.21",
     "@waves/signer": "^0.1.2",
     "@waves/waves-crypto": "^3.0.17",
