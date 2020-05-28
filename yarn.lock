@@ -1660,10 +1660,10 @@
   dependencies:
     csstype "^2.6.4"
 
-"@waves.exchange/provider-web@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@waves.exchange/provider-web/-/provider-web-0.2.2.tgz#88eb5f78aca142a62148a82204ea0098213def13"
-  integrity sha512-l5wUCg6/9ZX6MHT+E7+GOQVUJhQIgzIrXvkPvtvs6WCy5Tz4curGhmKud9w7INr8z+6I0I1wW0OI2Atss6bOTw==
+"@waves.exchange/provider-web@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@waves.exchange/provider-web/-/provider-web-0.2.3.tgz#e64efd0134e688adc054397a1a860a84e59328f1"
+  integrity sha512-7SoFkwEHsWilGLMLN+pgVZJoo/X5YpIwLsIpTDgB5xaKX8errMD/CfTJkiXdoJPJjISRpDh/LoR7rpAQVgwBVA==
   dependencies:
     "@emotion/core" "^10.0.22"
     "@emotion/styled" "^10.0.23"
