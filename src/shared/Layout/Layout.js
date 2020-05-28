@@ -20,6 +20,7 @@ import { isPhone } from 'yii-steroids/reducers/screen';
 import InstallKeeperModal from 'modals/InstallKeeperModal';
 import TransferModal from 'modals/TransferModal';
 import CreateInvoiceModal from 'modals/CreateInvoiceModal';
+import { withTranslation } from 'react-i18next';
 
 import { html, http, dal, ws, store } from 'components';
 import wrongNetworkImage from 'static/images/warning-image.svg';
@@ -69,7 +70,7 @@ const bem = html.bem('Layout');
     // Initialize websocket
     // TODO ws.wsUrl = process.env.APP_WS_URL || 'ws://localhost:5000';
     ws.wsUrl = location.port ? 'ws://localhost:5000' : location.origin.replace('http', 'ws');
-    ws.onMessage = event =>
+    ws.onMessage = (event) =>
         store.dispatch([
             apiWsHandler(event),
             // currencyWsHandler(event),
@@ -82,7 +83,7 @@ const bem = html.bem('Layout');
     return data;
 })
 @screenWatcherHoc()
-@connect(state => ({
+@connect((state) => ({
     isShowLeftSidebar: getCurrentItemParam(state, 'isShowLeftSidebar'),
     matchParams: state.navigation.params,
     data: getData(state),
@@ -92,14 +93,14 @@ const bem = html.bem('Layout');
     isPhone: isPhone(state),
     // prices: getPrices(state),
 }))
-@dal.hoc(props => [
+@dal.hoc((props) => [
     {
         url: `/api/v1/neutrino-config/${props.pairName}`,
         key: 'neutrinoConfig',
         collection: CollectionEnum.CONTROL_CONFIG,
     },
 ])
-export default class Layout extends React.PureComponent {
+class Layout extends React.PureComponent {
     static propTypes = {
         status: PropTypes.string,
     };
@@ -341,6 +342,7 @@ export default class Layout extends React.PureComponent {
         const nextUserNetwork = _get(nextProps, 'user.network');
         const thisUserNetwork = _get(this.props, 'user.network');
 
+        const { t } = this.props;
         if (!this.props.isPhone) {
             if (thisUserNetwork && nextUserNetwork && thisUserNetwork !== nextUserNetwork) {
                 this.wasWrongNetworkMessageShown = false;
@@ -354,13 +356,11 @@ export default class Layout extends React.PureComponent {
             ) {
                 store.dispatch(
                     openModal(MessageModal, {
-                        text: __('Switch your Waves Keeper network to {name}', {
-                            name: nextAppNetwork.toUpperCase(),
-                        }),
+                        text: `${t('common.switch_network_to.label')} ${nextAppNetwork.toUpperCase()}`,
                         image: {
                             src: wrongNetworkImage,
-                            alt: 'Switch Waves Keeper network',
-                        },
+                            alt: t('common.switch_network.label'),
+                        }
                     })
                 );
 
@@ -502,3 +502,5 @@ export default class Layout extends React.PureComponent {
         return false;
     }
 }
+
+export default withTranslation()(Layout);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, reset } from 'redux-form';
 import Modal from 'yii-steroids/ui/modal/Modal';
+import { Translation } from 'react-i18next';
 
 import { html, dal, store } from 'components';
 // import validate from 'shared/validate';
@@ -19,23 +20,20 @@ import './TransferModal.scss';
 const bem = html.bem('TransferModal');
 const FORM_ID = 'TransferModalForm';
 
-
-@connect(
-    state => ({
-        // pairName: getPairName(state),
-        formValues: getFormValues(FORM_ID)(state),
-    })
-)
+@connect((state) => ({
+    // pairName: getPairName(state),
+    formValues: getFormValues(FORM_ID)(state),
+}))
 export default class TransferModal extends React.PureComponent {
     static propTypes = {
-        currency: PropTypes.string
+        currency: PropTypes.string,
     };
 
     constructor() {
         super(...arguments);
 
         this.state = {
-            isSuccess: false
+            isSuccess: false,
         };
 
         this._onSubmit = this._onSubmit.bind(this);
@@ -45,53 +43,57 @@ export default class TransferModal extends React.PureComponent {
         const { formValues } = this.props;
 
         return (
-            <Modal
-                {...this.props.modalProps}
-                className={bem.block({
-                    'is-success': this.state.isSuccess
-                })}
-            >
-                <div className={bem.element('header')}>
-                    {this.state.isSuccess
-                        ? __('Transferring was successful!')
-                        : __('Transferring funds to a user')}
-                </div>
-                <div className={bem.element('inner')}>
-                    <div
-                        className={bem.element('form', {
-                            'd-none': this.state.isSuccess
+            <Translation>
+                {(t) => (
+                    <Modal
+                        {...this.props.modalProps}
+                        className={bem.block({
+                            'is-success': this.state.isSuccess,
                         })}
                     >
-                        <TransferForm
-                            formId={FORM_ID}
-                            onSubmit={this._onSubmit}
-                            currency={this.props.currency}
-                        />
-                    </div>
-                    <div
-                        className={bem.element('success', {
-                            'd-none': !this.state.isSuccess
-                        })}
-                    >
-                        <div className={bem.element('success-icon')}>
-                            <span className={'Icon Icon__successful'} />
+                        <div className={bem.element('header')}>
+                            {this.state.isSuccess
+                                ? t('modals.successful_transfer.label')
+                                : t('modals.transferring_funds_to_user.label')}
                         </div>
-                        <TransferInfo
-                            {...formValues}
-                            onClose={this.state.isSuccess && this.props.onClose}
-                            currency={this.props.currency}
-                            onSubmit={() => {
-                                this.setState({ isSuccess: false });
-                                this.props.dispatch(reset(FORM_ID));
-                            }}
-                        />
-                    </div>
-                </div>
-            </Modal>
+                        <div className={bem.element('inner')}>
+                            <div
+                                className={bem.element('form', {
+                                    'd-none': this.state.isSuccess,
+                                })}
+                            >
+                                <TransferForm
+                                    formId={FORM_ID}
+                                    onSubmit={(address, amount) => this._onSubmit(address, amount, t)}
+                                    currency={this.props.currency}
+                                />
+                            </div>
+                            <div
+                                className={bem.element('success', {
+                                    'd-none': !this.state.isSuccess,
+                                })}
+                            >
+                                <div className={bem.element('success-icon')}>
+                                    <span className={'Icon Icon__successful'} />
+                                </div>
+                                <TransferInfo
+                                    {...formValues}
+                                    onClose={this.state.isSuccess && this.props.onClose}
+                                    currency={this.props.currency}
+                                    onSubmit={() => {
+                                        this.setState({ isSuccess: false });
+                                        this.props.dispatch(reset(FORM_ID));
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </Modal>
+                )}
+            </Translation>
         );
     }
 
-    async _onSubmit(address, amount) {
+    async _onSubmit(address, amount, t) {
         // validate(address, [
         //     [
         //         'address',
@@ -104,21 +106,21 @@ export default class TransferModal extends React.PureComponent {
         // ]);
 
         try {
-
             await dal.transferFunds(
                 PairsEnum.USDNB_USDN, //TODO
                 this.props.currency,
                 address,
                 amount
-            )
+            );
             this.setState({
-                isSuccess: true
+                isSuccess: true,
             });
         } catch (err) {
-
-            store.dispatch(openModal(MessageModal, {
-                text: `Error on Swap occured. ${err.message}`
-            }));
+            store.dispatch(
+                openModal(MessageModal, {
+                    text: `${t('common.error_occured_on_swap.label')} ${err.message}`,
+                })
+            );
         }
     }
 }

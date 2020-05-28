@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios, { AxiosResponse } from 'axios';
 import Nav from 'yii-steroids/ui/nav/Nav';
+import { Translation } from 'react-i18next';
 import { floor as _floor } from 'lodash';
 
 import { getUser } from 'yii-steroids/reducers/auth';
@@ -10,7 +11,7 @@ import { getControlPrice } from 'reducers/contract/selectors';
 
 import { html, dal } from 'components';
 import OrdersTable from './OrdersTable';
-import AuctionDiscount from './Auction';
+// import AuctionDiscount from './Auction';
 import QuestionMarkData from 'shared/Auction/QuestionMarkData';
 import BuyBondsForm from './views/BuyBondsForm';
 import LiquidateBondsForm from './views/LiquidateBondsForm';
@@ -223,7 +224,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
-    getBottomNavigationTabItems() {
+    getBottomNavigationTabItems(t) {
         const { controlPrice, pairName } = this.props;
         const { userOrders } = this.state;
 
@@ -232,7 +233,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         return [
             {
                 id: OrdersTableTabEnum.ACTIVE,
-                label: 'My open Orders',
+                label: t('common.my_open_orders.label'),
                 content: OrdersTable,
                 contentProps: {
                     items: userOrders.opened,
@@ -242,7 +243,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             },
             {
                 id: OrdersTableTabEnum.HISTORY,
-                label: 'My Orders History',
+                label: t('common.my_orders_history.label'),
                 content: OrdersTable,
                 contentProps: {
                     items: userOrders.history,
@@ -254,7 +255,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         ];
     }
 
-    getReserveHeadingValues() {
+    getReserveHeadingValues(t) {
         const { backingRatio, neutrinoSupply, neutrinoReserves } = this.state;
 
         const link =
@@ -262,19 +263,18 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const brText = (
             <div>
                 <span>
-                    Backing Ratio (BR) is the share of WAVES reserves in relation to the Neutrino
-                    supply. Issuance and liquidation of NSBT occurs when a certain BR is achieved.
+                    {t('common.br_info.label')}
                 </span>
                 <br />
                 <a href={link} target="_blank">
-                    <b>Read more</b>
+                    <b>{t('common.read_more.label')}</b>
                 </a>
             </div>
         );
 
         return [
             {
-                label: 'Reserves: ',
+                label: `${t('common.reserves.label')}: `,
                 additional: (
                     <div className="heading-val">
                         <img src="/static/icons/usd-n.svg" />
@@ -283,7 +283,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 ),
             },
             {
-                label: 'Supply: ',
+                label: `${t('common.supply.label')}: `,
                 additional: (
                     <div className="heading-val">
                         <img src="/static/icons/usd-n.svg" />
@@ -292,11 +292,11 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 ),
             },
             {
-                label: 'Backing ratio (BR)',
+                label: t('common.br_full.label'),
                 value: `${_floor(backingRatio)}%`,
             },
             {
-                label: 'What does it mean',
+                label: `${t('common.what_does_it_mean.label')}: `,
                 additional: <QuestionMarkData text={brText} />,
             },
         ];
@@ -320,7 +320,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
     getOrderbookHeadings(
         liquidateOrders: IOrder[],
-        bondOrders: IOrder[]
+        bondOrders: IOrder[],
+        t
     ): {
         greenBuyHeaders: TableHeader[];
         greenLiquidateHeaders: TableHeader[];
@@ -357,29 +358,29 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             auction: [
                 {
                     key: 'nsbt',
-                    label: 'NSBT',
+                    label: t('enums.currency.usdnb.label'),
                 },
                 {
                     key: 'br',
-                    label: 'BR',
+                    label: t('common.br.label'),
                 },
                 {
                     key: 'waves',
-                    label: 'WAVES',
+                    label: t('enums.currency.waves.label'),
                 },
             ],
             liquidate: [
                 {
                     key: 'nsbt',
-                    label: 'NSBT',
+                    label: t('enums.currency.usdnb.label'),
                 },
                 {
                     key: 'br',
-                    label: 'BR',
+                    label: t('common.br.label'),
                 },
                 {
                     key: 'usdn',
-                    label: 'USDN',
+                    label: t('enums.currency.usdn.label'),
                 },
             ],
         };
@@ -395,55 +396,66 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
         const { controlPrice, baseCurrency, quoteCurrency, user, pairName } = this.props;
         const { formTab, currentDeficitPercent } = this.state;
 
-        const {
-            greenBuyHeaders,
-            greenLiquidateHeaders,
-            auction: auctionHeadings,
-            liquidate: liquidateHeadings,
-        } = this.getOrderbookHeadings([...liquidateOrders], [...bondOrders]);
-
         return (
-            <div className={bem.block()}>
-                <div>
-                    <OrderBook
-                        greenHeaders={greenBuyHeaders}
-                        tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
-                        tableHeaders={auctionHeadings}
-                        title="Auction"
-                    />
-                    <OrderBook
-                        greenHeaders={greenLiquidateHeaders}
-                        tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
-                        tableHeaders={liquidateHeadings}
-                        title="Liquidate"
-                    />
-                </div>
-                <div>
-                    <ReserveHeading values={this.getReserveHeadingValues()} />
-                    <OrderProvider
-                        pairName={pairName}
-                        user={user}
-                        currentDeficitPercent={currentDeficitPercent}
-                        backingRatio={backingRatio}
-                        bondOrders={bondOrders}
-                        liquidateOrders={liquidateOrders}
-                        controlPrice={controlPrice}
-                        baseCurrency={baseCurrency}
-                        quoteCurrency={quoteCurrency}
-                        roi={currentRoi}
-                    />
-                    <div className={bem.element('user-orders') + ` ${!userOrders ? 'hidden' : ''}`}>
-                        <div className={bem.element('orders')}>
-                            <Nav
-                                className={bem.element('orders-nav')}
-                                layout={'tabs'}
-                                activeTab={OrdersTableTabEnum.ACTIVE}
-                                items={this.getBottomNavigationTabItems()}
-                            />
+            <Translation>
+                {(t) => {
+                    const {
+                        greenBuyHeaders,
+                        greenLiquidateHeaders,
+                        auction: auctionHeadings,
+                        liquidate: liquidateHeadings,
+                    } = this.getOrderbookHeadings([...liquidateOrders], [...bondOrders], t);
+
+                    return (
+                        <div className={bem.block()}>
+                            <div>
+                                <OrderBook
+                                    greenHeaders={greenBuyHeaders}
+                                    tableRecords={bondOrders.map(this.mapAuctionOrderRecord)}
+                                    tableHeaders={auctionHeadings}
+                                    title={t('enums.auction.label')}
+                                />
+                                <OrderBook
+                                    greenHeaders={greenLiquidateHeaders}
+                                    tableRecords={liquidateOrders.map(this.mapLiquidateOrderRecord)}
+                                    tableHeaders={liquidateHeadings}
+                                    title={t('enums.liquidation.label')}
+                                />
+                            </div>
+                            <div>
+                                <ReserveHeading values={this.getReserveHeadingValues(t)} />
+                                <OrderProvider
+                                    pairName={pairName}
+                                    user={user}
+                                    currentDeficitPercent={currentDeficitPercent}
+                                    backingRatio={backingRatio}
+                                    bondOrders={bondOrders}
+                                    liquidateOrders={liquidateOrders}
+                                    controlPrice={controlPrice}
+                                    baseCurrency={baseCurrency}
+                                    quoteCurrency={quoteCurrency}
+                                    roi={currentRoi}
+                                />
+                                <div
+                                    className={
+                                        bem.element('user-orders') +
+                                        ` ${!userOrders ? 'hidden' : ''}`
+                                    }
+                                >
+                                    <div className={bem.element('orders')}>
+                                        <Nav
+                                            className={bem.element('orders-nav')}
+                                            layout={'tabs'}
+                                            activeTab={OrdersTableTabEnum.ACTIVE}
+                                            items={this.getBottomNavigationTabItems(t)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    );
+                }}
+            </Translation>
         );
     }
 }

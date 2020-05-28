@@ -24,4 +24,42 @@
     width: 200px;
     background: linear-gradient(1.04deg, #00ADFF -339.25%, #3E3E79 36.53%);
   }
+
+  // .LanguageDropdown__main {
+  //   background: transparent;
+  //   border: none;
+  //   padding: 0 12px;
+  //   position: relative;
+
+  //   & > :nth-child(1) {
+  //     position: absolute;
+  //     top: -30px;
+  //   }
+  // }
+  
+
+  // @media screen and (max-width: 768px) {
+  //   & .LanguageDropdown__main {
+  //     left: -22px;
+  //     padding-left: 20px;
+  //     & a {
+  //       & > :nth-child(2) {
+  //         display: none
+  //       }
+  //     }
+  //   }
+  // }
+
+  .info-dropdown {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+
+  .LanguageSwitcher {
+    width: 100px;
+    position: absolute;
+    left: 85px;
+  }
 }
