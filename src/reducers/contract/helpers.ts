@@ -1,6 +1,11 @@
 import { floor as _floor } from 'lodash';
 import { IOrder } from 'routes/BondsDashboard/types';
 
+export const NEUTRINO_DEC: number = 1e6
+
+// float price is considered
+export const mapPriceToContract = (price: number) => price * NEUTRINO_DEC
+
 // roi = 100*(b - w*cp)/(w*cp)
 export const computeROI = (bondsAmount: number, wavesAmount: number, currentPrice: number) =>
     (100 * (bondsAmount - wavesAmount * (currentPrice / 100))) /

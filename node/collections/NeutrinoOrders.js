@@ -38,8 +38,12 @@ module.exports = class NeutrinoOrders extends BaseCollection {
      * @returns {Promise}
      */
     async getOpenedOrders() {
-        let orders = await this.getItemsAll();
-        return getOpenedOrders(orders);
+        try {
+            let orders = await this.getItemsAll();
+            return getOpenedOrders(orders);
+        } catch (err) {
+            return [];
+        }
     }
 
     async getUserOpenedOrders(address) {

@@ -5,7 +5,7 @@ class PostgresService {
 
     constructor () {
         // const connectionString = 'postgresql://postgres:123123123@localhost:5432/redis-cache'
-        this.client = new Client();
+        this.client = new Client(process.env.POSTGRES_CONNECTION_URL);
 
         // this.getBondsOrders = this.getBondsOrders.bind(this)
     }

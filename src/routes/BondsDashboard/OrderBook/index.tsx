@@ -8,6 +8,7 @@ import { FormTabEnum } from '../enums';
 import './OrderBook.scss';
 import CurrencyEnum from 'enums/CurrencyEnum';
 import { Props, State } from './types';
+import { NEUTRINO_DEC } from 'reducers/contract/helpers';
 
 const bem = html.bem('OrderBook');
 
@@ -94,7 +95,7 @@ class OrderBook extends React.Component<Props, State> {
                                 {this.computeROIForOrder(order)}
                             </div>
                             <div className={bem.element('body-column')}>
-                                {_round(price / 100, 2)}
+                                {_round(price / NEUTRINO_DEC, 2)}
                             </div>
                             <div className={bem.element('body-column', 'bg')}>
                                 {_round(order.restTotal)}
@@ -141,7 +142,7 @@ class OrderBook extends React.Component<Props, State> {
             </div>
         );
 
-        const wavesByUsdAmount = _round(controlPrice / 100, 2);
+        const wavesByUsdAmount = _round(controlPrice / NEUTRINO_DEC, 2);
         const usdnByWavesAmount = _round(1 / wavesByUsdAmount, 2);
 
         return (

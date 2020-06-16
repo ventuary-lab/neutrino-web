@@ -31,6 +31,8 @@ import {
     computeWavesAmountFromROI,
     getComputedBondsFromROI,
     computeROIFromPriceWavesByBondCents,
+    NEUTRINO_DEC,
+    mapPriceToContract,
 } from 'reducers/contract/helpers';
 
 import { computeOrderPosition } from './helpers';
@@ -42,6 +44,7 @@ import wavesLogo from 'static/icons/wave.svg';
 
 import './style.scss';
 import { IOrder } from 'routes/BondsDashboard/types';
+import { debug } from 'winston';
 
 // const DEFAULT_ROI = 10;
 
@@ -173,10 +176,14 @@ class OrderProvider extends React.Component<Props, State> {
         return Number(raw);
     }
 
+    mapCurrentPrice(controlPrice: number) {
+        return controlPrice/NEUTRINO_DEC * 100
+    }
+
     onFormUpdate(next: State, formName: string) {
         const { controlPrice } = this.props;
 
-        let sendAmount, br, price, priceWavesByBondCents, receiveAmount: number;
+        let sendAmount, br, price, priceWavesByBondCents, receiveAmount, mappedControlPrice: number;
 
         switch (next.orderUrgency) {
             case OrderUrgency.INSTANT:
@@ -189,7 +196,8 @@ class OrderProvider extends React.Component<Props, State> {
                 }
 
                 let computedRoi = 100 - br;
-                priceWavesByBondCents = computePriceWavesByBondCents(computedRoi, controlPrice);
+                mappedControlPrice = this.mapCurrentPrice(controlPrice)
+                priceWavesByBondCents = computePriceWavesByBondCents(computedRoi, mappedControlPrice);
                 receiveAmount = computeNSBTContractApproach(
                     sendAmount,
                     _floor(priceWavesByBondCents)
@@ -207,7 +215,7 @@ class OrderProvider extends React.Component<Props, State> {
                     let computeRoiResult = this.computeROIWithContractApproach(
                         sendAmount,
                         receiveAmount,
-                        controlPrice
+                        mappedControlPrice
                     );
 
                     const priceWavesByBondCents = computeRoiResult.priceWavesByBondCents;
@@ -239,10 +247,11 @@ class OrderProvider extends React.Component<Props, State> {
 
                 price = _round(receiveAmount / sendAmount, 2);
 
+                mappedControlPrice = this.mapCurrentPrice(controlPrice)
                 let computeRoiResult = this.computeROIWithContractApproach(
                     sendAmount,
                     receiveAmount,
-                    controlPrice
+                    mappedControlPrice
                 );
                 let { roi } = computeRoiResult;
                 roi = _floor(roi, 2);
@@ -323,8 +332,9 @@ class OrderProvider extends React.Component<Props, State> {
     }
 
     async handleBuyOrder() {
-        const { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
+        let { pairName, quoteCurrency, bondOrders, controlPrice } = this.props;
 
+        controlPrice = this.mapCurrentPrice(controlPrice)
         const { state } = this;
         const wavesAmount = Number(_get(state, `${BUY_FORM_NAME}.${SEND_FIELD_NAME}`));
         const bondsAmount = this.getFormReceiveAmount(state, BUY_FORM_NAME);
@@ -334,9 +344,11 @@ class OrderProvider extends React.Component<Props, State> {
             bondsAmount,
             controlPrice
         );
-        const contractPrice = _floor(orderPrice);
+        const contractPrice = _floor(mapPriceToContract(orderPrice/100));
         const position = computeOrderPosition(bondOrders as IOrder[], roi);
+        console.log({ contractPrice, orderPrice })
 
+        debugger;
         try {
             const response = await dal.setBondOrder(
                 pairName,
@@ -379,11 +391,12 @@ class OrderProvider extends React.Component<Props, State> {
     // Percents
     setAmountPercentForField(path: string, num: number) {
         const { state } = this;
-        const { user, controlPrice } = this.props;
+        let { user, controlPrice } = this.props;
 
         let [formName, fieldName] = path.split('.');
         const currencyAmount = _get(state, path);
 
+        controlPrice = this.mapCurrentPrice(controlPrice)
         fieldName = fieldName === SEND_FIELD_NAME ? RECEIVE_FIELD_NAME : SEND_FIELD_NAME;
 
         if (isNaN(+currencyAmount)) return;

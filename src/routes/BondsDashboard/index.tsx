@@ -27,6 +27,7 @@ import {
     computeBR,
     computeBRFromROI,
     computeROI,
+    NEUTRINO_DEC,
     // computeBondsAmountFromROI,
     // computeWavesAmountFromROI,
     // getComputedBondsFromROI,
@@ -73,6 +74,8 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             neutrinoSupply: 0,
             currentDeficitPercent: Number(localStorage.getItem(DEFICIT_LS_KEY)) || 0,
             neutrinoReserves: 0,
+            bondOrders: [],
+            liquidateOrders: []
         };
     }
 
@@ -107,9 +110,9 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
             let reserveInWaves = balance - balanceLockWaves;
             reserveInWaves /= CurrencyEnum.getContractPow(CurrencyEnum.WAVES);
 
-            const neutrinoReserves = reserveInWaves * (controlPrice / 100);
+            const neutrinoReserves = reserveInWaves * (controlPrice/NEUTRINO_DEC);
 
-            const BR = computeBR({ reserveInWaves, supplyInNeutrino: totalSupply }, controlPrice);
+            const BR = computeBR({ reserveInWaves, supplyInNeutrino: totalSupply }, controlPrice/NEUTRINO_DEC) * 100;
 
             this.setState({ backingRatio: BR, neutrinoReserves, neutrinoSupply: totalSupply });
             localStorage.setItem(BR_LS_KEY, String(BR));
@@ -157,6 +160,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
 
                 const { data: bondOrders } = bondOrdersResponse;
                 const { data: liquidateOrders } = liquidateOrdersResponse;
+                const { state } = this;
 
                 this.updateROI(currentDeficitResponse.data);
                 this.updateBR(totalSupplyResponse.data);
@@ -164,12 +168,15 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
                 const newState: Partial<State> = {
                     currentDeficitPercent: currentDeficitResponse.data,
                     userOrders: userOrdersResponse && userOrdersResponse.data,
+                    bondOrders,
+                    liquidateOrders
                 };
-                if (bondOrders.length > 0) {
-                    newState.bondOrders = bondOrders;
+
+                if (newState.bondOrders.length === 0 && state.bondOrders.length > 0) {
+                    delete newState.bondOrders
                 }
-                if (liquidateOrders.length > 0) {
-                    newState.liquidateOrders = liquidateOrders;
+                if (newState.liquidateOrders.length === 0 && state.liquidateOrders.length > 0) {
+                    delete newState.liquidateOrders
                 }
 
                 this.setState({ ...newState } as any);
@@ -305,7 +312,7 @@ class BondsDashboard extends React.Component<Props, State> implements ILongPulli
     mapLiquidateOrderRecord(order: IOrder): TableRecord {
         return {
             br: order.price || 100,
-            usdn: Math.floor(order.restTotal * ((order.price || 100) / 100)),
+            usdn: Math.floor(order.restTotal * ((order.price || 100) / NEUTRINO_DEC)),
             nsbt: Math.floor(order.restTotal),
         };
     }
