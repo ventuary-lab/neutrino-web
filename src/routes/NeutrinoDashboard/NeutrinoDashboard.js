@@ -24,6 +24,7 @@ import MessageModal from 'modals/MessageModal';
 import { openModal } from 'yii-steroids/actions/modal';
 import { prettyPrintNumber } from 'ui/global/helpers';
 import { TERMS_OF_USE_LABEL } from 'shared/Layout/constants';
+import { NEUTRINO_DEC } from 'reducers/contract/helpers';
 
 import CurrencyEnum from 'enums/CurrencyEnum';
 import ContractEnum from 'enums/ContractEnum';
@@ -242,7 +243,7 @@ export default class NeutrinoDashboard extends React.PureComponent {
     }
 
     getControlPrice() {
-        return _.round(_get(this.props, 'controlPrice', 0) / 100, 2);
+        return _.round(_get(this.props, 'controlPrice', 0) / NEUTRINO_DEC, 2);
     }
 
     getTotalIssued() {

@@ -348,7 +348,6 @@ class OrderProvider extends React.Component<Props, State> {
         const position = computeOrderPosition(bondOrders as IOrder[], roi);
         console.log({ contractPrice, orderPrice })
 
-        debugger;
         try {
             const response = await dal.setBondOrder(
                 pairName,

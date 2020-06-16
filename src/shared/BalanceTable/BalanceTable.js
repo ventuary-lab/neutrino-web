@@ -7,6 +7,7 @@ import _round from 'lodash/round';
 import { openModal } from 'yii-steroids/actions/modal';
 import { Translation } from 'react-i18next';
 
+import { NEUTRINO_DEC } from 'reducers/contract/helpers';
 import { html, dal, store } from 'components';
 import CurrencyEnum from 'enums/CurrencyEnum';
 // import CollectionEnum from 'enums/CollectionEnum';
@@ -98,7 +99,7 @@ export default class BalanceTable extends React.PureComponent {
     getTableBody() {
         const rows = [CurrencyEnum.WAVES, this.props.quoteCurrency, this.props.baseCurrency];
         const controlPrice = _.get(this.props, 'controlPrice', 0);
-        const neutrinoPrice = _.round(controlPrice / 100, 2);
+        const neutrinoPrice = _.round(controlPrice / NEUTRINO_DEC, 2);
 
         const balanceSign = CurrencyEnum.getSign(this.props.sourceCurrency);
         const getBottomBalance = (currency) =>
